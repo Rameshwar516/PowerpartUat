@@ -291,7 +291,7 @@
                         <center><apex:outputText value=":" /></center>
                     </td>
                     <td style="border:none;" width="18%" valign="top">
-                        <apex:outputText value="{!objInvoice.ESN__r.Name}" /> 
+                        <apex:outputText value="{!Invoice__c.Customer_Asset__r.Name}" /> 
                     </td>
                     <td style="border:none;" width="12%" valign="top"></td>
                     

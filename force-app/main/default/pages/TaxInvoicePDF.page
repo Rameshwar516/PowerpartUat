@@ -316,7 +316,7 @@
                         <center><apex:outputText value=":" /></center>
                     </td>
                     <td style="border:none;" width="20%" valign="top">
-                        <apex:outputText value="{!Invoice__c.Place_of_Supply_Formula__c}" /> 
+                        <apex:outputText value="{!objInvoice.Shipping_State_Province__c}" /> 
                     </td>
                     <td style="border:none;" width="10%" valign="top"></td>
                 </tr>
@@ -478,7 +478,7 @@
                         <b><apex:outputText value=":" /></b>
                     </td>
                     <td style="border:none;border-top: 2px solid black;"  valign="top" colspan="2">
-                        <apex:outputText value="{!objInvoice.Customer_Name__r.Name}" />
+                        <apex:outputText value="{!objInvoice.Shipping_Account__r.name}" />
                     </td>
                 </tr>
                 <tr>
@@ -539,13 +539,13 @@
                     </td>
                     
                      <td style="border:none;border-left: 2px solid black;"  valign="top" colspan="2">
-                        <apex:outputText value="{!objInvoice.Contact_Person__r.Name}" />
+                        <apex:outputText value="{!ShippingObjCon.Name}" />
                     </td>
                     <td style="border:none;"  valign="top" >
-                        <apex:outputText value="{!objInvoice.Contact_No__c}" />
+                        <apex:outputText value="{!ShippingObjCon.mobilephone}" />
                     </td>
                     <td style="border:none;"  valign="top" >
-                        <apex:outputText value="{!objInvoice.Contact_Person__r.Email}" />
+                        <apex:outputText value="{!ShippingObjCon.Email}" />
                     </td>
                 </tr>
                 <tr>
@@ -566,7 +566,7 @@
                         <center><apex:outputText value=":" /></center>
                     </td>
                     <td style="border:none;"  valign="top" colspan="2">
-                        <apex:outputText value="{!objInvoice.Shipping_GSTIN_No__c}" /> 
+                        <apex:outputText value="{!objInvoice.Shipping_Account__r.Shipping_GSTIN_No__c}" /> 
                     </td>
                 </tr>
                 <tr>
@@ -591,11 +591,11 @@
                         <center><apex:outputText value=":" /></center>
                     </td>
                     <td style="border:none;"  valign="top">
-                        <apex:outputText value="{!objInvoice.Shipping_State_Country__c}" /> 
+                        <apex:outputText value="{!objInvoice.Shipping_State_Province__c}" /> 
                     </td>
                     <td style="border:none;border-top: 2px solid black;border-left: 2px solid black;"  valign="top">
                          <b><apex:outputText value="State Code :" /></b> 
-                         <apex:outputText value="{!objInvoice.Shipping_State_Code__c}" />
+                         <apex:outputText value="{!objInvoice.Shipping_Account__r.Shipping_State_Code__c}" />
                     </td> 
                 </tr>
                 <tr>

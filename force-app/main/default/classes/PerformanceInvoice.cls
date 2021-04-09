@@ -211,14 +211,14 @@ public class PerformanceInvoice
              system.debug('totalIgst'+totalIgst);
         }
         
-        totalCgst.round();
-        totalSgst.round();
-        totalIgst.round();
-        totalAmount.round();
-        totalAmountNotIncludedTax.round();
+        totalCgst=totalCgst.round();
+        totalSgst=totalSgst.round();
+        totalIgst=totalIgst.round();
+        totalAmount=totalAmount.round();
+        totalAmountNotIncludedTax=totalAmountNotIncludedTax.round();
         
        totalTax= totalIgst+totalSgst+totalCgst;
-       totalTax.round();
+       totalTax=totalTax.round();
        
         /*if(totalAmount> 0){
             totalAmount= totalAmount.round();
@@ -255,22 +255,22 @@ public class PerformanceInvoice
             totalAmountSumNotIncludedTax = totalAmountSumNotIncludedTax+objCharg?.Charge_Amount__c;
         }
         totalAmountCgst = totalAmountCgst+totalCgst;
-        totalAmountCgst.round();
+        totalAmountCgst=totalAmountCgst.round();
         totalAmountSgst = totalAmountSgst+totalSgst;
-        totalAmountSgst.round();
+        totalAmountSgst=totalAmountSgst.round();
         totalAmountIgst = totalAmountIgst+totalIgst;
-        totalAmountIgst.round();
+        totalAmountIgst=totalAmountIgst.round();
         TotalGSTCharges = totalAmountCgst+totalAmountSgst+totalAmountIgst;
-        TotalGSTCharges.round();
+        TotalGSTCharges=TotalGSTCharges.round();
         
-        totalAmountSumNotIncludedTax.round();
+        totalAmountSumNotIncludedTax=totalAmountSumNotIncludedTax.round();
         
         TotalAmountWithCharges = TotalAmountWithCharges+totalAmount;
         totalAmountaftertaxinWords = UtilityClass.NoToWord(TotalAmountWithCharges.intValue());
         totalAmountaftertaxinWords = totalAmountaftertaxinWords+' rupees only';
         TotalAmountWithCharges=TotalAmountWithCharges.round();
         totalAmountSumNotIncludedTax = totalAmountSumNotIncludedTax+totalAmountNotIncludedTax;
-        totalAmountSumNotIncludedTax.round();
+        totalAmountSumNotIncludedTax=totalAmountSumNotIncludedTax.round();
         
         decimal amountTCSPer = 0;
         amountTCS = 0;

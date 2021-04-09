@@ -431,13 +431,13 @@
                     </td>
                     
                      <td style="border:none;border-left: 2px solid black;"  valign="top" colspan="2">
-                        <apex:outputText value="{!ShippingObjCon.Name}" />
+                        <apex:outputText value="{!ShippingContact.Name}" />
                     </td>
                     <td style="border:none;"  valign="top" >
-                        <apex:outputText value="{!ShippingObjCon.MobilePhone}" />
+                        <apex:outputText value="{!ShippingContact.MobilePhone}" />
                     </td>
                     <td style="border:none;"  valign="top" >
-                        <apex:outputText value="{!ShippingObjCon.Email}" />
+                        <apex:outputText value="{!ShippingContact.Email}" />
                     </td>
                 </tr>
                 <tr>

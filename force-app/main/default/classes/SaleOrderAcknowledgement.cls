@@ -3,7 +3,9 @@ public class SaleOrderAcknowledgement {
     public Sales_Order__c objSO {get;set;}
     public Account objAcc {get;set;}
     public Contact objCon {get;set;}
-    public Contact ShippingObjCon {get;set;}
+    public list<Contact> ShippingObjCon {get;set;}
+    
+    public contact ShippingContact{get;set;}
     
     public Account objShippingAcc {get;set;}
     public Contact objShippingCon {get;set;}
@@ -88,9 +90,13 @@ public class SaleOrderAcknowledgement {
             if(lstSaleOrder.size() > 0)
                 objSO = lstSaleOrder[0];
             
-            ShippingObjCon= [select id,name, mobilephone,email,isPrimary__c from contact where isPrimary__c=true AND Accountid =:objSO.Shipping_Account__c limit 1];
             
-            
+            if(objSO.Shipping_Account__c!=null){
+        ShippingObjCon = [select id,name, phone,MobilePhone, email,isPrimary__c from contact where isPrimary__c= true AND Accountid =:objSO.Shipping_Account__c limit 1];
+        if(ShippingObjCon.size()>0){
+                ShippingContact = ShippingObjCon[0];
+            }
+        }
             string branch = objSO.Ware_House__r.Branch__c ;
             List<String> pdfheaderField = UtilityClass.getAllFields('Pdf_Header__mdt');
             String pdfHeaderQuery = 'Select ' +String.Join(pdfheaderField, ',')+ ' From Pdf_Header__mdt WHERE Branch__c =:branch Order by Effected_Date__c ASC LIMIT 1';
@@ -347,11 +353,12 @@ TotalGST = TotalIGST+ TotalCGST+ TotalSGST;*/
                 totalAmountIgst = objCharg.IGST_Amount__c;
                 TotalAmountWithCharges = TotalAmountWithCharges+objCharg.Net_Amount__c;
             }      
-            TotalIGST = SubTotalIGST+TotalIGST+ totalAmountIgst;
-            TotalCGST = (SubTotalCGST+totalAmountCgst+TotalCGST).setScale(2);
-            TotalSGST = (SubTotalSGST+totalAmountSgst+TotalSGST).setScale(2);
+            TotalTaxableAmount = TotalTaxableAmount.round();
+            TotalIGST = (SubTotalIGST+TotalIGST+ totalAmountIgst).round();
+            TotalCGST = (SubTotalCGST+totalAmountCgst+TotalCGST).round();
+            TotalSGST = (SubTotalSGST+totalAmountSgst+TotalSGST).round();
             TotalGST = TotalIGST+ TotalCGST+ TotalSGST;
-            TotalAmount = subTotalAmount+TotalAmountWithCharges;
+            TotalAmount = (subTotalAmount+TotalAmountWithCharges).round();
             
             decimal amountTCSPer = 0;
             amountTCS = 0;

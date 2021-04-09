@@ -72,10 +72,12 @@ public class TaxCumServiceInvoicePDF {
                 ShippingObjCon = new Contact();
                 
                 list<Contact> listShippingObjCon = new list<Contact>();
-                
+                if(objInvoice.Shipping_Account__c!=null ){
               listShippingObjCon = [select id,name, mobilephone,email,isPrimary__c from contact where isPrimary__c=true AND Accountid =:objInvoice.Shipping_Account__c limit 1];
-                if(listShippingObjCon.size()>0)
+                    if(listShippingObjCon.size()>0){
                     ShippingObjCon = listShippingObjCon[0];
+                    }
+                }
                 string branch = objInvoice.DC_No__r.Sales_Order__r.Ware_House__r.Branch__c ;
             List<String> pdfheaderField = UtilityClass.getAllFields('Pdf_Header__mdt');
             String pdfHeaderQuery = 'Select ' +String.Join(pdfheaderField, ',')+ ' From Pdf_Header__mdt WHERE Branch__c =:branch Order by Effected_Date__c ASC LIMIT 1';
@@ -216,7 +218,7 @@ public class TaxCumServiceInvoicePDF {
                     RoundOffValue =TotalAmount;
                     TotalAmount = TotalAmount.round();
                     RoundOffValue = RoundOffValue - TotalAmount;
-                    TotalAmountInWords = UtilityClass.NoToWord(TotalAmount.intValue());
+                    TotalAmountInWords = 'Rupees '+UtilityClass.NoToWord(TotalAmount.intValue());
                 }
             }
             
