@@ -1,0 +1,33 @@
+.THIS {
+}
+
+.THIS table 
+{
+
+    border-spacing: 5px;
+}
+
+.THIS td {
+    border-width: 1px;
+    padding: 4px;
+    border-style: solid;
+    border-color: #000000;
+}
+
+.THIS th { 
+    border-width: 1px ;
+    padding: 4px ;
+    border-style: solid ;
+    border-color: #000000;
+}
+
+.THIS textarea {
+	border: 1px solid #D95877;
+    border-radius: 4px;
+    width:100% ;
+}
+
+.THIS .testbox {
+	border: 1px solid #D95877;
+    border-radius: 4px;    
+}

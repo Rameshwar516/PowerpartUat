@@ -1,0 +1,194 @@
+<aura:component controller="SafetyRuleController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global">
+    <aura:attribute name='recordId' type='String'/>
+    <aura:attribute name='SuccessMessage' type='String'/>
+    <aura:attribute name='ErrorMessage' type='String'/>
+    <aura:attribute name='Radiobutton1' type='String'/>
+    <aura:attribute name='Radiobutton2' type='String'/>
+    <aura:attribute name='Radiobutton3' type='String'/>
+    <aura:attribute name='Radiobutton4' type='String'/>
+    <aura:attribute name='Radiobutton5' type='String'/>
+    <aura:attribute name='otherEquipment' type='string'/>
+    
+    
+    
+    
+    <div style="background-color:#fff;">
+        
+        <center><h3 class="slds-section__title slds-theme_shade" style="background-color: #000066; color: #FFF;">
+            <span class="slds-truncate slds-p-horizontal_small slds-align_absolute-center" title="Section Title"><h3>5 STEPS CHECKPOINTS FOR SAFE WORKING</h3></span>
+            </h3></center>
+        
+        
+        
+            <table style="width:100%;" border="2px">
+                <tbody>
+                    <tr>
+                        <td style="background-color:#ffff01; width:70% valign:middle; text-align:center" rowspan="2">Elements</td>
+                        <td style="background-color:#f8cbac; width:30%; text-align:center" colspan="3">Response</td>
+                    </tr>
+                    <tr>
+                        <td style="background-color:#93ce4c; width:10%; text-align:center">Yes</td>
+                        <td style="background-color:#f2af84; width:10%; text-align:center">No</td>
+                        <td style="background-color:#0171c0; width:10%; text-align:center">N/A</td>
+                    </tr>
+                    <tr>
+                        <td><b>
+                            
+                            Confirm Personal Protection Equipments in use (PPE) - Safetyshoes/Helmets/Ear muffs/Eye Glass/Gloves/Reflectors/Belts as applicable?
+                            
+                            </b></td>
+                        <td style="background-color:#93ce4c; text-align:center;">
+                            <input type="radio" name="radio1" id="Yes" onclick="{!c.clickRadio1}"/>
+                        </td>
+                        <td style="background-color:#f2af84; text-align:center;">                   
+                            <input type="radio" name="radio1" id="No" onclick="{!c.clickRadio1}"/>
+                        </td>
+                        <td style="background-color:#0171c0; text-align:center;">                   
+                            <input type="radio" name="radio1" id="N/A" onclick="{!c.clickRadio1}"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>
+                                Is breakdown equipment in a safe accessible location/ Clear workspace with easy emergency exit?
+                                
+                            </b>
+                        </td>
+                        <td style="background-color:#93ce4c; text-align:center;">
+                             <input type="radio" name="radio2" id="Yes" onclick="{!c.clickRadio2}"/>
+                        </td>
+                        <td style="background-color:#f2af84; text-align:center;">
+                             <input type="radio" name="radio2" id="No" onclick="{!c.clickRadio2}"/>
+                        </td>
+                        <td style="background-color:#0171c0; text-align:center;">
+                            <input type="radio" name="radio2" id="N/A" onclick="{!c.clickRadio2}"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>
+                                No electrical hazard or live exposed cables/switches/overhead
+                                
+                                
+                            </b>
+                        </td>
+                        <td style="background-color:#93ce4c; text-align:center;">
+                            <input type="radio" name="radio3" id="Yes" onclick="{!c.clickRadio3}"/>
+                        </td>
+                        <td style="background-color:#f2af84; text-align:center;">
+                            <input type="radio" name="radio3" id="No" onclick="{!c.clickRadio3}"/>
+                        </td>
+                        <td style="background-color:#0171c0; text-align:center;">
+                            <input type="radio" name="radio3" id="N/A" onclick="{!c.clickRadio3}"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>
+                                Any fire hazard or flammable/chemical liquids in open/exposed manner?
+                            </b>
+                        </td>
+                        <td style="background-color:#93ce4c; text-align:center;">
+                            <input type="radio" name="radio4" id="Yes" onclick="{!c.clickRadio4}"/>
+                        </td>
+                        <td style="background-color:#f2af84; text-align:center;">
+                            <input type="radio" name="radio4" id="No" onclick="{!c.clickRadio4}"/>
+                        </td>
+                        <td style="background-color:#0171c0; text-align:center;">
+                            <input type="radio" name="radio4" id="N/A" onclick="{!c.clickRadio4}"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>
+                                General Housekeeping/lighting/slippery floor/stacking of scrap/items handling risk?
+                            </b>     
+                            
+                        </td>
+                        <td style="background-color:#93ce4c; text-align:center;">
+                            <input type="radio" name="radio5" id="Yes" onclick="{!c.clickRadio5}"/>
+                        </td>
+                        <td style="background-color:#f2af84; text-align:center;">
+                            <input type="radio" name="radio5" id="No" onclick="{!c.clickRadio5}"/>
+                        </td>
+                        <td style="background-color:#0171c0; text-align:center;">
+                            <input type="radio" name="radio5" id="N/A" onclick="{!c.clickRadio5}"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>
+                                Any other Safety Hazard?
+                            </b>     
+                            
+                        </td>
+                        <td style="background-color:#93ce4c; text-align:center;" colspan="3">
+            <lightning:input type="text" variant="label-hidden" value="{!v.otherEquipment}"></lightning:input>
+                        </td>
+                        
+                        
+                    </tr>
+                </tbody>
+            </table>
+
+     <center><h3 class="slds-section__title slds-theme_shade" style="background-color: #000066; color: #FFF;">
+            <span class="slds-truncate slds-p-horizontal_small slds-align_absolute-center" title="Section Title"><h3>ALWAYS REMEMBER COMPANY'S HEALTH AND SAFETY RULES</h3></span>
+         </h3></center> <br/>
+        <lightning:button variant="brand" label="Save" title="Save action" onclick="{!c.saveHandler}" class="slds-align_absolute-center"></lightning:button>
+
+    </div>
+    
+    <!--********************************** For Success/Error Message. Code starts********************************-->
+    <div class="{! empty(v.SuccessMessage) &amp;&amp; empty(v.ErrorMessage) ? 'slds-hide' : 'slds-show'}">
+        <div class="slds-modal slds-fade-in-open slds-modal--prompt" aura:id="ErrorDisplayModal" role="alertdialog" tabindex="-1" aria-labelledby="prompt-heading-id" aria-describedby="prompt-message-wrapper">
+            <div class="slds-modal__container">
+                <div class="{! empty(v.SuccessMessage) ? 'slds-modal__header slds-theme--error slds-theme--alert-texture' : 'slds-modal__header slds-theme--success slds-theme--alert-texture'}">
+                    
+                    <h2 class="slds-text-heading--medium" id="prompt-heading-id">
+                        <div style="{! empty(v.SuccessMessage) ? 'display:none;' : ''}">
+                            <lightning:buttonIcon class="slds-button slds-button--icon-inverse"  alternativeText="Success" variant="bare"  iconName="utility:success" size="large" />
+                            &nbsp; 
+                            <b>Success</b>
+                        </div>
+                        <div style="{! empty(v.ErrorMessage) ? 'display:none;' : ''}">
+                            <lightning:buttonIcon class="slds-button slds-button--icon-inverse"  alternativeText="Error" variant="bare"  iconName="utility:warning" size="large" />
+                            &nbsp;
+                            <b>Error</b>
+                        </div>
+                    </h2>
+                </div>
+                
+                <div class="slds-modal__content slds-p-around--medium">
+                    <div class="slds-grid slds-grid--align-center">
+                        <div class="slds-form-element__control slds-size--1-of-1" style="{! empty(v.SuccessMessage) ? 'display:none;' : ''}">
+                            <b>{!v.SuccessMessage}</b>
+                        </div>
+                        <div class="slds-form-element__control slds-size--1-of-1" style="{! empty(v.ErrorMessage) ? 'display:none;' : ''}">
+                            <b>{!v.ErrorMessage}</b>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="slds-modal__footer slds-theme--default">
+                    
+                    <!--<lightning:button label="Close" class="slds-button slds-button_brand" onclick="{!c.handleHideErrorDisplayModal}"/>-->
+                    
+                </div>
+            </div>
+        </div>
+        <div class="slds-backdrop slds-backdrop--open"></div>
+    </div>
+    
+    <!--********************************** For Success/Error Message. Code ends********************************-->
+    <!--loading spinner start... style=Brand Medium (blue dots)-->
+    <aura:if isTrue="{!v.Spinner}">
+        <div aura:id="spinnerId" class="slds-spinner_container">
+            <div class="slds-spinner--brand  slds-spinner slds-spinner--large slds-is-relative" role="alert">
+                <span class="slds-assistive-text">Loading</span>
+                <div class="slds-spinner__dot-a"></div>
+                <div class="slds-spinner__dot-b"></div>
+            </div>
+        </div>
+    </aura:if>
+    <!-- Loading spinner end--> 
+</aura:component>

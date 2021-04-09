@@ -1,0 +1,48 @@
+<aura:component controller="ClassOnQuoteEmailSend" implements="force:lightningQuickActionWithoutHeader,force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes"  access="global" >
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="toaddress" type="string"/>
+    <aura:attribute name="tobodyy" type="string"/>
+    
+    <aura:attribute name="messageLineItem" type="string"/>
+    
+    <aura:attribute name="wrappr" type="Sobject"/>
+    <div class="slds-text-heading--medium">
+    <center> <b>SEND QUOTATION</b></center> 
+    </div>
+    <div >
+        <lightning:input value="{!v.wrappr.objquote.Email__c}" aura:id="EmailAddress" type="text" label="To Email Address:" />
+        <lightning:input aura:id="CC" type="text"  label="CC Email Address:" />
+        <lightning:input aura:id="Subject" required="true" type="text" label="Subject" />
+        <!-- <lightning:inputRichText  aura:id="bodyid"  label="Body" value="{!v.wrappr.emailbody}" placeholder="Type something interesting"/>
+      --> <lightning:textarea aura:id="bodyid"    label="Body" value="{!v.wrappr.emailbody}" />
+        
+        
+    </div><br/>
+    
+    <div class="slds-m-left_xx-large" >
+        <div class="slds-m-left_xx-large" >
+            <div class="slds-m-left_xx-large" >
+                <div class="slds-m-left_xx-large" >
+                    <div class="slds-m-left_xx-large" >
+                        
+                        <div class="slds-m-left_xx-large" >
+                            <div class="slds-m-left_xx-large" >
+                                <div class="slds-m-left_xx-large" >
+                                    <lightning:button variant="neutral" 
+                                                      label="Cancel"
+                                                      title="Cancel"
+                                                      onclick="{! c.closeModel }"/>
+                                    <lightning:button variant="brand" 
+                                                      label="Send Email"
+                                                      title="Send"
+                                                      onclick="{! c.doSend }"/>
+                                    
+                                </div>
+                            </div>
+                        </div> 
+                    </div>
+                </div>
+            </div> 
+        </div> 
+    </div> 
+</aura:component>

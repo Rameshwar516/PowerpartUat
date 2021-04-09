@@ -1,0 +1,127 @@
+<aura:component implements="force:lightningQuickActionWithoutHeader,force:hasRecordId,force:hasSObjectName" access="global" controller="UploadFilesController">
+    
+    <aura:attribute name="accept" type="List" default="['.jpg', '.jpeg', '.png']"/>
+    <aura:attribute name="recordId" type="Id" default="" />
+    <aura:attribute name="sobjecttype" type="String" default="{!v.sObjectName}"/>
+    <aura:attribute name="SuccessMessage" type="string" default=""/>
+    <aura:attribute name="ErrorMessage" type="string" default=""/>
+    <aura:attribute name="multiple" type="Boolean" default="true"/>
+    <aura:attribute name="boolshowImage" type="Boolean" default="true" />
+    <aura:attribute name="boolRename" type="Boolean" default="true" />
+    <aura:attribute name="boolAllImage" type="Boolean" default="false" />
+    <aura:attribute name="mainWrap" type="Object" default=""/>
+    <aura:attribute name="spinnerLoaded" type="Boolean" default = "false"/>
+    <aura:attribute name="prefixURL" type="String" default="/sfc/servlet.shepherd/version/download/"/>
+    <aura:handler name="init" value="this" action="{!c.doInit}" />
+    <ltng:require styles="{!$Resource.popupCSS}" />
+    <div class="slds-box">
+    <aura:if isTrue="{!!v.boolAllImage}">
+        <aura:if isTrue="{!v.boolshowImage}">
+            
+            <center>
+                <div class="slds-box slds-theme_shade slds-theme_alert-texture">
+                <p>Please select the file which you want to upload.</p>
+                </div><br/><br/><br/>
+                <lightning:fileUpload label="Upload File" multiple="{!v.multiple}"  recordId="{!v.recordId}" aura:id="multifileUpload" onuploadfinished="{!c.handleUploadFinished}" accept="{!v.accept}"/>
+            </center>
+            <aura:set attribute="else">
+                <div class="slds-box slds-theme_shade slds-theme_alert-texture">
+                    <p>Notes : In order to change the file name, please change the file name and then click "Rename File"  button. </p>
+                </div>
+                <br/>
+                <div class="slds-grid slds-wrap">
+                    <aura:iteration items="{!v.mainWrap.lstContentDocNew}" var="content">
+                        <div class="slds-col slds-size_1-of-1 slds-small-size_1-of-1 slds-medium-size_1-of-1 slds-large-size_1-of-3" >
+                            <div class="slds-box slds-box_x-small slds-text-align_center slds-m-around_x-small" style="height: 13rem;" >
+                                <img src="{!v.prefixURL + content.LatestPublishedVersionId}" style="height: 8rem;"/>
+                                <lightning:input type="text" value="{!content.Title}" label="" style="padding: 3px;" onclick="{!c.removeDisable}"/>
+                            </div>
+                        </div>
+                    </aura:iteration>
+                </div>
+                <center>
+                    <lightning:button label="Rename Files" title="Neutral action" onclick="{! c.handleRenameJS}" disabled="{!v.boolRename}"/>
+                </center>
+            </aura:set>
+        </aura:if>
+        <!--aura:set attribute="else">
+            <h3 class="slds-section__title slds-theme_shade">
+                <span class="slds-truncate slds-p-horizontal_small" title="Newly uploaded Files">Newly uploaded Files.</span>
+            </h3>
+            <div class="slds-grid slds-wrap">
+                <aura:iteration items="{!v.mainWrap.lstContentDocNew}" var="content">
+                    <div class="slds-col slds-size_1-of-1 slds-small-size_1-of-1 slds-medium-size_1-of-1 slds-large-size_1-of-3" >
+                        <div class="slds-box slds-box_x-small slds-text-align_center slds-m-around_x-small" style="height: 13rem;" >
+                            <img src="{!v.prefixURL + content.LatestPublishedVersionId}" style="height: 8rem;"/>
+                            <lightning:input type="text" value="{!content.Title}" label="" disabled="true" style="padding: 3px;"/>
+                        </div>
+                    </div>
+                </aura:iteration>
+            </div>
+            <br/>
+            <aura:if isTrue="{!v.mainWrap.lstContentDocOld.length > 0}">
+                <h3 class="slds-section__title slds-theme_shade">
+                    <span class="slds-truncate slds-p-horizontal_small" title="Previously uploaded Files">Previously uploaded Files.</span>
+                </h3>
+                <div class="slds-grid slds-wrap">
+                    <aura:iteration items="{!v.mainWrap.lstContentDocOld}" var="content">
+                        <div class="slds-col slds-size_1-of-1 slds-small-size_1-of-1 slds-medium-size_1-of-1 slds-large-size_1-of-3" >
+                            <div class="slds-box slds-box_x-small slds-text-align_center slds-m-around_x-small" style="height: 13rem;" >
+                                <img src="{!v.prefixURL + content.LatestPublishedVersionId}" style="height: 8rem;"/>
+                                <lightning:input type="text" value="{!content.Title}" label="" disabled="true" style="padding: 3px;"/>
+                            </div>
+                        </div>
+                    </aura:iteration>
+                </div>
+            </aura:if>
+        </aura:set-->
+           
+    </aura:if>
+     </div>
+    <aura:if isTrue="{!v.spinnerLoaded}">
+            <lightning:spinner variant="brand" size="large" aura:id="mySpinner" alternativeText="Submitting..."/>
+    </aura:if>
+    
+    <!--********************************** For Success/Error Message. Code starts********************************-->
+    <div class="{! empty(v.SuccessMessage) &amp;&amp; empty(v.ErrorMessage) ? 'slds-hide' : 'slds-show'}">
+        <div class="slds-modal slds-fade-in-open slds-modal--prompt" aura:id="ErrorDisplayModal" role="alertdialog" tabindex="-1" aria-labelledby="prompt-heading-id" aria-describedby="prompt-message-wrapper">
+            <div class="slds-modal__container">
+                <div class="{! empty(v.SuccessMessage) ? 'slds-modal__header slds-theme--error slds-theme--alert-texture' : 'slds-modal__header slds-theme--success slds-theme--alert-texture'}">
+                    <lightning:buttonIcon class="slds-button slds-modal__close slds-button__icon slds-button--icon-inverse"  alternativeText="Close" variant="bare"  iconName="utility:close" size="large" onclick="{!c.handleHideErrorDisplayModal}" />
+                    
+                    <h2 class="slds-text-heading--medium" id="prompt-heading-id">
+                        <div style="{! empty(v.SuccessMessage) ? 'display:none;' : ''}">
+                            <lightning:buttonIcon class="slds-button slds-button--icon-inverse"  alternativeText="Success" variant="bare"  iconName="utility:success" size="large" />
+                            &nbsp; 
+                            <b>Success</b>
+                        </div>
+                        <div style="{! empty(v.ErrorMessage) ? 'display:none;' : ''}">
+                            <lightning:buttonIcon class="slds-button slds-button--icon-inverse"  alternativeText="Error" variant="bare"  iconName="utility:warning" size="large" />
+                            &nbsp;
+                            <b>Error</b>
+                        </div>
+                    </h2>
+                </div>
+                
+                <div class="slds-modal__content slds-p-around--medium">
+                    <div class="slds-grid slds-grid--align-center">
+                        <div class="slds-form-element__control slds-size--1-of-1" style="{! empty(v.SuccessMessage) ? 'display:none;' : ''}">
+                            <b>{!v.SuccessMessage}</b>
+                        </div>
+                        <div class="slds-form-element__control slds-size--1-of-1" style="{! empty(v.ErrorMessage) ? 'display:none;' : ''}">
+                            <b>{!v.ErrorMessage}</b>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="slds-modal__footer slds-theme--default">
+                    <lightning:button label="Close" class="slds-button slds-button_brand" onclick="{!c.handleHideErrorDisplayModal}"/>
+                </div>
+            </div>
+        </div>
+        <div class="slds-backdrop slds-backdrop--open"></div>
+    </div>
+    
+    <!--********************************** For Success/Error Message. Code ends********************************-->
+
+</aura:component>

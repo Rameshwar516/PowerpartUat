@@ -1,0 +1,649 @@
+<apex:page renderAs="pdf" applyHtmlTag="false" showHeader="false" standardController="Packing_List__c" extensions="PackingListPDFController" >
+    <head>
+        <style type="text/css">
+            @page 
+            {
+            size:10.54in 13.50in; 
+            margin-top: 180px;
+            margin-bottom: 180px;
+            page-break-after:always;
+            @top-center 
+            {                   
+            content: element(header);    
+            
+            }
+            @bottom-center
+            {
+            content: element(footer); 
+            }
+            }
+            div.header 
+            {                
+            padding: 5px; 
+            padding-top:50px;
+            padding-bottom:5px;
+            position: running(header); 
+            content: "Page " counter(page) " of " counter(pages);
+            } 
+            div.footer 
+            {    
+                padding: 5px;               
+                position: running(footer);    
+            }
+            @page 
+            {
+            <!--@bottom-center 
+            {
+                padding: 10px;
+                content: "Page " counter(page) " of " counter(pages);
+            }-->
+            }
+            
+            table 
+            {
+            border-spacing: 0px;
+            font-size:12px;
+            font-family: Arial;
+            }
+            
+            td {
+            border-width: 1px;
+            padding: 4px;
+            border-style: solid;
+            border-color: #000000;
+            }
+            
+            th { 
+            border-width: 1px ;
+            padding: 4px ;
+            border-style: solid ;
+            border-color: #000000;
+            }
+            ol.d{
+            list-style-type: lower-alpha;
+            }
+        </style> 
+    </head>
+    
+    <apex:form >
+        <div class="header">
+            <table style="width:100%;border-collapse: collapse;">
+                <tr>
+                    <td style="border:none;padding:0px;" width="20%" valign="top">
+                        <left>
+                            <apex:image url="{!$Resource.PerformaLeftSidelogo}" width="230" height="70"/> 
+                        </left>
+                    </td>
+                    <td style="border:none;padding:0px;" width="60%" valign="top">
+                        <center>
+                            <b><apex:outputText value="POWERPARTS PRIVATE LIMITED" style="font-size:16px;font-family: Arial;" /></b><br/>
+                            <b><apex:outputText value="PPL HEAD OFFICE (GURGAON)" style="font-size:16px;font-family: Arial;" /></b><br/>
+                            <apex:outputText value="114, PACE CITY-I, SECTOR - 37," style="font-size:13px;font-family: Arial;" /><br/>
+                            <apex:outputText value="GURGAON, HARYANA - 122001, (INDIA)" style="font-size:13px;font-family: Arial;" /><br/>
+                            
+                            <apex:outputText value="VAT/TIN No. 06871943308" style="font-size:13px;font-family: Arial;" /><br/>
+                            <apex:outputText value="powerparts@powerparts.in" style="font-size:13px;font-family: Arial;" /><br/>
+                            <apex:outputText value="Tel. 0124-4036614,4019215" style="font-size:13px;font-family: Arial;" />
+                        </center>
+                    </td>
+                    <td style="border:none;padding:0px;" width="60%" valign="top">
+
+                    </td>
+                </tr>
+            </table>
+        </div>
+        
+        <div class="footer" name="footer">
+            <table style="width:100%;border:none">
+                <tr>
+                    <td style="border:none; width:35%; height:5%"  valign="top">
+                       For  <b>Powerparts Private Limited </b>
+                    </td>
+                    <td style="border:none; width:30%; height:5%"  valign="top">
+                        <b></b>
+                    </td>
+                    <td style="border:none; width:35%; height:5%"  valign="top">
+                        
+                    </td>
+                </tr>
+                <tr>
+                    <td style="border:none; width:35%; height:5%"  valign="top">
+                        &nbsp;
+                    </td>
+                    <td style="border:none; width:30%; height:5%"  valign="top">
+                        &nbsp;
+                    </td>
+                    <td style="border:none; width:35%; height:5%"  valign="top">
+                        &nbsp;
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td style="border:none; width:35%; height:5%"  valign="top">
+                        &nbsp;
+                    </td>
+                    <td style="border:none; width:30%; height:5%"  valign="top">
+                        &nbsp;
+                    </td>
+                    <td style="border:none; width:35%; height:5%"  valign="top">
+                        &nbsp;
+                    </td>
+                </tr>
+                <tr>
+                    <td style="border:none; width:35%; height:5%"  valign="top">
+                        Authorised Signatory
+                    </td>
+                    <td style="border:none; width:30%; height:5%"  valign="top">
+                        
+                    </td>
+                    <td style="border:none; width:35%; height:5%"  valign="top">
+                        
+                    </td>
+                </tr>
+            </table>
+        </div>
+        
+        <body>
+            <table style="width:100%; border:none;">
+                <tr>
+                    <td style="width: 100%; text-align: center; border:none;"><b>PACKING LIST</b></td>
+                </tr>
+            </table>
+            
+            <table style="width:100%; border:none;">
+                
+                <tr>
+                    <td style="border:none;"  valign="top" >
+                        <b><apex:outputText value="Sold-to" /></b>
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                        <b><apex:outputText value=":" /></b>
+                    </td>
+                    <td style="border:none;"  valign="top" colspan="2">
+                        <apex:outputText value="" />
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                        <b><apex:outputText value="Packing List" /></b>
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                        <b><apex:outputText value=":" /></b>
+                    </td>
+                    <td style="border:none;"  valign="top" colspan="2">
+                        <apex:outputText value="{!objPck.Packing_List_Number__c}" />
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td style="border:none;"  valign="top" >
+                        {!Acc.Name}
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                      
+                    </td>
+                    <td style="border:none;"  valign="top" colspan="2">
+                       
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                        <b><apex:outputText value="Date" /></b>
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                        <b><apex:outputText value=":" /></b>
+                    </td>
+                    <td style="border:none;"  valign="top" colspan="2">
+                       <apex:outputText value="{0,date,dd' 'MMM' 'yyyy}">
+                            <apex:param value="{!objPck.Date__c}" /> 
+                        </apex:outputText>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="border:none;"  valign="top" >
+                        {!strBillingAddress}
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                      
+                    </td>
+                    <td style="border:none;"  valign="top" colspan="2">
+                       
+                    </td>
+                   
+                </tr>
+                
+                
+                <tr>
+                    <td style="border:none;"  valign="top" >
+                        
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                      
+                    </td>
+                    <td style="border:none;"  valign="top" colspan="2">
+                       
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                        <b><apex:outputText value="GST No." /></b>
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                        <b><apex:outputText value=":" /></b>
+                    </td>
+                    <td style="border:none;"  valign="top" colspan="2">
+                        <apex:outputText value="" />
+                    </td>
+                </tr>
+                
+                
+                
+                <tr>
+                    <td style="border:none;"  valign="top" >
+                         <b><apex:outputText value="Contact Person :" /></b>
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                      
+                    </td>
+                    <td style="border:none;"  valign="top" colspan="2">
+                       
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                        <b><apex:outputText value="DC No/Date" /></b>
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                        <b><apex:outputText value=":" /></b>
+                    </td>
+                    <td style="border:none;"  valign="top" colspan="2">
+                        <apex:outputText value="{!objSODN.Delivery_Note_Number__c}" />
+                        <apex:outputText value="{0,date,dd' 'MMM' 'yyyy}">
+                            <apex:param value="{!objSODN.Date__c}" /> 
+                        </apex:outputText>
+                    </td>
+                </tr>
+                
+                
+                <tr>
+                    <td style="border:none;"  valign="top" >
+                         <b><apex:outputText value="Name" /></b>
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                       <b><apex:outputText value="Contact No" /></b>
+                    </td>
+                    <td style="border:none;"  valign="top" colspan="2">
+                        <b><apex:outputText value="E-Mail Id" /></b>
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                        <b><apex:outputText value="Customer Referenc" /></b>
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                        <b><apex:outputText value=":" /></b>
+                    </td>
+                    <td style="border:none;"  valign="top" colspan="2">
+                        <apex:outputText value="" />
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td style="border:none;"  valign="top" >
+                        {!con.Name}
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                        {!con.MobilePhone}
+                    </td>
+                    <td style="border:none;"  valign="top" colspan="2">
+                        {!con.Email}
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                        
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                        
+                    </td>
+                    <td style="border:none;"  valign="top" colspan="2">
+                      
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td style="border:none;"  valign="top" >
+                        <b><apex:outputText value="Ship-to" /></b>
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                        <b><apex:outputText value=":" /></b>
+                    </td>
+                    <td style="border:none;"  valign="top" colspan="2">
+                        <apex:outputText value="" />
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                        <b><apex:outputText value="Payment Mode" /></b>
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                        <b><apex:outputText value=":" /></b>
+                    </td>
+                    <td style="border:none;"  valign="top" colspan="2">
+                        <apex:outputText value="{!objSODN.Payment_Method__c}" />
+                    </td>
+                </tr>
+                
+                
+                <tr>
+                    <td style="border:none;"  valign="top" >
+                       {!shippingAcc.Name} 
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                      
+                    </td>
+                    <td style="border:none;"  valign="top" colspan="2">
+                    
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                        <b><apex:outputText value="LC Ref" /></b>
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                        <b><apex:outputText value=":" /></b>
+                    </td>
+                    <td style="border:none;"  valign="top" colspan="2">
+                        <apex:outputText value="{!objSODN.LC_Term__c}" />
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td style="border:none;"  valign="top" >
+                       {!strShippingAddress}
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                      
+                    </td>
+                    <td style="border:none;"  valign="top" colspan="2">
+                    
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                        <b><apex:outputText value="Mode of Transport" /></b>
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                        <b><apex:outputText value=":" /></b>
+                    </td>
+                    <td style="border:none;"  valign="top" colspan="2">
+                        <apex:outputText value="{!objSODN.Mode__c}" />
+                    </td>
+                </tr>
+                
+                
+                <tr>
+                    <td style="border:none;"  valign="top" >
+                       
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                      
+                    </td>
+                    <td style="border:none;"  valign="top" colspan="2">
+                    
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                        <b><apex:outputText value="Transporter Name" /></b>
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                        <b><apex:outputText value=":" /></b>
+                    </td>
+                    <td style="border:none;"  valign="top" colspan="2">
+                        <apex:outputText value="{!objSODN.Transporter__c}" />
+                    </td>
+                </tr>
+                
+                
+                <tr>
+                    <td style="border:none;"  valign="top" >
+                       
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                      
+                    </td>
+                    <td style="border:none;"  valign="top" colspan="2">
+                    
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                        <b><apex:outputText value="DKT/LR Ref" /></b>
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                        <b><apex:outputText value=":" /></b>
+                    </td>
+                    <td style="border:none;"  valign="top" colspan="2">
+                        <apex:outputText value="" />
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td style="border:none;"  valign="top" >
+                       
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                      
+                    </td>
+                    <td style="border:none;"  valign="top" colspan="2">
+                    
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                        <b><apex:outputText value="Vehicle No" /></b>
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                        <b><apex:outputText value=":" /></b>
+                    </td>
+                    <td style="border:none;"  valign="top" colspan="2">
+                        <apex:outputText value="{!objSODN.Vehicle_No__c}" />
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td style="border:none;"  valign="top" >
+                       <b><apex:outputText value="VAT/TIN No" /></b>
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                      <b><apex:outputText value=":" /></b>
+                    </td>
+                    <td style="border:none;"  valign="top" colspan="2">
+                    
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                        <b><apex:outputText value="Shipping Terms" /></b>
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                        <b><apex:outputText value=":" /></b>
+                    </td>
+                    <td style="border:none;"  valign="top" colspan="2">
+                        <apex:outputText value="{!objSO.Shipping_Terms__c}" />
+                    </td>
+                </tr>
+                <tr>
+                    <td style="border:none;"  valign="top" >
+                       <b><apex:outputText value="" /></b>
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                      <b><apex:outputText value="" /></b>
+                    </td>
+                    <td style="border:none;"  valign="top" colspan="2">
+                    
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                        <b><apex:outputText value="Payment Terms" /></b>
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                        <b><apex:outputText value=":" /></b>
+                    </td>
+                    <td style="border:none;"  valign="top" colspan="2">
+                        <apex:outputText value="{!objSO.Payment_Terms__c}" />
+                    </td>
+                </tr>
+                <!--
+                <tr>
+                    <td style="border:none;"  valign="top" >
+                       
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                    
+                    </td>
+                    <td style="border:none;"  valign="top" colspan="2">
+                    
+                    </td>
+                    <td style="border:none;"  valign="top" colspan="4">
+                        <table style="width:100%; border:none; margin-top:40px;">
+                
+                            <tr style="border-top:1px solid black; border-bottom: none;">
+                                <td style="border-bottom: none; border-left: none; border-right: 1px solid black;" valign="top" >
+                                    <b>Shipping Terms</b>
+                                </td>
+                                <td style="border-bottom: none; border-left: none; border-right: none;" valign="top" >
+                                    <b>Payment Terms</b>
+                                </td>
+                            </tr>
+                            
+                            <tr style="border-top:1px solid black; border-bottom: none;">
+                                <td style="border-bottom: none; border-left: none; border-right: 1px solid black;" valign="top" >
+                                    {!objSO.Shipping_Terms__c}
+                                </td>
+                                <td style="border-bottom: none; border-left: none; border-right: none;" valign="top" >
+                                   {!objSO.Payment_Terms__c}
+                                </td>
+                            </tr>
+                            
+                        </table>
+                    </td>
+                   
+                </tr>
+                -->
+                
+            </table>
+            
+            
+            <table style="width:100%; border:none; margin-top:40px;">
+                
+                <tr style="border-top:1px solid black; border-bottom: none;">
+                    <td style="border-bottom: none; border-left: none; border-right: none;" valign="top" >
+                        <b>S.No</b>
+                    </td>
+                    <td style="border-bottom: none; border-left: none; border-right: none;" valign="top" >
+                        <b>Box/Case Type</b>
+                    </td>
+                    <td style="border-bottom: none; border-left: none; border-right: none;" valign="top" colspan="2">
+                        <b>Box/Case Details</b>
+                    </td>
+                    <td style="border-bottom: none; border-left: none; border-right: none;" valign="top">
+                        <b>Length(INCH)</b>
+                    </td>
+                    <td style="border-bottom: none; border-left: none; border-right: none;" valign="top">
+                        <b>Width(INCH)</b>
+                    </td>
+                     <td style="border-bottom: none; border-left: none; border-right: none;" valign="top">
+                        <b>Height(INCH)</b>
+                    </td>
+                     <td style="border-bottom: none; border-left: none; border-right: none;" valign="top">
+                        <b>Gross Wt(Kgs)</b>
+                    </td>
+                </tr> 
+                <apex:variable var="idx" value="{!0}"/>
+                <apex:repeat value="{!Litem}" var="li">
+                    <tr style="border-top:1px solid black; border-bottom: none;">
+                        <td style="border-bottom: none; border-left: none; border-right: none;" valign="top" >
+                            <apex:variable var="idx" value="{!idx + 1}" />  {!idx}
+                        </td>
+                        <td style="border-bottom: none; border-left: none; border-right: none;" valign="top" >
+                            {!li.Box_Type__c}
+                        </td>
+                        <td style="border-bottom: none; border-left: none; border-right: none;" valign="top" colspan="2">
+                           {!li.BOX_No__c}
+                        </td>
+                        <td style="border-bottom: none; border-left: none; border-right: none;" valign="top">
+                            {!li.Length_Inches_CMS__c}
+                        </td>
+                        <td style="border-bottom: none; border-left: none; border-right: none;" valign="top">
+                            {!li.Width_Inches_CMS__c}
+                        </td>
+                         <td style="border-bottom: none; border-left: none; border-right: none;" valign="top">
+                            {!li.Height_Inches_CMS__c}
+                        </td>
+                         <td style="border-bottom: none; border-left: none; border-right: none;" valign="top">
+                            {!li.Gross_Weight_Kgs__c}
+                        </td>
+                    </tr> 
+                </apex:repeat>
+            </table>
+            
+            
+            <table style="width:100%; border:none; margin-top:5%;">
+                
+                <tr>
+                    <td style="border:none;  width:42%;" valign="top">
+                        <hr style="border-top: dashed 1px;" />
+                    </td>
+                    <td style="border:none; width:16%;" valign="top" >
+                        <center><b>End of CASE Details</b></center>
+                    </td>
+                    <td style="border:none; width:42%;" valign="top">
+                        <hr style="border-top: dashed 1px;" />
+                    </td>
+                    
+                </tr>
+            </table>
+            
+            
+            <table style="width:100%; border:none; margin-top:40px;">
+                
+                <tr style="border-top:1px solid black; border-bottom: none;">
+                    <td style="border-bottom: none; border-left: none; border-right: none;" valign="top" >
+                        <b>S.No</b>
+                    </td>
+                    <td style="border-bottom: none; border-left: none; border-right: none;" valign="top" >
+                        <b>Part No</b>
+                    </td>
+                    <td style="border-bottom: none; border-left: none; border-right: none;" valign="top" colspan="2">
+                        <b>Description</b>
+                    </td>
+                    <td style="border-bottom: none; border-left: none; border-right: none;" valign="top">
+                        <b>Qty</b>
+                    </td>
+                    <td style="border-bottom: none; border-left: none; border-right: none;" valign="top">
+                        <b>Unit</b>
+                    </td>
+                     <td style="border-bottom: none; border-left: none; border-right: none;" valign="top">
+                        <b>Case #</b>
+                    </td>
+                </tr> 
+                <apex:variable var="Index" value="{!0}"/>
+                <apex:repeat value="{!Litem}" var="li">
+                    <tr style="border-top:1px solid black; border-bottom: none;">
+                        <td style="border-bottom: none; border-left: none; border-right: none;" valign="top" >
+                            <apex:variable var="Index" value="{!Index + 1}" />  {!Index}
+                        </td>
+                        <td style="border-bottom: none; border-left: none; border-right: none;" valign="top" >
+                            {!li.Part_Name__c}
+                        </td>
+                        <td style="border-bottom: none; border-left: none; border-right: none;" valign="top" colspan="2">
+                            {!li.Part_No__r.Specification__c}
+                        </td>
+                        <td style="border-bottom: none; border-left: none; border-right: none;" valign="top">
+                            {!li.Quantity__c}
+                        </td>
+                        <td style="border-bottom: none; border-left: none; border-right: none;" valign="top">
+                            <b>Unit</b>
+                        </td>
+                         <td style="border-bottom: none; border-left: none; border-right: none;" valign="top">
+                            <b>Case #</b>
+                        </td>
+                    </tr> 
+                </apex:repeat>
+            </table>
+            
+            <table style="width:100%; border:none; margin-top:10%;">
+                
+                <tr>
+                    <td style="border:none;  width:45%;" valign="top">
+                        <hr style="border-top: dashed 1px;" />
+                    </td>
+                    <td style="border:none; width:10%;" valign="top" >
+                        <center><b>LAST ITEM</b></center>
+                    </td>
+                    <td style="border:none; width:45%;" valign="top">
+                        <hr style="border-top: dashed 1px;" />
+                    </td>
+                </tr>
+            </table>
+            <center><b>This is a computer generated document signature is not required.</b></center>
+        </body> 
+        
+    </apex:form> 
+        
+</apex:page>

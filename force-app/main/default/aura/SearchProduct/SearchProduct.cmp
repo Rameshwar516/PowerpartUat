@@ -1,0 +1,95 @@
+<aura:component controller="clsSearchProduct_Child" implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    <ltng:require styles="{!$Resource.popupCSS}" />
+    
+    <aura:attribute name="MainValue" type="string" default=""/>
+    <aura:attribute name="DigValue" type="object" default="" />
+    <aura:attribute name="MainLabel" type="string" default=""/>
+    <aura:attribute name="isDisplay" type="boolean" default="false" />
+    <aura:attribute name="resultList" type="list" />
+    <aura:attribute name="warning" type="string" default="" />
+    <aura:attribute name="Assessment" type="string" default="" />
+    
+    
+    <div class="slds-grid slds-gutters slds-m-top_medium" onclick="{!c.closeAll}">
+        <div class="slds-col slds-size_12-of-12">
+            <div class="slds-grid slds-gutters">
+                <div class="slds-col slds-size_1-of-12">
+                </div>
+                <div class="slds-col slds-size_10-of-12">
+                    <div class="slds-grid slds-wrap">
+                        
+                        <lightning:input type="search" aura:id="txtField" value="{!v.MainValue}" onkeyup="{!c.findProduct}" placeholder="Search Product..." style="width:100%"/>
+                        
+                      <!--  <aura:if isTrue="{!v.isDisplay}">
+                            <div class="slds-size_12-of-12" style="{!v.resultList.length > 0 &amp;&amp; v.resultList != null ? '' : 'display:none;'}">
+                                <div style="border: 1px solid #d9dbdd;border-radius:5px;" onclick="{!c.holdList}">
+                                    <ul class="slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid" style="transform:none;margin-top:0px;left:auto;max-width:82.5%;" role="presentation">
+                                        <aura:iteration items="{!v.resultList}" var="serachRes">
+                                            <a href="javascript:void(0)" data-variablename="{!serachRes.Name}" onclick="{!c.selectLookup}" style="text-decoration: none !important;">
+                                                <li role="presentation" class="slds-listbox__item">
+                                                    <div class="slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_has-meta" role="option"> 
+                                                        <span class="slds-media__body">  
+                                                            <span class="slds-listbox__option-text slds-listbox__option-text_entity">
+                                                                {!serachRes.Name}
+                                                            </span>
+                                                        </span>
+                                                    </div>
+                                                </li>
+                                            </a>
+                                        </aura:iteration>
+                                    </ul>
+                                </div>
+                            </div>
+                        </aura:if>  -->
+                    </div>
+                </div>
+                <div class="slds-col slds-size_1-of-12">
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    
+    <!--********************************** For Success/Error Message. Code starts********************************-->
+    <!--************************************************************************************-->
+    <div class="{! empty(v.warning) &amp;&amp; empty(v.warning) ? 'slds-hide' : 'slds-show'}">
+        <div class="slds-modal slds-fade-in-open slds-modal--prompt" aura:id="ErrorDisplayModal" role="alertdialog" tabindex="-1" aria-labelledby="prompt-heading-id" aria-describedby="prompt-message-wrapper">
+            <div class="slds-modal__container">
+                <div class="{!! empty(v.warning) ? 'slds-modal__header slds-theme--warning slds-theme--alert-texture' : ''}">
+                    <lightning:buttonIcon class="slds-button slds-modal__close slds-button__icon slds-button--icon-inverse"  alternativeText="Close" variant="bare"  iconName="utility:close" size="large" onclick="{!c.handleHideErrorDisplayModal}" />
+                    
+                    <h2 class="slds-text-heading--medium" id="prompt-heading-id">
+                        <div style="{! empty(v.warning) ? 'display:none;' : ''}">
+                            <lightning:Icon class="slds-button slds-button--icon-inverse"  alternativeText="Warning" variant="bare"  iconName="utility:warning" size="small" />
+                            &nbsp;
+                            <b>Warning</b>
+                        </div>
+                    </h2>
+                </div>
+                
+                <div class="slds-modal__content slds-p-around--medium">
+                    <div class="slds-grid slds-grid--align-center">
+                        <div class="slds-form-element__control slds-size--1-of-1" style="{! !empty(v.warning) ? 'display:none;' : ''}">
+                            <b>{!v.warning}</b>
+                        </div>
+                        <div class="slds-form-element__control slds-size--1-of-1" style="{! empty(v.warning) ? 'display:none;' : ''}">
+                            <b>{!v.warning}</b>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="slds-modal__footer slds-theme--default">
+                    <lightning:button aura:id="button" class="button" label="Close" onclick="{!c.handleHideErrorDisplayModal}"/>
+                    <!--<button class="slds-button slds-button_brand2" onclick="{!c.handleHideErrorDisplayModal}">Close</button>-->
+                </div>
+            </div>
+        </div>
+        <div class="slds-backdrop slds-backdrop--open"></div>
+    </div>
+    
+    <!--********************************** For Success/Error Message. Code ends********************************-->
+    <!--************************************************************************************-->
+    
+    
+    <br />
+</aura:component>

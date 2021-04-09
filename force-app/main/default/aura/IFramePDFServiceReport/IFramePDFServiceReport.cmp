@@ -1,0 +1,4 @@
+<aura:component implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickActionWithoutHeader,lightning:actionOverride" access="global" >
+	<aura:attribute name="recordId" type="Id" />
+    <iframe width="600" height="700" src="{!'https://uatpowerparts--uat.lightning.force.com/apex/ServiceReportPDF?Id=' + v.recordId}"></iframe>
+</aura:component>

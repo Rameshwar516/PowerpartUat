@@ -1,0 +1,328 @@
+<aura:component controller="PurchaseIndentEdit" implements="flexipage:availableForAllPageTypes,force:lightningQuickAction,force:hasRecordId" access="global" >
+    
+    <aura:attribute name="SalesOfficer" type="object" />
+    <aura:attribute name="SalesOrder" type="object" />
+    <aura:attribute name="IndentBy" type="object" />
+    <aura:attribute name="mainWrapper" type="object" />
+    <aura:attribute name="PurchaseIndentItems" type="List" />
+    <aura:attribute name="SelectedSalesOrder" type="List" default="[]" />
+    <aura:attribute name="showTAndC" type="boolean" default="false"/>
+    <aura:attribute name="Error" type="boolean" default="false"/>
+    <ltng:require styles="{!$Resource.popupCSS}" />
+    
+    <aura:handler name="init" value="{!this}" action="{!c.initJS}" />
+    
+    <div class="slds-box" style="background-color:white">
+        <h3 class="slds-section slds-section__title" style="background-color:#486232;color:white">
+            <span class="slds-truncate" title="Section Title" style="margin-left:10px;font-size:14px;">Purchase Indent Detail</span>
+        </h3>
+        <div class="slds-grid slds-wrap">
+            <div class="slds-col slds-size_3-of-12 slds-p-around_xx-small slds-text-align_right">
+                <b>Ref No. :</b>
+            </div>
+            <div class="slds-col slds-size_3-of-12 slds-p-around_xx-small slds-text-align_right">
+                <lightning:input type="Number" value="{!v.mainWrapper.objPurchaseIndent.Reference_No__c}" varient="label-hidden" />
+            </div>
+            <div class="slds-col slds-size_2-of-12 slds-p-around_xx-small slds-text-align_right">
+                <b>Date :</b>
+            </div>
+            <div class="slds-col slds-size_3-of-12 slds-p-around_xx-small slds-text-align_right">
+                <lightning:input type="date" value="{!v.mainWrapper.objPurchaseIndent.Reference_Date__c}" varient="label-hidden"/>
+            </div>
+            <div class="slds-col slds-size_1-of-12 slds-p-around_xx-small slds-text-align_right"></div>
+            
+            <div class="slds-col slds-size_3-of-12 slds-p-around_xx-small slds-text-align_right">
+                <b>Sales Officer :</b>
+            </div>
+            <div class="slds-col slds-size_3-of-12 slds-p-around_xx-small">
+                <c:CustomLookUpForPI  selectedRecord="{!v.SalesOfficer}" objectAPIName="User" IconName="standard:user" />                 
+            </div>
+            <div class="slds-col slds-size_2-of-12 slds-p-around_xx-small slds-text-align_right">
+                <b>Procurement :</b>
+            </div>
+            <div class="slds-col slds-size_3-of-12 slds-p-around_xx-small slds-text-align_right">
+                <lightning:select name="ProductMake" label="" value="{!v.mainWrapper.objPurchaseIndent.Procurement__c}" >
+                    <option value="">-- None --</option>
+                    <aura:iteration items="{!v.mainWrapper.procurementPickList}" var="item">
+                        <option text="{!item.label}" value="{!item.value}" selected ="{!item.value == v.mainWrapper.objPurchaseIndent.Procurement__c}"/>
+                    </aura:iteration>
+                </lightning:select>
+            </div>
+            <div class="slds-col slds-size_1-of-12 slds-p-around_xx-small slds-text-align_right"></div>
+            
+            
+            <div class="slds-col slds-size_3-of-12 slds-p-around_xx-small slds-text-align_right">
+                <b>Department :</b>
+            </div>
+            <div class="slds-col slds-size_3-of-12 slds-p-around_xx-small slds-text-align_right">
+                <lightning:input type="text" value="{!v.mainWrapper.objPurchaseIndent.Department__c}" varient="label-hidden"/>                       
+            </div>
+            <div class="slds-col slds-size_2-of-12 slds-p-around_xx-small slds-text-align_right">
+                <b>Indent By :</b>
+            </div>
+            <div class="slds-col slds-size_3-of-12 slds-p-around_xx-small">
+                <c:CustomLookUpForPI  selectedRecord="{!v.IndentBy}" objectAPIName="User" IconName="standard:user" />                 
+            </div>
+            <div class="slds-col slds-size_1-of-12 slds-p-around_xx-small slds-text-align_right"></div>
+        </div>
+        <br/>
+        <div class="slds-box" style="width:100%">
+            <div class="slds-scrollable_x " style="height:100%;width:100%">
+                <div class="slds-table--header-fixed_container" style="height:250px;width:160%">
+                    <div class="slds-scrollable_y" style="height:100%;">
+                        <table class="slds-table slds-table_bordered slds-table--header-fixed" >
+                            <thead>
+                                <tr class="slds-text-title_caps" >
+                                    <th scope="col" width="3%">
+                                        <div class="slds-truncate slds-cell-fixed" title="Sr.N." >Sr.N.</div>
+                                    </th>
+                                    <th scope="col"  width="10%">
+                                        <div class="slds-truncate slds-cell-fixed" title="Part No.">Part No.</div>
+                                    </th>
+                                    <th scope="col" width="10%">
+                                        <div class="slds-truncate slds-cell-fixed" title="Part Name">Part Name</div>
+                                    </th>
+                                    <th scope="col" width="10%" >
+                                        <div class="slds-truncate slds-cell-fixed" title="Specification">Specification</div>
+                                    </th>
+                                    <th scope="col" width="10%">
+                                        <div class="slds-truncate slds-cell-fixed" title="Panding PO Qty">Panding PO Qty</div>
+                                    </th>
+                                    <th scope="col" width="8%">
+                                        <div class="slds-truncate slds-cell-fixed" title="Stock Actual">Stock Actual</div>
+                                    </th>
+                                    <th scope="col" width="7%">
+                                        <div class="slds-truncate slds-cell-fixed" title="Quantity">Quantity</div>
+                                    </th>
+                                    <th scope="col" width="7%">
+                                        <div class="slds-truncate slds-cell-fixed" title="Unit">Unit</div>
+                                    </th>
+                                    <th scope="col" width="9%">
+                                        <div class="slds-truncate slds-cell-fixed" title="Expected Date">Expected Date</div>
+                                    </th>
+                                    <th scope="col" width="10%">
+                                        <div class="slds-truncate slds-cell-fixed" title="Application">Application</div>
+                                    </th>
+                                    <th scope="col" width="7%">
+                                        <div class="slds-truncate slds-cell-fixed" title="Usage">Usage</div>
+                                    </th>
+                                    <th scope="col" width="10%">
+                                        <div class="slds-truncate slds-cell-fixed" title="Remarks">Remarks</div>
+                                    </th>
+                                    <th scope="col" width="6%">
+                                        <div class="slds-truncate slds-cell-fixed" title="Edit Del">Action</div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <aura:iteration items="{!v.PurchaseIndentItems}" var="item" indexVar="index" >
+                                    <tr>
+                                        <td scope="row" data-label="Sr.N.">
+                                            <div class="slds-truncate" title="Sr.N.">{!index+1}</div>
+                                        </td>
+                                        <td scope="row" data-label="Part No." >
+                                            <div  title="Part No.">
+                                                <aura:if isTrue="{!item.isEdit}">
+                                                    <c:CustomLookUpForPI  selectedRecord="{!item.objPart}" objectAPIName="Part__c" IconName="standard:all" /> 
+                                                    <aura:set attribute="else">
+                                                        {!item.objPart.Name}
+                                                    </aura:set>
+                                                </aura:if>
+                                            </div>
+                                        </td>
+                                        <td scope="row" data-label="Part Name" >
+                                            <div class="slds-truncate" title="Part Name">
+                                                <aura:if isTrue="{!item.isEdit}">
+                                                    <lightning:input name="input4" label=""  value="{!item.objPart.Part_Name__c}" disabled="true"/>                                     
+                                                    <aura:set attribute="else">
+                                                        {!item.objPart.Part_Name__c}
+                                                    </aura:set>
+                                                </aura:if>
+                                            </div>
+                                        </td>
+                                        <td scope="row" data-label="Specification" >
+                                            <div class="slds-truncate" title="Specification">
+                                                <aura:if isTrue="{!item.isEdit}">
+                                                    <lightning:input type="text" value="{!item.objPILI.Specification__c}" />
+                                                    <aura:set attribute="else">
+                                                        {!item.objPILI.Specification__c}
+                                                    </aura:set>
+                                                </aura:if>
+                                            </div>
+                                        </td>
+                                        <td scope="row" data-label="Panding PO Qty" >
+                                            <div class="slds-truncate" title="Panding PO Qty">
+                                                <aura:if isTrue="{!item.isEdit}">
+                                                    <lightning:input type="Number" value="{!item.pandingPOQty}" />
+                                                    <aura:set attribute="else">
+                                                        {!item.pandingPOQty}
+                                                    </aura:set>
+                                                </aura:if>
+                                            </div>
+                                        </td>
+                                        <td scope="row" data-label="Stock Actual" >
+                                            <div class="slds-truncate" title="Stock Actual">
+                                                <aura:if isTrue="{!item.objPart.Stocks__r.length gt 0}">
+                                                    <aura:iteration items="{!item.objPart.Stocks__r}" var="item" >
+                                                        <aura:if isTrue ="{!item.Ware_House__c == v.mainWrapper.objPurchaseIndent.Ware_House__c}">
+                                                            <lightning:input type="Number" value="{!item.Total_Quantity__c}" disabled='true'/>
+                                                        </aura:if>
+                                                    </aura:iteration>
+                                                    <aura:set attribute="else">
+                                                        <lightning:input type="Number" value="{!item.objPILI.Stock_Actual__c}" disabled='true'/>
+                                                    </aura:set>
+                                                </aura:if>
+                                            </div>
+                                        </td>
+                                        <td scope="row" data-label="Quantity" >
+                                            <div class="slds-truncate" title="Quantity">
+                                                <aura:if isTrue="{!item.isEdit}">
+                                                    <lightning:input type="Number" value="{!item.objPILI.QTY__c}" />
+                                                    <aura:set attribute="else">
+                                                        {!item.objPILI.QTY__c}
+                                                    </aura:set>
+                                                </aura:if>
+                                            </div>
+                                        </td>
+                                        <td scope="row" data-label="Unit" >
+                                            <div class="slds-truncate" title="Unit">
+                                                <aura:if isTrue="{!item.isEdit}">
+                                                    <lightning:input type="currency" value="{!item.objPart.List_Price_Standard_price__c}" />
+                                                    <aura:set attribute="else">
+                                                        {!item.objPart.List_Price_Standard_price__c}
+                                                    </aura:set>
+                                                </aura:if>
+                                            </div>
+                                        </td>
+                                        <td scope="row" data-label="Expected Date">
+                                            <div class="slds-truncate" title="Expected Date">
+                                                <aura:if isTrue="{!item.isEdit}">
+                                                    <lightning:input type="Date" value="{!item.objPILI.Expected_date__c}" />
+                                                    <aura:set attribute="else">
+                                                        {!item.objPILI.Expected_date__c}
+                                                    </aura:set>
+                                                </aura:if>
+                                            </div>
+                                        </td>
+                                        <td scope="row" data-label="Application">
+                                            <div class="slds-truncate" title="Application">
+                                                <aura:if isTrue="{!item.isEdit}">
+                                                    <lightning:select name="Application" label="" value="{!item.objPILI.Application__c}" >
+                                                        <option value="">-- None --</option>
+                                                        <aura:iteration items="{!v.mainWrapper.applicationPickList}" var="item">
+                                                            <option text="{!item.label}" value="{!item.value}" />
+                                                        </aura:iteration>
+                                                    </lightning:select>
+                                                    <aura:set attribute="else">
+                                                        {!item.objPILI.Application__c}
+                                                    </aura:set>
+                                                </aura:if>
+                                            </div>
+                                        </td>
+                                        <td scope="row" data-label="Usage">
+                                            <div class="slds-truncate" title="Usage">
+                                                <aura:if isTrue="{!item.isEdit}">
+                                                    <lightning:input type="text" value="{!item.objPart.Usage__c}" disabled="true"/>
+                                                    <aura:set attribute="else">
+                                                        {!item.objPart.Usage__c}
+                                                    </aura:set>
+                                                </aura:if>
+                                            </div>
+                                        </td>
+                                        <td scope="row" data-label="Remarks">
+                                            <div class="slds-truncate" title="Remarks">
+                                                <aura:if isTrue="{!item.isEdit}">
+                                                    <lightning:textarea value="{!item.objPILI.Remark__c}" />
+                                                    <aura:set attribute="else">
+                                                        {!item.objPILI.Remark__c}
+                                                    </aura:set>
+                                                </aura:if>
+                                            </div>
+                                        </td>
+                                        <td scope="row" data-label="Edit Del">
+                                            <div class="slds-truncate" title="Edit Del">
+                                                <aura:if isTrue="{!!item.isEdit}">
+                                                    <lightning:buttonIcon value="{!index}" alternativeText="Delete" variant="border-filled"  iconName="utility:delete"  onclick="{!c.DeleteRow}" class="AlignCenter"/>
+                                                    <lightning:buttonIcon value="{!index}" alternativeText="Edit Row" variant="border-filled" iconName="utility:edit" onclick="{!c.EditRecord}" class="AlignCenter"/>
+                                                    <aura:set attribute="else">
+                                                        <lightning:buttonIcon iconName="utility:check"  size="medium" alternativeText="Update" value="{!index}" onclick="{!c.ModifyRecord}" class="actionStyle slds-icon_container--circle"/>
+                                                    </aura:set>
+                                                </aura:if>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <aura:if isTrue="{!item.boolShowError}">
+                                        <tr>
+                                            <td></td>
+                                            <td>
+                                                <div class="slds-form-element__help" id="error-message-unique-id" style="color:#c23934">{!item.strPartErr}</div>
+                                            </td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>
+                                                <div class="slds-form-element__help" id="error-message-unique-id" style="color:#c23934">{!item.strQuantityErr}</div>
+                                            </td>
+                                            <td></td>
+                                            <td>
+                                                <div class="slds-form-element__help" id="error-message-unique-id" style="color:#c23934">{!item.strExpectedDateErr}</div>
+                                            </td>
+                                            <td>
+                                                <div class="slds-form-element__help" id="error-message-unique-id" style="color:#c23934">{!item.strApplicationErr}</div>
+                                            </td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr> 
+                                    </aura:if>
+                                </aura:iteration>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <br/>
+            <div class="slds-grid slds-wrap" >                
+                <div class="slds-col slds-size_2-of-12 slds-p-around_x-small slds-text-align_right">
+                    <b>Remark :</b>
+                </div>
+                <div class="slds-col slds-size_9-of-12 slds-p-around_x-small slds-text-align_right">
+                    <lightning:input type="text" value="{!v.mainWrapper.objPurchaseIndent.Remark__c}" />
+                </div>
+                <div class="slds-col slds-size_1-of-12 slds-p-around_x-small slds-text-align_right"></div>
+                
+            </div>
+        </div>
+    </div>
+    <br/><br/>
+    <div class="slds-grid slds-wrap" style="background-color:#FFF;">
+        <div class="slds-col slds-size_1-of-3 slds-p-around_small slds-text-align_left">
+            <lightning:button label="Edit Terms &amp; Conditions" onclick="{!c.AddTandCJS}" class="slds-button slds-button_success"/>
+        </div>
+        <div class="slds-col slds-size_1-of-3 slds-p-around_small slds-text-align_center">
+            <lightning:button label="Create" onclick="{!c.submitJS}" class="slds-button slds-button_brand"/>
+            <lightning:button label="Cancel" onclick="{!c.cancelJS}" class="slds-button"/>
+        </div>
+        <div class="slds-col slds-size_1-of-3 slds-p-around_small slds-text-align_center">
+        </div>
+    </div>
+    <br/><br/>
+    <!-- Modal for Term and condition -->
+    <aura:if isTrue="{!v.showTAndC}">
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-modal_medium" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate">Terms &amp; Conditions</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <lightning:textArea value="{!v.mainWrapper.objPurchaseIndent.Terms_and_Conditions__c}" label="Term &amp; condition" class="textareaClass"/>
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning:button label="Save" onclick="{!c.closeTAndC}" class="slds-button slds-button_brand"/>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </aura:if>
+</aura:component>

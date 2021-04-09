@@ -1,0 +1,327 @@
+<aura:component controller="clsSurvey" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInitJS}" />
+    <aura:attribute name="ParentRecordId" type="string" default=""/>
+    <aura:attribute name="UserIp" type="string" default=""/>
+    <aura:attribute name="strCustomerCom" type="string" default=""/>
+    <!--aura:handler name="callChildSave" event="c:saveFeedBackEvent" action="{!c.submitFBJS}" /-->
+    <aura:attribute name="options" type="List" default="[
+                                                        {'label': '1', 'value': '1'},
+                                                        {'label': '2', 'value': '2'},
+                                                        {'label': '3', 'value': '3'},
+                                                        {'label': '4', 'value': '4'},
+                                                        {'label': '5', 'value': '5'},
+                                                        {'label': '6', 'value': '6'},
+                                                        {'label': '7', 'value': '7'},
+                                                        {'label': '8', 'value': '8'},
+                                                        {'label': '9', 'value': '9'},
+                                                        {'label': '10', 'value': '10'}
+                                                        ]"/>
+
+
+    <aura:attribute name="SuccessMessage" type="String"/>
+    <aura:attribute name="ErrorMessage" type="String"/>
+	<aura:attribute name="spinnerIsVisibile" type="boolean" default="false"/>
+     <aura:attribute name="mainWrap" type="Object" default=""/>
+    
+    <div class="slds-box">
+        <div class="slds-grid slds-wrap" style="background-color:white; padding-top:15px;">
+            <div class="slds-col slds-size_1-of-12"></div>
+            <div class="slds-col slds-size_5-of-12 ">
+                <img src="{!$Resource.PowerpartsLogo}" width="230" height="80" class="slds-float_left"/><br/>
+            </div>
+            <div class="slds-col slds-size_5-of-12 ">
+                <img src="{!$Resource.PerkinsLogo}" width="180" height="100" style="margin-top:-10%" class="slds-float_right"/>
+            </div>
+            <div class="slds-col slds-size_1-of-12"></div>
+        </div>
+        <div class="slds-grid slds-wrap" style="background-color:white; padding-top:15px;">
+            <div class="slds-col slds-size_1-of-12"></div>
+            <div class="slds-col slds-size_10-of-12 ">
+               <p class="slds-text-align_center slds-text-heading_small"><b>Perkins Engines Asia Pacific and their Authorised Distributors are dedicated to providing world class Product Support excellence. As such, we would like to gather feedback on your recent Product Support experience. A few minutes of your time will help us to focus on improvement areas and ensure we continue to provide you with the best possible service.</b></p><br/>
+               <p style="font-size: 16px;">Consider your most recent Perkins product support experience. Rate how much you agree or disagree with the statement below</p>
+            </div>
+            <div class="slds-col slds-size_1-of-12"></div>
+        </div>
+        <div class="slds-grid slds-wrap" style="background-color:white; padding-top:15px;">
+            <div class="slds-col slds-size_1-of-12"></div>
+            <div class="slds-col slds-size_6-of-12 "></div>
+            <div class="slds-col slds-size_4-of-12 ">
+              <center> 1 = Totally Disagree   ---------------------------->   10 = Totally Agree</center>
+            </div>
+            <div class="slds-col slds-size_1-of-12"></div>
+        </div>
+        <div class="slds-grid slds-wrap" style="background-color:white; padding-top:15px;">
+            <div class="slds-col slds-size_1-of-12"></div>
+            <div class="slds-col slds-size_6-of-12 ">
+               <label><b>A mechanic was available and your call was responded to in an acceptable timeframe.</b></label>
+            </div>
+            <div class="slds-col slds-size_4-of-12 ">
+               <lightning:radioGroup name="radioButtonGroup1"
+					  label=""
+					  options="{! v.options }"
+					  value="{!v.mainWrap.objFeedback.Mechanic_Available__c }"
+					  type="button"/>
+            </div>
+            <div class="slds-col slds-size_1-of-12"></div>
+        </div>
+        <div class="slds-grid slds-wrap" style="background-color:white; padding-top:15px;">
+            <div class="slds-col slds-size_1-of-12"></div>
+            <div class="slds-col slds-size_6-of-12 ">
+               <label><b>The repair or service you requested was carried out correctly and you are satisfied with quality of our knowladge</b></label>
+            </div>
+            <div class="slds-col slds-size_4-of-12 ">
+               <lightning:radioGroup name="radioButtonGroup2"
+					  label=""
+					  options="{! v.options }"
+					  value="{!v.mainWrap.objFeedback.Repair_or_service__c}"
+					  type="button"/>
+            </div>
+            <div class="slds-col slds-size_1-of-12"></div>
+        </div>
+        <div class="slds-grid slds-wrap" style="background-color:white; padding-top:15px;">
+            <div class="slds-col slds-size_1-of-12"></div>
+            <div class="slds-col slds-size_6-of-12 ">
+                <label><b>You had confidence in our technicians knowladge and his ability to service or repair your engine</b></label>
+            </div>
+            <div class="slds-col slds-size_4-of-12 ">
+                <lightning:radioGroup name="radioButtonGroup3"
+                                      label=""
+                                      options="{! v.options }"
+                                      value="{!v.mainWrap.objFeedback.Technician_knowladge__c }"
+                                      type="button"/>
+            </div>
+            <div class="slds-col slds-size_1-of-12"></div>
+        </div>
+        <div class="slds-grid slds-wrap" style="background-color:white; padding-top:15px;">
+            <div class="slds-col slds-size_1-of-12"></div>
+            <div class="slds-col slds-size_6-of-12 ">
+                <label><b>Our technician communicated effectively and their attitude and manner was professional throughout the visit</b></label>
+            </div>
+            <div class="slds-col slds-size_4-of-12 ">
+                <lightning:radioGroup name="radioButtonGroup4"
+                                      label=""
+                                      options="{! v.options }"
+                                      value="{!v.mainWrap.objFeedback.Technician_Manner_Attitude__c }"
+                                      type="button"/>
+            </div>
+            <div class="slds-col slds-size_1-of-12"></div>
+        </div>
+        <div class="slds-grid slds-wrap" style="background-color:white; padding-top:15px;">
+            <div class="slds-col slds-size_1-of-12"></div>
+            <div class="slds-col slds-size_6-of-12 ">
+                <label><b>Our technician completed your service request in one visit</b></label>
+            </div>
+            <div class="slds-col slds-size_4-of-12 ">
+                <lightning:radioGroup name="radioButtonGroup5"
+                                      label=""
+                                      options="{! v.options }"
+                                      value="{!v.mainWrap.objFeedback.Completed_Service_one_Visit__c}"
+                                      type="button"/>
+            </div>
+            <div class="slds-col slds-size_1-of-12"></div>
+        </div>
+        <div class="slds-grid slds-wrap" style="background-color:white; padding-top:15px;">
+            <div class="slds-col slds-size_1-of-12"></div>
+            <div class="slds-col slds-size_6-of-12 ">
+                <label><b>It was easy to contact us and you spoke to the correct person first time.  We handled your initial call professionally. </b></label>
+            </div>
+            <div class="slds-col slds-size_4-of-12 ">
+                <lightning:radioGroup name="radioButtonGroup6"
+                                      label=""
+                                      options="{! v.options }"
+                                      value="{!v.mainWrap.objFeedback.Easy_to_Contact__c }"
+                                      type="button"/>
+            </div>
+            <div class="slds-col slds-size_1-of-12"></div>
+        </div>
+        <div class="slds-grid slds-wrap" style="background-color:white; padding-top:15px;">
+            <div class="slds-col slds-size_1-of-12"></div>
+            <div class="slds-col slds-size_6-of-12 ">
+                <label><b>You were satisfied with the availability of parts needed to complete your requested service or repair</b></label>
+            </div>
+            <div class="slds-col slds-size_4-of-12 ">
+                <lightning:radioGroup name="radioButtonGroup7"
+                                      label=""
+                                      options="{! v.options }"
+                                      value="{!v.mainWrap.objFeedback.Parts_Availability__c}"
+                                      type="button"/>
+            </div>
+            <div class="slds-col slds-size_1-of-12"></div>
+        </div>
+        <div class="slds-grid slds-wrap" style="background-color:white; padding-top:15px;">
+            <div class="slds-col slds-size_1-of-12"></div>
+            <div class="slds-col slds-size_6-of-12 ">
+                <label><b>The service and expertise we offered was value for money and you were happy with our payment terms </b></label>
+            </div>
+            <div class="slds-col slds-size_4-of-12 ">
+                <lightning:radioGroup name="radioButtonGroup8"
+                                      label=""
+                                      options="{! v.options }"
+                                      value="{!v.mainWrap.objFeedback.Payment_Terms__c}"
+                                      type="button"/>
+            </div>
+            <div class="slds-col slds-size_1-of-12"></div>
+        </div>
+        <div class="slds-grid slds-wrap" style="background-color:white; padding-top:15px;">
+            <div class="slds-col slds-size_1-of-12"></div>
+            <div class="slds-col slds-size_6-of-12 ">
+                <label><b>You received a clear explanation of the problem or scope of work required.  A quality service report was issued after the job was completed </b></label>
+            </div>
+            <div class="slds-col slds-size_4-of-12 ">
+                <lightning:radioGroup name="radioButtonGroup9"
+                                      label=""
+                                      options="{! v.options }"
+                                      value="{!v.mainWrap.objFeedback.Service_Report__c}"
+                                      type="button"/>
+            </div>
+            <div class="slds-col slds-size_1-of-12"></div>
+        </div>
+        <div class="slds-grid slds-wrap" style="background-color:white; padding-top:15px;">
+            <div class="slds-col slds-size_1-of-12"></div>
+            <div class="slds-col slds-size_6-of-12 ">
+                <label><b>The overall product support experience we gave you was better than other service providers</b></label>
+            </div>
+            <div class="slds-col slds-size_4-of-12 ">
+                <lightning:radioGroup name="radioButtonGroup10"
+                                      label=""
+                                      options="{! v.options }"
+                                      value="{!v.mainWrap.objFeedback.Product_Support__c }"
+                                      type="button"/>
+            </div>
+            <div class="slds-col slds-size_1-of-12"></div>
+        </div>
+        
+        <div class="slds-grid slds-wrap" style="background-color:white; padding-top:15px;">
+            <div class="slds-col slds-size_1-of-12"></div>
+            <div class="slds-col slds-size_10-of-12 ">
+                <lightning:textarea name="input1" label="General Comments" value="{!v.mainWrap.objFeedback.General_Comments__c }"></lightning:textarea>
+            </div>
+            <div class="slds-col slds-size_1-of-12"></div>
+        </div>
+        
+        <div class="slds-grid slds-wrap" style="background-color:white; padding-top:15px;">
+            <div class="slds-col slds-size_1-of-12"></div>
+            <div class="slds-col slds-size_10-of-12 ">
+                <div class="slds-grid slds-gutters">
+                    <div class="slds-col">
+                        <div class="slds-box">
+                            <p style="color:red;"><b>Postal Address: Plot No. 114, Pace City-1, Sector-37, Gurgaon- 122 001,Haryana, INDIA</b></p>
+                        </div>
+                    </div>
+                    <div class="slds-col">
+                        <div class="slds-box">
+                            <p style="color:red;"><b>Email:powerparts@powerparts.in</b></p>
+                        </div>
+                    </div>
+                    <div class="slds-col">
+                        <div class="slds-box">
+                            <p style="color:red;"><b>Phone: +911244036614</b></p>
+                        </div>
+                    </div>
+                </div> 
+            </div>
+            <div class="slds-col slds-size_1-of-12"></div>
+        </div>
+        <div class="slds-grid slds-wrap" style="background-color:white; padding-top:15px;">
+            <div class="slds-col slds-size_1-of-12"></div>
+            <div class="slds-col slds-size_10-of-12 ">
+                <fieldset class="myFieldset">
+                    <legend class="myLegend">Customer Detail</legend>
+                    <div class="slds-grid slds-wrap">
+                        <div class="slds-col slds-size_1-of-1 slds-large-size_4-of-12 slds-p-top_large">
+                            <label>Name</label>
+                        </div>
+                        <div class="slds-col slds-size_1-of-1 slds-large-size_8-of-12">
+                            <lightning:input type="text" disabled="true" value="{!v.mainWrap.objContact.Name}"></lightning:input>
+                        </div>
+                    </div>
+                    <div class="slds-grid slds-wrap">
+                        <div class="slds-col slds-size_1-of-1 slds-large-size_4-of-12 slds-p-top_large">
+                            <label>Company Name</label>
+                        </div>
+                        <div class="slds-col slds-size_1-of-1 slds-large-size_8-of-12">
+                            <lightning:input type="text" disabled="true" value="{!v.mainWrap.objCmpName}"></lightning:input>
+                        </div>
+                    </div>
+                    <div class="slds-grid slds-wrap">
+                        <div class="slds-col slds-size_1-of-1 slds-large-size_4-of-12 slds-p-top_large">
+                            <label>Telephone Number</label>
+                        </div>
+                        <div class="slds-col slds-size_1-of-1 slds-large-size_8-of-12">
+                            <lightning:input type="text" disabled="true" value="{!v.mainWrap.objContact.MobilePhone}"></lightning:input>
+                        </div>
+                    </div>
+                    <div class="slds-grid slds-wrap">
+                        <div class="slds-col slds-size_1-of-1 slds-large-size_4-of-12 slds-p-top_large">
+                            <label>E-mail Address</label>
+                        </div>
+                        <div class="slds-col slds-size_1-of-1 slds-large-size_8-of-12">
+                            <lightning:input type="email"   disabled="true" value="{!v.mainWrap.objContact.Email}"></lightning:input>
+                        </div>
+                    </div>
+                    <div class="slds-grid slds-wrap">
+                        <div class="slds-col slds-size_1-of-1 slds-large-size_4-of-12 slds-p-top_large">
+                            <label>Date Of Survey</label>
+                        </div>
+                        <div class="slds-col slds-size_1-of-1 slds-large-size_8-of-12">
+                            <lightning:input type="date" name="input4" disabled="true" value="{!v.mainWrap.DateofSurvey}"></lightning:input>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="slds-col slds-size_1-of-12"></div>
+        </div>
+        
+        <br></br>
+        <center><lightning:button label="Submit"  onclick="{!c.submit}" variant="brand" class="slds-size_1-of-6"/></center>
+    </div>
+    <!--********************************** For Success/Error Message. Code starts********************************-->
+    <div class="{! empty(v.SuccessMessage) &amp;&amp; empty(v.ErrorMessage) ? 'slds-hide' : 'slds-show'}">
+        <div class="slds-modal slds-fade-in-open slds-modal--prompt" aura:id="ErrorDisplayModal" role="alertdialog" tabindex="-1" aria-labelledby="prompt-heading-id" aria-describedby="prompt-message-wrapper">
+            <div class="slds-modal__container">
+                <div class="{! empty(v.SuccessMessage) ? 'slds-modal__header slds-theme--error slds-theme--alert-texture' : 'slds-modal__header slds-theme--success slds-theme--alert-texture'}">
+                    <lightning:buttonIcon class="slds-button slds-modal__close slds-button__icon slds-button--icon-inverse"  alternativeText="Close" variant="bare"  iconName="utility:close" size="large" onclick="{!c.handleHideErrorDisplayModal}" />
+                    
+                    <h2 class="slds-text-heading--medium" id="prompt-heading-id">
+                        <div style="{! empty(v.SuccessMessage) ? 'display:none;' : ''}">
+                            <lightning:buttonIcon class="slds-button slds-button--icon-inverse"  alternativeText="Success" variant="bare"  iconName="utility:success" size="large" />
+                            &nbsp; 
+                            <b>Success</b>
+                        </div>
+                        <div style="{! empty(v.ErrorMessage) ? 'display:none;' : ''}">
+                            <lightning:buttonIcon class="slds-button slds-button--icon-inverse"  alternativeText="Error" variant="bare"  iconName="utility:warning" size="large" />
+                            &nbsp;
+                            <b>Error</b>
+                        </div>
+                    </h2>
+                </div>
+                
+                <div class="slds-modal__content slds-p-around--medium">
+                    <div class="slds-grid slds-grid--align-center">
+                        <div class="slds-form-element__control slds-size--1-of-1" style="{! empty(v.SuccessMessage) ? 'display:none;' : ''}">
+                            <b>{!v.SuccessMessage}</b>
+                        </div>
+                        <div class="slds-form-element__control slds-size--1-of-1" style="{! empty(v.ErrorMessage) ? 'display:none;' : ''}">
+                            <b>{!v.ErrorMessage}</b>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="slds-modal__footer slds-theme--default">
+                    <lightning:button label="Close" class="slds-button slds-button_brand" onclick="{!c.handleHideErrorDisplayModal}"/>
+                </div>
+            </div>
+        </div>
+        <div class="slds-backdrop slds-backdrop--open"></div>
+    </div>
+    
+    <!--********************************** For Success/Error Message. Code ends********************************-->
+    
+    <!-- *********************************** SPINNER CODE START *********************************** -->
+    <aura:if isTrue="{!v.spinnerIsVisibile}">
+        <lightning:spinner alternativeText="Loading" size="medium" variant="brand"/>
+    </aura:if>
+    <!-- *********************************** SPINNER CODE END ************************************ -->
+ 
+</aura:component>

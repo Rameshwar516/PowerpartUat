@@ -1,0 +1,182 @@
+<aura:component controller="UpsertPackingList" implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickActionWithoutHeader" access="global" >
+    <ltng:require styles="{!$Resource.popupCSS}" />
+    <aura:handler name="init" value="{!this}" action="{!c.doinit}" />
+    <aura:attribute name="wrapMain" type="object" />
+    
+    <aura:attribute name="IsselectProduct" type="boolean" default = "false"/>
+    <aura:attribute name="recordId" type="string" />
+    <aura:attribute name="msg" type="String" />
+    
+    <aura:handler event="aura:waiting" action="{!c.showSpinner}"/>
+    <aura:handler event="aura:doneWaiting" action="{!c.hideSpinner}"/>
+    <aura:attribute name="Spinner" type="boolean" default="false"/>
+    <aura:attribute name="ErrorMessage" type="String" default=""/>
+    <aura:attribute name="SuccessMessage" type="String" default=""/>
+    <aura:attribute name="totalprice" type="string" default=""/>
+    <aura:attribute name="isErrorRow" type="boolean" default="false"/>
+    <aura:html tag="style">
+        .cuf-content {
+        padding: 0 0rem !important;
+        }
+        .slds-p-around--medium {
+        padding: 0rem !important;
+        }       
+        .slds-modal__content{
+        overflow-y:hidden !important;
+        height:unset !important;
+        max-height:unset !important;
+        }
+    </aura:html>
+    <div class="slds-modal__header">
+        <h2 class="slds-text-heading--medium" id="prompt-heading-id">
+            <div>
+                <b>Add Delivery Note Items</b>
+            </div>
+        </h2>
+    </div>
+            <Div>
+                <div class="slds-table--header-fixed_container" style="height:250px;">
+                    <div class="slds-scrollable_y" style="height:100%;">
+                        <table class="slds-table slds-table--bordered slds-table_striped slds-table--cell-buffer slds-max-medium-table--stacked-horizontal slds-table--header-fixed" >
+                            <thead>
+                                <tr class="slds-line-height_reset">
+                                    <th class="" scope="col" style="width: 1rem;">
+                                        <div class="slds-truncate slds-cell-wrap" title="checkbox"></div>
+                                    </th>
+                                    <th class="" scope="col" style="width: 5rem;">
+                                        <div class="slds-truncate slds-cell-wrap" title="Product Number">Product Number</div>
+                                    </th>
+                                    <th class="" scope="col" style="width: 2rem;">
+                                        <div class="slds-truncate slds-cell-wrap" title="Product Name">Product Name</div>
+                                    </th>
+                                    <th class="" scope="col" style="width: 2rem;">
+                                        <div class="slds-truncate slds-cell-wrap" title="Quantity">Quantity</div>
+                                    </th>
+									<th class="" scope="col" style="width: 2rem;">
+                                        <div class="slds-truncate slds-cell-wrap" title="Box/Case Type">Box/Case Type</div>
+                                    </th>
+                                     <th class="" scope="col" style="width: 2rem;">
+                                        <div class="slds-truncate slds-cell-wrap" title="Box No.">Box No.</div>
+                                    </th>
+									<th class="" scope="col" style="width: 2rem;">
+                                        <div class="slds-truncate slds-cell-wrap" title="Length(INCH)">Length(INCH)</div>
+                                    </th>
+									<th class="" scope="col" style="width: 2rem;">
+                                        <div class="slds-truncate slds-cell-wrap" title="Width(INCH)">Width(INCH)</div>
+                                    </th>
+									<th class="" scope="col" style="width: 2rem;">
+                                        <div class="slds-truncate slds-cell-wrap" title="Height(INCH)">Height(INCH)</div>
+                                    </th>
+                                    <th class="" scope="col" style="width: 2rem;">
+                                        <div class="slds-truncate slds-cell-wrap" title="Gross Weight(Kgs)">Gross Weight(Kgs)</div>
+                                    </th>
+									
+									<th class="" scope="col" style="width: 2rem;">
+                                        <div class="slds-truncate slds-cell-wrap" title="Remark">Remark</div>
+                                    </th>
+									
+                                    <aura:if isTrue="{!v.isErrorRow}">
+                                        <th class="" scope="col" style="width: 2rem;">
+                                            <div class="slds-truncate slds-cell-wrap" title="Error">Error</div>
+                                        </th>
+                                    </aura:if>
+									<!--<th class="" scope="col" style="width: 2rem;">
+                                        <div class="slds-truncate slds-cell-fixed" title="Gross Wt(Kgs)">Gross Wt(Kgs)</div>
+                                    </th>-->
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <aura:iteration items="{!v.wrapMain.inrWrap}" var="cusProd">
+                                    <tr width="100%">
+                                        <td class="dataCell" style="width: 8rem;" ><lightning:input type="checkbox" value="{!cusProd.isSelected}" checked="{!cusProd.isSelected}" onchange="{!c.checkJs}"/></td>
+                                        <td class="dataCell" style="width: 8rem;"><a href="{! '/' + cusProd.partid}"> {!cusProd.partnum}</a></td>
+                                        <td class="dataCell" style="width: 9rem;">{!cusProd.partname}</td>
+                                        <td class="dataCell" style="width: 7rem;">{!cusProd.quantity}</td>
+										<td class="dataCell" style="width: 8rem;" ><!--<lightning:input type="string" value="{!cusProd.strBoxType}"/>-->
+										<lightning:select value="{!cusProd.strBoxType}"  variant="label-hidden" class="label-hidden" >
+											<option value="">choose...</option>
+											<option value="Wooden">Wooden</option>
+											<option value="Carton">Carton</option>
+											<option value="Loose">Loose</option>
+										</lightning:select>
+										</td>
+                                        <td class="dataCell" style="width: 8rem;" ><lightning:input  variant="label-hidden" type="string"   value="{!cusProd.BOXNo}"/></td>
+										<td class="dataCell" style="width: 8rem;" ><lightning:input  variant="label-hidden" type="number" step="0.01"  value="{!cusProd.decLength}"/></td>
+										<td class="dataCell" style="width: 8rem;" ><lightning:input  variant="label-hidden" type="number" step="0.01"  value="{!cusProd.decWidth}"/></td>
+										<td class="dataCell" style="width: 8rem;" ><lightning:input  variant="label-hidden" type="number" step="0.01"  value="{!cusProd.decHeight}"/></td>
+										<td class="dataCell" style="width: 8rem;" ><lightning:input  variant="label-hidden" type="number" step="0.01"  value="{!cusProd.decWeight}"/></td>
+                                        <!--<td class="dataCell" style="width: 8rem;" ><lightning:input type="decimal" value="{!cusProd.decHeight}"/></td>-->
+                                    	
+										<td class="dataCell" style="width: 8rem;" ><lightning:textarea  variant="label-hidden" type="string"   value="{!cusProd.strRemark}"/></td>
+										
+										<aura:if isTrue="{!v.isErrorRow}">
+                                            <td class="dataCell" style="width: 8rem;"><p style="color:red;">{!cusProd.rowError}</p></td>
+                                        </aura:if>
+                                        </tr> 
+                                </aura:iteration>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </Div>
+           
+    <br/><br/>
+    <div class="slds-modal__footer">
+        <b>
+			<lightning:button aura:id="button" class="button" label="Save" onclick="{!c.SaveJS}"/>
+            <lightning:button label="Cancel" onclick="{!c.cancel}" /></b>
+    </div>
+    
+    
+    <!--********************************** For Success/Error Message. Code starts********************************-->
+    <!--************************************************************************************-->
+    <div class="{! empty(v.wrapMain.strMessage) ? 'slds-hide' : 'slds-show'}">
+        <div class="slds-modal slds-fade-in-open slds-modal--prompt" aura:id="ErrorDisplayModal" role="alertdialog" tabindex="-1" aria-labelledby="prompt-heading-id" aria-describedby="prompt-message-wrapper">
+            <div class="slds-modal__container">
+                <div class="{! v.wrapMain.success == false ? 'slds-modal__header slds-theme--error slds-theme--alert-texture' : 'slds-modal__header slds-theme--success slds-theme--alert-texture'}">
+                    <lightning:buttonIcon class="slds-button slds-modal__close slds-button__icon slds-button--icon-inverse"  alternativeText="Close" variant="bare"  iconName="utility:close" size="large" onclick="{!c.handleHideErrorDisplayModal}" />
+                    
+                    <h2 class="slds-text-heading--medium" id="prompt-heading-id">
+                        <div style="{! v.wrapMain.success == true ? '' : 'display:none;'}">
+                            <lightning:buttonIcon class="slds-button slds-button--icon-inverse"  alternativeText="Success" variant="bare"  iconName="utility:success" size="large" />
+                            &nbsp; 
+                            <b>Success</b>
+                        </div>
+                        <div style="{! v.wrapMain.success == false ? '' : 'display:none;'}">
+                            <lightning:buttonIcon class="slds-button slds-button--icon-inverse"  alternativeText="Error" variant="bare"  iconName="utility:warning" size="large" />
+                            &nbsp;
+                            <b>Error</b>
+                        </div>
+                    </h2>
+                </div>
+                
+                <div class="slds-modal__content slds-p-around--medium">
+                    <div class="slds-grid slds-grid--align-center">
+                        <div class="slds-form-element__control slds-size--1-of-1" style="text-align:center;">
+                            <b>{!v.wrapMain.strMessage}</b>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="slds-modal__footer slds-theme--default">
+                    <button class="slds-button slds-button--neutral" onclick="{!c.handleHideErrorDisplayModal}">Close</button>
+                </div>
+            </div>
+        </div>
+        <div class="slds-backdrop slds-backdrop--open"></div>
+    </div>
+    
+    <!--********************************** For Success/Error Message. Code ends********************************-->
+    <!--************************************************************************************-->
+    
+    <!--For Loading spinner-->
+    <aura:if isTrue="{!v.Spinner}">
+        <div aura:id="spinnerId" class="slds-spinner_container">
+            <div class="slds-spinner--brand  slds-spinner slds-spinner--large slds-is-relative" role="alert">
+                <span class="slds-assistive-text">Loading</span>
+                <div class="slds-spinner__dot-a"></div>
+                <div class="slds-spinner__dot-b"></div>
+            </div>
+        </div>
+    </aura:if>
+</aura:component>

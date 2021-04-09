@@ -1,0 +1,245 @@
+<aura:component controller="clsPartRequest" implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickActionWithoutHeader,lightning:actionOverride" access="global" >
+    <aura:handler name="init" value="{!this}" action="{!c.initJS}" />
+    <aura:attribute name="objPart" type="Object" default="{}"/> 
+    <aura:attribute name="SuccessMessage" type="string" default=""/>
+    <aura:attribute name="ErrorMessage" type="string" default=""/>
+    <aura:attribute name="Error" type="boolean" default="false"/>
+    <aura:attribute name="spinnerIsVisibile" type="boolean" default="false"/>
+    <aura:attribute name="mainWrap" type="Object" default="{}" />
+    <aura:attribute name="lstPartReqWrap" type="List" default ="" />
+	<aura:attribute name="recordId" type="Id" />
+    <aura:attribute name="recDelete" type="Id" />
+    <ltng:require styles="{!$Resource.popupCSS}" />
+    
+    <div>
+        <aura:if isTrue ="{!!v.mainWrap.isClosed}">
+            <!-- Section For Part request  --><br/>
+        <div class="slds-box">
+            <div class="slds-section">
+                <div class="slds-box slds-theme_shade">
+                    <center><b style="font-size:18px;">Create New Part Request</b></center>
+                </div><br/>
+                <table class="slds-table slds-table--bordered slds-table--cell-buffer slds-max-medium-table--stacked-horizontal">
+                    <thead>
+                        <tr class="slds-text-heading--label">
+                            <th scope="col" style="width:7%;white-space:inherit;padding-top: 8px;padding-bottom: 8px;">
+                                Sr.N.
+                            </th>
+                            <th scope="col" style="width:15%;white-space:inherit;">
+                                Part Type
+                            </th>
+                            <th scope="col" style="width:15%;white-space:inherit;">
+                                Warranty Type
+                            </th>
+                            <th scope="col" style="width:13%;white-space:inherit;">
+                                Part No. Required
+                            </th>
+                            <th scope="col" style="width:10%; white-space:inherit;">
+                                Part Name
+                            </th>
+                            <th scope="col" style="width:10%; white-space:inherit;">
+                                Existing Part No. on Engine
+                            </th>
+                            <th scope="col" style="width:10%; white-space:inherit;">
+                                Quantity
+                            </th>
+                            <th scope="col" style="width:10%; white-space:inherit;">
+                                Remark
+                            </th>
+                            <th scope="col" style="width:10%; white-space:inherit;">
+                                Action
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <aura:iteration items="{!v.lstPartReqWrap}" var="obj" indexVar="index">
+                            <tr>
+                                <td data-label="Index">
+                                    {!index+1}
+                                </td>
+                                <td data-label="Part Type" style="white-space:inherit;">
+                                    <aura:if isTrue="{!obj.isEdit}">
+                                        <lightning:select name="select1" label="" value="{!obj.objPartReq.Part_Type__c}" >
+                                            <option value="">None</option>
+                                            <aura:iteration items="{!v.mainWrap.partTypePick}" var="item">
+                                                <option text="{!item.label}" value="{!item.value}" disabled="{!item.isDisable}"/>
+                                            </aura:iteration>
+                                        </lightning:select>
+                                        <aura:set attribute="else">
+                                            {!obj.objPartReq.Part_Type__c}
+                                        </aura:set>
+                                    </aura:if>
+                                </td>
+                                <td data-label="Warranty Type" style="white-space:inherit;">
+                                    <aura:if isTrue="{!obj.isEdit}">
+                                        <lightning:select name="select2" label="" value="{!obj.objPartReq.Warranty_Type__c}" >
+                                            <option value="">None</option>
+                                            <aura:iteration items="{!v.mainWrap.warrantytypePick}" var="item">
+                                                <option value="{!item}">{!item}</option>
+                                            </aura:iteration>
+                                        </lightning:select>
+                                        <aura:set attribute="else">
+                                            {!obj.objPartReq.Warranty_Type__c}
+                                        </aura:set>
+                                    </aura:if>
+                                </td>
+                                <td data-label="Part No." style="white-space:inherit;">
+                                    <aura:if isTrue="{!obj.isEdit}">
+                                        <c:customLookUp  selectedRecord="{!obj.objPart}" objectAPIName="Part__c"
+                                                        IconName="custom:Part" />
+                                        <aura:set attribute="else">
+                                            {!obj.objPart.Name}
+                                        </aura:set>
+                                    </aura:if>
+                                </td>
+                                <td data-label="Part Name" style="white-space:inherit;">
+                                    <aura:if isTrue="{!obj.isEdit}">
+                                        <lightning:input name="input2" label="" value="{!obj.objPart.Part_Name__c}" disabled="true" />
+                                        <aura:set attribute="else">
+                                            {!obj.objPart.Part_Name__c}
+                                        </aura:set>
+                                    </aura:if>
+                                </td>
+                                <td data-label="Old Part Number" style="white-space:inherit;">
+                                    <aura:if isTrue="{!obj.isEdit}">
+                                        <lightning:input name="input4" label="" value="{!obj.objPartReq.Old_Part_Number__c}" />
+                                        <aura:set attribute="else">
+                                            {!obj.objPartReq.Old_Part_Number__c}
+                                        </aura:set>
+                                    </aura:if>
+                                </td>
+                                <td data-label="Quantity" style="white-space:inherit;">
+                                    <aura:if isTrue="{!obj.isEdit}">
+                                        <lightning:input type="number" name="input3" label="" value="{!obj.objPartReq.Quantity__c}" min="1" />
+                                        <aura:set attribute="else">
+                                            {!obj.objPartReq.Quantity__c}
+                                        </aura:set>
+                                    </aura:if>
+                                </td>
+                                <td data-label="Remark" style="white-space:inherit;">
+                                    <aura:if isTrue="{!obj.isEdit}">
+                                        <lightning:textarea name="input5" label="" value="{!obj.objPartReq.Remark__c}"/>
+                                        <aura:set attribute="else">
+                                            {!obj.objPartReq.Remark__c}
+                                        </aura:set>
+                                    </aura:if>
+                                </td>
+                                <td>
+                                    <aura:if isTrue="{!v.lstPartReqWrap.length != index+1}">
+                                        <aura:if isTrue="{!!obj.isEdit}">
+                                            <lightning:buttonIcon value="{!index}" alternativeText="Delete" variant="border-filled"  iconName="utility:delete"  onclick="{!c.DeleteRecord}" class="AlignCenter"/>
+                                            <lightning:buttonIcon value="{!index}" alternativeText="Edit Row" variant="border-filled" iconName="utility:edit" onclick="{!c.EditRecord}" class="AlignCenter"/>
+                                            <aura:set attribute="else">
+                                                <lightning:buttonIcon iconName="utility:check"  size="medium" alternativeText="Update" value="{!index}" onclick="{!c.ModifyRecord}" class="actionStyle slds-icon_container--circle"/>
+                                            </aura:set>
+                                        </aura:if>
+                                    </aura:if>
+                                    
+                                    <aura:if isTrue="{!v.lstPartReqWrap.length == index+1}">
+                                        <aura:if isTrue="{!obj.isEdit}">
+                                            <lightning:buttonIcon value="{!index}" alternativeText="Add Row" variant="border-filled"  iconName="utility:add"  onclick="{!c.addRow}" class="AlignCenter"/>
+                                            <lightning:buttonIcon value="{!index}" alternativeText="Remove Row" variant="border-filled"  iconName="utility:dash"  onclick="{!c.removeRow}" class="AlignCenter"/>
+                                            <aura:set attribute="else">
+                                                <aura:if isTrue="{!!obj.isEdit}">
+                                                    <lightning:buttonIcon value="{!index}" alternativeText="Delete" variant="border-filled"  iconName="utility:delete"  onclick="{!c.DeleteRecord}" class="AlignCenter"/>
+                                                    <lightning:buttonIcon value="{!index}" alternativeText="Edit Row" variant="border-filled" iconName="utility:edit" onclick="{!c.EditRecord}" class="AlignCenter"/>
+                                                    <lightning:buttonIcon value="{!index}" alternativeText="Add Row" variant="border-filled"  iconName="utility:add"  onclick="{!c.addRow}" class="AlignCenter"/>
+                                                    <aura:set attribute="else">
+                                                        <lightning:buttonIcon iconName="utility:check"  size="medium" alternativeText="Update" value="{!index}" onclick="{!c.ModifyRecord}" class="actionStyle slds-icon_container--circle"/>
+                                                    </aura:set>
+                                                </aura:if>
+                                            </aura:set>
+                                        </aura:if>
+                                    </aura:if>                            
+                                </td>
+                            </tr>
+                            <aura:if isTrue="{!obj.boolShowError}">
+                                <tr>
+                                    <td></td>
+                                    <td>
+                                        <div class="slds-form-element__help" id="error-message-unique-id" style="color:#c23934">{!obj.strPartTypeErr}</div>
+                                    </td>
+                                    <td>
+                                        <div class="slds-form-element__help" id="error-message-unique-id" style="color:#c23934">{!obj.strWarrentyTypeErr}</div>
+                                    </td>
+                                    <td>
+                                        <div class="slds-form-element__help" id="error-message-unique-id" style="color:#c23934">{!obj.strPartErr}</div>
+                                    </td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>
+                                        <div class="slds-form-element__help" id="error-message-unique-id" style="color:#c23934">{!obj.strQuantityErr}</div>
+                                    </td>
+                                    <td></td>
+                                    <td></td>
+                                </tr> 
+                            </aura:if>
+                            
+                        </aura:iteration>
+                    </tbody>
+                </table>
+            </div>
+            <br/>
+        </div>
+        <div class="slds-grid slds-wrap" style="background-color:#FFF;">
+            <div class="slds-col slds-size_1-of-1 slds-p-around_small slds-text-align_center">
+                <lightning:button label="Submit" onclick="{!c.submitJS}" class="slds-button slds-button_brand"/>
+                
+                <lightning:button label="Close" onclick="{!c.closeJS}" class="slds-button"/>
+            </div>
+        </div>
+            <aura:set attribute="else">
+            	 <center style="color:red"><h1 style="margin-top:20%">Sorry ! This Service Request has been closed.</h1></center>
+            </aura:set>
+        </aura:if>
+        <!-- End Section of Part Request -->
+        
+        <!--********************************** For Success/Error Message. Code starts********************************-->
+        <div class="{! empty(v.SuccessMessage) &amp;&amp; empty(v.ErrorMessage) ? 'slds-hide' : 'slds-show'}">
+            <div class="slds-modal slds-fade-in-open slds-modal--prompt" aura:id="ErrorDisplayModal" role="alertdialog" tabindex="-1" aria-labelledby="prompt-heading-id" aria-describedby="prompt-message-wrapper">
+                <div class="slds-modal__container">
+                    <div class="{! empty(v.SuccessMessage) ? 'slds-modal__header slds-theme--error slds-theme--alert-texture' : 'slds-modal__header slds-theme--success slds-theme--alert-texture'}">
+                        <lightning:buttonIcon class="slds-button slds-modal__close slds-button__icon slds-button--icon-inverse"  alternativeText="Close" variant="bare"  iconName="utility:close" size="large" onclick="{!c.handleHideErrorDisplayModal}" />
+                        
+                        <h2 class="slds-text-heading--medium" id="prompt-heading-id">
+                            <div style="{! empty(v.SuccessMessage) ? 'display:none;' : ''}">
+                                <lightning:buttonIcon class="slds-button slds-button--icon-inverse"  alternativeText="Success" variant="bare"  iconName="utility:success" size="large" />
+                                &nbsp; 
+                                <b>Success</b>
+                            </div>
+                            <div style="{! empty(v.ErrorMessage) ? 'display:none;' : ''}">
+                                <lightning:buttonIcon class="slds-button slds-button--icon-inverse"  alternativeText="Error" variant="bare"  iconName="utility:warning" size="large" />
+                                &nbsp;
+                                <b>Error</b>
+                            </div>
+                        </h2>
+                    </div>
+                    
+                    <div class="slds-modal__content slds-p-around--medium">
+                        <div class="slds-grid slds-grid--align-center">
+                            <div class="slds-form-element__control slds-size--1-of-1" style="{! empty(v.SuccessMessage) ? 'display:none;' : ''}">
+                                <b>{!v.SuccessMessage}</b>
+                            </div>
+                            <div class="slds-form-element__control slds-size--1-of-1" style="{! empty(v.ErrorMessage) ? 'display:none;' : ''}">
+                                <b>{!v.ErrorMessage}</b>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="slds-modal__footer slds-theme--default">
+                        <lightning:button label="Close" class="slds-button slds-button_brand" onclick="{!c.handleHideErrorDisplayModal}"/>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-backdrop slds-backdrop--open"></div>
+        </div>
+        
+        <!--********************************** For Success/Error Message. Code ends********************************-->
+        
+        <!-- *********************************** SPINNER CODE START *********************************** -->
+        <aura:if isTrue="{!v.spinnerIsVisibile}">
+            <lightning:spinner alternativeText="Loading" size="medium" variant="brand"/>
+        </aura:if>
+        <!-- *********************************** SPINNER CODE END ************************************ -->
+    </div>
+</aura:component>

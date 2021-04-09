@@ -1,0 +1,365 @@
+<aura:component controller="clsServiceReport" implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInitJS}" />
+    <aura:attribute name="mainWrap" type="Object" default=""/>
+    <aura:attribute name="showServiceReqCMP" type="boolean" default="false"/>
+    <aura:attribute name="showFeedBackForm" type="boolean" default="false"/>
+    <aura:attribute name="strCustomerCom" type="string" default=""/>
+    <aura:attribute name="lstContentDoc" type="List" default="{}"/>
+    <aura:attribute name="SuccessMessage" type="string" default=""/>
+    <aura:attribute name="ErrorMessage" type="string" default=""/>
+    <aura:attribute name="spinnerIsVisibile" type="boolean" default="false"/>
+    <aura:attribute name="recordId" type="string" default=""/>
+    <aura:attribute name="UserIp" type="string" default=""/>
+    <aura:attribute name="prefixURL" type="String" default="https://powerpart.secure.force.com/ServiceReportCumFeedbackForm/sfc/servlet.shepherd/version/renditionDownload?rendition=THUMB720BY480&amp;versionId="/>
+   
+    <!--aura:registerEvent name="callChildSave" type="c:saveFeedBackEvent"/-->
+    <aura:if isTrue ="{!!v.showServiceReqCMP}">
+        <div class="slds-box">
+            <div class="slds-grid slds-wrap" style="background-color:white; padding-top:50px;">
+                <div class="slds-col slds-size_1-of-12"></div>
+                <div class="slds-col slds-size_5-of-12 ">
+                    <img src="{!$Resource.PowerpartsLogo}" width="230" height="80" class="slds-float_left"/><br/><br /><br /><br />
+                    <span style="padding-left:4px;font-family: Arial;font-size:20px;" ><b>Plot No. 114, Pace City1</b></span><br/>
+                    <span style="padding-left:4px;font-family: Courier; font-size: 16px;">Sector- 37, Gurgaon-122001</span><br/>
+                    <span style="padding-left:4px;font-family: Courier; font-size: 16px;">Haryana, India</span><br/>
+                    <span style="padding-left:4px;font-family: Courier; font-size: 16px;">Ph.  : +91 124 4036614/4019215</span><br/>
+                    <span style="padding-left:4px;font-family: Courier; font-size: 16px;">Email: <u style="color:blue;font-family: Arial; font-size : 16px">powerparts@powerparts.in</u></span><br/>
+                </div>
+                <div class="slds-col slds-size_5-of-12 ">
+                    <img src="{!$Resource.PerkinsLogo}" width="180" height="100" style="margin-top:-10%" class="slds-float_right"/>
+                </div>
+                <div class="slds-col slds-size_1-of-12"></div>
+            </div>
+            <!--div class="slds-grid slds-wrap" style="background-color:white; padding-top:50px;">
+            <div class="slds-col slds-size_1-of-12"></div>
+            <div class="slds-col slds-size_5-of-12 ">                
+            </div>
+            <div class="slds-col slds-size_5-of-12 ">
+            </div>
+            <div class="slds-col slds-size_1-of-12"></div>
+        </div-->
+            <div class="slds-grid slds-wrap" style="background-color:white;">
+                <div class="slds-col slds-size_1-of-12"></div>
+                <div class="slds-col slds-size_10-of-12 ">  
+                    <table border="1px solid black" style="border-collapse: collapse; width:100%; font-family: Arial;font-size:15px;">
+                        <tr>
+                            <td colspan="3" style="font-size:17px;"><center><b>SERVICE REPORT</b></center></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <b>Customer Details :</b><ui:outputText value="{!v.mainWrap.objSR.Customer_Name__c}" />
+                            </td>
+                            <td style="vertical-align: top;">
+                                <b>S.R. No :</b><ui:outputText value="mk/NP/" /><!--<ui:outputDate  value="{!v.mainWrap.todayDate}" format="d/yy/MM" />--><ui:outputText value="{!v.mainWrap.objSR.Name}" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="35%">
+                                <b>Contact Person :</b> <ui:outputText value="{!v.mainWrap.objContact.Name}" />
+                            </td>
+                            <td width="35%">
+                                <b>Mobile :</b> <ui:outputText value="{!v.mainWrap.objContact.MobilePhone}" />                        
+                            </td>
+                            <td width="30%">
+                                <b>Date :</b> 
+                                <ui:outputDate  value="{!v.mainWrap.todayDate}" format="d/MM/y" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="35%">
+                                <b>Designation :</b> <ui:outputText value="{!v.mainWrap.objContact.Designation__c}" />
+                            </td>
+                            <td colspan="2">
+                                <b>Sl. No :</b> <ui:outputText value="{!v.mainWrap.objAsset.Name}" />                        
+                            </td>
+                            <!--td width="30%">
+               					<b>Work Order No :</b> <ui:outputText value="" /> 
+            				</td-->
+                        </tr>
+                        <tr>
+                            <td width="35%">
+                                <b>Service Engineer :</b> <ui:outputText value="{!v.mainWrap.serviceRequestTeam}" />
+                            </td>
+                            <td width="35%">
+                                <b>Engine Model :</b> <ui:outputText value="{!v.mainWrap.objSR.Engine_Model__c}" />                        
+                            </td>
+                            <td width="30%">
+                                <b>Service Request Type :</b> <ui:outputText value="{!v.mainWrap.objSR.Case_Type__c}" /> 
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>In Service Date :</b> 
+                                <ui:outputDate  value="{!v.mainWrap.objSR.InServiceDate__c}"  format="d/MM/y" />
+                            </td>
+                            <td >
+                                <b>Engine Run Hours :</b> <ui:outputText value="{!v.mainWrap.objSR.Engine_Run_Hours__c}" />                        
+                            </td>
+                            <td rowspan="2">
+                                <b>Control Panel Type :</b> <ui:outputText value="{!v.mainWrap.objAsset.Control_Panel_Type__c }" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>Application :</b> <ui:outputText value="{!v.mainWrap.objAsset.Applications__c}" />
+                            </td>
+                            <td >
+                                <b>Alternator Make :</b> <ui:outputText value="{!v.mainWrap.objAsset.Alternator_Make__c}" />                        
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="1" style="border-bottom:none;border-right:none;">
+                                <b>Customer Complaint :</b> 
+                            </td>
+                            <td colspan="2" style="border-bottom:none;border-left:none;">
+                                <ui:outputText value="{!v.mainWrap.objSR.Issue_Reported__c}" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><b>Observations</b></td>
+                            <td colspan="2" style="border-bottom:none;border-left:none;border-top:none;"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" style="padding: 0px;">
+                                <table border="1px solid black" style="border-spacing: 0px;padding: 0px;" width="100%">
+                                    <tr>
+                                        <td width="25%" ><b>Engine Cleanliness</b></td>
+                                        <td width="25%" >
+                                            <ui:outputText value="{!v.mainWrap.objSR.Engine_Cleanliness__c}" /></td>
+                                        <td width="25%" ><b>Fan Belt Condition</b></td>
+                                        <td width="25%" ><ui:outputText value="{!v.mainWrap.objSR.Fan_Belt_Condition__c}" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td width="25%" >
+                                            <b>Radiator Cleanliness</b>
+                                        </td>
+                                        <td width="25%" >
+                                            <ui:outputText value="{!v.mainWrap.objSR.Radiator_Cleanliness__c}" />
+                                        </td>
+                                        <td width="25%" >
+                                            <b>Radiator Hoses Condition</b>
+                                        </td>
+                                        <td width="25%" >
+                                            <ui:outputText value="{!v.mainWrap.objSR.Radiator_Hoses_Condition__c}" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="25%" >
+                                            <b>Lube Oil Level</b>
+                                        </td>
+                                        <td width="25%" >
+                                            <ui:outputText value="{!v.mainWrap.objSR.Lube_Oil_Level__c}" />
+                                        </td>
+                                        <td width="25%" >
+                                            <b>Battery Electrolyte</b>
+                                        </td>
+                                        <td width="25%" >
+                                            <ui:outputText value="{!v.mainWrap.objSR.Battery_Electrolyte__c}" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="25%" >
+                                            <b>Lube Oil Details</b>
+                                        </td>
+                                        <td width="25%" >
+                                            <ui:outputText value="{!v.mainWrap.objSR.Lube_Oil_details__c}" />
+                                        </td>
+                                        <td width="25%" >
+                                            <b>Coolant Make/Level</b>
+                                        </td>
+                                        <td width="25%" >
+                                            <ui:outputText value="{!v.mainWrap.objSR.Coolant_Level__c}" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="25%" >
+                                            <b>Leakages-Air, Oil, Fuel, Coolant</b>
+                                        </td>
+                                        <td width="25%" >
+                                            <ui:outputText value="{!v.mainWrap.objSR.Leakages__c}" />
+                                        </td>
+                                        <td width="25%" >
+                                            <b>Fuel  Visual Condition</b>
+                                        </td>
+                                        <td width="25%" >
+                                            <ui:outputText value="{!v.mainWrap.objSR.Fuel_Visual_Condition__c}" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="25%">
+                                            <b>Diagnostic: -</b>
+                                        </td>
+                                        <td width="25%">
+                                            <ui:outputText value="{!v.mainWrap.objSR.Diagnostic__c}" />
+                                        </td>
+                                        <td width="50%" colspan ="2"></td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="100%" colspan ="3">
+                                <b><u>Repair and Testing: -</u></b><br/>
+                                <ui:outputText value="{!v.mainWrap.objSR.Repair_Testing__c}" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="100%" colspan ="3" >
+                                <b>Some pictures are attached below : - </b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                <div class="slds-grid slds-wrap">
+                                    <aura:iteration items="{!v.lstContentDoc}" var="content">
+                                        <div class="slds-col slds-size_1-of-1 slds-small-size_1-of-1 slds-medium-size_1-of-1 slds-large-size_1-of-3" >
+                                            <div class="slds-box slds-box_x-small slds-text-align_center slds-m-around_x-small" style="height: 12rem;" >
+                                                <img src="{!v.prefixURL + content.LatestPublishedVersionId}" style="height: 10rem;"/>
+                                                <center><b>{!content.Title}</b></center>
+                                            </div>
+                                        </div>
+                                    </aura:iteration>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                    <br/>
+                    <table border="1px solid black" width="100%" style="border-collapse: collapse; width:100%; font-family: Arial;font-size:15px;">
+                        <tr>
+                            <td colspan="4" >
+                                <b>Engineers Recommendation : </b>
+                                <ui:outputText value="{!v.mainWrap.objSR.Engineer_Recommendation__c}" /> <br/><br/> </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                <b>Customer Comments : </b> 
+                                <ui:InputTextArea  value="{!v.strCustomerCom}" rows="5"/> </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"></td>
+                            <td colspan="2">Engine Parameters</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"></td>
+                            <td ><b>Idle RPM</b></td>
+                            <td ><ui:outputText value="{!v.mainWrap.objSR.Idle_RPM__c}" /></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"></td>
+                            <td ><b>Rated RPM</b></td>
+                            <td ><ui:outputText value="{!v.mainWrap.objSR.Rated_RPM__c}" /></td>
+                        </tr>
+                        <tr>
+                            <td width="30%">Work Start Time :
+                                <ui:outputDateTime  value="{!v.mainWrap.objSR.Date_Time_Reported__c}" format="d/MM/y hh:mm a"/>
+                            </td>
+                            <td width="30%">Work Completion Time : 
+                                <ui:outputDateTime  value="{!v.mainWrap.objSR.Closed_Date_Time__c}" format="d/MM/y hh:mm a" />
+                            </td>
+                            <td width="20%"><b>Oil Pressure</b></td>
+                            <td width="20%"><ui:outputText value="{!v.mainWrap.objSR.Oil_Pressure__c}" /></td>
+                        </tr>
+                        <tr>
+                            <td style="border:none"></td>
+                            <td style="border:none"></td>
+                            <td ><b>Coolant Temp</b></td>
+                            <td ><ui:outputText value="{!v.mainWrap.objSR.Coolant_Temp__c}" /></td>
+                        </tr>
+                        <tr>
+                            <td style="border:none"></td>
+                            <td style="border:none"></td>
+                            <td ><b>Battery Voltage</b></td>
+                            <td ><ui:outputText value="{!v.mainWrap.objSR.Battery_Voltage__c}" /></td>
+                        </tr>
+                        <tr>
+                            <td style="border:none"></td>
+                            <td style="border:none"></td>
+                            <td ><b>Frequency</b></td>
+                            <td ><ui:outputText value="{!v.mainWrap.objSR.Frequency__c}" /></td>
+                        </tr>
+                        <tr>
+                            <td style="border:none">
+                                <ui:outputText value="{!v.mainWrap.serviceRequestOwner}" /></td>
+                            <td style="border:none">
+                                <ui:outputText  value="{!v.mainWrap.objContact.Name}" /></td>
+                            <td ><b>Amps /kilowatt (kW)</b></td>
+                            <td ><ui:outputText value="{!v.mainWrap.objSR.Amps__c}" /></td>
+                        </tr>
+                        <tr>
+                            <td style="border:none"><b>Engineer s Signature</b></td>
+                            <td style="border:none"><b>Customer Signature</b></td>
+                            <td ><b>Voltage</b></td>
+                            <td ><ui:outputText value="{!v.mainWrap.objSR.Voltage__c}" /></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="slds-col slds-size_1-of-12"></div>
+            </div><br/>
+            <div class="slds-grid slds-wrap" style="background-color:#FFF;">
+                <div class="slds-col slds-size_1-of-1 slds-p-around_small slds-text-align_center">
+                    <lightning:button label="Next" onclick="{!c.submitJS}" class="slds-button slds-button_brand"/>
+                </div>
+            </div>
+        </div>
+        <aura:set attribute="else">
+            <aura:if isTrue="{!!v.showFeedBackForm}">
+                <c:surveyUI ParentRecordId="{!v.recordId}" strCustomerCom="{!v.strCustomerCom}" UserIp="{!v.UserIp}"/>
+                <aura:set attribute="else">
+                    <center>
+                        <h1 style="margin-top:20%">Sorry ! This link has been disabled. </h1>
+                        <a href="http://www.powerparts.in/index.html">Visit PowerParts site!</a>
+                    </center>
+                </aura:set>
+            </aura:if>
+        </aura:set>
+    </aura:if>
+    
+    <!--********************************** For Success/Error Message. Code starts********************************-->
+    <div class="{! empty(v.SuccessMessage) &amp;&amp; empty(v.ErrorMessage) ? 'slds-hide' : 'slds-show'}">
+        <div class="slds-modal slds-fade-in-open slds-modal--prompt" aura:id="ErrorDisplayModal" role="alertdialog" tabindex="-1" aria-labelledby="prompt-heading-id" aria-describedby="prompt-message-wrapper">
+            <div class="slds-modal__container">
+                <div class="{! empty(v.SuccessMessage) ? 'slds-modal__header slds-theme--error slds-theme--alert-texture' : 'slds-modal__header slds-theme--success slds-theme--alert-texture'}">
+                    <lightning:buttonIcon class="slds-button slds-modal__close slds-button__icon slds-button--icon-inverse"  alternativeText="Close" variant="bare"  iconName="utility:close" size="large" onclick="{!c.handleHideErrorDisplayModal}" />
+                    
+                    <h2 class="slds-text-heading--medium" id="prompt-heading-id">
+                        <div style="{! empty(v.SuccessMessage) ? 'display:none;' : ''}">
+                            <lightning:buttonIcon class="slds-button slds-button--icon-inverse"  alternativeText="Success" variant="bare"  iconName="utility:success" size="large" />
+                            &nbsp; 
+                            <b>Success</b>
+                        </div>
+                        <div style="{! empty(v.ErrorMessage) ? 'display:none;' : ''}">
+                            <lightning:buttonIcon class="slds-button slds-button--icon-inverse"  alternativeText="Error" variant="bare"  iconName="utility:warning" size="large" />
+                            &nbsp;
+                            <b>Error</b>
+                        </div>
+                    </h2>
+                </div>
+                
+                <div class="slds-modal__content slds-p-around--medium">
+                    <div class="slds-grid slds-grid--align-center">
+                        <div class="slds-form-element__control slds-size--1-of-1" style="{! empty(v.SuccessMessage) ? 'display:none;' : ''}">
+                            <b>{!v.SuccessMessage}</b>
+                        </div>
+                        <div class="slds-form-element__control slds-size--1-of-1" style="{! empty(v.ErrorMessage) ? 'display:none;' : ''}">
+                            <b>{!v.ErrorMessage}</b>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="slds-modal__footer slds-theme--default">
+                    <lightning:button label="Close" class="slds-button slds-button_brand" onclick="{!c.handleHideErrorDisplayModal}"/>
+                </div>
+            </div>
+        </div>
+        <div class="slds-backdrop slds-backdrop--open"></div>
+    </div>
+    
+    <!--********************************** For Success/Error Message. Code ends********************************-->
+    
+    <!-- *********************************** SPINNER CODE START *********************************** -->
+    <aura:if isTrue="{!v.spinnerIsVisibile}">
+        <lightning:spinner alternativeText="Loading" size="medium" variant="brand"/>
+    </aura:if>
+    <!-- *********************************** SPINNER CODE END ************************************ -->
+</aura:component>

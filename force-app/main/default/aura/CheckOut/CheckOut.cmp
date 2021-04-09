@@ -1,0 +1,55 @@
+<aura:component controller="CheckOutcls" implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction" access="global" >
+    <aura:handler name="init" value="this" action="{!c.doInit}" />
+    <aura:attribute name="spinnerLoaded" type="Boolean" default = "true"/>
+    <aura:attribute name="ErrorMessage" type="String" default=""/>
+    <aura:attribute name="SuccessMessage" type="String" default=""/>
+    <div class="slds-p-around--medium">
+       
+        <aura:if isTrue="{!v.spinnerLoaded}">
+            <lightning:spinner variant="brand" size="large" aura:id="mySpinner" alternativeText="Submitting..."/>
+        </aura:if>
+        
+        <!--********************************** For Success/Error Message. Code starts********************************-->
+        <!--************************************************************************************-->
+        <div class="{! empty(v.SuccessMessage) &amp;&amp; empty(v.ErrorMessage) ? 'slds-hide' : 'slds-show'}">
+            <div class="slds-modal slds-fade-in-open slds-modal--prompt" aura:id="ErrorDisplayModal" role="alertdialog" tabindex="-1" aria-labelledby="prompt-heading-id" aria-describedby="prompt-message-wrapper">
+                <div class="slds-modal__container">
+                    <div class="{! empty(v.SuccessMessage) ? 'slds-modal__header slds-theme--error slds-theme--alert-texture' : 'slds-modal__header slds-theme--success slds-theme--alert-texture'}">
+                        <lightning:buttonIcon class="slds-button slds-modal__close slds-button__icon slds-button--icon-inverse"  alternativeText="Close" variant="bare"  iconName="utility:close" size="large" onclick="{!c.handleHideErrorDisplayModal}" />
+                        
+                        <h2 class="slds-text-heading--medium" id="prompt-heading-id">
+                            <div style="{! empty(v.SuccessMessage) ? 'display:none;' : ''}">
+                                <lightning:buttonIcon class="slds-button slds-button--icon-inverse"  alternativeText="Success" variant="bare"  iconName="utility:success" size="large" />
+                                &nbsp; 
+                                <b>Success</b>
+                            </div>
+                            <div style="{! empty(v.ErrorMessage) ? 'display:none;' : ''}">
+                                <lightning:buttonIcon class="slds-button slds-button--icon-inverse"  alternativeText="Error" variant="bare"  iconName="utility:warning" size="large" />
+                                &nbsp;
+                                <b>Error</b>
+                            </div>
+                        </h2>
+                    </div>
+                    
+                    <div class="slds-modal__content slds-p-around--medium">
+                        <div class="slds-grid slds-grid--align-center">
+                            <div class="slds-form-element__control slds-size--1-of-1" style="{! empty(v.SuccessMessage) ? 'display:none;' : ''}">
+                                <b>{!v.SuccessMessage}</b>
+                            </div>
+                            <div class="slds-form-element__control slds-size--1-of-1" style="{! empty(v.ErrorMessage) ? 'display:none;' : ''}">
+                                <b>{!v.ErrorMessage}</b>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="slds-modal__footer slds-theme--default">
+                        <lightning:button label="Close" onclick="{!c.handleHideErrorDisplayModal}" class="slds-button slds-button_brand2"/>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-backdrop slds-backdrop--open"></div>
+        </div>
+        
+        <!--********************************** For Success/Error Message. Code ends********************************-->
+    </div>
+</aura:component>

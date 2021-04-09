@@ -1,0 +1,62 @@
+<aura:component controller="classCreateDeliveryNoteLIghtngComp" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:hasSObjectName,forceCommunity:availableForAllPageTypes,force:lightningQuickActionWithoutHeader" access="global" >
+    <ltng:require styles="{!$Resource.popupCSS}" />
+    <aura:handler name="init" value="{!this}" action="{!c.doinit}" />
+    <aura:attribute name="wrapMains" type="object" />
+    <aura:attribute name="disableCheckBox" type="Boolean" />
+
+    <aura:html tag="style">
+        .cuf-content {
+        padding: 0 0rem !important;
+        }
+        .slds-p-around--medium {
+        padding: 0rem !important;
+        }       
+        .slds-modal__content{
+        overflow-y:hidden !important;
+        height:unset !important;
+        max-height:unset !important;
+        }
+    </aura:html>    
+        <div class="slds-table--header-fixed_container slds-scrollable_y" style="height:10rem;">
+                <table class="slds-table slds-table--bordered slds-table_striped slds-table--cell-buffer slds-max-medium-table--stacked-horizontal" >
+                    <thead>
+                        <tr class="slds-line-height_reset">
+                            <th class="" scope="col" style="width: 1rem;">
+                                <div class="slds-truncate slds-cell-wrap" title="checkbox"><ui:inputCheckbox aura:id="cboxRow" change="{!c.selectAll}"/></div>
+                            </th>
+                            <th class="" scope="col" style="width: 5rem;">
+                                <div class="slds-truncate slds-cell-wrap" title="Product Number">Product Number</div>
+                            </th>
+                            <th class="" scope="col" style="width: 2rem;">
+                                <div class="slds-truncate slds-cell-wrap " title="Product Name">Product Name</div>
+                            </th>
+                            <th class="" scope="col" style="width: 2rem;">
+                                <div class="slds-truncate slds-cell-wrap" title="Actual Qty">Actual Qty</div>
+                            </th>
+                            <th class="" scope="col" style="width: 2rem;">
+                                <div class="slds-truncate slds-cell-wrap" title="Quantity">Quantity</div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody style="overflow-y: scroll;">
+                        <aura:iteration items="{!v.wrapMains.wrapChildlst}" var="cusProd">
+                            <tr width="100%">
+                                
+                                  <td class="dataCell" style="width: 8rem;" ><lightning:input type="checkbox" value="{!cusProd.isSelected}" checked="{!cusProd.isSelected}" disabled="{!cusProd.checkboxDisable}"/></td>
+                                <td class="dataCell" style="width: 8rem;"><a href="{! '/' + cusProd.objDNLI.Product_Part__c}"> {!cusProd.soliChild.Product_Part__r.Name}</a></td>
+                                <td class="dataCell" style="width: 9rem;">{!cusProd.soliChild.Product_Part__r.Part_Name__c}</td>
+                                <td class="dataCell" style="width: 7rem;">{!cusProd.soliChild.Quantity__c}</td>
+                                <td class="dataCell" style="width: 7rem;"><lightning:input type="Number" value="{!cusProd.reMaininQTY}" disabled="{!cusProd.checkboxDisable}"/></td>
+
+                            </tr> 
+                        </aura:iteration>
+                    </tbody>
+                </table>
+           </div>
+    <footer>
+        <div class="modal-footer slds-modal__footer">      
+                    <lightning:button variant="brand" label="Save" onclick="{!c.createDeliveryNote}"/> 
+                    <lightning:button variant="brand" label="Cancel" onclick="{!c.cancel}"/>  
+                     </div>
+                </footer>
+</aura:component>

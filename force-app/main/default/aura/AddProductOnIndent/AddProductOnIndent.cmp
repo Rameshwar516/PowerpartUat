@@ -1,0 +1,233 @@
+<aura:component controller="AddProductIndentCtrl" implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickActionWithoutHeader" access="global" >
+	   <ltng:require styles="{!$Resource.popupCSS}" />
+    <aura:handler name="init" value="{!this}" action="{!c.doinit}" />
+    <aura:attribute name="wrapMain" type="object" />
+    <aura:attribute name="isListOpen12" type="boolean" default = "false" />
+    <aura:attribute name="MainProd" type="string" default = "" />
+    <aura:attribute name="showSection" type="boolean" default = "false"/>
+    <aura:attribute name="IsselectProduct" type="boolean" default = "false"/>
+    <aura:attribute name="showPicklist" type="boolean" default = "true"/>
+    <aura:attribute name ="relatedrecordId" type="string" default="" />
+    <aura:attribute name="recordId" type="string" />
+    <aura:attribute name="msg" type="String" />
+    <aura:attribute name="strPriceBookId" type="String" />
+    <aura:attribute name="CloseSavePopup" type="boolean" default = "false"/>
+    
+    <aura:handler event="aura:waiting" action="{!c.showSpinner}"/>
+    <aura:handler event="aura:doneWaiting" action="{!c.hideSpinner}"/>
+    <aura:attribute name="Spinner" type="boolean" default="false"/>
+    <aura:attribute name="ErrorMessage" type="String" default=""/>
+    <aura:attribute name="SuccessMessage" type="String" default=""/>
+    <aura:attribute name="totalprice" type="string" default=""/>
+    <aura:html tag="style">
+        .cuf-content {
+        padding: 0 0rem !important;
+        }
+        .slds-p-around--medium {
+        padding: 0rem !important;
+        }       
+        .slds-modal__content{
+        overflow-y:hidden !important;
+        height:unset !important;
+        max-height:unset !important;
+        }
+    </aura:html>
+    <div class="slds-modal__header">
+        <h2 class="slds-text-heading--medium" id="prompt-heading-id">
+            <div>
+                <b>Add Products</b>
+            </div>
+        </h2>
+    </div>
+    <div class="slds-grid slds-wrap">
+        <div class="slds-col slds-size_2-of-12">
+            
+        </div>
+         <div class="slds-col slds-size_8-of-12">
+      <!--      <aura:if isTrue="{!v.showPicklist}">
+                <lightning:select name="PriceBook" label="Select Price Book" required="true" onchange="{!c.onSelectChange}" value="{!v.strPriceBookId}">
+                    <option value="">choose one...</option>
+                    <aura:iteration items="{!v.wrapMain.lstPriceBook}" var="Pb">
+                        <option value="{!Pb.Id}">{!Pb.Name}</option>
+                    </aura:iteration>
+                </lightning:select>
+            </aura:if>
+-->
+        </div>	 
+        <div class="slds-col slds-size_2-of-12">
+            
+        </div>
+    </div>
+    <aura:if isTrue="{!!v.showPicklist}">
+        <aura:if isTrue="{!!v.showSection}">
+            <Div>
+                
+                 <c:SearchProduct MainValue="{!v.MainProd}"
+                                 DigValue="{!v.wrapMain.lstWrapp}"
+                                 MainLabel="{!v.recordId}"
+                                 isDisplay="{!v.isListOpen12}"/>
+			<div class="slds-table--header-fixed_container">
+                <div class="slds-scrollable_y" style="height:250Px;">
+                    <table class="slds-table slds-table--bordered slds-table_striped slds-table--cell-buffer slds-max-medium-table--stacked-horizontal slds-table--header-fixed" width="100%">
+                        <thead>
+                                <tr class="slds-line-height_reset">
+                                    <th class="" scope="col" style="width: 1rem;">
+                                        <div class="slds-truncate slds-cell-fixed" title="checkbox"></div>
+                                    </th>
+                                    <th class="" scope="col" style="width: 5rem;">
+                                        <div class="slds-truncate slds-cell-fixed" title="Product Name">Product Number</div>
+                                    </th>
+                                    <th class="" scope="col" style="width: 2rem;">
+                                        <div class="slds-truncate slds-cell-fixed" title="Product Code">Product Name</div>
+                                    </th>
+                                    <th class="" scope="col" style="width: 2rem;">
+                                        <div class="slds-truncate slds-cell-fixed" title="List Price">List Price</div>
+                                    </th>
+                                   <!-- <th class="" scope="col" style="width: 2rem;">
+                                        <div class="slds-truncate slds-cell-fixed" title="Product Description">Product Description</div>
+                                    </th>
+                                     
+                                    <th class="" scope="col" style="width: 2rem;">
+                                        <div class="slds-truncate slds-cell-fixed" title="Product Family">Product Family</div>
+                                    </th>	-->
+                                </tr>
+                            </thead>
+                        <tbody>
+                            <aura:iteration items="{!v.wrapMain.lstWrapp}" var="cusProd">
+                                <tr width="100%">
+                                    
+                                    <td class="dataCell" style="width: 8rem;" ><lightning:input type="checkbox" value="{!cusProd.isSelected}" checked="{!cusProd.isSelected}" onchange="{!c.Productselect}"/></td>
+                                    <td class="dataCell" style="width: 8rem;"><a href="{! '/' + cusProd.objProd.Id}"> {!cusProd.objProd.Name}</a></td>
+                                    <td class="dataCell" style="width: 9rem;">{!cusProd.objProd.Part_Name__c}</td>
+                                    <td class="dataCell" style="width: 7rem;">{!cusProd.objProd.List_Price_Standard_price__c}</td>
+                                   <!-- <td class="dataCell" style="width: 17rem;">{!cusProd.objProd.C3CSP__Description__c}</td>
+                                    <td class="dataCell" style="width: 8rem;">{!cusProd.objProd.C3CSP__Product_Family__c}</td>	-->
+                                 </tr> 
+                            </aura:iteration>
+                        </tbody>
+                    </table>
+                </div>
+			</div>
+            </Div>
+            
+        </aura:if>
+        <aura:if isTrue="{!v.showSection}">
+            <Div > 
+                <div class="slds-table--header-fixed_container" style="width:100%;">
+                <div class="slds-scrollable_y" style="height:250Px;">
+                    <table class="slds-table slds-table--bordered slds-table--striped slds-table--cell-buffer">
+                    <thead>
+                        <tr class="slds-line-height_reset">
+                            <th class="" scope="col">
+                                <div class="slds-truncate " title="Product Name" ><span style = "color:red;">*</span>PRODUCT</div>
+                            </th>
+                            <th class="" scope="col">
+                                <div class="slds-truncate" title="List Price"><span style = "color:red;">*</span>LIST PRICE</div>
+                            </th>
+                            <th class="" scope="col">
+                                <div class="slds-truncate" title="Product Code" ><span style = "color:red;">*</span>QUANTITY</div>
+                            </th>
+                            <th class="" scope="col">
+                                <div class="slds-truncate " title="List Price" ><span style = "color:red;" >*</span>SALES PRICE</div>
+                            </th>
+                            <th class="" scope="col">
+                                <div class="slds-truncate " title="Total Price" ><span style = "color:red;" >*</span>TOTAL PRICE</div>
+                            </th>
+                            <th class="" scope="col">
+                                <div class="slds-truncate " title="Product Description"  > DATE </div>
+                            </th>
+                            <th class="" scope="col">
+                                <div class="slds-truncate " title="Product Family" >LINE DESCRIPTION</div>
+                            </th>
+                        
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <aura:iteration items="{!v.wrapMain.lstWrappTwo}" var="cusProdTwo" indexVar="index">
+                            <tr class="slds-line-height_reset" id="{!index}">
+                                
+                                <td class="dataCell"><div class="slds-truncate" title="Check In Time"><a href="{! '/' + cusProdTwo.objProdchild.Id}" > {!cusProdTwo.objProdchild.ProductName__c}</a></div></td>
+                                <td class="dataCell"><div class="slds-truncate" title="Check In Time"><ui:outputText    aura:id="text-input-id-1" class="field" value="{!cusProdTwo.objProdchild.List_Price__c}"/></div></td>
+                                <td class="dataCell"><div class="slds-truncate" title="Check In Time"><lightning:input id="quantity" name="{!index}" type="number" value="{!cusProdTwo.objProdchild.Quantity__c}" onchange="{!c.actionchange}"/></div></td>
+                                <td class="dataCell"><div class="slds-truncate" title="Check In Time"><lightning:input id="price" name="{!index}" type="number" value="{!cusProdTwo.objProdchild.Sales_Price__c}" onchange="{!c.actionchange}"/></div></td>
+                                <td class="dataCell"><div class="slds-truncate" title="Check In Time"><lightning:input  type="number" value="{!cusProdTwo.objProdchild.Total_Amount__c}"/></div></td>
+                                <td class="dataCell"><div class="slds-truncate" title="Check In Time"><lightning:input  type="date" value="{!cusProdTwo.objProdchild.Delivery_Date__c}"/></div></td>
+                                <td class="dataCell"><div class="slds-truncate" title="Check In Time"><lightning:input  type="Text" value="{!cusProdTwo.objProdchild.Description__c}"/></div></td>
+                                
+                            </tr> 
+                        </aura:iteration>
+                    </tbody>
+                </table>
+				</div>
+				</div>
+            </Div>
+        </aura:if>
+    </aura:if>
+    <br/><br/>
+    <div class="slds-modal__footer">
+        <b>
+            <aura:if isTrue="{!v.IsselectProduct}">
+                <lightning:button aura:id="button" class="button" label="Next" onclick="{!c.nextJs}"/>
+            </aura:if>
+            <aura:if isTrue="{!v.showSection}">
+                <div style = "float : left">
+                    <lightning:button aura:id="button" class="button" label="Back" onclick="{!c.BackJs}"/>
+                </div>
+                <lightning:button aura:id="button" class="button" label="Save" onclick="{!c.SaveJS}"/>
+            </aura:if>
+            <lightning:button label="Cancel" onclick="{!c.cancel}" /></b>
+    </div>
+    
+    
+    <!--********************************** For Success/Error Message. Code starts********************************-->
+    <!--************************************************************************************-->
+    <div class="{! empty(v.wrapMain.strMessage) ? 'slds-hide' : 'slds-show'}">
+        <div class="slds-modal slds-fade-in-open slds-modal--prompt" aura:id="ErrorDisplayModal" role="alertdialog" tabindex="-1" aria-labelledby="prompt-heading-id" aria-describedby="prompt-message-wrapper">
+            <div class="slds-modal__container">
+                <div class="{! v.wrapMain.success == false ? 'slds-modal__header slds-theme--error slds-theme--alert-texture' : 'slds-modal__header slds-theme--success slds-theme--alert-texture'}">
+                    <lightning:buttonIcon class="slds-button slds-modal__close slds-button__icon slds-button--icon-inverse"  alternativeText="Close" variant="bare"  iconName="utility:close" size="large" onclick="{!c.handleHideErrorDisplayModal}" />
+                    
+                    <h2 class="slds-text-heading--medium" id="prompt-heading-id">
+                        <div style="{! v.wrapMain.success == true ? '' : 'display:none;'}">
+                            <lightning:buttonIcon class="slds-button slds-button--icon-inverse"  alternativeText="Success" variant="bare"  iconName="utility:success" size="large" />
+                            &nbsp; 
+                            <b>Success</b>
+                        </div>
+                        <div style="{! v.wrapMain.success == false ? '' : 'display:none;'}">
+                            <lightning:buttonIcon class="slds-button slds-button--icon-inverse"  alternativeText="Error" variant="bare"  iconName="utility:warning" size="large" />
+                            &nbsp;
+                            <b>Error</b>
+                        </div>
+                    </h2>
+                </div>
+                
+                <div class="slds-modal__content slds-p-around--medium">
+                    <div class="slds-grid slds-grid--align-center">
+                        <div class="slds-form-element__control slds-size--1-of-1" style="text-align:center;">
+                            <b>{!v.wrapMain.strMessage}</b>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="slds-modal__footer slds-theme--default">
+                    <button class="slds-button slds-button--neutral" onclick="{!c.handleHideErrorDisplayModal}">Close</button>
+                </div>
+            </div>
+        </div>
+        <div class="slds-backdrop slds-backdrop--open"></div>
+    </div>
+    
+    <!--********************************** For Success/Error Message. Code ends********************************-->
+    <!--************************************************************************************-->
+    
+    <!--For Loading spinner-->
+    <aura:if isTrue="{!v.Spinner}">
+        <div aura:id="spinnerId" class="slds-spinner_container">
+            <div class="slds-spinner--brand  slds-spinner slds-spinner--large slds-is-relative" role="alert">
+                <span class="slds-assistive-text">Loading</span>
+                <div class="slds-spinner__dot-a"></div>
+                <div class="slds-spinner__dot-b"></div>
+            </div>
+        </div>
+    </aura:if>
+</aura:component>

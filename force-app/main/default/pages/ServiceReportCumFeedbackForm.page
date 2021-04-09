@@ -1,0 +1,20 @@
+<apex:page showHeader="false" standardStylesheets="false" id="pgId" controller="clsGetIP">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <apex:includeLightning />   
+    <div id="lightning" />
+        <script>
+        var myRecordId = "{!$CurrentPage.parameters.Id}"
+        $Lightning.use("c:ServiceReportApp", function() {
+            $Lightning.createComponent("c:ServiceReportCMP",
+            {
+                recordId : myRecordId,
+                UserIp : '{!ipAddress}'
+            },
+            "lightning",
+            function(cmp) {
+                
+            });
+        });
+
+    </script>
+</apex:page>
