@@ -512,51 +512,57 @@
             <table style="width:100%; border:none; margin-top:40px;">
                 
                 <tr style="border-top:1px solid black; border-bottom: none;">
-                    <td style="border-bottom: none; border-left: none; border-right: none;" valign="top" >
+                    <td style="border-bottom: none; border-left: none; border-right: none; width:5%; text-align:center;" valign="top" >
                         <b>S.No</b>
                     </td>
-                    <td style="border-bottom: none; border-left: none; border-right: none;" valign="top" >
-                        <b>Box/Case Type</b>
+                    <td style="border-bottom: none; border-left: none; border-right: none; width:15%; text-align:center;" valign="top" >
+                        <b>Box/Case <br/>Type</b>
                     </td>
-                    <td style="border-bottom: none; border-left: none; border-right: none;" valign="top" colspan="2">
-                        <b>Box/Case Details</b>
+                    <td style="border-bottom: none; border-left: none; border-right: none; width:10%; text-align:center;" valign="top" colspan="2">
+                        <b>Box/Case <br/>Details</b>
                     </td>
-                    <td style="border-bottom: none; border-left: none; border-right: none;" valign="top">
-                        <b>Length(INCH)</b>
+                    <td style="border-bottom: none; border-left: none; border-right: none; width:10%; text-align:center;" valign="top">
+                        <b>Length<br/>(INCH)</b>
                     </td>
-                    <td style="border-bottom: none; border-left: none; border-right: none;" valign="top">
-                        <b>Width(INCH)</b>
+                    <td style="border-bottom: none; border-left: none; border-right: none; width:10%; text-align:center;" valign="top">
+                        <b>Width<br/>(INCH)</b>
                     </td>
-                     <td style="border-bottom: none; border-left: none; border-right: none;" valign="top">
-                        <b>Height(INCH)</b>
+                     <td style="border-bottom: none; border-left: none; border-right: none; width:10%; text-align:center;" valign="top">
+                        <b>Height<br/>(INCH)</b>
                     </td>
-                     <td style="border-bottom: none; border-left: none; border-right: none;" valign="top">
-                        <b>Gross Wt(Kgs)</b>
+                     <td style="border-bottom: none; border-left: none; border-right: none; width:10%; text-align:center;" valign="top">
+                        <b>Gross <br/>Wt(Kgs)</b>
+                    </td>
+                    <td style="border-bottom: none; border-left: none; border-right: none; width:30%; text-align:center;" valign="top">
+                        <b>Remark</b>
                     </td>
                 </tr> 
                 <apex:variable var="idx" value="{!0}"/>
                 <apex:repeat value="{!Litem}" var="li">
                     <tr style="border-top:1px solid black; border-bottom: none;">
-                        <td style="border-bottom: none; border-left: none; border-right: none;" valign="top" >
+                        <td style="border-bottom: none; border-left: none; border-right: none; text-align:center;" valign="top" >
                             <apex:variable var="idx" value="{!idx + 1}" />  {!idx}
                         </td>
-                        <td style="border-bottom: none; border-left: none; border-right: none;" valign="top" >
+                        <td style="border-bottom: none; border-left: none; border-right: none; text-align:center;" valign="top" >
                             {!li.Box_Type__c}
                         </td>
-                        <td style="border-bottom: none; border-left: none; border-right: none;" valign="top" colspan="2">
+                        <td style="border-bottom: none; border-left: none; border-right: none; text-align:center;" valign="top" colspan="2">
                            {!li.BOX_No__c}
                         </td>
-                        <td style="border-bottom: none; border-left: none; border-right: none;" valign="top">
+                        <td style="border-bottom: none; border-left: none; border-right: none; text-align:center;" valign="top">
                             {!li.Length_Inches_CMS__c}
                         </td>
-                        <td style="border-bottom: none; border-left: none; border-right: none;" valign="top">
+                        <td style="border-bottom: none; border-left: none; border-right: none; text-align:center;" valign="top">
                             {!li.Width_Inches_CMS__c}
                         </td>
-                         <td style="border-bottom: none; border-left: none; border-right: none;" valign="top">
+                         <td style="border-bottom: none; border-left: none; border-right: none; text-align:center;" valign="top">
                             {!li.Height_Inches_CMS__c}
                         </td>
-                         <td style="border-bottom: none; border-left: none; border-right: none;" valign="top">
+                         <td style="border-bottom: none; border-left: none; border-right: none; text-align:center;" valign="top">
                             {!li.Gross_Weight_Kgs__c}
+                        </td>
+                        <td style="border-bottom: none; border-left: none; border-right: none; text-align:center;" valign="top">
+                            {!li.remark__c}
                         </td>
                     </tr> 
                 </apex:repeat>

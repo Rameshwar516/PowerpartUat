@@ -69,7 +69,7 @@
     </head>
     <apex:form >
         <div class="header">
-            <table style="width:100%;border-collapse: collapse;">
+             <table style="width:100%;border-collapse: collapse;">
                 <tr>
                     <td style="border:none;padding:0px;" width="20%" valign="top">
                         <left>
@@ -78,21 +78,19 @@
                     </td>
                     <td style="border:none;padding:0px;" width="60%" valign="top">
                         <center>
-                            <b><apex:outputText value="POWERPARTS PRIVATE LIMITED" style="font-size:16px;font-family: Arial;" /></b><br/>
-                            <!--<b><apex:outputText value="Registered Office : " style="font-size:13px;font-family: Arial;" /></b>
-                            <apex:outputText value="N-122, Panchsheel Park, New Delhi - 100 017" style="font-size:11px;font-family: Arial;" /><br/><br/>-->
-                            <b><apex:outputText value="PPL HEAD OFFICE (GURGAON)" style="font-size:16px;font-family: Arial;" /></b><br/>
-                            <apex:outputText value="114, PACE CITY-I, SECTOR -37, GURGAON - 122 001, HARYANA (INDIA)" style="font-size:13px;font-family: Arial;" /><br/>
-                            <apex:outputText value="GSTIN  No. 06AABCP9737D1ZE  IEC No. 0598060456   PAN No. AABCP9737D" style="font-size:13px;font-family: Arial;" /><br/>
-                            
-                            <!-- <apex:outputText value="GSTIN  No. 06AABCP9737D1ZE  IEC No. 0598060456   PAN No. AABCP9737D" style="font-size:13px;font-family: Arial;" /><br/>
-                            <apex:outputText value="Our Banker.  BANK OF BARODA , 16, Parliament Street, New Delhi 110001" style="font-size:11px;font-family: Arial;" /><br/>
-                            <apex:outputText value="Bank A/C No.  05860500000002 " style="font-size:13px;font-family: Arial;" />&nbsp;&nbsp;&nbsp;
-                            <apex:outputText value="IFC/RTGS/NEFT. BARB0PARLIA" style="font-size:13px;font-family: Arial;" /><br/>-->
-                            <apex:outputText value=" Tel : 0124-4036614, 4019215  powerparts@powerparts.in" style="font-size:13px;font-family: Arial;" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <!-- <apex:outputText value="powerparts@powerparts.in" style="font-size:13px;font-family: Arial;" />-->
-                            <!--<br/><br/>
-                            <b style="border-style: solid;"><apex:outputText value="MATERIAL RECEIPT NOTE" style="font-size:13px;font-family: Arial;" /></b>--><br/>
+                            <b><apex:outputText value="POWERPARTS PRIVATE LIMITED" style="font-size:13px;font-family: Arial;" /></b><br/>
+                            <b><apex:outputText value="Registered Office : " style="font-size:11px;font-family: Arial;" /></b>
+                            <apex:outputText value="N-122, Panchsheel Park, New Delhi - 100 017" style="font-size:11px;font-family: Arial;" /><br/>
+                           
+                            <b style="font-size:13px;font-family: Arial;">{!pdfheader.Address_Header__c}</b><br/>
+                            <div style="font-size:11px;font-family: Arial;">{!pdfheader.Address_Line1__c}<br/>
+                            {!pdfheader.Address_Line_2__c}<br/>
+                            {!pdfheader.Gstin__c}<br/><br/>
+                            {!pdfheader.IEC_No__c}&nbsp;&nbsp;&nbsp;{!pdfheader.PAN_No__c}<br/>
+                            {!pdfheader.BANK__c}<br/>
+                            {!pdfheader.Bank_A_C_No__c}&nbsp;&nbsp;&nbsp;{!pdfheader.IFC_RTGS_NEFT__c}<br/>
+                            {!pdfheader.Email__c}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{!pdfheader.Tel__c} 
+                            </div>
                         </center>
                     </td>
                     <td style="border:none;padding:0px;" width="60%" valign="top">
@@ -1202,8 +1200,7 @@
                     </tr>
                     <tr>
                         <td colspan="22" style="line-height: 5;">
-                            <b><apex:outputText value="{!MRN__c.Remark__c} :" /> </b>
-                            
+                            <b><apex:outputText value="Remark :{!MRN__c.Remark__c}" /> </b>
                         </td>
                     </tr>
                     <tr>

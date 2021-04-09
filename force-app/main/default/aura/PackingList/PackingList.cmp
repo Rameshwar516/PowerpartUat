@@ -35,43 +35,43 @@
         </h2>
     </div>
             <Div>
-                <div class="slds-table--header-fixed_container" style="height:250px;">
-                    <div class="slds-scrollable_y" style="height:100%;">
+                <div class="slds-table--header-fixed_container" style="height:250px;  overflow-x:auto">
+                    <div class="slds-scrollable_y" style="height:100%; width:125%">
                         <table class="slds-table slds-table--bordered slds-table_striped slds-table--cell-buffer slds-max-medium-table--stacked-horizontal slds-table--header-fixed" >
                             <thead>
                                 <tr class="slds-line-height_reset">
-                                    <th class="" scope="col" style="width: 1rem;">
+                                    <th class="" scope="col" style="width: 1rem; text-align:center;">
                                         <div class="slds-truncate slds-cell-wrap" title="checkbox"></div>
                                     </th>
-                                    <th class="" scope="col" style="width: 5rem;">
+                                    <th class="" scope="col" style="width: 3rem; text-align:center;">
                                         <div class="slds-truncate slds-cell-wrap" title="Product Number">Product Number</div>
                                     </th>
-                                    <th class="" scope="col" style="width: 2rem;">
-                                        <div class="slds-truncate slds-cell-wrap " title="Product Name">Product Name</div>
+                                    <th class="" scope="col" style="width: 2rem; text-align:center;">
+                                        <div class="slds-truncate slds-cell-wrap" title="Product Name">Product Name</div>
                                     </th>
-                                    <th class="" scope="col" style="width: 2rem;">
+                                    <th class="" scope="col" style="width: 2rem; text-align:center;">
                                         <div class="slds-truncate slds-cell-wrap" title="Quantity">Quantity</div>
                                     </th>
-									<th class="" scope="col" style="width: 2rem;">
-                                        <div class="slds-truncate slds-cell-wrap" title="Box/Case Type">Box/Case Type</div>
+									<th class="" scope="col" style="width: 2.5rem; text-align:center;">
+                                        <div class="slds-truncate slds-cell-wrap" title="Box/Case Type">Box/Case <br/> Type</div>
                                     </th>
-                                    <th class="" scope="col" style="width: 2rem;">
+                                     <th class="" scope="col" style="width: 2rem; text-align:center;">
                                         <div class="slds-truncate slds-cell-wrap" title="Box No.">Box No.</div>
                                     </th>
-									<th class="" scope="col" style="width: 2rem;">
-                                        <div class="slds-truncate slds-cell-wrap" title="Length(INCH)">Length(INCH)</div>
+									<th class="" scope="col" style="width: 2rem; text-align:center;">
+                                        <div class="slds-truncate slds-cell-wrap" title="Length(INCH)">Length<br/>(INCH)</div>
                                     </th>
-									<th class="" scope="col" style="width: 2rem;">
-                                        <div class="slds-truncate slds-cell-wrap" title="Width(INCH)">Width(INCH)</div>
+									<th class="" scope="col" style="width: 2rem; text-align:center;">
+                                        <div class="slds-truncate slds-cell-wrap" title="Width(INCH)">Width<br/>(INCH)</div>
                                     </th>
-									<th class="" scope="col" style="width: 2rem;">
-                                        <div class="slds-truncate slds-cell-wrap" title="Height(INCH)">Height(INCH)</div>
+									<th class="" scope="col" style="width: 2rem; text-align:center;">
+                                        <div class="slds-truncate slds-cell-wrap" title="Height(INCH)">Height<br/>(INCH)</div>
                                     </th>
-                                    <th class="" scope="col" style="width: 2rem;">
-                                        <div class="slds-truncate slds-cell-wrap" title="Gross Weight(Kgs)">Gross Weight(Kgs)</div>
+                                    <th class="" scope="col" style="width: 2rem; text-align:center;">
+                                        <div class="slds-truncate slds-cell-wrap" title="Gross Weight(Kgs)">Gross<br/> Weight(Kgs)</div>
                                     </th>
 									
-									<th class="" scope="col" style="width: 2rem;">
+									<th class="" scope="col" style="width: 35rem; text-align:center;">
                                         <div class="slds-truncate slds-cell-wrap" title="Remark">Remark</div>
                                     </th>
 									
@@ -89,9 +89,9 @@
                                 <aura:iteration items="{!v.wrapMain.inrWrap}" var="cusProd">
                                     <tr width="100%">
                                         <td class="dataCell" style="width: 8rem;" ><lightning:input type="checkbox" value="{!cusProd.isSelected}" checked="{!cusProd.isSelected}" onchange="{!c.checkJs}"/></td>
-                                        <td class="dataCell" style="width: 8rem;"><a href="{! '/' + cusProd.objDNLI.Product_Part__c}"> {!cusProd.objDNLI.Product_Part__r.Name}</a></td>
-                                        <td class="dataCell" style="width: 9rem;">{!cusProd.objDNLI.Product_Part__r.Part_Name__c}</td>
-                                        <td class="dataCell" style="width: 7rem;">{!cusProd.objDNLI.Quantity__c}</td>
+                                        <td class="dataCell" style="width: 8rem; text-align:center;"><a href="{! '/' + cusProd.objDNLI.Product_Part__c}"> {!cusProd.objDNLI.Product_Part__r.Name}</a></td>
+                                        <td class="dataCell" style="width: 9rem; text-align:center;">{!cusProd.objDNLI.Product_Part__r.Part_Name__c}</td>
+                                        <td class="dataCell" style="width: 7rem; text-align:center;">{!cusProd.objDNLI.Quantity__c}</td>
 										<td class="dataCell" style="width: 8rem;" ><!--<lightning:input type="string" value="{!cusProd.strBoxType}"/>-->
 										<lightning:select value="{!cusProd.strBoxType}"  variant="label-hidden" class="label-hidden" >
 											<option value="">choose...</option>

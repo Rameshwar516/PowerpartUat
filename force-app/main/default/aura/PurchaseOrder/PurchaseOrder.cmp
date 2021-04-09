@@ -175,9 +175,9 @@
                                             <th scope="col" width="3%">
                                                 <div class="slds-truncate slds-cell-fixed" title="PO Quantity">PO Quantity</div>
                                             </th>
-                                            <th scope="col" width="3%">
+                                        <!--    <th scope="col" width="3%">
                                                 <div class="slds-truncate slds-cell-fixed" title="Unit">Unit</div>
-                                            </th>
+                                            </th>-->
                                             <th scope="col" width="5%">
                                                 <div class="slds-truncate slds-cell-fixed" title="Rate">Rate ({!v.currency})</div>
                                             </th>
@@ -209,8 +209,8 @@
                                                 <div class="slds-truncate slds-cell-fixed" title="Net Amount">Net Amount ({!v.currency})</div>
                                             </th>
                                             <th scope="col" width="5%">
-                                                <div class="slds-truncate slds-cell-fixed" title="Delivery Date">
-                                                    Delivery Date<br/>
+                                                <div class="slds-truncate slds-cell-fixed" title="Expected Date">
+                                                    Expected Date<br/>
                                                     <lightning:input type="checkbox" label="Same Date" name="input1" checked="{!v.isdeliverydate}" onchange="{!c.onChangeDeliveryJS}"/>
                                                 </div>
                                             </th>
@@ -351,11 +351,11 @@
                                                             </aura:if>
                                                         </div>
                                                     </td>
-                                                    <td scope="row" data-label="Unit" >
+                                                   <!-- <td scope="row" data-label="Unit" >
                                                         <div class="slds-truncate" title="Unit">
                                                             {!item.objPart.UOM__c}
                                                         </div>
-                                                    </td>
+                                                    </td>-->
                                                     <td scope="row" data-label="Rate" >
                                                         <div class="slds-truncate" title="Rate">
                                                             <aura:if isTrue="{!item.isEdit}">
@@ -458,8 +458,8 @@
                                                             </aura:if>
                                                         </div>
                                                     </td>
-                                                    <td scope="row" data-label="Delivery Date">
-                                                        <div class="slds-truncate" title="Delivery Date">
+                                                    <td scope="row" data-label="Expected Date">
+                                                        <div class="slds-truncate" title="{!item.DeliveryDate}">
                                                             <aura:if isTrue="{!item.isEdit}">
                                                                 <lightning:input type="Date" value="{!item.DeliveryDate}" onchange="{!c.onChangeDeliveryJS}"/>
                                                                 <aura:set attribute="else">
@@ -689,12 +689,17 @@
                                         </tbody>		
                                     </table>
                                 </div>
+                                
                             </div>
                         </div>
                         <div class="slds-col slds-size_2-of-12">
                             
                         </div>
                     </div>
+                </div>
+                <div class="slds-col slds-size_1-of-3 slds-p-around_small slds-text-align_center">
+                    <lightning:button label="Save" onclick="{!c.submitJS}" class="slds-button slds-button_brand"/>
+                    <lightning:button label="Cancel" onclick="{!c.cancelJS}" class="slds-button"/>
                 </div>
             </lightning:tab>
             <lightning:tab label="Address Details" id="three">

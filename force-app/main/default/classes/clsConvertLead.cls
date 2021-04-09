@@ -93,7 +93,7 @@ public with sharing class clsConvertLead
         try
         {
             string idRecordTypeId = '';
-            if(strRecordType != null && strRecordType != '' && strRecordType == 'Customer')
+            if(strRecordType != null && strRecordType != '')
             {
                 system.debug('...strRecordType ...'+strRecordType);
                 idRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get(strRecordType).getRecordTypeId();
@@ -363,6 +363,11 @@ public with sharing class clsConvertLead
                     sObj.put('BillingState', objEnq.State_Province__c);
                     sObj.put('BillingCountry', objEnq.Country__c); 
                     
+                    sObj.put('ShippingStreet', objEnq.Street__c);
+                    sObj.put('ShippingCity', objEnq.City__c);
+                    sObj.put('ShippingPostalCode', objEnq.Zip_Postal_Code__c);
+                    sObj.put('ShippingState', objEnq.State_Province__c);
+                    sObj.put('ShippingCountry', objEnq.Country__c); 
                 }
                 
                 if(objName.equalsIgnoreCase('Contact'))
@@ -391,7 +396,15 @@ public with sharing class clsConvertLead
                         sObj.put('OEM_Customer__c', objAccId);
                     
                     sObj.put('Contact_Person__c', objcontactid);
-                    // system.debug('Opportunity Contact_Person---- '+ConName.Id);   
+                    // system.debug('Opportunity Contact_Person---- '+ConName.Id); 
+
+                    sObj.put('Shipping_Street__c', objEnq.Street__c);
+                    sObj.put('Shipping_City__c', objEnq.City__c);
+                    sObj.put('Shipping_Zip_Postal_Code__c', objEnq.Zip_Postal_Code__c);
+                    sObj.put('Shipping_State_Province__c', objEnq.State_Province__c);
+                    sObj.put('Shipping_Country__c', objEnq.Country__c); 
+                    
+                    sObj.put('Is_Converted__c', true); 
                 }
                 
                 for(string fieldApi : apiMap.keySet())
@@ -463,6 +476,13 @@ public with sharing class clsConvertLead
                 sObj.put('Opportunity_Close_Date__c', system.Today()); 
                 if(string.isNotEmpty(objAccId))
                     sObj.put('OEM_Customer__c', objAccId);
+                
+                sObj.put('Shipping_Street__c', objEnq.Street__c);
+                sObj.put('Shipping_City__c', objEnq.City__c);
+                sObj.put('Shipping_Zip_Postal_Code__c', objEnq.Zip_Postal_Code__c);
+                sObj.put('Shipping_State_Province__c', objEnq.State_Province__c);
+                sObj.put('Shipping_Country__c', objEnq.Country__c); 
+                
                 sObj.put('Contact_Person__c', objcontactid);  
             }
             
@@ -473,7 +493,7 @@ public with sharing class clsConvertLead
                 {
                     
                     sObj.put(apiMap.get(fieldApi), objEnq.get(fieldApi));
-					
+                    
                 }
                 catch(Exception ex)
                 {

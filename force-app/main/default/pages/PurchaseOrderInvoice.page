@@ -671,8 +671,8 @@
                     <tr>
                         <td colspan="13">
                             <b><apex:outputText value="Amount in Words :- " /></b> 
-                            <b><apex:outputText value="PurchaseOrd.Currency__c" /></b> 
-                            <apex:outputText value="{!totalAmountaftertaxinWords}"/>
+                            <b><apex:outputText value="{!totalAmountaftertaxinWords}"/></b> 
+                            
                         </td>
                         <td colspan="5"><b><apex:outputText value="Total Amount Before Tax : " /></b></td>
                         <td colspan="2" style="text-align:right"> <apex:outputText value="{!totalAmountSumNotIncludedTax}" /></td>

@@ -22,8 +22,8 @@ public class ClassOnQuoteEmailSend {
                     }
                     wrap.objquote=Qtt[0];
                     if(wrap.objquote.Contact_Name__r.name!=null){
-                        wrap.emailbody='Hello'+' '+wrap.objquote.Contact_Name__r.name +',';
-                        wrap.emailbody= wrap.emailbody+' \n'+'\nPlease Find the attached Proforma Invoice details.\n'+'Thank you.';
+                        wrap.emailbody='Hello Mr.'+' '+wrap.objquote.Contact_Name__r.name +',';
+                        wrap.emailbody= wrap.emailbody+' \n'+'\nPlease Find the attached Quotation.\n'+'Thank you.';
                     }
                 }
             }

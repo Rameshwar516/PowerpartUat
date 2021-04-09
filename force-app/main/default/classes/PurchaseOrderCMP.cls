@@ -85,7 +85,7 @@ public class PurchaseOrderCMP {
                         objOIW.strIndentItemId = objPOI.Purchase_Indent_Line_Item__c;
                         objOIW.pandingMRNQty = 0;
                         objOIW.stockActual = objPOI.Stock_Actual__c;
-                        objOIW.IndentQty = 0;
+                        objOIW.IndentQty = objPOI.Purchase_Indent_Quantity__c;
                         objOIW.Quantity = objPOI.Quantity__c;
                         objOIW.Unit = '';
                         objOIW.Rate = objPOI.Sales_Price__c;

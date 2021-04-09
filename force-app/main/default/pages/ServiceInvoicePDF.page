@@ -291,7 +291,7 @@
                         <center><apex:outputText value=":" /></center>
                     </td>
                     <td style="border:none;" width="18%" valign="top">
-                        <apex:outputText value="{!objInvoice.ESN_No__r.Name}" /> 
+                        <apex:outputText value="{!objInvoice.ESN__r.Name}" /> 
                     </td>
                     <td style="border:none;" width="12%" valign="top"></td>
                     
@@ -307,6 +307,31 @@
                     </td>
                     <td style="border:none;" width="10%" valign="top"></td>
                 </tr>
+                 <tr>
+                    <td style="border:none;" width="15%" valign="top">
+                    </td>
+                    <td style="border:none;" width="5%" valign="top">
+                    </td>
+                    <td style="border:none;" width="18%" valign="top">
+                    </td>
+                    <td style="border:none;" width="12%" valign="top"></td>
+                    
+                    
+                    <td style="border:none;border-left: 2px solid black"  valign="top">
+                        <b><apex:outputText value="LC Date" /></b> 
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        <center><apex:outputText value=":" /></center>
+                    </td>
+                    <td style="border:none;"  valign="top">
+                         <apex:outputText value="{0, date, dd - MMM - yyyy}">
+                            <apex:param value="{!objInvoice.LC_Date__c}" />
+                        </apex:outputText>
+                    </td>
+                    <td style="border:none;"  valign="top">
+                         
+                    </td>
+                </tr>
                 <tr>
                     <td style="border:none;"  valign="top">
                         <b><apex:outputText value="State" /></b> 
@@ -321,14 +346,17 @@
                          <b><apex:outputText value="State Code :" /></b> 
                          <apex:outputText value="{!objInvoice.Billing_State_Code__c}" />
                     </td> 
-                    
-                    <td style="border:none;border-left: 2px solid black"  valign="top">
+                     <td style="border:none;border-left: 2px solid black"  valign="top">
+                        <b><apex:outputText value="LC Term" /></b> 
                     </td>
                     <td style="border:none;"  valign="top">
+                        <center><apex:outputText value=":" /></center>
                     </td>
                     <td style="border:none;"  valign="top">
+                        <apex:outputText value="{!objInvoice.LC_Term__c}" /> 
                     </td>
-                    <td style="border:none;"  valign="top"> 
+                    <td style="border:none;"  valign="top">
+                         
                     </td>
                 </tr>
                 <tr>

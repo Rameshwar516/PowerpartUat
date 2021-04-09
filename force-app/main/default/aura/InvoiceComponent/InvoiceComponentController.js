@@ -272,7 +272,7 @@
         console.log(Ischarges);
          if(!Istrue){
             if(!Ischarges){
-                
+                console.log('savehelper');
                 var id = component.get("v.recordId");
                 helper.SaveHelper(component, event, id);
             }else{

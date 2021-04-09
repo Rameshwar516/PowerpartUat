@@ -144,6 +144,7 @@
     },
     
     SaveHelper: function(component, event, id) {
+        console.log('helper run');
         var objWrap = component.get("v.wrapMain");
         var action = component.get("c.saveRecord");
         action.setParams({
@@ -157,7 +158,8 @@
             if(res.getState() === "SUCCESS" && JSON.parse(res.getReturnValue()).success){
                 component.set('v.wrapMain.success', true);
                 component.set('v.wrapMain.strMessage', JSON.parse(res.getReturnValue()).strMessage);
-                window.location.assign('/lightning/r/Quote__c/'+component.get("v.recordId")+'/view');
+                console.log(res.getState());
+                window.location.assign('/lightning/r/Invoice__c/'+component.get("v.recordId")+'/view');
             }else if(res.getState() === "ERROR") {
                 var errors = res.getError();
                 if (errors) {

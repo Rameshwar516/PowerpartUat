@@ -177,7 +177,7 @@
                     "pandingMRNQty" : 0,
                     "stockActual" : PIItems[i].objStock.Total_Quantity__c,
                     "IndentQty" : PIItems[i].objPILI.QTY__c,
-                    "Quantity" : 0,
+                    "Quantity" : PIItems[i].objPILI.QTY__c,
                     "Unit" : '',
                     "Rate" : 0,
                     "Amount" : 0,

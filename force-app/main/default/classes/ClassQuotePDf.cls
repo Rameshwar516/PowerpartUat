@@ -1,8 +1,17 @@
 public class ClassQuotePDf {
     public opportunity__c opp{get;set;}
-    public contact con{get;set;} 
+    public list<contact> con{get;set;}
+    
+    public contact conBill{get;set;}
+    public contact ShippingContact{get;set;}
+    
+   public list<contact> ShippingCon{get;set;}
     public Quote__c quotee{get;set;}
     public Account Acc{get;set;}
+    public Account ShippAcc{get;set;}
+    
+     public Pdf_Header__mdt pdfheader{get;set;}
+    
     public list<Line_item__c> Litem{get;set;}  
     public decimal totaltaxable{get;set;}
     public decimal totalCgst{get;set;}
@@ -24,7 +33,7 @@ public class ClassQuotePDf {
     
     public string strWareHouseState{get;set;}
     public string strWareHouseCode{get;set;}
-     public string strWareHouseCity{get;set;}
+  //   public string strWareHouseCity{get;set;}
     
     public list<Charges__c> lstCharges{get;set;}
     public decimal TotalAmountWithCharges{get;set;}
@@ -51,22 +60,40 @@ public class ClassQuotePDf {
         
         Litem=new list<Line_Item__c>();
         opp=new opportunity__c();
-        con=new contact();
+        con=new list<contact>();
         Acc=new Account();
         
-        String strId = ApexPages.currentPage().getParameters().get('id');
-               
+         pdfheader=new Pdf_Header__mdt();
         
-        quotee = [select id,Payment_Term__c,Billing_Address__c,Contact_Name__c,Customer_Party__c,Date__c,Email__c,Mobile__c,Opportunity__c,
-                  Name,Quote_Type__c,Quote_Validity__c,Delivery_Period__c,Shipping_Address__c ,Quote_Number__c,Customer_Party__r.ShippingState, Quote__c.Opportunity__r.Office__c,Quote__c.Opportunity__r.Ware_House__c,Quote__c.Opportunity__r.Ware_House__r.Name,Quote__c.Opportunity__r.Ware_House__r.City__c from Quote__c where id=:strId limit 1];
+        String strId = ApexPages.currentPage().getParameters().get('id');
+        
+        quotee = [select id,Billing_Address__c,Contact_Name__c,Customer_Party__c,Date__c,Email__c,Mobile__c,Opportunity__c,
+                  Name,Quote_Type__c,Quote_Validity__c,Shipping_Account__c,Opportunity__r.LC_Date__c,Opportunity__r.Transporter_Name__c,Opportunity__r.LC_Term__c,Delivery_Period__c,Shipping_Address__c ,Quote_Number__c,Customer_Party__r.ShippingState,
+                   Quote__c.Opportunity__r.Office__c , Quote__c.Opportunity__r.Ware_House__r.Name,Quote__c.Opportunity__r.Ware_House__r.Branch__c,Quote__c.Opportunity__r.Ware_House__r.City__c
+                   from Quote__c where id=:strId limit 1];
+        
         system.debug('Quote'+Quotee.id);
+        if(quotee.Shipping_Account__c!=null){
+        ShippingCon = [select id,name, phone,MobilePhone, email,isPrimary__c from contact where isPrimary__c= true AND Accountid =:quotee.Shipping_Account__c limit 1];
+        if(ShippingCon.size()>0){
+                ShippingContact = ShippingCon[0];
+            }
+        }
+         string branch = quotee.Opportunity__r.Ware_House__r.Branch__c;
+        List<String> pdfheaderField = UtilityClass.getAllFields('Pdf_Header__mdt');
+        String pdfHeaderQuery = 'Select ' +String.Join(pdfheaderField, ',')+ ' From Pdf_Header__mdt WHERE Branch__c =:branch Order by Effected_Date__c ASC LIMIT 1';
+        pdfheader =  Database.query(pdfHeaderQuery);
         
          String myGeneratedFileName = quotee?.Quote_Number__c+'.pdf';
         Apexpages.currentPage().getHeaders().put('content-disposition', 'inline; filename='+myGeneratedFilename);
-        
+        if(quotee.Contact_Name__c!=null){
+            
         con = [select id,Name,Email,Fax,HomePhone,MobilePhone,Title,Accountid  from contact where id=:quotee.Contact_Name__c limit 1];
-        system.debug('contact'+con.id);
         
+            if(con.size()>0){
+                conBill = con[0];
+            }
+        }
         Acc=[select id ,GSTIN_No__c,BillingCity,BillingCountry,BillingState,BillingStreet,BillingAddress,BillingPostalCode,ShippingCountry,
              ShippingCity,ShippingPostalCode,ShippingStreet,ShippingState,ShippingAddress, name,Shipping_State_Code__c,Billing_State_Code__c from Account where id =:quotee.Customer_Party__c];
         system.debug('Account'+Acc.id);
@@ -107,7 +134,7 @@ public class ClassQuotePDf {
         strBillingCode = Acc?.Billing_State_Code__c ;
         
         strShippingAddress = '';
-        strShippingAddress = Acc?.ShippingCity;
+        strShippingAddress = Acc?.ShippingStreet;
         if(strShippingAddress != null && strShippingAddress !='' && Acc.ShippingCity != null && Acc.ShippingCity !='')
             strShippingAddress = strShippingAddress+', '+Acc.ShippingCity;
         else if(Acc.ShippingCity != null && Acc.ShippingCity != '')
@@ -149,9 +176,9 @@ public class ClassQuotePDf {
         DateTime dT = opp.createdDate;
         dte = date.newinstance(dT.year(), dT.month(), dT.day());
         
-        Litem=[select Application__c,Amount_Formula__c,CGST__c,Delivery_Date__c,Description__c,Product_Part__r.Old_Part__r.Part_Name__c,
+        Litem=[select Application__c,Amount_Formula__c,CGST__c,Delivery_Date__c,Description__c,
                Discount__c,Expected_date__c,HSN_Code__c,IGST__c,Name,List_Price__c,Opportunity__c,
-               Product_Part__c,Product_Part__r.uom__c,Product_Part__r.name,Product_Part__r.Part_Name__c,Part_Name__c,Unit__c,Discount_Amount__c  ,Quantity__c,Quote__c,Remark__c,
+               Product_Part__c,Product_Part__r.uom__c,Product_Part__r.Old_Part__r.Part_Name__c,Product_Part__r.name,Product_Part__r.Part_Name__c,Part_Name__c,Unit__c,Discount_Amount__c  ,Quantity__c,Quote__c,Remark__c,
                Saleable_Stock__c,Sales_Order__c,CGST_Amount_Formula__c,IGST_Amount_Formula__c,SGST_Amount_Formula__c,
                Taxable_Amount_Formula__c,Sales_Price__c,Net_Amount__c,Total_Amount_Formula__c,SGST__c,Specification__c from Line_Item__c where Quote__c=:quotee.id];
         
@@ -215,31 +242,30 @@ public class ClassQuotePDf {
                 {
                     TotalAmountWithCharges = TotalAmountWithCharges+objCharg.Net_Amount__c;
                     TotalGSTCharges = TotalGSTCharges+ objCharg?.CGST_Amount__c+objCharg?.SGST_Amount__c+objCharg?.IGST_Amount__c;
-                    totalAmountCgst = objCharg.CGST_Amount__c;
-                    totalAmountSgst = objCharg.SGST_Amount__c;
-                    totalAmountIgst = objCharg.IGST_Amount__c;
+                    totalAmountCgst = totalAmountCgst+objCharg.CGST_Amount__c;
+                    totalAmountSgst = totalAmountSgst+objCharg.SGST_Amount__c;
+                    totalAmountIgst = totalAmountIgst+objCharg.IGST_Amount__c;
                     totalAmountSumNotIncludedTax = totalAmountSumNotIncludedTax+objCharg?.Charge_Amount__c;
                     system.debug('....totalAmountIgst.....'+totalAmountIgst);
                 }
                 totalAmountCgst = totalAmountCgst+totalCgst;
-                totalAmountCgst.round();
+                totalAmountCgst=totalAmountCgst.round();
                 totalAmountSgst = totalAmountSgst+totalSgst;
-                totalAmountSgst.round();
+                totalAmountSgst=totalAmountSgst.round();
                 totalAmountIgst = totalAmountIgst+totalIgst;
-                totalAmountIgst.round();
+                totalAmountIgst=totalAmountIgst.round();
                 totalTaxAmount = 0;
                 system.debug('....totalAmountIgstAfterLoop.....'+totalAmountIgst+',,,totalIgst,,'+totalIgst);
                 
                 totalTaxAmount = totalAmountCgst+ totalAmountSgst+ totalAmountIgst;
-                totalTaxAmount.round();
-                totalAmount.round();
+                totalTaxAmount=totalTaxAmount.round();
+                totalAmount=totalAmount.round();
                 TotalAmountWithCharges = TotalAmountWithCharges+totalAmount;
                 totalAmountaftertaxinWords = UtilityClass.NoToWord(TotalAmountWithCharges.intValue());
                 totalAmountaftertaxinWords = totalAmountaftertaxinWords +' rupees only';
-                TotalAmountWithCharges.round();
-                TotalAmountWithCharges = TotalAmountWithCharges.intValue();
+                TotalAmountWithCharges=TotalAmountWithCharges.round();
                 totalAmountSumNotIncludedTax = totalAmountSumNotIncludedTax+totalAmountNotIncludedTax+totaltaxable; 
-                totalAmountSumNotIncludedTax.round();
+                totalAmountSumNotIncludedTax=totalAmountSumNotIncludedTax.round();
                 
             //Condition Added for state Code
             string strStateCode = ''; 
@@ -252,7 +278,7 @@ public class ClassQuotePDf {
             }
        }
     }
-    public class wrapper{
+   /* public class wrapper{
         public Line_Item__c liitem{get;set;}
         public decimal TotalTaxableAmount{get; set;}
         
@@ -260,6 +286,6 @@ public class ClassQuotePDf {
             TotalTaxableAmount=0;
         }
         
-    }
+    }	*/
     
 }

@@ -48,7 +48,7 @@ public class Salesorderlineitemcomponentcontroler {
                     objTD.objTax = taxmap.get(ch.Charges__c);
                     objTD.strTaxId = ch.Charges__c;
                     objTD.strTaxName = ch.Charges__r.Name;
-                    objTD.TaxPercentage = taxmap.get(ch.Charges__c).Tax_Percentage__c;
+                    objTD.TaxPercentage = ch.Charge_Percentage__c.setscale(2);
                     objTD.CGST = ch.CGST__c ;
                     objTD.SGST = ch.SGST__c;
                     objTD.IGST = ch.IGST__c;
@@ -67,10 +67,23 @@ public class Salesorderlineitemcomponentcontroler {
                     partidset.add(objOppPro.Product_Part__c);
                 }
             }
-            list<Stock__c> stlist = [SELECT Id, Total_Quantity__c, Ware_House__r.City__c, Ware_House__r.State_Code__c,Product_Part__c,Total_Unbooked_Quantity__c from Stock__c WHERE Product_Part__c IN:partidset and Ware_House__c =:warehouse];
+            list<Stock__c> stlist = [SELECT Id, Total_Quantity__c, Ware_House__r.City__c, Ware_House__r.State_Code__c,Product_Part__c,Total_Unbooked_Quantity__c,Freeze_Quantity__c from Stock__c WHERE Product_Part__c IN:partidset and Ware_House__c =:warehouse];
             map<string,decimal> stcountmap = new map<string,decimal>();
+            map<string,stockwrap> stwraptmap = new map<string,stockwrap>();
+            
             for(Stock__c st:stlist){
+                stockwrap stw = new stockwrap();
+                stw.stockamount = st.Total_Quantity__c;
+                stw.saleableamount = st.Total_Unbooked_Quantity__c;
+                if(st.Freeze_Quantity__c!=null){
+                  stw.freezeamount = st.Freeze_Quantity__c;  
+                }
+                else{
+                    stw.freezeamount = 0;
+                }
+                
                 stcountmap.put(st.Product_Part__c,st.Total_Unbooked_Quantity__c);
+                stwraptmap.put(st.Product_Part__c,stw);
             }
             // 
             list<prodwrappChild> lineitemlist = new list<prodwrappChild>();
@@ -92,7 +105,10 @@ public class Salesorderlineitemcomponentcontroler {
                     objchild.Partnumber= objOppPro.Product_Part__r.name ;
                     objchild.isSelected = booleantrue;
                     objchild.isLineItem = booleantrue;
-                    objchild.stockamount = stcountmap.get(objOppPro.Product_Part__c);
+                   // objchild.stockamount = stcountmap.get(objOppPro.Product_Part__c);
+                    objchild.stockamount = stwraptmap.get(objOppPro.Product_Part__c).stockamount;
+                    objchild.saleableamount = stwraptmap.get(objOppPro.Product_Part__c).saleableamount;
+                    objchild.POamount = stwraptmap.get(objOppPro.Product_Part__c).freezeamount;
                     lineitemlist.add(objchild);
                 }
             }            
@@ -108,6 +124,7 @@ public class Salesorderlineitemcomponentcontroler {
             recordlist.isSelectedProduct = false;
             recordlist.quoteId.add(RecordId);
             recordlist.igstvalue=IGST;
+            recordlist.isService =service;
             recordlist.success = true;
             recordlist.lstTaxType = new list<TaxType>();
             recordlist.lstTaxDetails = new List<TaxDetails>();
@@ -249,7 +266,38 @@ public class Salesorderlineitemcomponentcontroler {
                     prdwrap.isSelected = true; 
                     listproduct.add(prdwrap);
                 }}
-            recordlist.lstWrapp=listproduct;
+            
+            
+            
+            
+            set<string> partid = new set<string>();
+            for(prodwrapp pd:listproduct){
+                partid.add(pd.objProd.id);
+            }
+            
+            list<Part__History> parthistory = [SELECT Field,NewValue,OldValue,ParentId FROM Part__History WHERE ParentId IN: partid];
+            
+            map<string,string> partoldfieldvalue = new map<string,string>();
+            if(!parthistory.isempty())
+                for(Part__History ph :parthistory){
+                    if(ph.Field =='name'){
+                        if(partoldfieldvalue ==null || !partoldfieldvalue.containskey(ph.ParentId) ){
+                            String odval = String.valueOf(ph.OldValue);
+                            partoldfieldvalue.put(ph.ParentId,odval);
+                        }
+                        else{
+                            String odval = partoldfieldvalue.get(ph.ParentId)+', '+String.valueOf(ph.OldValue);
+                            partoldfieldvalue.put(ph.ParentId,odval);
+                        }
+                    }
+                }
+            list<prodwrapp> listproductwitholdpart= new list<prodwrapp>();
+            for(prodwrapp pd:listproduct){
+                pd.oldPartName = partoldfieldvalue.get(pd.objProd.id);
+                listproductwitholdpart.add(pd);
+            }
+            
+            recordlist.lstWrapp=listproductwitholdpart;
             recordlist.isSelectedProduct = false;
             recordlist.success = true;
             System.debug('End Search '+json.serialize(recordlist));
@@ -343,8 +391,8 @@ public class Salesorderlineitemcomponentcontroler {
                     objchild.isSelected = true;
                     Sales_Order_Line_Item__c objOppPro = new Sales_Order_Line_Item__c();
                     
-
-                    if(objwrap?.isService){
+					system.debug('isService '+objwrap.isService);
+                    if(objwrap.isService){
                         objOppPro.List_Price__c = lstWrappNew[i].objProd.Service_Price__c;
                         objOppPro.Unit_Price__c = lstWrappNew[i].objProd.Service_Price__c;
                     }
@@ -569,6 +617,7 @@ public class Salesorderlineitemcomponentcontroler {
         @AuraEnabled public Boolean isSelected {get; set;}
         @AuraEnabled public Integer Klwr {get;set;}
         @AuraEnabled public Integer GrWr {get;set;}
+        @AuraEnabled public string oldPartName {get; set;}
     }
     public class prodwrappChild
     {
@@ -584,10 +633,17 @@ public class Salesorderlineitemcomponentcontroler {
          @AuraEnabled public String Partnumber {get; set;}
         @AuraEnabled public String PartName {get; set;}
          @AuraEnabled public Boolean isLineItem {get; set;}
+        @AuraEnabled public decimal  saleableamount{get;set;}
         @AuraEnabled public decimal  stockamount{get;set;}
+        @AuraEnabled public decimal  POamount{get;set;}
         
     }
     
+     public class stockwrap{
+        @AuraEnabled public decimal stockamount;
+        @AuraEnabled public decimal saleableamount;
+         @AuraEnabled public decimal freezeamount;
+    }
     public class TaxType{
         @AuraEnabled public string id;
         @AuraEnabled public string value;

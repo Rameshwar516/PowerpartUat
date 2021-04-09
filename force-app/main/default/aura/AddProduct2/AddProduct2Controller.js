@@ -223,7 +223,7 @@
         if(tmpMainWrapper[index].isSelected){
             Istrue = true;
         }
-        
+        console.log(tmpMainWrapper[index]);
         if(Istrue){
             console.log('Check true '+tmpMainWrapper[index].isSelected);
             component.set('v.IsselectProduct',true);
@@ -498,7 +498,7 @@
                 break;
             }
         }
-         var igstvalue = component.get('v.wrapMain.igstvalue');
+        var igstvalue = component.get('v.wrapMain.igstvalue');
         if(AlreadyAdded != 'true'){
             for(var i = 0; i < lstTaxDetails.length; i++) {
                 //alert(lstTaxDetails[i].objTax.id+'...'+StrSelectedTax+'....'+lstTaxDetails[i].NetAmount);
@@ -515,11 +515,11 @@
                         strTaxId: lstTaxDetails[i].strTaxId,
                         strTaxName: lstTaxDetails[i].strTaxName,
                         TaxPercentage: lstTaxDetails[i].TaxPercentage,
-                        decTaxAmount: (TotalAmount*lstTaxDetails[i].TaxPercentage)/100,
+                        decTaxAmount: ((TotalAmount*lstTaxDetails[i].TaxPercentage)/100).toFixed(2),
                         CGST: lstTaxDetails[i].CGST,
                         SGST: lstTaxDetails[i].SGST,
                         IGST: lstTaxDetails[i].IGST,
-                        NetAmount: NetAmountval, 
+                        NetAmount: NetAmountval.toFixed(2), 
                         ischargeItem :false,
                     });	 
                 }
@@ -630,7 +630,7 @@
                     var NetAmounts = tmpMainWrapper[i].decTaxAmount;
                     var IntDiscountRate = event.target.value;
                     tmpMainWrapper[i].CGST = IntDiscountRate;
-                    NetAmounts = NetAmounts+ tmpMainWrapper[i].decTaxAmount * IntDiscountRate / 100;
+                    NetAmounts = parseInt(NetAmounts) + parseInt(NetAmounts * IntDiscountRate / 100);
                     if(tmpMainWrapper[i].SGST !=null && tmpMainWrapper[i].SGST !='')
                         NetAmounts = NetAmounts+ tmpMainWrapper[i].decTaxAmount * tmpMainWrapper[i].SGST / 100;
                     
@@ -659,7 +659,7 @@
                     var NetAmounts = tmpMainWrapper[i].decTaxAmount;
                     var IntDiscountRate = event.target.value;
                     tmpMainWrapper[i].SGST = IntDiscountRate;
-                    NetAmounts = NetAmounts+ tmpMainWrapper[i].decTaxAmount * IntDiscountRate / 100;
+                    NetAmounts = parseInt(NetAmounts) + parseInt(NetAmounts * IntDiscountRate / 100);
                     if(tmpMainWrapper[i].CGST !=null && tmpMainWrapper[i].CGST !='')
                         NetAmounts = NetAmounts+ tmpMainWrapper[i].decTaxAmount * tmpMainWrapper[i].CGST / 100;
                     
@@ -689,7 +689,8 @@
                     var NetAmounts = tmpMainWrapper[i].decTaxAmount;
                     var IntDiscountRate = event.target.value;
                     tmpMainWrapper[i].IGST = IntDiscountRate;
-                    NetAmounts = NetAmounts+ tmpMainWrapper[i].decTaxAmount * IntDiscountRate / 100;
+                    NetAmounts = parseInt(NetAmounts) + parseInt(NetAmounts * IntDiscountRate / 100);
+                    console.log(NetAmounts);
                     if(tmpMainWrapper[i].CGST !=null && tmpMainWrapper[i].CGST !='')
                         NetAmounts = NetAmounts+ tmpMainWrapper[i].decTaxAmount * tmpMainWrapper[i].CGST / 100;
                     
@@ -767,7 +768,7 @@
             }
         }
         component.set("v.wrapMain.lstWrappTwo",tmpMainWrapper);
-         helper.totalamount(component,event,helper);
+        helper.totalamount(component,event,helper);
     },
     
     ChargesPercentageOnOhange:function(component, event, helper) {
@@ -775,7 +776,8 @@
         var templstcharge = component.get('v.lstSelectedTax');
         var TotalAmount = component.get('v.decTotalAmount');
         var igstvalue = component.get('v.wrapMain.igstvalue');
-        templstcharge[tmpIndex].decTaxAmount = (templstcharge[tmpIndex].TaxPercentage * TotalAmount)/100;
+        var damo = (templstcharge[tmpIndex].TaxPercentage * TotalAmount)/100;
+        templstcharge[tmpIndex].decTaxAmount = damo.toFixed(2);
         var dectaxamount =(templstcharge[tmpIndex].TaxPercentage * TotalAmount)/100;
         var IGSTAmount = (templstcharge[tmpIndex].IGST * dectaxamount)/100;
         var SGSTAmount = ((templstcharge[tmpIndex].SGST)*dectaxamount)/100;
@@ -783,45 +785,38 @@
         
         
         if(igstvalue){
-         templstcharge[tmpIndex].NetAmount =  parseInt(IGSTAmount) + parseInt(dectaxamount);
+            templstcharge[tmpIndex].NetAmount =  parseInt(IGSTAmount) + parseInt(dectaxamount);
         }
         else{
-           templstcharge[tmpIndex].NetAmount = parseInt(SGSTAmount) + parseInt(CGSTAmount) + parseInt(dectaxamount);
+            templstcharge[tmpIndex].NetAmount = parseInt(SGSTAmount) + parseInt(CGSTAmount) + parseInt(dectaxamount);
         }
-         component.set("v.lstSelectedTax",templstcharge);
-       helper.TotalTaxAmount(component,event,helper);
+        component.set("v.lstSelectedTax",templstcharge);
+        helper.TotalTaxAmount(component,event,helper);
         
     },
-     ChargesAmountOnOhange:function(component, event, helper) {
+    ChargesAmountOnOhange:function(component, event, helper) {
         var tmpIndex = event.getSource().get("v.name");
         var templstcharge = component.get('v.lstSelectedTax');
         var TotalAmount = component.get('v.decTotalAmount');
         var igstvalue = component.get('v.wrapMain.igstvalue');
-         templstcharge[tmpIndex].TaxPercentage = (templstcharge[tmpIndex].decTaxAmount * 100)/TotalAmount;
-         var dectaxamount =(templstcharge[tmpIndex].TaxPercentage * TotalAmount)/100;
-         var IGSTAmount = (templstcharge[tmpIndex].IGST * dectaxamount)/100;
-         var SGSTAmount = ((templstcharge[tmpIndex].SGST)*dectaxamount)/100;
-         var CGSTAmount = ((templstcharge[tmpIndex].CGST)*dectaxamount)/100;
+        var tper = (templstcharge[tmpIndex].decTaxAmount * 100)/TotalAmount;
+        templstcharge[tmpIndex].TaxPercentage =tper.toFixed(2);
+        var dectaxamount =(templstcharge[tmpIndex].TaxPercentage * TotalAmount)/100;
+        var IGSTAmount = (templstcharge[tmpIndex].IGST * dectaxamount)/100;
+        var SGSTAmount = ((templstcharge[tmpIndex].SGST)*dectaxamount)/100;
+        var CGSTAmount = ((templstcharge[tmpIndex].CGST)*dectaxamount)/100;
         
         
         if(igstvalue){
-         templstcharge[tmpIndex].NetAmount =  parseInt(IGSTAmount) + parseInt(dectaxamount);
+            templstcharge[tmpIndex].NetAmount =  parseInt(IGSTAmount) + parseInt(dectaxamount);
         }
         else{
-           templstcharge[tmpIndex].NetAmount = parseInt(SGSTAmount) + parseInt(CGSTAmount) + parseInt(dectaxamount);
+            templstcharge[tmpIndex].NetAmount = parseInt(SGSTAmount) + parseInt(CGSTAmount) + parseInt(dectaxamount);
         }
-         component.set("v.lstSelectedTax",templstcharge);
-         helper.TotalTaxAmount(component,event,helper);
-         /*
-         var lstTotalSelectedTax = component.get("v.lstSelectedTax");
-        var TotalTaxAmount = 0;
-        //alert('...!@#..'+lstTotalSelectedTax.length);
-        for(var i = 0; i < lstTotalSelectedTax.length; i++) {
-            //alert('...'+lstTotalSelectedTax[i].decTaxAmount);
-            TotalTaxAmount =TotalTaxAmount+lstTotalSelectedTax[i].NetAmount;
-        }
-        component.set('v.TotalTax', TotalTaxAmount);*/
-        
-    }
+        component.set("v.lstSelectedTax",templstcharge);
+        helper.TotalTaxAmount(component,event,helper);
+
+         
+     }
     
 })

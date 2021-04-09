@@ -81,10 +81,10 @@
                             <b><apex:outputText value="POWERPARTS PRIVATE LIMITED" style="font-size:13px;font-family: Arial;" /></b><br/>
                             <b><apex:outputText value="Registered Office : " style="font-size:11px;font-family: Arial;" /></b>
                             <apex:outputText value="N-122, Panchsheel Park, New Delhi - 100 017" style="font-size:11px;font-family: Arial;" /><br/>
-                            <b style="font-size:13px;font-family: Arial;">{!pdfheader.Address_Header__c}&nbsp;({!Sales_Order_Return__c.MRN__r.Ware_House__r.city__c})</b><br/>
+                            <b style="font-size:13px;font-family: Arial;">{!pdfheader.Address_Header__c}</b><br/>
                             <div style="font-size:11px;font-family: Arial;">{!pdfheader.Address_Line1__c}<br/>
                                 {!pdfheader.Address_Line_2__c}<br/>
-                                {!pdfheader.Gstin__c}<br/>
+                                {!pdfheader.Gstin__c}<br/><br/>
                                 {!pdfheader.IEC_No__c}&nbsp;&nbsp;&nbsp;{!pdfheader.PAN_No__c}<br/>
                                 {!pdfheader.BANK__c}<br/>
                                 {!pdfheader.Bank_A_C_No__c}&nbsp;&nbsp;&nbsp;{!pdfheader.IFC_RTGS_NEFT__c}<br/>

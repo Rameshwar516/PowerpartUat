@@ -8,6 +8,8 @@ public class MrnPurchanseOrderExt {
     public Decimal shortQty{get;set;}
     public Decimal subTotalItemAmount{get;set;}
     
+    public Pdf_Header__mdt pdfheader{get;set;}
+    
     public Decimal subTotalWithFreightAndSurchargeAmount{get;set;}
     public Decimal totalWithFreightAndSurchargeAmount{get;set;}
     public Decimal subTotalItemValueInINR{get;set;}
@@ -41,6 +43,8 @@ public class MrnPurchanseOrderExt {
             objMrnItemList = new List<MRN_Line_Item__c>();
             objChargesList = new List<Charges__c>();
             
+             pdfheader=new Pdf_Header__mdt();
+            
             poQty=0; billQty=0; recQty=0; shortQty=0; subTotalItemAmount=0;
             subTotalWithFreightAndSurchargeAmount=0; totalWithFreightAndSurchargeAmount =0;
             subTotalItemValueInINR=0; totalItemValueInINR=0; subTotalAssessableValue=0;
@@ -53,12 +57,18 @@ public class MrnPurchanseOrderExt {
             List<String> lstMrnItemField = UtilityClass.getAllFields('MRN_Line_Item__c');
             List<String> lstChargesField = UtilityClass.getAllFields('Charges__c');
             system.debug('lstChargesField'+lstChargesField);
-            String strMrnQuery = 'Select OEM_Customer__r.ShippingStreet,OEM_Customer__r.ShippingCity, OEM_Customer__r.ShippingState, OEM_Customer__r.ShippingPostalCode, OEM_Customer__r.ShippingCountry, Contact_Name__r.Name, OEM_Customer__r.Name, OEM_Customer__r.BillingStreet,OEM_Customer__r.BillingCity, OEM_Customer__r.BillingState, OEM_Customer__r.BillingPostalCode, OEM_Customer__r.BillingCountry,OEM_Customer__r.Billing_State_Code__c,OEM_Customer__r.Shipping_State_Code__c,' +String.Join(lstMrnField, ',')+ ' From MRN__c where Id =: strId';
+            String strMrnQuery = 'Select OEM_Customer__r.ShippingStreet,OEM_Customer__r.ShippingCity, OEM_Customer__r.ShippingState,Ware_House__r.Branch__c,Ware_House__r.City__c, OEM_Customer__r.ShippingPostalCode, OEM_Customer__r.ShippingCountry, Contact_Name__r.Name, OEM_Customer__r.Name, OEM_Customer__r.BillingStreet,OEM_Customer__r.BillingCity, OEM_Customer__r.BillingState, OEM_Customer__r.BillingPostalCode, OEM_Customer__r.BillingCountry,OEM_Customer__r.Billing_State_Code__c,OEM_Customer__r.Shipping_State_Code__c,' +String.Join(lstMrnField, ',')+ ' From MRN__c where Id =: strId';
             String strMrnItemQuery = 'Select Part_Number__r.Name,Part_Number__r.Specification__c,Part_Number__r.Part_Name__c,' +String.Join(lstMrnItemField, ',')+ ' From MRN_Line_Item__c where MRN__c =: strId';
             String strChargesQuery = 'Select Charges__r.Name,' +String.Join(lstChargesField, ',')+ ' From Charges__c where MRN__c =: strId';
             List<MRN__c> lstPurchaseOrder =  Database.query(strMrnQuery);
             if(lstPurchaseOrder.size()>0){
                 objMrn=lstPurchaseOrder[0];
+                
+                 string branch = objMrn.Ware_House__r.Branch__c ;
+            List<String> pdfheaderField = UtilityClass.getAllFields('Pdf_Header__mdt');
+            String pdfHeaderQuery = 'Select ' +String.Join(pdfheaderField, ',')+ ' From Pdf_Header__mdt WHERE Branch__c =:branch Order by Effected_Date__c ASC LIMIT 1';
+            pdfheader =  Database.query(pdfHeaderQuery);
+                
                 system.debug('......objMrn.MRN_Delivery_Type__c..'+objMrn.MRN_Delivery_Type__c);
                 objIW = new ImportWrapper();
                 if(objMrn.MRN_Delivery_Type__c=='Import'){
@@ -66,7 +76,7 @@ public class MrnPurchanseOrderExt {
                     
                 objIW.TotalInvValueInINR = (objMrn.Ex_Work_Value__c * objMrn.Exchange_Rate__c)?.setScale(2);
                     
-                objIW.InvSurcharge = (objMrn.Inv_Surcharge__c*100)?.setScale(2);
+                objIW.InvSurcharge = ((objMrn.Inv_Surcharge__c/objMrn.Ex_Work_Value__c)*100)?.setScale(2);
                 objIW.InvSurchargeInINR = (objMrn.Surcharge__c * objMrn.Exchange_Rate__c)?.setScale(2);
                 objIW.InsuranceOfBOEInINR = objIW.TotalInvValue * decimal.valueOf(objMrn.Insurance_of_BOE__c) * objMrn.Exchange_Rate__c;
                 objIW.InsuranceOfBOEInINR = objIW.InsuranceOfBOEInINR?.setScale(2);

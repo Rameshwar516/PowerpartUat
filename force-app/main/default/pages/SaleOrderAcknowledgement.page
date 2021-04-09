@@ -66,31 +66,43 @@
     <apex:form >
         <div class="header">
             
-            <table style="width:100%;border-collapse: collapse;">
+          <table style="width:100%;border-collapse: collapse;">
                 <tr>
                     <td style="border:none;padding:0px;" width="20%" valign="top">
-                        <apex:image url="{!$Resource.PowerpartsLogo}" width="210" height="60"/>
+                        <left>
+                            <apex:image url="{!$Resource.PerformaLeftSidelogo}" width="210" height="60"/> 
+                        </left>
                     </td>
                     <td style="border:none;padding:0px;" width="60%" valign="top">
                         <center>
                             <b><apex:outputText value="POWERPARTS PRIVATE LIMITED" style="font-size:13px;font-family: Arial;" /></b><br/>
                             <b><apex:outputText value="Registered Office : " style="font-size:11px;font-family: Arial;" /></b>
                             <apex:outputText value="N-122, Panchsheel Park, New Delhi - 100 017" style="font-size:11px;font-family: Arial;" /><br/>
-                            <b><apex:outputText value="PPL HEAD OFFICE (GURGAON)" style="font-size:13px;font-family: Arial;" /></b><br/>
-                            <apex:outputText value="114, PACE CITY-I, SECTOR - 37," style="font-size:11px;font-family: Arial;" /><br/>
-                            <apex:outputText value="GURGAON - 122001, HARYANA (INDIA)" style="font-size:11px;font-family: Arial;" /><br/>
-                            <apex:outputText value="GSTIN NO. 06AABCP9737D1ZE" style="font-size:11px;font-family: Arial;" /><br/>
-                            <apex:outputText value="powerparts@powerparts.in" style="font-size:11px;font-family: Arial;" />&nbsp;&nbsp;&nbsp;
-                            <apex:outputText value="Tel. 0124-4036614,4019215" style="font-size:11px;font-family: Arial;" /><br/>
-                            <b><apex:outputText value="SALE ORDER ACKNOWLEDGEMENT" style="font-size:13px;font-family: Arial;" /></b><br/>
+                           
+                            <b style="font-size:13px;font-family: Arial;">{!pdfheader.Address_Header__c}</b><br/>
+                            <div style="font-size:11px;font-family: Arial;">{!pdfheader.Address_Line1__c}<br/>
+                            {!pdfheader.Address_Line_2__c}<br/>
+                            {!pdfheader.Gstin__c}<br/><br/>
+                            {!pdfheader.IEC_No__c}&nbsp;&nbsp;&nbsp;{!pdfheader.PAN_No__c}<br/>
+                            {!pdfheader.BANK__c}<br/>
+                            {!pdfheader.Bank_A_C_No__c}&nbsp;&nbsp;&nbsp;{!pdfheader.IFC_RTGS_NEFT__c}<br/>
+                            {!pdfheader.Email__c}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{!pdfheader.Tel__c} 
+                            </div>
                         </center>
                     </td>
-                    <td style="border:none;padding:0px;" width="20%"></td>
+                    <td style="border:none;padding:0px;" width="60%" valign="top">
+                        <Right>
+                            <apex:image url="{!$Resource.PerformaRightSidelogo}" width="210" height="60"/> 
+                        </Right>
+                    </td>
                 </tr>
             </table>
         </div>
         <body>
+            
             <table style="width:100%;border:2px solid black;">
+                <tr>
+                    <td colspan="8" style="font-size:18px"><center><b>Sales Order Acknowledgement</b></center></td></tr>
                  <tr>
                     <td style="border:none;" width="15%" valign="top">
                         <b><apex:outputText value="SOA No." /></b> 
@@ -133,15 +145,17 @@
                     <td style="border:none;"  valign="top">
                          
                     </td>
-                    
-                    <td style="border:none;border-left: 2px solid black"  valign="top">
-                        <b><apex:outputText value="Vehicle / Docket No" /></b> 
+                     <td style="border:none;border-left: 2px solid black"  valign="top">
+                        <b><apex:outputText value="Transporter Name" /></b> 
                     </td>
                     <td style="border:none;"  valign="top">
                         <center><apex:outputText value=":" /></center>
                     </td>
                     <td style="border:none;"  valign="top">
-                        <apex:outputText value="{!objSO.Vehicle_Docket_No__c}" /> 
+                        <apex:outputText value="{!Sales_Order__c.Transporter_Name__c}" /> 
+                    </td>
+                    <td style="border:none;"  valign="top">
+                         
                     </td>
                     <td style="border:none;"  valign="top">
                          
@@ -216,7 +230,29 @@
                     <td style="border:none;"  valign="top">
                          
                     </td>
+                    <td style="border:none;border-left: 2px solid black"  valign="top">
+                        <b><apex:outputText value="Vehicle / Docket No" /></b> 
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        <center><apex:outputText value=":" /></center>
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        <apex:outputText value="{!objSO.Vehicle_Docket_No__c}" /> 
+                    </td>
                     
+                    <td style="border:none;"  valign="top">
+                         
+                    </td>
+                </tr>
+                <tr>
+                    <td style="border:none;"  valign="top">
+                    </td>
+                    <td style="border:none;"  valign="top">
+                    </td>
+                    <td style="border:none;"  valign="top">
+                    </td>
+                    <td style="border:none;"  valign="top">
+                    </td>
                     <td style="border:none;border-left: 2px solid black"  valign="top">
                         <b><apex:outputText value="Place Of Supply" /></b> 
                     </td>
@@ -224,12 +260,39 @@
                         <center><apex:outputText value=":" /></center>
                     </td>
                     <td style="border:none;"  valign="top">
-                        <apex:outputText value="{!objSO.Shipping_Account__r.ShippingState}" /> 
+                        <apex:outputText value="{!Sales_Order__c.Place_of_Supply_Formula__c	}" /> 
                     </td>
+                    
                     <td style="border:none;"  valign="top">
                          
                     </td>
                 </tr>
+                <tr>
+                    <td style="border:none;"  valign="top">
+                    </td>
+                    <td style="border:none;"  valign="top">
+                    </td>
+                    <td style="border:none;"  valign="top">
+                    </td>
+                    <td style="border:none;"  valign="top">
+                    </td>
+                    <td style="border:none;border-left: 2px solid black"  valign="top">
+                        <b><apex:outputText value="LC Date" /></b> 
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        <center><apex:outputText value=":" /></center>
+                    </td>
+                    <td style="border:none;"  valign="top">
+                         <apex:outputText value="{0, date, dd - MMM - yyyy}">
+                            <apex:param value="{!objSO.LC_Date__c}" />
+                        </apex:outputText>
+                    </td>
+                    
+                    <td style="border:none;"  valign="top">
+                         
+                    </td>
+                </tr>
+                
                 <tr>
                     <td style="border:none;"  valign="top">
                         <b><apex:outputText value="ESN No" /></b> 
@@ -245,13 +308,15 @@
                     </td>
                     
                     <td style="border:none;border-left: 2px solid black"  valign="top">
+                        <b><apex:outputText value="LC Term" /></b> 
                     </td>
                     <td style="border:none;"  valign="top">
+                        <center><apex:outputText value=":" /></center>
                     </td>
                     <td style="border:none;"  valign="top">
+                        <apex:outputText value="{!objSO.LC_Term__c}" /> 
                     </td>
-                    <td style="border:none;"  valign="top"> 
-                    </td>
+                   
                 </tr>
                 <tr>
                     <td style="border:none;"  valign="top">
@@ -303,7 +368,7 @@
                         <b><apex:outputText value=":" /></b>
                     </td>
                     <td style="border:none;border-top: 2px solid black;"  valign="top" colspan="2">
-                        <apex:outputText value="{!objAcc.Name}" />
+                        <apex:outputText value="{!objSO.Shipping_Account__r.Name}" />
                     </td>
                 </tr>
                 <tr>
@@ -314,7 +379,7 @@
                         <b><apex:outputText value=":" /></b>
                     </td>
                     <td style="border:none;"  valign="top" colspan="2">
-                        <apex:outputText value="{!strBillingAddress}" escape="false" />
+                        <apex:outputText value="{!Sales_Order__c.Billing_Address__c}" escape="false" />
                         
                     </td>
                     
@@ -325,7 +390,7 @@
                         <b><apex:outputText value=":" /></b>
                     </td>
                     <td style="border:none;"  valign="top" colspan="2">
-                        <apex:outputText value="{!strShippingAddress}" />
+                        <apex:outputText value="{!Sales_Order__c.Shipping_Address_Formula__c}" escape="false" /> <br/>
                         
                     </td>
                 </tr>
@@ -366,13 +431,13 @@
                     </td>
                     
                      <td style="border:none;border-left: 2px solid black;"  valign="top" colspan="2">
-                        <apex:outputText value="{!objCon.Name}" />
+                        <apex:outputText value="{!ShippingObjCon.Name}" />
                     </td>
                     <td style="border:none;"  valign="top" >
-                        <apex:outputText value="{!objCon.MobilePhone}" />
+                        <apex:outputText value="{!ShippingObjCon.MobilePhone}" />
                     </td>
                     <td style="border:none;"  valign="top" >
-                        <apex:outputText value="{!objCon.Email}" />
+                        <apex:outputText value="{!ShippingObjCon.Email}" />
                     </td>
                 </tr>
                 <tr>
@@ -400,7 +465,7 @@
                         <center><apex:outputText value=":" /></center>
                     </td>
                     <td style="border:none;"  valign="top" colspan="2">
-                        <apex:outputText value="{!objAcc.GSTIN_No__c}" /> 
+                        <apex:outputText value="{!objSO.Shipping_Account__r.Shipping_GSTIN_No__c}" /> 
                     </td>
                 </tr>
                 <tr>
@@ -425,11 +490,12 @@
                         <center><apex:outputText value=":" /></center>
                     </td>
                     <td style="border:none;"  valign="top">
-                        <apex:outputText value="{!objAcc.ShippingState}" /> 
+                        <apex:outputText value="{!Sales_Order__c.Shipping_State_Province__c}" />
+                        
                     </td>
                     <td style="border:none;border-top: 2px solid black;border-left: 2px solid black;"  valign="top">
                          <b><apex:outputText value="State Code :" /></b> 
-                         <apex:outputText value="{!objAcc.Shipping_State_Code__c}" />
+                         <apex:outputText value="{!objSO.Shipping_Account__r.Shipping_State_Code__c}" />
                     </td> 
                 </tr>
                 <tr>
@@ -740,11 +806,11 @@
                     <td colspan="2" style="text-align:right"> <apex:outputText value="{!TotalAmount}" /></td>
                 </tr>
                 
-                <tr>
+                <tr style="display: {!if(objSO.Customer_Name__r.TCS_Charges_Enable__c, 'table-row', 'none')}">
                     <td colspan="5"><b><apex:outputText value="TCS Charges : " /></b></td>
                     <td colspan="2" style="text-align:right"> <apex:outputText value="{!amountTCS}" /></td>
                 </tr>
-                <tr>
+                <tr style="display: {!if(objSO.Customer_Name__r.TCS_Charges_Enable__c, 'table-row', 'none')}">
                     <td colspan="5"><b><apex:outputText value="Grand Total " /></b></td>
                     <td colspan="2" style="text-align:right"> <apex:outputText value="{!totalAmountWithTCS}" /></td>
                 </tr>
@@ -763,7 +829,7 @@
                 </tr>
             </table>
             
-            <table style="width:100%;border:2px solid black;border-collapse: collapse;page-break-before:always;">
+            <table style="width:100%;border:2px solid black;border-collapse: collapse;page-break-before:always; margin-top: 2%;">
                 <tr>
                     <td>
                         <center><b>TERMS &amp; CONDITIONS</b></center><br/>

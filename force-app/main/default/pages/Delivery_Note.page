@@ -66,7 +66,7 @@
     </head>
     <apex:form >
         <div class="header">
-          
+            
             <table style="width:100%;border-collapse: collapse;">
                 <tr>
                     <td style="border:none;padding:0px;" width="20%" valign="top">
@@ -79,10 +79,10 @@
                             <b><apex:outputText value="POWERPARTS PRIVATE LIMITED" style="font-size:13px;font-family: Arial;" /></b><br/>
                             <b><apex:outputText value="Registered Office : " style="font-size:11px;font-family: Arial;" /></b>
                             <apex:outputText value="N-122, Panchsheel Park, New Delhi - 100 017" style="font-size:11px;font-family: Arial;" /><br/>
-                            <b style="font-size:13px;font-family: Arial;">{!pdfheader.Address_Header__c}&nbsp;({!Sales_Order_Dispatch_Delivery_Note__c.Sales_Order__r.Ware_House__r.city__c})</b><br/>
+                            <b style="font-size:13px;font-family: Arial;">{!pdfheader.Address_Header__c}</b><br/>
                             <div style="font-size:11px;font-family: Arial;">{!pdfheader.Address_Line1__c}<br/>
                                 {!pdfheader.Address_Line_2__c}<br/>
-                                {!pdfheader.Gstin__c}<br/>
+                                {!pdfheader.Gstin__c}<br/><br/>
                                 {!pdfheader.IEC_No__c}&nbsp;&nbsp;&nbsp;{!pdfheader.PAN_No__c}<br/>
                                 {!pdfheader.BANK__c}<br/>
                                 {!pdfheader.Bank_A_C_No__c}&nbsp;&nbsp;&nbsp;{!pdfheader.IFC_RTGS_NEFT__c}<br/>
@@ -100,7 +100,7 @@
             
         </div>
         <body>
-
+            
             <table style="width:100%; border:1px solid black; ">
                 <tr></tr>
                 <tr>
@@ -112,7 +112,7 @@
                     </td>
                     <td style="width: 25%; text-align: left;border:none">
                         <table style=" width: 100%;">
-                             <tr>
+                            <tr>
                                 <td style="width: 10%; border-right:1px solid black; border-left:1px solid black; border-Bottom:1px solid black; "><apex:outputField value="{!Sales_Order_Dispatch_Delivery_Note__c.Original_for_Receipient__c}"/></td>
                                 <td style="width: 90%; text-align: left;border:none">Original for Receipient</td>
                             </tr>
@@ -221,7 +221,7 @@
                         <center><apex:outputText value=":" /></center>
                     </td>
                     <td style="border:none;"  valign="top">
-                        <apex:outputText value="{!Sales_Order_Dispatch_Delivery_Note__c.Sales_Order__r.Customer_PO_No__c }" /> 
+                        <apex:outputText value="{!Sales_Order_Dispatch_Delivery_Note__c.Customer_PO_No__c }" /> 
                     </td>
                     <td style="border:none;"  valign="top">
                         
@@ -246,26 +246,32 @@
                     
                 </tr>
                 <tr>
-                    
                     <td style="border:none;"  valign="top">
-                        <b><apex:outputText value="SOA No/Date"/></b> 
+                        <b><apex:outputText value="Customer PO Date" /></b> 
                     </td>
                     <td style="border:none;"  valign="top">
                         <center><apex:outputText value=":" /></center>
                     </td>
                     <td style="border:none;"  valign="top">
-                        <apex:outputText value="{!Sales_Order_Dispatch_Delivery_Note__c.Sales_Order__r.Sales_Order_Acknowledge_Number__c }" />
-                        <apex:outputText value=" / " />
                         <apex:outputText value="{0, date, dd - MMM - yyyy}">
-                            <apex:param value="{!Sales_Order_Dispatch_Delivery_Note__c.Sales_Order__r.Date_Of_Supply__c}" />
+                            <apex:param value="{!Sales_Order_Dispatch_Delivery_Note__c.Customer_PO_Date__c }"  />
                         </apex:outputText>
+                         
                     </td>
                     
                     <td style="border:none;"  valign="top">
-                        
                     </td>
                     <td style="border:none;border-left: 2px solid black"  valign="top">
-                        
+                        <b><apex:outputText value="LC No. " /></b>    
+                    </td>
+                    
+                    <td style="border:none;"  valign="top">
+                        <center><apex:outputText value=":" /></center>   
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        <apex:outputText value="{!Sales_Order_Dispatch_Delivery_Note__c.LC_No__c}" >
+                            
+                        </apex:outputText>  
                     </td>
                     
                     <td style="border:none;"  valign="top">
@@ -275,20 +281,93 @@
                 
                 <tr>
                     <td style="border:none;"  valign="top">
-                        <b><apex:outputText value="ESN No." /></b> 
+                        <b><apex:outputText value="SOA No"/></b> 
                     </td>
                     <td style="border:none;"  valign="top">
                         <center><apex:outputText value=":" /></center>
                     </td>
                     <td style="border:none;"  valign="top">
-                        <apex:outputText value="{!Sales_Order_Dispatch_Delivery_Note__c.Sales_Order__r.Customer_Asset__r.name}"/>
+                        <apex:outputText value="{!Sales_Order_Dispatch_Delivery_Note__c.Sales_Order__r.Sales_Order_Acknowledge_Number__c }" />
                     </td>
                     
                     <td style="border:none;"  valign="top">
                         
                     </td>
                     <td style="border:none;border-left: 2px solid black"  valign="top">
+                        <b><apex:outputText value="LC Term" /></b>    
+                    </td>
+                    
+                    <td style="border:none;"  valign="top">
+                        <center><apex:outputText value=":" /></center>   
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        <apex:outputText value="{!Sales_Order_Dispatch_Delivery_Note__c.LC_Term__c}" />
+                    </td>
+                    <td style="border:none;"  valign="top">
                         
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td style="border:none;"  valign="top">
+                        <b><apex:outputText value="SOA Date"/></b> 
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        <center><apex:outputText value=":" /></center>
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        <apex:outputText value="{0, date, dd - MMM - yyyy}">
+                            <apex:param value="{!Sales_Order_Dispatch_Delivery_Note__c.Sales_Order__r.CreatedDate}" />
+                        </apex:outputText>
+                    </td>
+                    
+                    
+                    <td style="border:none;"  valign="top">
+                    </td>
+                    <td style="border:none;border-left: 2px solid black"  valign="top">
+                        <b><apex:outputText value="LC Tenure " /></b>    
+                    </td>
+                    
+                    <td style="border:none;"  valign="top">
+                        <center><apex:outputText value=":" /></center>   
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        <apex:outputText value="{!Sales_Order_Dispatch_Delivery_Note__c.LC_Tenure__c}">
+                          
+                        </apex:outputText>  
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        
+                    </td>
+                    
+                </tr>   
+                
+                <tr>
+                    <td style="border:none;"  valign="top">
+                        <b><apex:outputText value="ESN No."/></b> 
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        <center><apex:outputText value=":" /></center>
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        <apex:outputText value="{!Sales_Order_Dispatch_Delivery_Note__c.Sales_Order__r.Customer_Asset__r.name }" />
+                    </td>   
+                    
+                    <td style="border:none;"  valign="top">
+                    </td>
+                    
+                    
+                    <td style="border:none;border-left: 2px solid black"  valign="top">
+                        <b><apex:outputText value="LC Date" /></b>    
+                    </td>
+                    
+                    <td style="border:none;"  valign="top">
+                        <center><apex:outputText value=":" /></center>   
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        <apex:outputText value="{0, date, dd - MMM - yyyy}">
+                            <apex:param value="{!Sales_Order_Dispatch_Delivery_Note__c.LC_Date__c}" />
+                        </apex:outputText>  
                     </td>
                     
                     <td style="border:none;"  valign="top">
@@ -296,6 +375,32 @@
                     </td>
                 </tr>
                 
+                 <tr>
+                      
+                <td style="border:none;"  valign="top">
+                    </td>
+                    <td style="border:none;"  valign="top">
+                    </td>
+                    <td style="border:none;"  valign="top">
+                    </td>
+                    <td style="border:none;"  valign="top">
+                    </td>
+                      <td style="border:none;border-left: 2px solid black"  valign="top">
+                        <b><apex:outputText value="Bank " /></b>    
+                    </td>
+                    
+                    <td style="border:none;"  valign="top">
+                        <center><apex:outputText value=":" /></center>   
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        <apex:outputText value="{!Sales_Order_Dispatch_Delivery_Note__c.Bank__c}"/>
+                              
+                    </td>
+                <td style="border:none;"  valign="top">
+                        
+                    </td>
+                    
+                </tr>
                 
                 <tr>
                     <td style="border:none;border-top: 2px solid black;"  valign="top" colspan="4">
@@ -323,7 +428,7 @@
                         <b><apex:outputText value=":" /></b>
                     </td>
                     <td style="border:none;border-top: 2px solid black;"  valign="top" colspan="2">
-                        <apex:outputText value="{!Sales_Order_Dispatch_Delivery_Note__c.Sales_Order__r.Contact_Person__r.name}" />
+                        <apex:outputText value="{!objdlvrynot.Shipping_Account__r.Name}" />
                     </td>
                 </tr>
                 <tr>
@@ -334,7 +439,7 @@
                         <b><apex:outputText value=":" /></b>
                     </td>
                     <td style="border:none;"  valign="top" colspan="2">
-                        <apex:outputText value="{!Sales_Order_Dispatch_Delivery_Note__c.Sales_Order__r.Billing_Address__c}" />
+                        <apex:outputText value="{!Sales_Order_Dispatch_Delivery_Note__c.Sales_Order__r.Billing_Address__c}" escape="false"/>
                     </td>
                     
                     <td style="border:none;border-left: 2px solid black;"  valign="top" >
@@ -344,7 +449,8 @@
                         <b><apex:outputText value=":" /></b>
                     </td>
                     <td style="border:none;"  valign="top" colspan="2">
-                        <apex:outputText value="{!Sales_Order_Dispatch_Delivery_Note__c.Sales_Order__r.Shipping_Address__c}" />
+                        <apex:outputText value="{!Sales_Order_Dispatch_Delivery_Note__c.Shipping_Address_Formula__c}" escape="false" /> <br/>
+                        
                     </td>
                 </tr>
                 <tr>
@@ -384,13 +490,13 @@
                     </td>
                     
                     <td style="border:none;border-left: 2px solid black;"  valign="top" colspan="2">
-                        <apex:outputText value="{!Sales_Order_Dispatch_Delivery_Note__c.Sales_Order__r.Contact_Person__r.name}" />
+                        <apex:outputText value="{!ShippingObjCon.name}" />
                     </td>
                     <td style="border:none;"  valign="top" >
-                        <apex:outputText value="{!Sales_Order_Dispatch_Delivery_Note__c.Sales_Order__r.Contact_Person__r.MobilePhone}" />
+                        <apex:outputText value="{!ShippingObjCon.MobilePhone}" />
                     </td>
                     <td style="border:none;"  valign="top" >
-                        <apex:outputText value="{!Sales_Order_Dispatch_Delivery_Note__c.Sales_Order__r.Contact_Person__r.Email}" />
+                        <apex:outputText value="{!ShippingObjCon.Email}" />
                     </td>
                 </tr>
                 
@@ -412,7 +518,7 @@
                         <apex:outputText value=":" />
                     </td>
                     <td style="border:none;"  valign="top" colspan="2">
-                        <apex:outputText value="{!Sales_Order_Dispatch_Delivery_Note__c.Customer_Party__r.Shipping_GSTIN_No__c}" /> 
+                        <apex:outputText value="{!objdlvrynot.Shipping_Account__r.Shipping_GSTIN_No__c}" /> 
                     </td>
                 </tr>
                 <tr>
@@ -437,184 +543,187 @@
                         <apex:outputText value=":" />
                     </td>
                     <td style="border:none;"  valign="top">
-                        <apex:outputText value="{!Sales_Order_Dispatch_Delivery_Note__c.Customer_Party__r.ShippingState}" /> 
+                        <apex:outputText value="{!Sales_Order_Dispatch_Delivery_Note__c.Shipping_State_Province__c}" /> 
                     </td>
                     <td style="border:none;border-top: 2px solid black;border-left: 2px solid black;"  valign="top">
                         <b><apex:outputText value="State Code :" /></b> 
-                        <apex:outputText value="{!Sales_Order_Dispatch_Delivery_Note__c.Customer_Party__r.Shipping_State_Code__c}" />
+                        <apex:outputText value="{!objdlvrynot.Shipping_Account__r.Shipping_State_Code__c}" />
                     </td> 
                 </tr>
                 <apex:variable value="{!1}" var="index" />
                 <!-----------------------With Pricing Table-------------------------------------------------------------------->
-                <apex:pageBlock rendered="{!if(Sales_Order_Dispatch_Delivery_Note__c.Pdf_View__c == 'With Pricing',true,false)}">
-                <table style="width:100%; border:2px solid black;border-collapse: collapse;"  >
-                    <tr>
-                        <th  width="4%"  style="text-align:center">
-                            
-                            <apex:outputText value="S No." />
-                        </th>
-                        <th  width="12.5%" style="text-align:center">
-                            <apex:outputText value="Part No" />
-                        </th>
-                        <th  width="30%" style="text-align:center">
-                            <apex:outputText value="Description" />
-                        </th>
-                        <th  width="10.4%"  style="text-align:center">
-                            <apex:outputText value="HSN/ SAC" />
-                        </th>
-                        <th  width="5.1%"  style="text-align:center">
-                            <apex:outputText value="Qty" />
-                        </th>
-                        <th  width="6%"  style="text-align:center">
-                            <apex:outputText value="Unit" />
-                        </th>
-                        <th  width="12.5%"  style="text-align:center">
-                            <apex:outputText value="Unit Rate (INR)" />
-                        </th>
-                        <th  width="12.5%"  style="text-align:center">
-                            <apex:outputText value="Total" />
-                        </th>
-                    </tr>
-                    
-                    <apex:repeat value="{!lstDeliverylineitem}" var="dli" rendered="{!If(lstDeliverylineitem !=null ,true,false) }">
+                
+                <apex:pageBlock rendered="{!if(Sales_Order_Dispatch_Delivery_Note__c.Without_Pricing__c != true && Sales_Order_Dispatch_Delivery_Note__c.With_Bin_Number__c != true ,true,false)}">
+                    <table style="width:100%; border:2px solid black;border-collapse: collapse;"  >
                         <tr>
-                            <td><apex:outputText value="{!index}" />
-                            <apex:variable value="{!index + 1}" var="index" /></td>
-                            <td><apex:outputText value="{!dli.Product_Part__r.name}" /></td>
-                            <td><apex:outputText value="{!dli.Product_Part__r.Part_Name__c}" /></td>
-                            <td><apex:outputText value="{!dli.Product_Part__r.HSN_CODE__c}" /></td>
-                            <td style="text-align:right"><apex:outputText value="{!dli.Quantity__c}" /></td>
-                            <td style="text-align:right"><apex:outputText value="{!dli.Unit__c}" /></td>
-                            <td style="text-align:right"><apex:outputText value="{!dli.Sales_Price__c}" /></td>
-                            <td style="text-align:right"><apex:outputText value="{!dli.Gross_Amount__c}" /></td>
+                            <th  width="4%"  style="text-align:center">
+                                
+                                <apex:outputText value="S No." />
+                            </th>
+                            <th  width="12.5%" style="text-align:center">
+                                <apex:outputText value="Part No" />
+                            </th>
+                            <th  width="30%" style="text-align:center">
+                                <apex:outputText value="Description" />
+                            </th>
+                            <th  width="10.4%"  style="text-align:center">
+                                <apex:outputText value="HSN/ SAC" />
+                            </th>
+                            <th  width="5.1%"  style="text-align:center">
+                                <apex:outputText value="Qty" />
+                            </th>
+                            <th  width="6%"  style="text-align:center">
+                                <apex:outputText value="Unit" />
+                            </th>
+                            <th  width="12.5%"  style="text-align:center">
+                                <apex:outputText value="Unit Rate (INR)" />
+                            </th>
+                            <th  width="12.5%"  style="text-align:center">
+                                <apex:outputText value="Total" />
+                            </th>
                         </tr>
-                    </apex:repeat> 
-                </table> 
-                    </apex:pageBlock>
+                        
+                        <apex:repeat value="{!lstDeliverylineitem}" var="dli" rendered="{!If(lstDeliverylineitem !=null ,true,false) }">
+                            <tr>
+                                <td><apex:outputText value="{!index}" />
+                                    <apex:variable value="{!index + 1}" var="index" /></td>
+                                <td><apex:outputText value="{!dli.Product_Part__r.name}" /></td>
+                                <td><apex:outputText value="{!dli.Product_Part__r.Part_Name__c}" /></td>
+                                <td><apex:outputText value="{!dli.Product_Part__r.HSN_CODE__c}" /></td>
+                                <td style="text-align:right"><apex:outputText value="{!dli.Quantity__c}" /></td>
+                                <td style="text-align:right"><apex:outputText value="{!dli.Unit__c}" /></td>
+                                <td style="text-align:right"><apex:outputText value="{!dli.Sales_Price__c}" /></td>
+                                <td style="text-align:right"><apex:outputText value="{!dli.Gross_Amount__c}" /></td>
+                            </tr>
+                        </apex:repeat> 
+                    </table> 
+                </apex:pageBlock>
                 <!-----------------------Without Pricing Table------------------------------------------------------------------------>
-        
-                <apex:pageBlock rendered="{!if(Sales_Order_Dispatch_Delivery_Note__c.Pdf_View__c == 'Without Pricing',true,false)}">
-                <table style="width:100%; border:2px solid black;border-collapse: collapse;"   >
-                    <tr>
-                        <th  width="4%"  style="text-align:center">
-                            
-                            <apex:outputText value="S No." />
-                        </th>
-                        <th  width="12.5%" style="text-align:center">
-                            <apex:outputText value="Part No" />
-                        </th>
-                        <th  width="30%" style="text-align:center">
-                            <apex:outputText value="Description" />
-                        </th>
-                        <th  width="10.4%"  style="text-align:center">
-                            <apex:outputText value="HSN/ SAC" />
-                        </th>
-                        <th  width="5.1%"  style="text-align:center">
-                            <apex:outputText value="Qty" />
-                        </th>
-                        <th  width="6%"  style="text-align:center">
-                            <apex:outputText value="Unit" />
-                        </th>
-                    </tr>
-                    
-                    <apex:repeat value="{!lstDeliverylineitem}" var="dli" rendered="{!If(lstDeliverylineitem !=null ,true,false) }">
+                
+                <apex:pageBlock rendered="{!if(Sales_Order_Dispatch_Delivery_Note__c.Without_Pricing__c == true,true,false)}">
+                    <table style="width:100%; border:2px solid black;border-collapse: collapse;"   >
                         <tr>
-                            <td><apex:outputText value="{!index}" />
-                            <apex:variable value="{!index + 1}" var="index" /></td>
-                            <td><apex:outputText value="{!dli.Product_Part__r.name}" /></td>
-                            <td><apex:outputText value="{!dli.Product_Part__r.Part_Name__c}" /></td>
-                            <td><apex:outputText value="{!dli.Product_Part__r.HSN_CODE__c}" /></td>
-                            <td style="text-align:right"><apex:outputText value="{!dli.Quantity__c}" /></td>
-                            <td style="text-align:right"><apex:outputText value="{!dli.Unit__c}" /></td>
+                            <th  width="4%"  style="text-align:center">
+                                
+                                <apex:outputText value="S No." />
+                            </th>
+                            <th  width="12.5%" style="text-align:center">
+                                <apex:outputText value="Part No" />
+                            </th>
+                            <th  width="30%" style="text-align:center">
+                                <apex:outputText value="Description" />
+                            </th>
+                            <th  width="10.4%"  style="text-align:center">
+                                <apex:outputText value="HSN/ SAC" />
+                            </th>
+                            <th  width="5.1%"  style="text-align:center">
+                                <apex:outputText value="Qty" />
+                            </th>
+                            <th  width="6%"  style="text-align:center">
+                                <apex:outputText value="Unit" />
+                            </th>
                         </tr>
-                    </apex:repeat> 
-                </table> 
-                    </apex:pageBlock>
+                        
+                        <apex:repeat value="{!lstDeliverylineitem}" var="dli" rendered="{!If(lstDeliverylineitem !=null ,true,false) }">
+                            <tr>
+                                <td><apex:outputText value="{!index}" />
+                                    <apex:variable value="{!index + 1}" var="index" /></td>
+                                <td><apex:outputText value="{!dli.Product_Part__r.name}" /></td>
+                                <td><apex:outputText value="{!dli.Product_Part__r.Part_Name__c}" /></td>
+                                <td><apex:outputText value="{!dli.Product_Part__r.HSN_CODE__c}" /></td>
+                                <td style="text-align:right"><apex:outputText value="{!dli.Quantity__c}" /></td>
+                                <td style="text-align:right"><apex:outputText value="{!dli.Unit__c}" /></td>
+                            </tr>
+                        </apex:repeat> 
+                    </table> 
+                </apex:pageBlock>
                 <!-----------------------With Bin Table-------------------------------------------------------------------------------------->
-         
-                <apex:pageBlock rendered="{!if(Sales_Order_Dispatch_Delivery_Note__c.Pdf_View__c == 'With Bin no',true,false)}">
-                <table style="width:100%; border:2px solid black;border-collapse: collapse;"  >
-                    <tr>
-                        <th  width="4%"  style="text-align:center">
-                            
-                            <apex:outputText value="S No." />
-                        </th>
-                        <th  width="12.5%" style="text-align:center">
-                            <apex:outputText value="Part No" />
-                        </th>
-                        <th  width="30%" style="text-align:center">
-                            <apex:outputText value="Description" />
-                        </th>
-                        <th  width="5.1%"  style="text-align:center">
-                            <apex:outputText value="Qty" />
-                        </th>
-                        <th  width="6%"  style="text-align:center">
-                            <apex:outputText value="Unit" />
-                        </th>
-                    </tr>
-                    
-                    <apex:repeat value="{!lstDeliverylineitem}" var="dli" rendered="{!If(lstDeliverylineitem !=null ,true,false) }">
+                
+                <apex:pageBlock rendered="{!if(Sales_Order_Dispatch_Delivery_Note__c.With_Bin_Number__c == true,true,false)}">
+                    <table style="width:100%; border:2px solid black;border-collapse: collapse;"  >
                         <tr>
-                            <td><apex:outputText value="{!index}" />
-                            <apex:variable value="{!index + 1}" var="index" /></td>
-                            <td><apex:outputText value="{!dli.Product_Part__r.name}" /></td>
-                            <td><apex:outputText value="{!dli.Product_Part__r.Part_Name__c}" /></td>
-                            <td style="text-align:right"><apex:outputText value="{!dli.Quantity__c}" /></td>
-                            <td style="text-align:right"><apex:outputText value="{!dli.Unit__c}" /></td>
+                            <th  width="4%"  style="text-align:center">
+                                
+                                <apex:outputText value="S No." />
+                            </th>
+                            <th  width="12.5%" style="text-align:center">
+                                <apex:outputText value="Part No" />
+                            </th>
+                            <th  width="30%" style="text-align:center">
+                                <apex:outputText value="Description" />
+                            </th>
+                            <th  width="5.1%"  style="text-align:center">
+                                <apex:outputText value="Qty" />
+                            </th>
+                            <th  width="6%"  style="text-align:center">
+                                <apex:outputText value="Unit" />
+                            </th>
+                            <th  width="6%"  style="text-align:center">
+                                <apex:outputText value="Bin No." />
+                            </th>
                         </tr>
-                    </apex:repeat> 
-                </table> 
+                        
+                        <apex:repeat value="{!Deliverylineitemwrapper}" var="dli" rendered="{!If(Deliverylineitemwrapper !=null ,true,false) }">
+                            <tr>
+                                <td><apex:outputText value="{!index}" />
+                                    <apex:variable value="{!index + 1}" var="index" /></td>
+                                <td><apex:outputText value="{!dli.objDLI.Product_Part__r.name}" /></td>
+                                <td><apex:outputText value="{!dli.objDLI.Product_Part__r.Part_Name__c}" /></td>
+                                <td style="text-align:right"><apex:outputText value="{!dli.objDLI.Quantity__c}" /></td>
+                                <td style="text-align:right"><apex:outputText value="{!dli.objDLI.Unit__c}" /></td>
+                                <td style="text-align:right"><apex:outputText value="{!dli.binnumber}" /></td>
+                            </tr>
+                        </apex:repeat> 
+                    </table> 
                 </apex:pageBlock>
             </table>
             
             
             
-            <apex:pageBlock rendered="{!if(Sales_Order_Dispatch_Delivery_Note__c.Pdf_View__c == 'With Pricing',true,false)}">
-			<table width="100%" rendered="{!if(Sales_Order_Dispatch_Delivery_Note__c.Pdf_View__c == 'With Pricing',true,false)}">
-			<tr>
-                    <td  style="text-align:left; border-style: dashed; border-right: none; width:50%;"  ><apex:outputText value="Gross Total" /></td>
-                    <td  style="text-align:right; border-style: dashed;border-left: none;border-right: none; width:5%;" ><apex:outputText value="{!Quantity}" /></td>
-                    <td  style="text-align:right; border-style: dashed;border-left: none; width:28%;" ><apex:outputText value="{!GrossTotal}" /></td>
-                </tr>
-				</table>
-            
-            <table width="100%" rendered="{!if(Sales_Order_Dispatch_Delivery_Note__c.Pdf_View__c == 'With Pricing',true,false)}">
-                
-                <apex:repeat value="{!lstCharges}" var="chr" rendered="{!If(lstCharges !=null ,true,false)}" >
-                <tr>
-                    <td  style="text-align:left; border-style: dashed; border-right: none;border-top: none;width:50%; "><apex:outputText value="{!chr.Charges__r.name}" /></td>
-                    <td  style="text-align:right;  border-style: dashed; border-left: none;border-top: none;width:50%;"><apex:outputText value="{!chr.Net_Amount__c}" /></td>
-                </tr>
-                </apex:repeat>
+            <apex:pageBlock rendered="{!if(Sales_Order_Dispatch_Delivery_Note__c.Without_Pricing__c != true && Sales_Order_Dispatch_Delivery_Note__c.With_Bin_Number__c != true ,true,false)}">
+                <table width="100%" >
+                    <tr>
+                        <td  style="text-align:left; border-style: dashed; border-right: none; width:50%;"  ><apex:outputText value="Gross Total" /></td>
+                        <td  style="text-align:right; border-style: dashed;border-left: none;border-right: none; width:5%;" ><apex:outputText value="{!Quantity}" /></td>
+                        <td  style="text-align:right; border-style: dashed;border-left: none; width:28%;" ><apex:outputText value="{!GrossTotal}" /></td>
+                    </tr>
                 </table>
-            <table width="100%" rendered="{!if(Sales_Order_Dispatch_Delivery_Note__c.Pdf_View__c == 'With Pricing',true,false)}">
                 
-                
-                <tr>
-                    <td style="text-align:left; border-right: none;border-top: none;border-bottom: none; width:50%;"><apex:outputText value="Tcs Amount" /></td>
-                    <td  style="text-align:right; border-left: none;border-top: none;border-bottom: none; width:50%;"><apex:outputText value="{!TCSAmount}" /></td>
-                </tr>
-                <tr>
-                    <td  style="text-align:left; border-right: none; border-top: none;border-bottom: none; width:50%;"><apex:outputText value="Net Value" /></td>
-                    <td  style="text-align:right; border-left: none; border-top: none;border-bottom: none; width:50%;"><apex:outputText value="{!NetValue}" /></td>
-                </tr>
-                <tr>
-                    <td  style="text-align:left; width:100%;border-top: none;border-bottom: none;" colspan="2"><apex:outputText value="Amount in Words" />&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;{!totalAmountinWords}</td>    
-                     
-                </tr>
-                <tr>
-                    <td  style="text-align:left; width:100%; border-bottom:black;" colspan="2"><b>Remark:</b><apex:outputText value="{!Sales_Order_Dispatch_Delivery_Note__c.Remark__c}" /></td> 
-                </tr>
-                <tr>
-                    <td  style="text-align:left; width:100%;border-top:black; " colspan="2">Freight:2.5%</td> 
-                </tr>
-                <tr rowspan="2" height="100%">
-                    <td  style="text-align:left;width:100%;" colspan="2" height="70"></td> 
-                </tr>
-                
+                <table width="100%" >
+                    
+                    <apex:repeat value="{!lstCharges}" var="chr" rendered="{!If(lstCharges !=null ,true,false)}" >
+                        <tr>
+                            <td  style="text-align:left; border-style: dashed; border-right: none;border-top: none;width:50%; "><apex:outputText value="{!chr.Charges__r.name}" /></td>
+                            <td  style="text-align:right;  border-style: dashed; border-left: none;border-top: none;width:50%;"><apex:outputText value="{!chr.Net_Amount__c}" /></td>
+                        </tr>
+                    </apex:repeat>
+                </table>
+                <table width="100%" >
+                    
+                    
+                    <tr style="display: {!if(Sales_Order_Dispatch_Delivery_Note__c.Customer_Party__r.TCS_Charges_Enable__c, 'table-row', 'none')}">
+                        <td style="text-align:left; border-right: none;border-top: none;border-bottom: none; width:50%;"><apex:outputText value="Tcs Amount" /></td>
+                        <td  style="text-align:right; border-left: none;border-top: none;border-bottom: none; width:50%;"><apex:outputText value="{!TCSAmount}" /></td>
+                    </tr>
+                    <tr>
+                        <td  style="text-align:left; border-right: none; border-top: none;border-bottom: none; width:50%;"><apex:outputText value="Net Value" /></td>
+                        <td  style="text-align:right; border-left: none; border-top: none;border-bottom: none; width:50%;"><apex:outputText value="{!NetValue}" /></td>
+                    </tr>
+                    <tr>
+                        <td  style="text-align:left; width:100%;border-top: none;border-bottom: none;" colspan="2"><apex:outputText value="Amount in Words" />&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;{!totalAmountinWords}</td>    
+                        
+                    </tr>
+                    <tr>
+                        <td  style="text-align:left; width:100%; border-bottom:black;" colspan="2"><b>Remark:</b><apex:outputText value="{!Sales_Order_Dispatch_Delivery_Note__c.Remark__c}" /></td> 
+                    </tr>
+                    
+                    <tr rowspan="2" height="100%">
+                        <td  style="text-align:left;width:100%;" colspan="2" height="70"></td> 
+                    </tr>
+                    
                 </table>
             </apex:pageBlock>
-           
+            
             <table width="100%" style="border-collapse: collapse;">
                 <tr>
                     <td  style="text-align:left;border-bottom:black; border-right:black; width:50%; " height="50">For <b>Powerparts Private Limited</b></td> 

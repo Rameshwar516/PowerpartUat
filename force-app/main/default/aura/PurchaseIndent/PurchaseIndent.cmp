@@ -70,7 +70,7 @@
                             <b>Customer Reference Number :</b>
                         </div>
                         <div class="slds-col slds-size_3-of-12 slds-p-around_xx-small slds-text-align_right">
-                            <lightning:input type="Number" value="{!v.mainWrapper.objPurchaseIndent.Reference_No__c}" varient="label-hidden" />
+                            <lightning:input type="text" value="{!v.mainWrapper.objPurchaseIndent.Reference_No__c}" varient="label-hidden" />
                         </div>
                         <div class="slds-col slds-size_3-of-12 slds-p-around_xx-small slds-text-align_right">
                             <b>Customer Reference Date :</b>
@@ -303,7 +303,13 @@
                                         </td>
                                         <td scope="row" data-label="Usage">
                                             <div class="slds-truncate" title="Usage">
-                                                {!item.objPart.Usage__c}
+                                                <aura:if isTrue="{!item.isEdit &amp;&amp; v.isDirect}">
+                                                    <lightning:input type="text" value="{!item.objPart.Usage__c}" onchange="{!c.onChangeExpectedDateJS}"/>
+                                                    <aura:set attribute="else">
+                                                        {!item.objPart.Usage__c}
+                                                    </aura:set>
+                                                </aura:if>
+                                               
                                             </div>
                                         </td>
                                         <td scope="row" data-label="Remarks">

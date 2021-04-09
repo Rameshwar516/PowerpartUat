@@ -20,6 +20,7 @@
                 if(JSON.parse(res.getReturnValue()).statecode){
                     if(JSON.parse(res.getReturnValue()).isSelectedProduct){
                         component.set("v.lstSelectedTax",JSON.parse(res.getReturnValue()).lstTaxDetailsAvailable);
+                        
                          this.refreshCharge(component,event,helper);
                         this.totalamount(component,event,helper);
                         component.set('v.showPicklist',true);
@@ -247,11 +248,11 @@
                 strTaxId: lstSelectedTax[i].strTaxId,
                 strTaxName: lstSelectedTax[i].strTaxName,
                 TaxPercentage: lstSelectedTax[i].TaxPercentage,
-                decTaxAmount: TotalAmount*lstSelectedTax[i].TaxPercentage/100,
+                decTaxAmount: lstSelectedTax[i].decTaxAmount,
                 CGST: lstSelectedTax[i].CGST,
                 SGST: lstSelectedTax[i].SGST,
                 IGST: lstSelectedTax[i].IGST,
-                NetAmount: TotalAmount*lstSelectedTax[i].TaxPercentage/100,
+                NetAmount: lstSelectedTax[i].NetAmount,
                 ischargeItem:lstSelectedTax[i].ischargeItem,
                 objcharge:lstSelectedTax[i].objcharge,
                 
@@ -263,7 +264,7 @@
         //alert('...!@#..'+lstTotalSelectedTax.length);
         for(var i = 0; i < lstTotalSelectedTax.length; i++) {
             //alert('...'+lstTotalSelectedTax[i].decTaxAmount);
-            TotalTaxAmount =TotalTaxAmount+lstTotalSelectedTax[i].decTaxAmount;
+            TotalTaxAmount =TotalTaxAmount+lstTotalSelectedTax[i].NetAmount;
         }
         component.set('v.TotalTax', TotalTaxAmount);
     },	

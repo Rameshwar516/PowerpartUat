@@ -51,5 +51,89 @@
             }
         });
         $A.enqueueAction(action);
-    }
+    },
+    onRemainQty: function(component, event, helper) {
+        console.log('change helper');
+        var wrapperchild=component.get("v.wrapMains.wrapChildlst");
+        var slctCheck = event.getSource().get("v.value");
+        var rowindex = event.getSource().get("v.name");
+         console.log('rowindex '+rowindex);
+        wrapperchild[rowindex].reMaininQTY=slctCheck;
+        wrapperchild[rowindex].totalprice = wrapperchild[rowindex].salesprice*wrapperchild[rowindex].reMaininQTY;
+        wrapperchild[rowindex].discountamount = (wrapperchild[rowindex].totalprice*wrapperchild[rowindex].discount)/100;
+        wrapperchild[rowindex].totalamount = wrapperchild[rowindex].totalprice - wrapperchild[rowindex].discountamount;
+        wrapperchild[rowindex].cgstamount = (wrapperchild[rowindex].totalamount*wrapperchild[rowindex].cgst)/100;
+        wrapperchild[rowindex].sgstamount = (wrapperchild[rowindex].totalamount*wrapperchild[rowindex].sgst)/100;
+        wrapperchild[rowindex].igstamount = (wrapperchild[rowindex].totalamount*wrapperchild[rowindex].igst)/100;
+        wrapperchild[rowindex].nettotal = wrapperchild[rowindex].totalamount+wrapperchild[rowindex].igstamount+wrapperchild[rowindex].sgstamount+wrapperchild[rowindex].cgstamount;
+        component.set("v.wrapMains.wrapChildlst",wrapperchild);
+    },
+    onSalesPrice: function(component, event, helper) {
+        var wrapperchild=component.get("v.wrapMains.wrapChildlst");
+        var slctCheck = event.getSource().get("v.value");
+        var rowindex = event.getSource().get("v.name");
+        wrapperchild[rowindex].salesprice=slctCheck;
+        wrapperchild[rowindex].totalprice = wrapperchild[rowindex].salesprice*wrapperchild[rowindex].reMaininQTY;
+        wrapperchild[rowindex].discountamount = (wrapperchild[rowindex].totalprice*wrapperchild[rowindex].discount)/100;
+        wrapperchild[rowindex].totalamount = wrapperchild[rowindex].totalprice - wrapperchild[rowindex].discountamount;
+        wrapperchild[rowindex].cgstamount = (wrapperchild[rowindex].totalamount*wrapperchild[rowindex].cgst)/100;
+        wrapperchild[rowindex].sgstamount = (wrapperchild[rowindex].totalamount*wrapperchild[rowindex].sgst)/100;
+        wrapperchild[rowindex].igstamount = (wrapperchild[rowindex].totalamount*wrapperchild[rowindex].igst)/100;
+        wrapperchild[rowindex].nettotal = wrapperchild[rowindex].totalamount+wrapperchild[rowindex].igstamount+wrapperchild[rowindex].sgstamount+wrapperchild[rowindex].cgstamount;
+        component.set("v.wrapMains.wrapChildlst",wrapperchild);
+    },
+    onDiscount: function(component, event, helper) {
+        var wrapperchild=component.get("v.wrapMains.wrapChildlst");
+        var slctCheck = event.getSource().get("v.value");
+        var rowindex = event.getSource().get("v.name");
+        wrapperchild[rowindex].discount = slctCheck;
+        wrapperchild[rowindex].discountamount = (wrapperchild[rowindex].totalprice*wrapperchild[rowindex].discount)/100;
+        wrapperchild[rowindex].totalamount = wrapperchild[rowindex].totalprice - wrapperchild[rowindex].discountamount;
+        wrapperchild[rowindex].cgstamount = (wrapperchild[rowindex].totalamount*wrapperchild[rowindex].cgst)/100;
+        wrapperchild[rowindex].sgstamount = (wrapperchild[rowindex].totalamount*wrapperchild[rowindex].sgst)/100;
+        wrapperchild[rowindex].igstamount = (wrapperchild[rowindex].totalamount*wrapperchild[rowindex].igst)/100;
+        wrapperchild[rowindex].nettotal = wrapperchild[rowindex].totalamount+wrapperchild[rowindex].igstamount+wrapperchild[rowindex].sgstamount+wrapperchild[rowindex].cgstamount;
+        component.set("v.wrapMains.wrapChildlst",wrapperchild);
+    },
+    onDiscountamt: function(component, event, helper) {
+        var wrapperchild=component.get("v.wrapMains.wrapChildlst");
+        var slctCheck = event.getSource().get("v.value");
+        var rowindex = event.getSource().get("v.name");
+        wrapperchild[rowindex].discountamount = slctCheck;
+        wrapperchild[rowindex].discount = (wrapperchild[rowindex].discountamount/wrapperchild[rowindex].totalprice)*100;
+        wrapperchild[rowindex].totalamount = wrapperchild[rowindex].totalprice - wrapperchild[rowindex].discountamount;
+        wrapperchild[rowindex].cgstamount = (wrapperchild[rowindex].totalamount*wrapperchild[rowindex].cgst)/100;
+        wrapperchild[rowindex].sgstamount = (wrapperchild[rowindex].totalamount*wrapperchild[rowindex].sgst)/100;
+        wrapperchild[rowindex].igstamount = (wrapperchild[rowindex].totalamount*wrapperchild[rowindex].igst)/100;
+        wrapperchild[rowindex].nettotal = wrapperchild[rowindex].totalamount+wrapperchild[rowindex].igstamount+wrapperchild[rowindex].sgstamount+wrapperchild[rowindex].cgstamount;
+        component.set("v.wrapMains.wrapChildlst",wrapperchild);
+    },
+    onCGST: function(component, event, helper) {
+        var wrapperchild=component.get("v.wrapMains.wrapChildlst");
+        var slctCheck = event.getSource().get("v.value");
+        var rowindex = event.getSource().get("v.name");
+        wrapperchild[rowindex].cgst = slctCheck;
+        wrapperchild[rowindex].cgstamount = (wrapperchild[rowindex].totalamount*wrapperchild[rowindex].cgst)/100;
+        wrapperchild[rowindex].nettotal = wrapperchild[rowindex].totalamount+wrapperchild[rowindex].igstamount+wrapperchild[rowindex].sgstamount+wrapperchild[rowindex].cgstamount;
+        component.set("v.wrapMains.wrapChildlst",wrapperchild);
+    },
+    onSGST: function(component, event, helper) {
+        var wrapperchild=component.get("v.wrapMains.wrapChildlst");
+        var slctCheck = event.getSource().get("v.value");
+        var rowindex = event.getSource().get("v.name");
+        wrapperchild[rowindex].sgst = slctCheck;
+        wrapperchild[rowindex].sgstamount = (wrapperchild[rowindex].totalamount*wrapperchild[rowindex].sgst)/100;
+        wrapperchild[rowindex].nettotal = wrapperchild[rowindex].totalamount+wrapperchild[rowindex].igstamount+wrapperchild[rowindex].sgstamount+wrapperchild[rowindex].cgstamount;
+        component.set("v.wrapMains.wrapChildlst",wrapperchild);
+    },
+    onIGST: function(component, event, helper) {
+        var wrapperchild=component.get("v.wrapMains.wrapChildlst");
+        var slctCheck = event.getSource().get("v.value");
+        var rowindex = event.getSource().get("v.name");
+        wrapperchild[rowindex].igst = slctCheck;
+        wrapperchild[rowindex].igstamount = (wrapperchild[rowindex].totalamount*wrapperchild[rowindex].igst)/100;
+        wrapperchild[rowindex].nettotal = wrapperchild[rowindex].totalamount+wrapperchild[rowindex].igstamount+wrapperchild[rowindex].sgstamount+wrapperchild[rowindex].cgstamount;
+        component.set("v.wrapMains.wrapChildlst",wrapperchild);
+    },
+    
 })

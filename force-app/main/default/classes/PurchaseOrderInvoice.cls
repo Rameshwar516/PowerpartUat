@@ -256,7 +256,10 @@ public class PurchaseOrderInvoice
         
         TotalAmountWithCharges = TotalAmountWithCharges+totalAmount;
         totalAmountaftertaxinWords = UtilityClass.NoToWord(TotalAmountWithCharges.intValue());
-        totalAmountaftertaxinWords = totalAmountaftertaxinWords+' rupees only';
+        if(PurchaseOrd.Currency__c != 'INR')
+       	 	totalAmountaftertaxinWords = totalAmountaftertaxinWords+' '+PurchaseOrd.Currency__c+' only';
+        else
+            totalAmountaftertaxinWords = totalAmountaftertaxinWords+' rupees only';
         TotalAmountWithCharges.round();
         totalAmountSumNotIncludedTax = totalAmountSumNotIncludedTax+totalAmountNotIncludedTax;
         totalAmountSumNotIncludedTax.round();

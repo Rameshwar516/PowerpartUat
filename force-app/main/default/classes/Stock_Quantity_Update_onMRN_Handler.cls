@@ -6,16 +6,18 @@ public class Stock_Quantity_Update_onMRN_Handler {
         Map<id,stock__c> stockmap = new Map<id,stock__c>(); 
         list<stock__c> stocklist = new list<stock__c>();
         for(mrn__c mrn : triggernew){ 
-            if(mrn.Stage__c =='Approved' && oldMap.get(mrn.Id).Stage__c != mrn.Stage__c){ 
+            if(mrn.Stage__c =='Received' && oldMap.get(mrn.Id).Stage__c != mrn.Stage__c){ 
                 mrnIdSet.add(mrn.id);
+                System.debug('mrnid------ '+mrn.id);
             }       
         }
-            
+        
         if(!mrnIdSet.isempty()) 
         {
-            MrnLineItemList = [SELECT Id,MRN__c,MRN__r.Ware_House__c,Part_Number__c,Stock__c,Condition__c,Received_QTY__c  FROM MRN_Line_Item__c where MRN__c IN: mrnIdSet];
+            MrnLineItemList = [SELECT Id,MRN__c,MRN__r.MRN_Type__c,MRN__r.Ware_House__c,Part_Number__c,Stock__c,Condition__c,Received_QTY__c,Bill_QTY__c  FROM MRN_Line_Item__c where MRN__c IN: mrnIdSet];
             if(!MrnLineItemList.isempty()) 
-            {
+            { 
+                System.debug('MrnLineItemList------ '+MrnLineItemList.size());
                 for(MRN_Line_Item__c mli :MrnLineItemList) {
                     setProductId.add(mli.Part_Number__c);
                 }
@@ -32,17 +34,26 @@ public class Stock_Quantity_Update_onMRN_Handler {
                 {
                     for(MRN_Line_Item__c mli : MrnLineItemList){
                         Stock__c objStock = new Stock__c();
-                        if(mapWareHouseProductbasedQuantity.get(objStock.Ware_House__c+'-'+objStock.Product_Part__c) != null){
-                        objStock = mapWareHouseProductbasedQuantity.get(objStock.Ware_House__c+'-'+objStock.Product_Part__c);
-                        Decimal stockamount =0;
                         
-                        if(objStock.Product_IN__c !=null){
-                            stockamount=objStock.Product_IN__c;
-                        }
-                        if(mli.Quantity__c!= null)
-                        objStock.Product_IN__c = objStock.Product_IN__c+mli.Quantity__c;
-                        mapIdRelatedStock.put(objStock.Id,objStock);
+                        if(mapWareHouseProductbasedQuantity.get(mli.MRN__r.Ware_House__c+'-'+mli.Part_Number__c) != null){
+                            objStock = mapWareHouseProductbasedQuantity.get(mli.MRN__r.Ware_House__c+'-'+mli.Part_Number__c);
+                            Decimal stockamount =0;
+                            System.debug('objStock------ '+objStock);
+                            if(objStock.Product_IN__c !=null){
+                                stockamount=objStock.Product_IN__c;
                             }
+                            if(mli.MRN__r.MRN_Type__c=='Sales Return'){
+                                if(mli.Received_QTY__c!= null){
+                                    objStock.Product_IN__c = objStock.Product_IN__c+mli.Received_QTY__c;
+                                    mapIdRelatedStock.put(objStock.Id,objStock);}
+                            }
+                            else{
+                                if(mli.Bill_QTY__c!= null){
+                                    objStock.Product_IN__c = objStock.Product_IN__c+mli.Bill_QTY__c;
+                                    mapIdRelatedStock.put(objStock.Id,objStock);}
+                            }
+                        }
+                        
                     }
                 }
                 if(!mapIdRelatedStock.isempty()) 

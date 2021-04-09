@@ -689,21 +689,29 @@
                                                 <thead>  
                                                     <tr class="slds-text-title_caps">
                                                         <th scope="col" rowspan="2">
-                                                            <div class="slds-truncate" title="ACTION">ACTION</div>
+                                                            <div class="slds-truncate" title="ACTION" style="text-align: center; width:6rem">ACTION</div>
                                                         </th>
                                                         <th scope="col" rowspan="2">
-                                                            <div class="slds-truncate" title="SR.N.">SR.N.</div>
+                                                            <div class="slds-truncate" title="SR.N." style="text-align: center;">SR.N.</div>
+                                                        </th>
+                                                        <aura:if isTrue="{!v.strType =='Purchase Order'}" >
+                                                            <th scope="col" rowspan="2" style="text-align: center;">
+                                                                <div class="slds-truncate" title="SDoc.No." >Doc.No.</div>
+                                                            </th>
+                                                            <th scope="col" rowspan="2" style="text-align: center;">
+                                                                <div class="slds-truncate" title="SR.N." >PO Date</div>
+                                                            </th>
+                                                        </aura:if>
+                                                        <th scope="col" rowspan="2">
+                                                            <div class="slds-truncate" title="Part No." style="text-align: center;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Part No.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
                                                         </th>
                                                         <th scope="col" rowspan="2">
-                                                            <div class="slds-truncate" title="Part No.">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Part No.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                                                            <div class="slds-truncate" title="Part Name" style="text-align: center;">Description	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
                                                         </th>
                                                         <th scope="col" rowspan="2">
-                                                            <div class="slds-truncate" title="Part Name">Description	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                                                            <div class="slds-truncate" title="HSN/SAC" style="text-align: center;">HSN/SAC</div>
                                                         </th>
-                                                        <th scope="col" rowspan="2">
-                                                            <div class="slds-truncate" title="HSN/SAC">HSN/SAC</div>
-                                                        </th>
-                                                        <th scope="col" rowspan="2">
+                                                        <th scope="col" rowspan="2" style="text-align: center;">
                                                             <aura:if isTrue="{!v.mainWrap.objMRN.MRN_Delivery_Type__c =='Import'}">
                                                                 <div class="slds-truncate" title="Bin No.">Bin No.</div>
                                                                 <aura:set attribute="else">
@@ -711,16 +719,16 @@
                                                                 </aura:set>
                                                             </aura:if>
                                                         </th>
-                                                        <th scope="col" rowspan="2">
+                                                        <th scope="col" rowspan="2" style="text-align: center;">
                                                             <div class="slds-truncate" title="PO Qty">PO Qty.</div>
                                                         </th>
-                                                        <th scope="col" rowspan="2">
+                                                        <th scope="col" rowspan="2" style="text-align: center;">
                                                             <div class="slds-truncate" title="Bill Qty">Bill Qty.</div>
                                                         </th>
-                                                        <th scope="col" rowspan="2">
+                                                        <th scope="col" rowspan="2" style="text-align: center;">
                                                             <div class="slds-truncate" title="Receipt Qty">Recd. Qty.</div>
                                                         </th>
-                                                        <th scope="col" rowspan="2">
+                                                        <th scope="col" rowspan="2" style="text-align: center;">
                                                             <aura:if isTrue="{!v.mainWrap.objMRN.MRN_Delivery_Type__c =='Import'}">
                                                                 <div class="slds-truncate" title="Accept Qty">Short/ <br/> Excess Qty.</div>
                                                                 <aura:set attribute="else">
@@ -729,19 +737,19 @@
                                                             </aura:if>
                                                         </th>
                                                         <aura:if isTrue="{!v.mainWrap.objMRN.MRN_Delivery_Type__c =='Import'}">
-                                                            <th scope="col" rowspan="2">
+                                                            <th scope="col" rowspan="2" style="text-align: center;">
                                                                 <div class="slds-truncate" title="UoM">&nbsp;&nbsp;&nbsp;UoM&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
                                                             </th>
-                                                            <th scope="col" rowspan="2">
+                                                            <th scope="col" rowspan="2" style="text-align: center;">
                                                                 <div class="slds-truncate" title="UOI">&nbsp;&nbsp;&nbsp;UOI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
                                                             </th>
                                                             <aura:set attribute="else">
-                                                                <th scope="col" rowspan="2">
+                                                                <th scope="col" rowspan="2" style="text-align: center;">
                                                                     <div class="slds-truncate" title="Unit">Unit</div>
                                                                 </th>	
                                                             </aura:set>
                                                         </aura:if>
-                                                        <th scope="col" rowspan="2">
+                                                        <th scope="col" rowspan="2" style="text-align: center;">
                                                             <div class="slds-truncate" title="Item Price/Unit (GBP)"> Item Price/ <br/>Unit   <aura:if isTrue="{!v.mainWrap.objMRN.MRN_Delivery_Type__c =='Import'}">
                                                                 (GBP)
                                                                 <aura:set attribute="else">
@@ -750,7 +758,7 @@
                                                                 </aura:if>
                                                             </div>
                                                         </th>	
-                                                        <th scope="col" rowspan="2">
+                                                        <th scope="col" rowspan="2" style="text-align: center;">
                                                             <div class="slds-truncate" title="Item Price/Unit (GBP)">Total Item <br/>Amount <aura:if isTrue="{!v.mainWrap.objMRN.MRN_Delivery_Type__c =='Import'}">
                                                                 (GBP)
                                                                 <aura:set attribute="else">
@@ -760,39 +768,39 @@
                                                         </th>
                                                         <aura:if isTrue="{!v.mainWrap.objMRN.MRN_Delivery_Type__c =='Import'}">										
                                                             <th scope="col" rowspan="2">
-                                                                <div class="slds-truncate" title="Item Price/Unit (GBP)">Item Value <br/>With Freigh &#38; <br/>Surchargeb(GBP) </div>
+                                                                <div class="slds-truncate" title="Item Price/Unit (GBP)" style="text-align: center;">Item Value <br/>With Freigh &#38; <br/>Surchargeb(GBP) </div>
                                                             </th>	
                                                             <th scope="col" rowspan="2">
-                                                                <div class="slds-truncate" title="Item Price/Unit (GBP)">Total Item<br/> Value In<br/> (INR)</div>
+                                                                <div class="slds-truncate" title="Item Price/Unit (GBP)" style="text-align: center;">Total Item<br/> Value In<br/> (INR)</div>
                                                             </th>	
                                                             <th scope="col" rowspan="2">
-                                                                <div class="slds-truncate" title="Item Price/Unit (GBP)">Assessable<br/> Value (INR) <br/>(Including <br/>Insurance)</div>
+                                                                <div class="slds-truncate" title="Item Price/Unit (GBP)" style="text-align: center;">Assessable<br/> Value (INR) <br/>(Including <br/>Insurance)</div>
                                                             </th>	
-                                                            <th scope="col" colspan="3">
+                                                            <th scope="col" colspan="3" style="text-align: center;">
                                                                 <div class="slds-truncate" title="Custom Duty">Custom Duty</div>
                                                             </th>	
                                                         </aura:if>
-                                                        <th scope="col" rowspan="2">
+                                                        <th scope="col" rowspan="2" style="text-align: center;">
                                                             <div class="slds-truncate" title="Item Price/Unit (GBP)">&nbsp;&nbsp;&nbsp;Taxable Value &nbsp;&nbsp;&nbsp;</div>
                                                         </th>
                                                         <aura:if isTrue="{!v.mainWrap.objMRN.MRN_Delivery_Type__c =='Import'}">	
-                                                            <th scope="col" colspan="2">
+                                                            <th scope="col" colspan="2" style="text-align: center;">
                                                                 <div class="slds-truncate" title="GST">GST </div>
                                                             </th>	
                                                             <aura:set attribute="else">
-                                                                <th scope="col" colspan="2">
+                                                                <th scope="col" colspan="2" style="text-align: center;">
                                                                     <div class="slds-truncate" title="GST">CGST </div>
                                                                 </th>
-                                                                <th scope="col" colspan="2">
+                                                                <th scope="col" colspan="2" style="text-align: center;">
                                                                     <div class="slds-truncate" title="GST">SGST </div>
                                                                 </th>
-                                                                <th scope="col" colspan="2">
+                                                                <th scope="col" colspan="2" style="text-align: center;">
                                                                     <div class="slds-truncate" title="GST">IGST </div>
                                                                 </th>
                                                                 
                                                             </aura:set>
                                                         </aura:if>
-                                                        <th scope="col" rowspan="2">
+                                                        <th scope="col" rowspan="2" style="text-align: center;">
                                                             <aura:if isTrue="{!v.mainWrap.objMRN.MRN_Delivery_Type__c =='Import'}">	
                                                                 <div class="slds-truncate" title="Amount">Total <br/>for Books <br/>(After less <br/>1.125% Insurance <br/>Cost)</div>
                                                                 <aura:set attribute="else">
@@ -803,34 +811,34 @@
                                                     </tr>
                                                     <tr>
                                                         <aura:if isTrue="{!v.mainWrap.objMRN.MRN_Delivery_Type__c =='Import'}">	
-                                                            <th scope="col" >
-                                                                <div class="slds-truncate" title="Item Price/Unit (GBP)">Duty Rate</div>
+                                                            <th scope="col" style="text-align: center; width: 5rem;" >
+                                                                <div class="slds-truncate" title="Item Price/Unit (GBP)">Duty<br/> Rate</div>
                                                             </th>	
-                                                            <th scope="col">
-                                                                <div class="slds-truncate" title="Item Price/Unit (GBP)">Sur. Rate</div>
+                                                            <th scope="col" style="text-align: center; width: 5rem;" >
+                                                                <div class="slds-truncate" title="Item Price/Unit (GBP)">Sur. <br/>Rate</div>
                                                             </th>	
-                                                            <th scope="col">
-                                                                <div class="slds-truncate" title="Item Price/Unit (GBP)">Amount (INR)</div>
+                                                            <th scope="col" style="text-align: center; width: 7rem;" >
+                                                                <div class="slds-truncate" title="Item Price/Unit (GBP)">Amount <br/>(INR)</div>
                                                             </th>
                                                         </aura:if>	
                                                         
-                                                        <th scope="col">
+                                                        <th scope="col" style="text-align: center; width: 5rem;" >
                                                             <div class="slds-truncate" title="Rate">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rate&nbsp;&nbsp;&nbsp; </div>
                                                         </th>	
-                                                        <th scope="col">
+                                                        <th scope="col" style="text-align: center;">
                                                             <div class="slds-truncate" title="Amount">&nbsp;&nbsp;&nbsp;Amount&nbsp;&nbsp;&nbsp;</div>
                                                         </th>
                                                         <aura:if isTrue="{!v.mainWrap.objMRN.MRN_Delivery_Type__c =='Domestic'}">	
-                                                            <th scope="col">
+                                                            <th scope="col" style="width: 5rem; text-align: center;" >
                                                                 <div class="slds-truncate" title="Rate">Rate&nbsp;&nbsp;&nbsp; </div>
                                                             </th>	
-                                                            <th scope="col">
+                                                            <th scope="col" style="text-align: center;">
                                                                 <div class="slds-truncate" title="Amount">&nbsp;&nbsp;&nbsp;Amount&nbsp;&nbsp;&nbsp;</div>
                                                             </th>
-                                                            <th scope="col">
+                                                            <th scope="col" style="width: 5rem; text-align: center;" >
                                                                 <div class="slds-truncate" title="Rate">Rate&nbsp;&nbsp;&nbsp; </div>
                                                             </th>	
-                                                            <th scope="col">
+                                                            <th scope="col" style="text-align: center;">
                                                                 <div class="slds-truncate" title="Amount">&nbsp;&nbsp;&nbsp;Amount&nbsp;&nbsp;&nbsp;</div>
                                                             </th>
                                                         </aura:if>											
@@ -852,6 +860,17 @@
                                                                     <lightning:buttonIcon value="{!index}" alternativeText="Delete" variant="border-filled"  iconName="utility:delete" class="AlignCenter" onclick="{!c.DeleteRecord}"/> 
                                                                 </td>
                                                                 <td class="slds-truncate">{!index+1} </td>
+                                                                <aura:if isTrue="{!v.strType =='Purchase Order'}">
+                                                                    
+                                                                    <td class="slds-truncate">
+                                                                        <lightning:input id="partId" type="string" value="{!obj.strDocNo}" disabled="true"/>
+                                                                    </td>
+                                                                    
+                                                                    <td class="slds-truncate">
+                                                                        <lightning:input id="partId" type="string" value="{!obj.docDate}" disabled="true"/>
+                                                                    </td>
+                                                                    
+                                                                </aura:if>
                                                                 <td>
                                                                     <aura:if isTrue="{!v.strType =='Direct'}">
                                                                         <aura:if isTrue="{!obj.IsEdit}">
@@ -865,11 +884,11 @@
                                                                         </aura:set>
                                                                     </aura:if>
                                                                 </td>
-                                                                <td class="slds-truncate" title="{!if(v.strType =='Direct',obj.objPart.Part_Name__c,obj.strDescription)}">
+                                                                <td class="slds-truncate" title="{!if(v.strType =='Direct',obj.objPart.Part_Name__c,obj.objPart.Part_Name__c)}">
                                                                     <aura:if isTrue="{!v.strType =='Direct'}">
                                                                         <lightning:input id="partName" type="Text" value="{!obj.objPart.Part_Name__c}" disabled="true" />
                                                                         <aura:set attribute="else">
-                                                                            <lightning:input id="partName" type="Text" value="{!obj.strDescription}" disabled="true" />
+                                                                            <lightning:input id="partName" type="Text" value="{!obj.objPart.Part_Name__c}" disabled="true" />
                                                                         </aura:set>
                                                                     </aura:if>
                                                                 </td>
@@ -907,12 +926,14 @@
                                                                 </aura:if>
                                                                 <td class="slds-truncate" title="">
                                                                     <aura:if isTrue="{!v.mainWrap.objMRN.MRN_Delivery_Type__c =='Import'}">
-                                                                        <lightning:select name="strUOI" label="" value="{!obj.strUOI}" disabled="{!v.IsEdit}">
-                                                                            <option value="">--None--</option>
+                                                                       <!-- <lightning:select name="strUOI" label="" value="{!obj.strUOI}" disabled="{!v.IsEdit}">
+                                                                            <option value="">None</option>
                                                                             <aura:iteration items="{!v.mainWrap.lstUOI}" var="DT">
                                                                                 <option value="{!DT}">{!DT}</option>
                                                                             </aura:iteration>
-                                                                        </lightning:select>
+                                                                        </lightning:select> -->
+                                                                           <lightning:input id="partId" type="Number" default="0" value="{!obj.strUOI}" disabled="{!v.IsEdit}" />
+                                                                       
                                                                         <aura:set attribute="else">
                                                                             <lightning:input id="partId" type="Number" default="0" value="{!obj.IntUNIT}" disabled="{!v.IsEdit}" />
                                                                         </aura:set>

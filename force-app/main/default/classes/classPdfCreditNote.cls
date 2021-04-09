@@ -148,7 +148,7 @@ public class classPdfCreditNote {
             
             OEMdcNote=[select id ,GSTIN_No__c,BillingCity,BillingCountry,BillingState,BillingStreet,BillingAddress,BillingPostalCode,
                        ShippingCity,ShippingPostalCode,ShippingStreet,ShippingState,ShippingAddress, name,Shipping_State_Code__c,
-                       ShippingCountry, Billing_State_Code__c from Account where id =:MrndcNote.OEM_Customer__c ];
+                       ShippingCountry, Billing_State_Code__c from Account where id =:dcNote.Bill_To_Customer_Name__c ];
             
           strBillingAddress = '';
         strBillingAddress = OEMdcNote?.BillingStreet;

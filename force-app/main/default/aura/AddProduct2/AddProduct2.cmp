@@ -55,7 +55,7 @@
         
     </aura:html>
     
-    <lightning:layoutItem size="12">
+    <lightning:layoutItem size="12" >
         <aura:if isTrue="{!v.wrapMain.statecode}"> 
             <lightning:tabset selectedTabId="one">
                 <lightning:tab label="Add Product" id="one">
@@ -126,8 +126,11 @@
                                                         <th class="" scope="col" style="width: 1rem;" >
                                                             <div class="slds-truncate slds-cell-fixed slds-cell-wrap" title="checkbox"></div>
                                                         </th>
-                                                        <th class="" scope="col" style="width: 5rem;">
+                                                        <th class="" scope="col" style="width: 2.5rem;">
                                                             <div class="slds-truncate slds-cell-fixed slds-cell-wrap" title="Product Name">Part Number</div>
+                                                        </th>
+                                                         <th class="" scope="col" style="width: 2.5rem;">
+                                                            <div class="slds-truncate slds-cell-fixed slds-cell-wrap" title="Product Name">Old Part Number</div>
                                                         </th>
                                                         <th class="" scope="col" style="width: 2rem;">
                                                             <div class="slds-truncate slds-cell-fixed slds-cell-wrap" title="Product Code">Part Name</div>
@@ -148,13 +151,14 @@
                                                         <tr width="100%" id="{!index}"> 
                                                             <td class="dataCell" style="width: 8rem;" ><lightning:input type="checkbox" value="{!cusProd.isSelected}" checked="{!cusProd.isSelected}" name="{!index}" onchange="{!c.checkJs}"/></td>
                                                             <td class="dataCell" style="width: 8rem;"><a href="{! '/' + cusProd.objProd.Id}"> {!cusProd.objProd.Name}</a></td>
-                                                            <td class="dataCell" style="width: 9rem;">{!cusProd.objProd.Part_Name__c} {!v.wrapMain.isService}</td>
+                                                              <td class="dataCell" style="width: 9rem;">{!cusProd.oldPartName}</td>
+                                                            <td class="dataCell" style="width: 9rem;">{!cusProd.objProd.Part_Name__c}</td>
                                                             <td class="dataCell" style="width: 7rem;">
                                                                 <aura:if isTrue="{!v.wrapMain.isService}">
-                                                                {!cusProd.objProd.Service_Price__c}
-                                                                <aura:set attribute="else">
-                                                                    {!cusProd.objProd.List_Price_Standard_price__c}
-                                                                </aura:set>
+                                                                    {!cusProd.objProd.Service_Price__c}
+                                                                    <aura:set attribute="else">
+                                                                        {!cusProd.objProd.List_Price_Standard_price__c}
+                                                                    </aura:set>
                                                                 </aura:if>
                                                             </td>
                                                             <td class="dataCell" style="width: 9rem;">{!cusProd.Klwr}</td>
@@ -259,7 +263,7 @@
                                                                 <div class="slds-truncate" title="">
                                                                     <aura:if isTrue="{!cusProdTwo.isLineItem}">
                                                                         <lightning:buttonIcon value="{!index}" alternativeText="Delete" variant="border-filled"  iconName="utility:delete"  onclick="{!c.Deletelineitem}" />
-                                                                   		<aura:set attribute="else">
+                                                                        <aura:set attribute="else">
                                                                             <lightning:buttonIcon value="{!index}" alternativeText="Delete" variant="border-filled"  iconName="utility:delete"  onclick="{!c.removeselectedpart}" />                                                                  		
                                                                         </aura:set>
                                                                     </aura:if>
@@ -273,7 +277,7 @@
                                                             <td class="slds-text-align_left"  ><div class="slds-truncate" title="{!cusProdTwo.objProdchild.Quantity__c}"><lightning:input id="quantity"  variant="label-hidden" name="{!index}" min="1" type="number" value="{!cusProdTwo.objProdchild.Quantity__c}" onchange="{!c.QuantityPriceChange}"/></div></td>
                                                             <td class="slds-text-align_left " ><div class="slds-truncate" title="{!cusProdTwo.objProdchild.Sales_Price__c}"><lightning:input id="price"  variant="label-hidden" name="{!index}" min="1" step="0.01" type="number" value="{!cusProdTwo.objProdchild.Sales_Price__c}" onchange="{!c.QuantityPriceChange}"/></div></td>
                                                             <td class="slds-text-align_left" ><div class="slds-truncate" title="{!cusProdTwo.totalAmount}"><lightning:input id="quantity"  variant="label-hidden" name="{!index}" type="number" step="0.01" value="{!cusProdTwo.totalAmount}" disabled="true" /></div></td>
-                                                            <td class="slds-text-align_left"  ><div class="slds-truncate" title="{!cusProdTwo.objProdchild.Discount__c}"><lightning:input id="discountpercent"  variant="label-hidden" name="{!index}" min="0"  step="0.01" type="number" formatter="percent-fixed" maxlength='5' value="{!cusProdTwo.objProdchild.Discount__c}" onchange="{!c.dischange}" default="0"/></div></td>
+                                                            <td class="slds-text-align_left"  ><div class="slds-truncate" title="{!cusProdTwo.objProdchild.Discount__c}"><lightning:input id="discountpercent"  variant="label-hidden" name="{!index}" min="0" max="100" step="0.01" type="number" formatter="percent-fixed" maxlength='5' value="{!cusProdTwo.objProdchild.Discount__c}" onchange="{!c.dischange}" default="0"/></div></td>
                                                             <td class="slds-text-align_left" ><div class="slds-truncate" title="{!cusProdTwo.DiscountAmount}"><lightning:input id="Discountamount"  variant="label-hidden" name="{!index}" min="0" step="0.01" type="number" value="{!cusProdTwo.DiscountAmount}" onchange="{!c.dischange}" default="0"/></div></td>
                                                             <td class="slds-text-align_left" ><div class="slds-truncate" title="{!cusProdTwo.TotalAfterDiscount}"><lightning:input id="quantity"  variant="label-hidden" name="{!index}" type="number" step="0.01" value="{!cusProdTwo.TotalAfterDiscount}" disabled="true"/></div></td>
                                                             <td class="slds-text-align_left" ><div class="slds-truncate" title="{!cusProdTwo.objProdchild.HSN_Code__c}"><lightning:input  type="Text" variant="label-hidden"  value="{!cusProdTwo.objProdchild.HSN_Code__c}" disabled="false"/></div></td>
@@ -309,7 +313,7 @@
                                 </div>
                             </aura:if>
                         </aura:if>
-                        <br/><br/>
+                        
                         <div class="slds-modal__footer">
                             <b>
                                 <aura:if isTrue="{!v.IsselectProduct}">
@@ -424,11 +428,10 @@
                     </div>
                     <div class="slds-col slds-size_12-of-12 slds-p-top_medium slds-p-bottom_medium">
                         <div class="slds-grid slds-gutters">
-                            <div class="slds-col slds-size_1-of-12">
-                                
+                            <div class="slds-col slds-size_1-of-12">    
                             </div>
                             <div class="slds-col slds-size_9-of-12">
-                                <div class="slds-table--header-fixed_container" >
+                                <div class="slds-table--header-fixed_container " style="height:300px; overflow-x:auto; overflow-y: overlay;">
                                     <div class="slds-scrollable_x" style="width:100%;">
                                         <table class="slds-table slds-table_bordered slds-table_cell-buffer">
                                             <thead>
@@ -469,7 +472,7 @@
                                                 <aura:iteration items="{!v.lstSelectedTax}" var="obj" indexVar="index">
                                                     <tr>
                                                         <td class="slds-truncate">{!obj.strTaxName} </td>
-                                                        <td class="slds-truncate"><lightning:input id="partId" name="{!index}" type="number" value="{!obj.TaxPercentage}" disabled="false" step="0.01" onchange="{!c.ChargesPercentageOnOhange}"/></td>
+                                                        <td class="slds-truncate"><lightning:input id="partId" name="{!index}" type="number"  value="{!obj.TaxPercentage}" disabled="false" step="0.01" onchange="{!c.ChargesPercentageOnOhange}"/></td>
                                                         <td class="slds-truncate"> <lightning:input id="partId" name="{!index}" type="number" value="{!obj.decTaxAmount}" disabled="false" step="0.01" onchange="{!c.ChargesAmountOnOhange}"/></td>
                                                         <!-- Check CGST and SGST  -->
                                                         <aura:if isTrue="{!!v.wrapMain.igstvalue}">
@@ -499,7 +502,7 @@
                                                 </tr>
                                             </tbody>		
                                         </table>
-                                        <center><lightning:button aura:id="button" class="button" label="Save" onclick="{!c.SaveJS}"/></center>
+                                        <center><div style=" margin-top: 2%; margin-bottom: 2%;"><lightning:button aura:id="button" class="button" label="Save" onclick="{!c.SaveJS}"/></div></center>
                                     </div>
                                 </div>
                             </div>
@@ -508,23 +511,8 @@
                             </div>
                         </div>
                     </div>
-                    <!--          <lightning:layoutItem padding="around-small" size="12">
-                <lightning:layout>
-                    <lightning:layoutItem padding="around-small" size="5"></lightning:layoutItem>
-                        <lightning:layoutItem padding="around-small" size="2">
-                            <lightning:button aura:id="Submit" class="button"  label="Save" onclick="{!c.SaveJS}"/>
-                    </lightning:layoutItem>
-                    <lightning:layoutItem padding="around-small" size="5"></lightning:layoutItem>
-                </lightning:layout>
-            </lightning:layoutItem>
-                    -->
-                </lightning:tab>
-                
-            </lightning:tabset>
-            
-        </aura:if>
-        
-        
-        
+                </lightning:tab>               
+            </lightning:tabset>        
+        </aura:if>   
     </lightning:layoutItem>
 </aura:component>

@@ -60,12 +60,13 @@ public class PackingListPDFController
             objSO = lstSO[0];
        
        Litem =  Database.query(strSalesOrderItemQuery);
-        
-        Acc=[select id,GSTIN_No__c,BillingCity,BillingCountry,BillingState,BillingStreet,BillingAddress,BillingPostalCode,ShippingCountry,
+        list<Account> acclist = [select id,GSTIN_No__c,BillingCity,BillingCountry,BillingState,BillingStreet,BillingAddress,BillingPostalCode,ShippingCountry,
              ShippingCity,ShippingPostalCode,ShippingStreet,ShippingState,ShippingAddress, name,Billing_State_Code__c,Shipping_State_Code__c from Account where id =:objSO.Customer_Name__c];
-        system.debug('Account'+Acc.id);
-        
-        con = [select id,Name,Email,MobilePhone,Accountid from contact where Accountid=:Acc.Id limit 1];
+       if(!acclist.isempty())
+        Acc= acclist[0];
+        list<contact> conlist = [select id,Name,Email,MobilePhone,Accountid from contact where Accountid=:Acc.Id limit 1];
+            if(!conlist.isempty())
+            con = conlist[0];
         system.debug('contact'+con.id);
         
         strBillingAddress = '';
@@ -96,7 +97,7 @@ public class PackingListPDFController
         */
         shippingAcc = new Account();
         shippingAcc = [select id ,GSTIN_No__c,BillingCity,BillingCountry,BillingState,BillingStreet,BillingAddress,BillingPostalCode,ShippingCountry,
-             ShippingCity,ShippingPostalCode,ShippingStreet,ShippingState,ShippingAddress, name,Billing_State_Code__c,Shipping_State_Code__c from Account where id =:objSO.Shipping_Account__c];
+             ShippingCity,ShippingPostalCode,ShippingStreet,ShippingState,ShippingAddress, name,Billing_State_Code__c,Shipping_State_Code__c from Account where id =:objSODN.Shipping_Account__c];
         
         strBillingState = '';
         strBillingCode = '';

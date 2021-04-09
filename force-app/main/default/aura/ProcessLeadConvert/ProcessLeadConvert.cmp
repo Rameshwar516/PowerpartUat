@@ -176,10 +176,7 @@
             class=" slds-col slds-size_5-of-12 slds-m-top--xx-small"
             style="display:inline-block;"
           >
-            <lightning:select
-              name="select1"
-              value="{!v.selectedValue}"
-            >
+            <lightning:select name="select1" value="{!v.selectedValue}">
               <option value="Customer">Customer</option>
               <option value="Customer_OEM">Customer &amp; OEM</option>
               <option value="OEM">OEM</option>

@@ -22,8 +22,8 @@ public class ClassOnPIEmailSend {
                 }
                wrap.objquote=opp[0];
                 if(wrap.objquote.Contact_Person__r.name!=null){
-                  wrap.emailbody='Hello'+' '+wrap.objquote.Contact_Person__r.name +',';
-                  wrap.emailbody= wrap.emailbody+' \n'+'\nPlease Find the attached Proforma Invoice details.\n'+'Thank you.';
+                  wrap.emailbody='Hello Mr.'+' '+wrap.objquote.Contact_Person__r.name +',';
+                  wrap.emailbody= wrap.emailbody+' \n'+'\nPlease Find the attached Proforma Invoice.\n'+'Thank you.';
                 }
             }
         }
