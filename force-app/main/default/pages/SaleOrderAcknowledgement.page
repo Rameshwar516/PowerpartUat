@@ -358,7 +358,7 @@
                         <b><apex:outputText value=":" /></b>
                     </td>
                     <td style="border:none;border-top: 2px solid black;"  valign="top" colspan="2">
-                        <apex:outputText value="{!objAcc.Name}" />
+                        <apex:outputText value="{!objAcc.Print_Name__c}" />
                     </td>
                     
                     <td style="border:none;border-top: 2px solid black;border-left: 2px solid black;"  valign="top" >
@@ -368,7 +368,7 @@
                         <b><apex:outputText value=":" /></b>
                     </td>
                     <td style="border:none;border-top: 2px solid black;"  valign="top" colspan="2">
-                        <apex:outputText value="{!objSO.Shipping_Account__r.Name}" />
+                        <apex:outputText value="{!objSO.Shipping_Account__r.Print_Name__c}" />
                     </td>
                 </tr>
                 <tr>

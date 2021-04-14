@@ -55,9 +55,9 @@ public class DeliveryNotePdf {
             }
         
         List<String> Deliverylineitem = UtilityClass.getAllFields('Delivery_Note_Line_Item__c');
-        String strdeliverylineitemquery = 'Select ' +String.Join(Deliverylineitem, ',')+',Product_Part__r.name, Product_Part__r.Part_Name__c, Product_Part__r.HSN_CODE__c,Product_Part__r.Binnumber__c,Sales_Order_Dispatch_Delivery_Note__r.Sales_Order__r.Ware_House__c'+' From Delivery_Note_Line_Item__c where Sales_Order_Dispatch_Delivery_Note__c =: strId';
+        String strdeliverylineitemquery = 'Select ' +String.Join(Deliverylineitem, ',')+',Product_Part__r.UOM__c,Product_Part__r.name, Product_Part__r.Part_Name__c, Product_Part__r.HSN_CODE__c,Product_Part__r.Binnumber__c,Sales_Order_Dispatch_Delivery_Note__r.Sales_Order__r.Ware_House__c'+' From Delivery_Note_Line_Item__c where Sales_Order_Dispatch_Delivery_Note__c =: strId';
         lstDeliverylineitem =  Database.query(strdeliverylineitemquery); 
-        
+       system.debug('lstDeliverylineitem '+ lstDeliverylineitem[0].Product_Part__r.UOM__c);
         set<string> productid = new set<string>();
         String warehouse = '';
         if(!lstDeliverylineitem.isempty())
@@ -86,6 +86,7 @@ public class DeliveryNotePdf {
             for(Delivery_Note_Line_Item__c dli :lstDeliverylineitem){
                 childwrapper wdli = new childwrapper();
                 wdli.objDLI = dli;
+                system.debug('dli.Product_Part__c  '+dli.Product_Part__c);
                 wdli.binnumber = mapStock.get(dli.Product_Part__c).Bin_Number__c;
                 GrossTotal = GrossTotal + dli.Gross_Amount__c;
                 Quantity=Quantity+dli.Quantity__c;
@@ -101,7 +102,7 @@ public class DeliveryNotePdf {
         NetValue = totalamount+TCSAmount;
         
         totalAmountinWords = UtilityClass.NoToWord(NetValue.intValue());
-        totalAmountinWords = totalAmountinWords+' rupees only';
+        totalAmountinWords = 'Rupees '+totalAmountinWords+' only';
     }
     
     public class wrapper{

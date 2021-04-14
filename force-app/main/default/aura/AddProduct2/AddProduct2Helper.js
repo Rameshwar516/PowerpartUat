@@ -114,7 +114,7 @@
     
     RemoveRecordOnCheck : function(component, event, objWrap, prodwrapper) {
         var action = component.get('c.removeRecord');
-        
+
         action.setParams({
             
             "strWrap" : JSON.stringify(objWrap),

@@ -110,7 +110,7 @@
                         <center><apex:outputText value=":" /></center>
                     </td>
                     <td style="border:none;" width="18%" valign="top">
-                        <apex:outputText value="{!acc.Name}" /> 
+                        <apex:outputText value="{!Packing_List__c.Delivery_Note__r.Customer_Party__r.Print_Name__c}" /> 
                     </td>
                     <td style="border:none;" width="12%" valign="top">
                          

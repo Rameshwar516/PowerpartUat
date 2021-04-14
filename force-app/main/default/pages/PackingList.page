@@ -175,7 +175,7 @@
                 
                 <tr>
                     <td style="border:none;"  valign="top" >
-                        {!Acc.Name}
+                        {!Packing_List__c.Delivery_Note__r.Customer_Party__r.print_name__c}
                     </td>
                     <td style="border:none;"  valign="top" >
                       
@@ -280,7 +280,7 @@
                 
                 <tr>
                     <td style="border:none;"  valign="top" >
-                        {!con.Name}
+                        {!Packing_List__c.Delivery_Note__r.Shipping_Account__r.print_name__c}
                     </td>
                     <td style="border:none;"  valign="top" >
                         {!con.MobilePhone}
@@ -602,7 +602,7 @@
                         <b>Qty</b>
                     </td>
                     <td style="border-bottom: none; border-left: none; border-right: none;" valign="top">
-                        <b>Unit</b>
+                        <b>UOM</b>
                     </td>
                      <td style="border-bottom: none; border-left: none; border-right: none;" valign="top">
                         <b>Case #</b>
@@ -624,10 +624,10 @@
                             {!li.Quantity__c}
                         </td>
                         <td style="border-bottom: none; border-left: none; border-right: none;" valign="top">
-                            <b>Unit</b>
+                            <b>{!li.Part_No__r.uom__c}</b>
                         </td>
                          <td style="border-bottom: none; border-left: none; border-right: none;" valign="top">
-                            <b>Case #</b>
+                            <b>Case {!Index}</b>
                         </td>
                     </tr> 
                 </apex:repeat>

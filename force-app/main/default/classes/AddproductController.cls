@@ -141,7 +141,7 @@ public class AddproductController {
             }
            
             
-            if(!stateset.contains(state)) IGST=true;
+            if(warehousename !=state) IGST=true;
             
             recordlist.lstWrapp = new list<prodwrapp>(); 
             List<prodwrappChild> lstWrappTwoNew = new List<prodwrappChild>();
@@ -267,10 +267,10 @@ public class AddproductController {
             if(filter.trim() != ''){
                 
                 if(wrapproductId.size() > 0 ){
-                    soql += ' where id NOT IN : wrapproductId and ( name Like ' + filter + ' or Part_Name__c LIKE ' + filter + ')';
+                    soql += ' where id NOT IN : wrapproductId and ( name Like ' + filter + ' or Part_Name__c LIKE ' + filter + ') AND Stock_Available__c != 0';
                 }
                 else{
-                    soql += ' where ( name Like ' + filter + ' or Part_Name__c LIKE ' + filter + ')';
+                    soql += ' where ( name Like ' + filter + ' or Part_Name__c LIKE ' + filter + ') AND Stock_Available__c != 0';
                 }
             }   
             system.debug('====='+soql);
@@ -300,7 +300,7 @@ public class AddproductController {
             if(wrapproductId.size() > 0 ){
                 string soql2 = 'select ' + string.join(leadfieldNames, ',') +',(SELECT Id,Product_Part__c, Total_Quantity__c, Ware_House__r.City__c,Total_Unbooked_Quantity__c from Stocks__r) from ' + objectName ; 
                 if(filter.trim() != ''){    
-                    soql2 += ' where id IN : wrapproductId and ( name Like ' + filter + ' or Part_Name__c LIKE ' + filter + ')';
+                    soql2 += ' where id IN : wrapproductId and ( name Like ' + filter + ' or Part_Name__c LIKE ' + filter + ') AND Stock_Available__c != 0';
                 } 
                 soql2 += 'order by Name limit 10';
                 for(Part__c pr :Database.query(soql2)){
@@ -394,6 +394,7 @@ public class AddproductController {
         prodwrapp prodwrappobj = (prodwrapp)Json.deserialize(prodwrappstr, prodwrapp.class);
         List<prodwrappChild> lstWrapplineItem = objwrap.lstWrappTwo;
         List<prodwrapp> lstWrappProduct = objwrap.lstWrapp;
+        List<prodwrapp> updatedlstWrappProduct = new List<prodwrapp>();
         Set<id> lineitemids = objwrap.lineitemid;
         integer i=0;
         integer x=0;
@@ -414,11 +415,12 @@ public class AddproductController {
                 x=lstWrappProduct.indexOf(prodchild);
                 prodchild.isSelected = false;
                 System.debug('integer x '+x);
-            }           
+            }   
+            updatedlstWrappProduct.add(prodchild);
         }
         System.debug('size '+lstWrapplineItem.size());
         lstWrapplineItem.remove(i);
-        objwrap.lstWrapp = lstWrappProduct;
+        objwrap.lstWrapp = updatedlstWrappProduct;
         objwrap.lstWrappTwo =  lstWrapplineItem;
         return json.serialize(objwrap);
     }

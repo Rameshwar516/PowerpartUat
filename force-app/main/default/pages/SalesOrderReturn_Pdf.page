@@ -138,7 +138,10 @@
                         <b>:</b>
                     </td>
                     <td style="width: 30%; text-align: left;border:none">
-                        <apex:outputText value="{!Sales_Order_Return__c.Voucher_Date__c}" />
+                         <apex:outputText value="{0, date, dd - MMM - yyyy}">
+                            <apex:param value="{!Sales_Order_Return__c.Voucher_Date__c}" />
+                        </apex:outputText> 
+                        
                     </td>
                 </tr> 
             </table>
@@ -207,7 +210,11 @@
                     </td>
                     <td style="width: 2%; text-align: left;border:none"><b>:</b>
                     </td>
-                    <td style="width: 30%; text-align: left;border:none"><apex:outputText value="{!Sales_Order_Return__c.Reference_No__c}" />&nbsp; dated &nbsp;<apex:outputText value="{!Sales_Order_Return__c.Reference_Date__c}" />
+                    <td style="width: 30%; text-align: left;border:none"><apex:outputText value="{!Sales_Order_Return__c.Reference_No__c}" />&nbsp; dated &nbsp;
+                        <apex:outputText value="{0, date, dd - MMM - yyyy}">
+                            <apex:param value="{!Sales_Order_Return__c.Reference_Date__c}" />
+                        </apex:outputText> 
+                        
                     </td>
                     
                     <td style="width: 18%; text-align: left;border:none"><b>Transporter Name</b>
@@ -268,7 +275,7 @@
                     </td>
                     <td style="width: 2%; text-align: left;border:none"><b>:</b>
                     </td>
-                    <td style="width: 30%; text-align: left;border:none"><apex:outputText value="Delivery_Term__c" />
+                    <td style="width: 30%; text-align: left;border:none"><apex:outputText value="{!Sales_Order_Return__c.Delivery_Term__c}" />
                     </td>
                 </tr>  
                  <tr>
@@ -301,7 +308,7 @@
                             <apex:outputText value="Qty" />
                         </th>
                         <th  width="6%"  style="text-align:center; border-left: none; border-right: none;">
-                            <apex:outputText value="Unit" />
+                            <apex:outputText value="UOM" />
                         </th>
                         <th  width="12.5%"  style="text-align:center; border-left: none; border-right: none;">
                             <apex:outputText value="Unit Rate (INR)" />
@@ -317,7 +324,7 @@
                             <td style="border:none"><apex:outputText value="{!dli.Part_Number__r.name}" /></td>
                             <td style="border:none"><apex:outputText value="{!dli.Part_Number__r.Part_Name__c}" /></td>
                             <td style="text-align:right;border:none"><apex:outputText value="{!dli.Quantity__c}" /></td>
-                            <td style="text-align:right;border:none"><apex:outputText value="{!dli.Unit__c}" /></td>
+                            <td style="text-align:right;border:none"><apex:outputText value="{!dli.Part_Number__r.UOM__c}" /></td>
                             <td style="text-align:right;border:none"><apex:outputText value="{!dli.Unit_Price__c}" /></td>
                             <td style="text-align:right;border:none"><apex:outputText value="{!dli.Net_Amount__c}" /></td>
                         </tr>

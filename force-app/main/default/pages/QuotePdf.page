@@ -10,7 +10,7 @@
             @page 
             {  
             size:12.94in 13.90in; 
-            margin-top: 180px;
+            margin-top: 5.50cm;
             page-break-after:always;
             @top-center 
             {                   
@@ -48,6 +48,7 @@
             border-spacing: 0px;
             font-size:12px;
             font-family: Arial;
+            -fs-table-paginate: paginate;
             }
             
             td {
@@ -299,7 +300,10 @@
                         <center><apex:outputText value=":" /></center>
                     </td>
                     <td style="border:none;"  valign="top">
-                        <apex:outputText value="{!quotee.Opportunity__r.LC_Date__c}" /> 
+                         <apex:outputText value="{0, date, dd - MMM - yyyy}">
+                            <apex:param value="{!quotee.Opportunity__r.LC_Date__c}" />
+                        </apex:outputText> 
+                         
                     </td>
                     <td style="border:none;"  valign="top">
                         
@@ -322,7 +326,7 @@
                         <b><apex:outputText value=":" /></b>
                     </td>
                     <td style="border:none;border-top: 2px solid black;"  valign="top" colspan="2">
-                        <apex:outputText value="{!Acc.name}" />
+                        <apex:outputText value="{!Acc.Print_Name__c}" />
                     </td>
                     
                     <td style="border:none;border-top: 2px solid black;border-left: 2px solid black;"  valign="top" >
@@ -332,7 +336,7 @@
                         <b><apex:outputText value=":" /></b>
                     </td>
                     <td style="border:none;border-top: 2px solid black;"  valign="top" colspan="2">
-                        <apex:outputText value="{!Quote__c.Shipping_Account__r.name}" />
+                        <apex:outputText value="{!Quote__c.Shipping_Account__r.Print_Name__c}" />
                     </td>
                 </tr>
                 <tr>
@@ -421,7 +425,7 @@
                         <center><apex:outputText value=":" /></center>
                     </td>
                     <td style="border:none;"  valign="top" colspan="2">
-                        <apex:outputText value="{!Quote__c.Shipping_Account__r.GSTIN_No__c}" /> 
+                        <apex:outputText value="{!Quote__c.Shipping_Account__r.Shipping_GSTIN_No__c}" /> 
                     </td>
                 </tr>
                 <tr>

@@ -18,7 +18,21 @@
     onSave: function(component, event, helper) {
         var action = component.get('c.createDeliveryNoteObjAndItems');
         var wrapper=component.get('v.wrapMains');
-        //alert(wrapper);
+        var wrapperchild=component.get("v.wrapMains.wrapChildlst");
+        
+        var error = false;
+        for(var i=0; i< wrapperchild.length;i++){
+            if(wrapperchild[i].reMaininQTY != null && wrapperchild[i].reMaininQTY > 0){
+                
+            }  
+            else{
+                error=true;
+                break;
+            }
+        }
+        
+        if(!error){
+        
         action.setParams({
             strMainWrapper:JSON.stringify(wrapper),
         });
@@ -50,6 +64,17 @@
         toastEvent.fire();
             }
         });
+        }
+        else{
+             var toastEvent = $A.get("e.force:showToast");
+            toastEvent.setParams({
+                title : 'Error',
+                message:'Part Quantity can not be 0 or less than 0.Please Check before save.',
+                type: 'error',
+            });
+            toastEvent.fire();
+        }
+        
         $A.enqueueAction(action);
     },
     onRemainQty: function(component, event, helper) {

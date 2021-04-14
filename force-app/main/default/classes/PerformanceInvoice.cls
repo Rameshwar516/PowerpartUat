@@ -104,7 +104,7 @@ public class PerformanceInvoice
         con = [select id,Name,Email,MobilePhone,Accountid from contact where id=:opp.Contact_Person__c limit 1];
         system.debug('contact'+con.id);
         
-        Acc=[select id ,TCS_Charges_Enable__c,GSTIN_No__c,BillingCity,BillingCountry,BillingState,BillingStreet,BillingAddress,BillingPostalCode,ShippingCountry,
+        Acc=[select id ,Print_Name__c,TCS_Charges_Enable__c,GSTIN_No__c,BillingCity,BillingCountry,BillingState,BillingStreet,BillingAddress,BillingPostalCode,ShippingCountry,
              ShippingCity,ShippingPostalCode,ShippingStreet,ShippingState,ShippingAddress, name,Billing_State_Code__c,Shipping_State_Code__c from Account where id =:opp.OEM_Customer__c];
         system.debug('Account'+Acc.id);
         
@@ -267,7 +267,7 @@ public class PerformanceInvoice
         
         TotalAmountWithCharges = TotalAmountWithCharges+totalAmount;
         totalAmountaftertaxinWords = UtilityClass.NoToWord(TotalAmountWithCharges.intValue());
-        totalAmountaftertaxinWords = totalAmountaftertaxinWords+' rupees only';
+        totalAmountaftertaxinWords = 'Rupees '+totalAmountaftertaxinWords+' only';
         TotalAmountWithCharges=TotalAmountWithCharges.round();
         totalAmountSumNotIncludedTax = totalAmountSumNotIncludedTax+totalAmountNotIncludedTax;
         totalAmountSumNotIncludedTax=totalAmountSumNotIncludedTax.round();
@@ -286,7 +286,7 @@ public class PerformanceInvoice
         totalAmountWithTCS = totalAmountWithTCS.round();
         
         totalAmountaftertaxinWords = UtilityClass.NoToWord(totalAmountWithTCS.intValue());
-        totalAmountaftertaxinWords = totalAmountaftertaxinWords+' rupees only';
+        totalAmountaftertaxinWords = 'Rupees '+totalAmountaftertaxinWords+' only';
         }
         String myGeneratedFileName = opp.Proforma_Invoice__c+'.pdf';
         Apexpages.currentPage().getHeaders().put('content-disposition', 'inline; filename='+myGeneratedFilename);

@@ -13,9 +13,11 @@ public class ClassOnQuoteEmailSend {
             wrap.emailbody='';
             
             if(QuotRecId!=null){
-                list<Quote__c> Qtt=[select id,Email__c ,Contact_Name__r.name from Quote__c where id=:QuotRecId limit 1];
+                list<Quote__c> Qtt=[select id,Email__c ,Contact_Name__r.name, OwnerId from Quote__c where id=:QuotRecId limit 1];
+                list<user> OwnerUser =[SELECT ID,Name,Mobilephone From User WHERE ID =: Qtt[0].Ownerid];
                 
-                if(Qtt.size()>0){
+                user owner = OwnerUser[0];
+                if(Qtt.size()>0){ 
                     list<Line_item__c> litm=[select id from line_item__c where Quote__c=:Qtt[0].id];
                     if(litm.size()<=0){
                         wrap.islineItemAvailable=false;
@@ -24,6 +26,9 @@ public class ClassOnQuoteEmailSend {
                     if(wrap.objquote.Contact_Name__r.name!=null){
                         wrap.emailbody='Hello Mr.'+' '+wrap.objquote.Contact_Name__r.name +',';
                         wrap.emailbody= wrap.emailbody+' \n'+'\nPlease Find the attached Quotation.\n'+'Thank you.';
+                        wrap.emailbody= wrap.emailbody+' \n \n'+owner.name;
+                        if(String.isNotEmpty(owner.Mobilephone))
+                        wrap.emailbody= wrap.emailbody+' \n'+owner.Mobilephone;
                     }
                 }
             }
@@ -42,6 +47,7 @@ public class ClassOnQuoteEmailSend {
         list<Quote__c> Qtt=[select id,name,Contact_Name__r.name from Quote__c where id=:QuotRecId limit 1];
         
         for(Quote__c at:Qtt){
+
             system.debug('at+id'+at.id);
             
             PageReference defaultPage = page.QuotePdf; 
@@ -59,24 +65,15 @@ public class ClassOnQuoteEmailSend {
             Messaging.EmailFileAttachment attach = new Messaging.EmailFileAttachment();
             attach.setBody(pageData);
             attach.setContentType('application/pdf');
-            attach.setFileName(at.Name+'.pdf');
-            
-            
+            attach.setFileName(at.Name+'.pdf'); 
             Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
             mail.setFileAttachments(new Messaging.EmailFileAttachment[] {attach});
-            
-            // List<String> sendTo = new List<String>();
-            //sendTo.add(mailAdd);
-            List < String > sendTo = mailAdd.split(',');
-            
+            List < String > sendTo = mailAdd.split(',');           
             mail.setToAddresses(sendTo);
             system.debug('');
             
-            if(ccAdd!=null && ccAdd!=''){
-                //List<String> ccsendTo = new List<String>();
-                //ccsendTo.add(ccAdd); 
+            if(ccAdd!=null && ccAdd!=''){ 
                 List < String > ccsendTo = ccAdd.split(',');
-                
                 mail.setCcAddresses(ccsendTo);
             }
             mail.setReplyTo(UserInfo.getUserEmail()); 
@@ -95,9 +92,7 @@ public class ClassOnQuoteEmailSend {
         }   
         if(mails.size()>0){
             Messaging.sendEmail(mails);
-        }
-        
-        
+        }  
     }
     public class wrappercl{
         public string errorMessage;

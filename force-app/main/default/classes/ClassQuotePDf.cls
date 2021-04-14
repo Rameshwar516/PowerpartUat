@@ -94,7 +94,7 @@ public class ClassQuotePDf {
                 conBill = con[0];
             }
         }
-        Acc=[select id ,GSTIN_No__c,BillingCity,BillingCountry,BillingState,BillingStreet,BillingAddress,BillingPostalCode,ShippingCountry,
+        Acc=[select id ,Print_Name__c,GSTIN_No__c,BillingCity,BillingCountry,BillingState,BillingStreet,BillingAddress,BillingPostalCode,ShippingCountry,
              ShippingCity,ShippingPostalCode,ShippingStreet,ShippingState,ShippingAddress, name,Shipping_State_Code__c,Billing_State_Code__c from Account where id =:quotee.Customer_Party__c];
         system.debug('Account'+Acc.id);
         
@@ -194,19 +194,19 @@ public class ClassQuotePDf {
             
             for(Line_Item__c liobj : Litem){
                 if(liobj.Taxable_Amount_Formula__c!=null){
-                    totaltaxable=totaltaxable+liobj.Taxable_Amount_Formula__c;
+                    totaltaxable=(totaltaxable+liobj.Taxable_Amount_Formula__c).round();
                 }
                 if(liobj.CGST_Amount_Formula__c!=null){
-                    totalCgst=totalCgst+ liobj.CGST_Amount_Formula__c;
+                    totalCgst=(totalCgst+ liobj.CGST_Amount_Formula__c).round();
                 }
                 if(liobj.SGST_Amount_Formula__c!=null){
-                    totalSgst=totalSgst+ liobj.SGST_Amount_Formula__c;
+                    totalSgst=(totalSgst+ liobj.SGST_Amount_Formula__c).round();
                 }
                 if(liobj.IGST_Amount_Formula__c!=null){
-                    totalIgst=totalIgst+ liobj.IGST_Amount_Formula__c;
+                    totalIgst=(totalIgst+ liobj.IGST_Amount_Formula__c).round();
                 }
                 if(liobj.Net_Amount__c!=null){
-                    TotalAMount=TotalAMount+ liobj.Net_Amount__c;
+                    TotalAMount=(TotalAMount+ liobj.Net_Amount__c).round();
                 }
                 totalGsttax=totalCgst+totalSgst+totalIgst;
                 totalAmountaftertax=TotalAMount+totalGsttax;
@@ -262,7 +262,7 @@ public class ClassQuotePDf {
                 totalAmount=totalAmount.round();
                 TotalAmountWithCharges = TotalAmountWithCharges+totalAmount;
                 totalAmountaftertaxinWords = UtilityClass.NoToWord(TotalAmountWithCharges.intValue());
-                totalAmountaftertaxinWords = totalAmountaftertaxinWords +' rupees only';
+                totalAmountaftertaxinWords = 'Rupees '+totalAmountaftertaxinWords +' only';
                 TotalAmountWithCharges=TotalAmountWithCharges.round();
                 totalAmountSumNotIncludedTax = totalAmountSumNotIncludedTax+totalAmountNotIncludedTax+totaltaxable; 
                 totalAmountSumNotIncludedTax=totalAmountSumNotIncludedTax.round();

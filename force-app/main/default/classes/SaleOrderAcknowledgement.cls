@@ -82,7 +82,7 @@ public class SaleOrderAcknowledgement {
             List<String> lstSalesOrderItemField = UtilityClass.getAllFields('Sales_Order_Line_Item__c');
             
             
-            String strSalesOrderQuery = 'Select ' +String.Join(lstSalesOrderField, ',')+',Customer_Name__r.ShippingState,Shipping_Account__r.name,Shipping_Account__r.Shipping_State_Code__c,Shipping_Account__r.Shipping_GSTIN_No__c,Ware_House__r.Branch__c,Ware_House__r.city__c,ESN_No_lookup__r.Name,Opportunity__r.Office__c,Shipping_Account__r.ShippingState,Customer_Name__r.TCS_Charges_Enable__c'+ ' From Sales_Order__c where Id =: strId';
+            String strSalesOrderQuery = 'Select ' +String.Join(lstSalesOrderField, ',')+',Shipping_Account__r.Print_Name__c,Customer_Name__r.ShippingState,Shipping_Account__r.name,Shipping_Account__r.Shipping_State_Code__c,Shipping_Account__r.Shipping_GSTIN_No__c,Ware_House__r.Branch__c,Ware_House__r.city__c,ESN_No_lookup__r.Name,Opportunity__r.Office__c,Shipping_Account__r.ShippingState,Customer_Name__r.TCS_Charges_Enable__c'+ ' From Sales_Order__c where Id =: strId';
             String strSalesOrderItemQuery = 'Select ' +String.Join(lstSalesOrderItemField, ',')+ ',Product_Part__r.name,Product_Part__r.uom__c,Product_Part__r.Part_Name__c From Sales_Order_Line_Item__c where Sales_Order__c =: strId';
             
             
@@ -104,7 +104,7 @@ public class SaleOrderAcknowledgement {
             
             if(String.isNotEmpty(objSO.Customer_Name__c)){
                 String id = objSO.Customer_Name__c;
-                String strAccount = 'Select Id, Name,ShippingStreet,ShippingCity,ShippingState,ShippingPostalCode,ShippingCountry,BillingStreet,BillingCity,BillingState,BillingPostalCode,BillingCountry,GSTIN_No__c,Billing_State_Code__c,Shipping_State_Code__c,(Select Id, Name, Email, MobilePhone from contacts where isPrimary__c = true) from Account where Id = : id';
+                String strAccount = 'Select Id, Print_Name__c, Name,ShippingStreet,ShippingCity,ShippingState,ShippingPostalCode,ShippingCountry,BillingStreet,BillingCity,BillingState,BillingPostalCode,BillingCountry,GSTIN_No__c,Billing_State_Code__c,Shipping_State_Code__c,(Select Id, Name, Email, MobilePhone from contacts where isPrimary__c = true) from Account where Id = : id';
                 List<Account> lstAcc = Database.query(strAccount);
                 if(lstAcc.size() > 0){
                     objAcc = lstAcc[0];
@@ -142,7 +142,7 @@ Billing State And Billing Code, Shipping State and Shipping Code
             
             if(String.isNotEmpty(objSO.Shipping_Account__c)){
                 String id = objSO.Shipping_Account__c;
-                String strAccount = 'Select Id, Name,ShippingStreet,ShippingCity,ShippingState,ShippingPostalCode,ShippingCountry,BillingStreet,BillingCity,BillingState,BillingPostalCode,BillingCountry,GSTIN_No__c,Billing_State_Code__c,Shipping_State_Code__c,(Select Id, Name, Email, MobilePhone from contacts where isPrimary__c = true) from Account where Id = : id';
+                String strAccount = 'Select Id, Print_Name__c,Name,ShippingStreet,ShippingCity,ShippingState,ShippingPostalCode,ShippingCountry,BillingStreet,BillingCity,BillingState,BillingPostalCode,BillingCountry,GSTIN_No__c,Billing_State_Code__c,Shipping_State_Code__c,(Select Id, Name, Email, MobilePhone from contacts where isPrimary__c = true) from Account where Id = : id';
                 List<Account> lstAcc = Database.query(strAccount);
                 if(lstAcc.size() > 0){
                     objShippingAcc = lstAcc[0];
@@ -377,7 +377,7 @@ TotalGST = TotalIGST+ TotalCGST+ TotalSGST;*/
             
             if(totalAmountWithTCS > 0){
                 totalAmountWithTCS = totalAmountWithTCS.round();
-                TotalAmountInWords = UtilityClass.NoToWord(totalAmountWithTCS.intValue())+' ruppes only';
+                TotalAmountInWords = 'Ruppes '+UtilityClass.NoToWord(totalAmountWithTCS.intValue())+' only';
             }
                 }
         }

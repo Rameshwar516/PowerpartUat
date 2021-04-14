@@ -114,9 +114,7 @@
                 Istrue = true;
             }
         }
-        console.log(Istrue);
-        console.log(tmpMainWrapper.length);
-        console.log(tmpMainWrapper);
+
         
         if(Istrue == true ){
             component.set("v.showSection",  true);
@@ -240,50 +238,59 @@
         }
         
        if(wrapMain.igstvalue){
-            console.log(wrapMain.igstvalue);
             for(var i=0;i<tmplstSelectedTax.length;i++)
             {
-                console.log(tmplstSelectedTax[i].IGST);
                 if(
                    tmplstSelectedTax[i].IGST == null ||
-                    tmplstSelectedTax[i].IGST < 0
+                    tmplstSelectedTax[i].IGST < 0 ||
+                    tmplstSelectedTax[i].decTaxAmount == null ||
+                   tmplstSelectedTax[i].decTaxAmount ==0 ||
+                   tmplstSelectedTax[i].decTaxAmount < 0
                    
                   ){
                     Ischarges = true;
                 }
-                
             }
         }    
         else{
             for(var i=0;i<tmplstSelectedTax.length;i++)
             {
-                console.log(tmplstSelectedTax[i].CGST);
-                console.log(tmplstSelectedTax[i].SGST);
                 if(tmplstSelectedTax[i].CGST ==null ||
                    tmplstSelectedTax[i].CGST < 0 ||
                    tmplstSelectedTax[i].SGST ==null ||
-                   tmplstSelectedTax[i].SGST < 0 
+                   tmplstSelectedTax[i].SGST < 0 ||
+                   tmplstSelectedTax[i].decTaxAmount == null ||
+                   tmplstSelectedTax[i].decTaxAmount ==0 ||
+                   tmplstSelectedTax[i].decTaxAmount < 0
                   ){
                     Ischarges = true;
                 }
-                
             }  
         }
-        console.log(Ischarges);
          if(!Istrue){
             if(!Ischarges){
                 
                 var id = component.get("v.recordId");
                 helper.SaveHelper(component, event, id);
             }else{
-                component.set("v.wrapMain.strMessage", 'Please check all value in Charges section !!! Value less than 0 is not valid or Blank not valid.');
-                component.set("v.wrapMain.success", false);
+                var toastEvent = $A.get("e.force:showToast");
+                toastEvent.setParams({
+                    "type":"error",
+                    "title": "Error!",
+                    "message": "Error Charges section !!! Value less than 0  or Blank not valid."
+                });
+                toastEvent.fire();  component.set("v.wrapMain.success", false);
             }
             
             
         }else{
-            component.set("v.wrapMain.strMessage", 'Please check all value in add parts section!!!  Value less than 0 is not valid or Blank not valid.');
-            component.set("v.wrapMain.success", false);
+            var toastEvent = $A.get("e.force:showToast");
+                toastEvent.setParams({
+                    "type":"error",
+                    "title": "Error!",
+                    "message": "Error Add Parts section !!! Value less than 0  or Blank not valid."
+                });
+                toastEvent.fire(); component.set("v.wrapMain.success", false);
         }
     },
     onSelectChange : function(component, event, helper)

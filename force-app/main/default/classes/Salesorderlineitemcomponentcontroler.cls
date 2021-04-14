@@ -90,7 +90,7 @@ public class Salesorderlineitemcomponentcontroler {
             if(!lineitemonrecord.isempty()){
                 for(Sales_Order_Line_Item__c objOppPro:lineitemonrecord){
                     prodwrappChild objchild = new prodwrappChild();
-                    objchild.DiscountAmount=0; 
+                    objchild.DiscountAmount=objOppPro.Discount_Amount__c; 
                     objchild.totalAmount =objOppPro.Amount__c ;
                     objchild.TotalAfterDiscount =objOppPro.Taxable_Amount__c ;
                     objOppPro.SGST__c=objOppPro.SGST__c ;
@@ -112,7 +112,7 @@ public class Salesorderlineitemcomponentcontroler {
                     lineitemlist.add(objchild);
                 }
             }            
-            if(!stateset.contains(state)) IGST=true;
+            if(warehousename !=state) IGST=true;
             
             recordlist.lstWrapp = new list<prodwrapp>(); 
             List<prodwrappChild> lstWrappTwoNew = new List<prodwrappChild>();

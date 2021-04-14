@@ -12,9 +12,11 @@ public class ClassOnPIEmailSend {
             wrap.errorMessage='';
             wrap.emailbody='';
             
-        if(opprecid!=null){
-        list<opportunity__c> opp=[select id,Contact_Person__r.Email ,Contact_Person__r.name from opportunity__c where id=:opprecid limit 1];
-            
+            if(opprecid!=null){
+                list<opportunity__c> opp=[select id,Contact_Person__r.Email ,Contact_Person__r.name,OwnerId from opportunity__c where id=:opprecid limit 1];
+                list<user> OwnerUser =[SELECT ID,Name,Mobilephone From User WHERE ID =: opp[0].Ownerid];
+                
+                user owner = OwnerUser[0];
             if(opp.size()>0){
          list<Line_item__c> litm=[select id from line_item__c where opportunity__c=:opp[0].id];
                 if(litm.size()<=0){
@@ -24,6 +26,9 @@ public class ClassOnPIEmailSend {
                 if(wrap.objquote.Contact_Person__r.name!=null){
                   wrap.emailbody='Hello Mr.'+' '+wrap.objquote.Contact_Person__r.name +',';
                   wrap.emailbody= wrap.emailbody+' \n'+'\nPlease Find the attached Proforma Invoice.\n'+'Thank you.';
+                     wrap.emailbody= wrap.emailbody+' \n \n'+owner.name;
+                        if(String.isNotEmpty(owner.Mobilephone))
+                        wrap.emailbody= wrap.emailbody+' \n'+owner.Mobilephone;
                 }
             }
         }

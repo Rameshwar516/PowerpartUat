@@ -259,7 +259,7 @@ public class PurchaseOrderInvoice
         if(PurchaseOrd.Currency__c != 'INR')
        	 	totalAmountaftertaxinWords = totalAmountaftertaxinWords+' '+PurchaseOrd.Currency__c+' only';
         else
-            totalAmountaftertaxinWords = totalAmountaftertaxinWords+' rupees only';
+            totalAmountaftertaxinWords = 'Rupees '+totalAmountaftertaxinWords+' only';
         TotalAmountWithCharges.round();
         totalAmountSumNotIncludedTax = totalAmountSumNotIncludedTax+totalAmountNotIncludedTax;
         totalAmountSumNotIncludedTax.round();

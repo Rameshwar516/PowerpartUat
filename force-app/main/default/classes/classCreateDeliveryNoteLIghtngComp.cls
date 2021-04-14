@@ -86,19 +86,28 @@ public class classCreateDeliveryNoteLIghtngComp {
                         if(objsalli.Quantity__c==prodVsQty.get(objsalli.Product_Part__c)){
                             childwrp.checkboxDisable=true;  
                             i=objsalli.Quantity__c;
+                            System.debug('1-- '+i);
                         }else{
-                            i=objsalli.Quantity__c-prodVsQty.get(objsalli.Product_Part__c);   
+                            i=objsalli.Quantity__c-prodVsQty.get(objsalli.Product_Part__c); 
+                            System.debug('2-- '+i);
                         }
                     }else{
-                        i=0;
+                        i=objsalli.Quantity__c;
+                        System.debug('3-- '+i);
                     }      
                 }
+                else{
+                        i=objsalli.Quantity__c;
+                        System.debug('4-- '+i);
+                    } 
                 childwrp.productid = objsalli.Product_Part__c;
                 childwrp.productnumber= objsalli.Product_Part__r.name;
                 childwrp.productname = objsalli.Product_Part__r.Part_Name__c;
                 childwrp.quantity = objsalli.Quantity__c;
                 childwrp.hsncode = objsalli.HSN_Code__c;
-                childwrp.reMaininQTY=integer.valueof(i);
+                System.debug('i--- '+integer.valueof(i));
+                childwrp.reMaininQTY = integer.valueof(i);
+                 System.debug('qty--- '+childwrp.reMaininQTY);
                 childwrp.salesprice = objsalli.Unit_Price__c;
                 childwrp.totalprice = childwrp.salesprice*childwrp.reMaininQTY;
                 childwrp.discount = objsalli.Discount__c;
@@ -216,11 +225,17 @@ public class classCreateDeliveryNoteLIghtngComp {
                     sOD.Mode__c= wrap.objSales_Order.Mode_of_Transport__c;
                     sOD.Remark__c= wrap.objSales_Order.Remark__c;
                     sOD.Shipping_Account__c= wrap.objSales_Order.Shipping_Account__c;
+                    sOD.Shipping_City__c=wrap.objSales_Order.Shipping_City__c;
+                    sOD.Shipping_Country__c=wrap.objSales_Order.Shipping_Country__c;
+                    sOD.Shipping_State_Province__c=wrap.objSales_Order.Shipping_State_Province__c;
+                    sOD.Shipping_Street__c=wrap.objSales_Order.Shipping_Street__c;
+                    sOD.Shipping_Zip_Postal_Code__c=wrap.objSales_Order.Shipping_Zip_Postal_Code__c;
                     sOD.Transporter__c= wrap.objSales_Order.Transporter_Name__c;
                     sOD.Email_of_Contact__c= wrap.objSales_Order.Contact_Person__r.Email;
                     sOD.Reference_No__c=wrap.objSales_Order.Opportunity__r.Reference_Number__c;
                     sOD.Reference_Date__c=wrap.objSales_Order.Opportunity__r.Reference_Date__c;
                     sOD.Date__c=system.today();
+                    sOD.Customer_PO_No__c= wrap.objSales_Order.Customer_PO_No__c;
                     sOD.Payment_Term__c=wrap.objSales_Order.Payment_Terms__c;
                     sOD.Type__c = wrap.objSales_Order.Type_SOA__c;
                     insert sOD;

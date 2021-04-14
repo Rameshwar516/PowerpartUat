@@ -468,7 +468,7 @@
                         <b><apex:outputText value=":" /></b>
                     </td>
                     <td style="border:none;border-top: 2px solid black;"  valign="top" colspan="2">
-                        <apex:outputText value="{!objInvoice.Customer_Name__r.Name}" />
+                        <apex:outputText value="{!Invoice__c.Customer_Name__r.Print_Name__c}" />
                     </td>
                     
                     <td style="border:none;border-top: 2px solid black;border-left: 2px solid black;"  valign="top" >
@@ -478,7 +478,7 @@
                         <b><apex:outputText value=":" /></b>
                     </td>
                     <td style="border:none;border-top: 2px solid black;"  valign="top" colspan="2">
-                        <apex:outputText value="{!objInvoice.Shipping_Account__r.name}" />
+                        <apex:outputText value="{!Invoice__c.Shipping_Account__r.Print_Name__c}" />
                     </td>
                 </tr>
                 <tr>
@@ -623,7 +623,7 @@
                         <apex:outputText value="Qty" />
                     </th>
                     <th  width="5%" rowspan="2" style="text-align:center">
-                        <apex:outputText value="Unit" />
+                        <apex:outputText value="UOM" />
                     </th>
                     <th  width="5%" rowspan="2" style="text-align:center">
                         <apex:outputText value="Unit Rate INR" />
@@ -681,35 +681,35 @@
                         <td><apex:outputText value="{!objILI.Part_Number__r.Name}" /></td>
                         <td><apex:outputText value="{!objILI.Part_Number__r.Part_Name__c}" /></td>
                         <td><apex:outputText value="{!objILI.HSN_SAC__c}" /></td>
-                        <td><apex:outputText value="{!objILI.Quantity__c}" /></td>
+                        <td style="text-align:right"><apex:outputText value="{!objILI.Quantity__c}" /></td>
                         <td><apex:outputText value="{!objILI.Part_Number__r.UOM__c}" /></td>
-                        <td><apex:outputText value="{!objILI.Unit_Price__c}" /></td>
-                        <td><apex:outputText value="{!objILI.Amount__c}" /></td>
-                        <td><apex:outputText value="{!objILI.Discount__c}" /></td>
-                        <td><apex:outputText value="{!objILI.Discount_Amount__c}" /></td>
-                        <td><apex:outputText value="{!objILI.Taxable_Amount__c}" /></td>
-                        <td><apex:outputText value="{!objILI.CGST__c}" /></td>
-                        <td><apex:outputText value="{!objILI.CGST_Amount__c}" /></td>
-                        <td><apex:outputText value="{!objILI.SGST__c}" /></td>
-                        <td><apex:outputText value="{!objILI.SGST_Amount__c}" /></td>
-                        <td><apex:outputText value="{!objILI.IGST__c}" /></td>
-                        <td><apex:outputText value="{!objILI.IGST_Amount__c}" /></td>
-                        <td><apex:outputText value="{!objILI.Net_Amount__c}" /></td>
+                        <td style="text-align:right"><apex:outputText value="{!objILI.Unit_Price__c}" /></td>
+                        <td style="text-align:right"><apex:outputText value="{!objILI.Amount__c}" /></td>
+                        <td style="text-align:right"><apex:outputText value="{!objILI.Discount__c}" /></td>
+                        <td style="text-align:right"><apex:outputText value="{!objILI.Discount_Amount__c}" /></td>
+                        <td style="text-align:right"><apex:outputText value="{!objILI.Taxable_Amount__c}" /></td>
+                        <td style="text-align:right"><apex:outputText value="{!objILI.CGST__c}" /></td>
+                        <td style="text-align:right"><apex:outputText value="{!objILI.CGST_Amount__c}" /></td>
+                        <td style="text-align:right"><apex:outputText value="{!objILI.SGST__c}" /></td>
+                        <td style="text-align:right"><apex:outputText value="{!objILI.SGST_Amount__c}" /></td>
+                        <td style="text-align:right"><apex:outputText value="{!objILI.IGST__c}" /></td>
+                        <td style="text-align:right"><apex:outputText value="{!objILI.IGST_Amount__c}" /></td>
+                        <td style="text-align:right"><apex:outputText value="{!objILI.Net_Amount__c}" /></td>
                     </tr>
                 </apex:repeat>
                 <!-- End Repeat -->
                 <tr style="background-color:#d3d4d5;">
                     <td colspan="4"><center><apex:outputText value="Sub Total" /></center></td>
-                    <td><apex:outputText value="{!subTotalQuatity}" /></td>
+                    <td style="text-align:right"><apex:outputText value="{!subTotalQuatity}" /></td>
                     <td colspan="5"></td>
-                    <td><apex:outputText value="{!subTotalTaxableAmount}" /></td>
+                    <td style="text-align:right"><apex:outputText value="{!subTotalTaxableAmount}" /></td>
                     <td></td>
-                    <td><apex:outputText value="{!SubTotalCGST}" /></td>
+                    <td style="text-align:right"><apex:outputText value="{!SubTotalCGST}" /></td>
                     <td></td>
-                    <td><apex:outputText value="{!SubTotalSGST}" /></td>
+                    <td style="text-align:right"><apex:outputText value="{!SubTotalSGST}" /></td>
                     <td></td>
-                    <td><apex:outputText value="{!SubTotalIGST}" /></td>
-                    <td><apex:outputText value="{!subTotalAmount}" /></td>
+                    <td style="text-align:right"><apex:outputText value="{!SubTotalIGST}" /></td>
+                    <td style="text-align:right"><apex:outputText value="{!subTotalAmount}" /></td>
                 </tr>
                 <!--<tr>
                     <td colspan="6" rowspan="2"></td>
@@ -730,7 +730,7 @@
                 </tr>-->
                 <apex:repeat value="{!lstCharges}" var="liCharge">
                     <tr>
-                        <td colspan="10"><apex:outputText value="{!liCharge.Charges__r.Name}" /></td>
+                        <td colspan="10" style="text-align:Center"><apex:outputText value="{!liCharge.Charges__r.Name}" /></td>
                         <td style="text-align:right"><apex:outputText value="{!liCharge.Charge_Amount__c}" /></td>
                         <td style="text-align:right"><apex:outputText value="{!liCharge.CGST__c}" /></td>
                         <td style="text-align:right"><apex:outputText value="{!liCharge.CGST_Amount__c}" /></td>
@@ -743,14 +743,14 @@
                 </apex:repeat>
                 <tr style="background-color:#d3d4d5;">
                     <td colspan="10"><center><apex:outputText value="Total" /></center></td>
-                    <td><apex:outputText value="{!TotalTaxableAmount}" /></td>
+                    <td style="text-align:right"><apex:outputText value="{!TotalTaxableAmount}" /></td>
                     <td></td>
-                    <td><apex:outputText value="{!TotalCGST}" /></td>
+                    <td style="text-align:right"><apex:outputText value="{!TotalCGST}" /></td>
                     <td></td>
-                    <td><apex:outputText value="{!TotalSGST}" /></td>
+                    <td style="text-align:right"><apex:outputText value="{!TotalSGST}" /></td>
                     <td></td>
-                    <td><apex:outputText value="{!TotalIGST}" /></td>
-                    <td><apex:outputText value="{!TotalAmount}" /></td>
+                    <td style="text-align:right"><apex:outputText value="{!TotalIGST}" /></td>
+                    <td style="text-align:right"><apex:outputText value="{!TotalAmount}" /></td>
                 </tr>
                 <tr>
                     <td colspan="11">
@@ -758,7 +758,7 @@
                         <apex:outputText value="{!TotalAmountInWords}" />
                     </td>
                     <td colspan="5"><b><apex:outputText value="Total Taxable Amount : " /></b></td>
-                    <td colspan="2"> <apex:outputText value="{!TotalTaxableAmount}" /></td>
+                    <td colspan="2" style="text-align:right"> <apex:outputText value="{!TotalTaxableAmount}" /></td>
                 </tr>
                 <tr>
                     <td colspan="11" rowspan="6" valign="top">
@@ -857,7 +857,7 @@
                         </table>
                     </td>
                     <td colspan="5"><b><apex:outputText value="Total CGST : " /></b></td>
-                    <td colspan="2"> <apex:outputText value="{!TotalCGST}" /></td>
+                    <td colspan="2" style="text-align:right"> <apex:outputText value="{!TotalCGST}" /></td>
                 </tr>
                 <tr>
                     <td colspan="5"><b><apex:outputText value="Total SGST : " /></b></td>
@@ -865,19 +865,19 @@
                 </tr>
                 <tr>
                     <td colspan="5"><b><apex:outputText value="Total IGST : " /></b></td>
-                    <td colspan="2"> <apex:outputText value="{!TotalIGST}" /></td>
+                    <td colspan="2" style="text-align:right"> <apex:outputText value="{!TotalIGST}" /></td>
                 </tr>
                 <tr>
                     <td colspan="5"><b><apex:outputText value="Total Tax Amount : GST : " /></b></td>
-                    <td colspan="2"> <apex:outputText value="{!TotalGST}" /></td>
+                    <td colspan="2" style="text-align:right"> <apex:outputText value="{!TotalGST}" /></td>
                 </tr>
                 <tr>
                     <td colspan="5"><b><apex:outputText value="Round Off Value : " /></b></td>
-                    <td colspan="2"> <apex:outputText value="{!RoundOffValue}" /></td>
+                    <td colspan="2" style="text-align:right"> <apex:outputText value="{!RoundOffValue}" /></td>
                 </tr>
                 <tr>
                     <td colspan="5"><b><apex:outputText value="Total Amount After Tax :" /></b></td>
-                    <td colspan="2"> <apex:outputText value="{!TotalAmount}" /></td>
+                    <td colspan="2" style="text-align:right"> <apex:outputText value="{!TotalAmount}" /></td>
                 </tr>
                 <tr>
                     <td colspan="9" rowspan="15" valign="top">
@@ -894,7 +894,7 @@
                 </tr>
                 <tr>
                     <td colspan="4"><b><apex:outputText value="GST Payable on Reverse Charge :" /></b></td>
-                    <td colspan="2"><apex:outputText value="{!GSTOnReverseCharge}" /></td>
+                    <td colspan="2" style="text-align:right"><apex:outputText value="{!GSTOnReverseCharge}" /></td>
                 </tr>
                 <tr>
                     <td colspan="6">

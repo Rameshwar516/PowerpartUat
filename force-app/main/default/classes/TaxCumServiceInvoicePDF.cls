@@ -218,7 +218,7 @@ public class TaxCumServiceInvoicePDF {
                     RoundOffValue =TotalAmount;
                     TotalAmount = TotalAmount.round();
                     RoundOffValue = RoundOffValue - TotalAmount;
-                    TotalAmountInWords = 'Rupees '+UtilityClass.NoToWord(TotalAmount.intValue());
+                    TotalAmountInWords = 'Rupees '+UtilityClass.NoToWord(TotalAmount.intValue())+' only';
                 }
             }
             

@@ -6,19 +6,49 @@
     createDeliveryNote: function(component, event, helper) {
         
         var Childlst = component.get('v.wrapMains.wrapChildlst');
-        console.log(Childlst);
         var selected = false;
+        var QuantyError = false;
+        var Alldone = false;
         for(var i=0;i<Childlst.length;i++)
         {
             console.log(Childlst[i].isSelected);
-            if(Childlst[i].isSelected == true)
+            if(Childlst[i].isSelected == true ){
                 selected = true;
+                if(Childlst[i].reMaininQTY > Childlst[i].quantity ){
+                    QuantyError = true; 
+                }
+            }
+        }
+        for(var i=0;i<Childlst.length;i++)
+        {   
+            if(!Childlst[i].checkboxDisable){
+                Alldone = false; 
+                break;
+            }
+            else{
+                Alldone = true;
+            } 
         }
         
-        if(selected == true){
-         helper.onSave(component, event, helper);   
+        console.log(selected);
+        console.log(Alldone);
+        console.log(QuantyError);
+        
+        if(selected == true && Alldone == false){
+            if(!QuantyError){ 
+                helper.onSave(component, event, helper); 
+            } 
+            else{
+                var toastEvent = $A.get("e.force:showToast");
+                toastEvent.setParams({
+                    title : 'Error',
+                    message:'Quantity Value can not be greater that SO Qty Value.',
+                    type: 'error',
+                });
+                toastEvent.fire();  
+            }
         }
-        else{
+        else if(selected == false && Alldone == false){
             var toastEvent = $A.get("e.force:showToast");
             toastEvent.setParams({
                 title : 'Error',
@@ -26,7 +56,8 @@
                 type: 'error',
             });
             toastEvent.fire();
-            }
+        }
+            
 
     },
     selectAll: function(component, event, helper) {
@@ -48,7 +79,24 @@
     },
     onRemainQtyChange: function(component, event, helper) {
         console.log('change');
-		helper.onRemainQty(component, event, helper);
+        var rowindex = event.getSource().get("v.name");
+        var wrapperchild=component.get("v.wrapMains.wrapChildlst");
+        console.log(event.getSource().get("v.value"));
+        if(event.getSource().get("v.value") != null && event.getSource().get("v.value") > 0){
+            helper.onRemainQty(component, event, helper);
+        }
+        else{
+            var toastEvent = $A.get("e.force:showToast");
+            toastEvent.setParams({
+                title : 'Error',
+                message:'Quantity can not be 0 or less than 0.',
+                type: 'error',
+            });
+            toastEvent.fire();
+        }
+		
+        
+        
     },
     onSalesPriceChange: function(component, event, helper) {
         helper.onSalesPrice(component, event, helper);

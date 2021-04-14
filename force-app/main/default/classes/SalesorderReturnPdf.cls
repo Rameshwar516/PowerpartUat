@@ -24,7 +24,7 @@ public class SalesorderReturnPdf {
         totalAmountinWords = '';
         
         List<String> SORlineitem = UtilityClass.getAllFields('Sales_Order_Return_Line_Item__c');
-        String strSORlineitemquery = 'Select ' +String.Join(SORlineitem, ',')+',Part_Number__r.name, Part_Number__r.Part_Name__c, Part_Number__r.HSN_CODE__c'+' From Sales_Order_Return_Line_Item__c where Doc_No__c =: strId';
+        String strSORlineitemquery = 'Select ' +String.Join(SORlineitem, ',')+',Part_Number__r.name,Part_Number__r.uom__c, Part_Number__r.Part_Name__c, Part_Number__r.HSN_CODE__c'+' From Sales_Order_Return_Line_Item__c where Doc_No__c =: strId';
         lstSORlineitem =  Database.query(strSORlineitemquery);  
         if(!lstSORlineitem.isempty())
             for(Sales_Order_Return_Line_Item__c dli :lstSORlineitem){
@@ -35,7 +35,7 @@ public class SalesorderReturnPdf {
         NetValue = totalamount;
         
         totalAmountinWords = UtilityClass.NoToWord(NetValue.intValue());
-        totalAmountinWords = totalAmountinWords+' rupees only';
+        totalAmountinWords = 'Ruppes '+totalAmountinWords+' only';
     }
     
 }
