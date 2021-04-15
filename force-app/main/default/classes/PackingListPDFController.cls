@@ -42,7 +42,7 @@ public class PackingListPDFController
         
         String strSalesOrderQuery = 'Select ' +String.Join(lstDNField, ',')+' '+ ' From Sales_Order_Dispatch_Delivery_Note__c where Id =: striPckdn';
         
-        String strSalesOrderItemQuery = 'Select ' +String.Join(lstDNLIField, ',')+ ',Part_No__r.uom__c,Part_No__r.Specification__c From Packing_List_Line_Item__c where Packing_List__c =: queryString';
+        String strSalesOrderItemQuery = 'Select ' +String.Join(lstDNLIField, ',')+ ',Part_No__r.Name,Part_No__r.Part_Name__c,Part_No__r.uom__c,Part_No__r.Specification__c From Packing_List_Line_Item__c where Packing_List__c =: queryString';
         
       
        List<Sales_Order_Dispatch_Delivery_Note__c> lstDN =  Database.query(strSalesOrderQuery);

@@ -207,25 +207,52 @@
     },
     removeselectedpart :function(component, event, helper) {
         var index = event.getSource().get('v.value');
-        var tmpMainWrapper = component.get("v.wrapMain.lstWrapp");
-        var prodwrapper =  tmpMainWrapper[index];
+        var tmpMainWrapper = component.get("v.wrapMain.lstWrappTwo");
+        var prodwrapper = '';
+        console.log(index);
+        for(var i=0;i<tmpMainWrapper.length;i++){
+            console.log('for');
+            console.log(tmpMainWrapper[i].objProdchild.Product_Part__c);
+            if(index == tmpMainWrapper[i].objProdchild.Product_Part__c){
+                console.log('run');
+                prodwrapper =  tmpMainWrapper[i];
+            }
+        }
+        console.log(prodwrapper);
         var objWrap = component.get("v.wrapMain");
-        console.log('Check false '+tmpMainWrapper[index]);
         helper.RemoveRecordOnCheck(component, event, objWrap ,prodwrapper); 
     },
     
     checkJs :function(component, event, helper) {
         var tmpWrapper = [];
         var index = event.getSource().get('v.name');
-        var tmpMainWrapper = component.get("v.wrapMain.lstWrapp");
+        var tmpMainWrapper = component.get("v.wrapMain.lstWrappTwo");
+        var tmpproductlst = component.get("v.wrapMain.lstWrapp");
         var Istrue = false; 
+        var prodwrapper = '';
+        var tmpproduct = '';
+        for(var i=0;i<tmpMainWrapper.length;i++){
+            console.log('for');
+            console.log(tmpMainWrapper[i].objProdchild.Product_Part__c);
+            if(index == tmpMainWrapper[i].objProdchild.Product_Part__c){
+                console.log('run');
+                prodwrapper =  tmpMainWrapper[i];
+            }
+        }
         
-        if(tmpMainWrapper[index].isSelected){
+        for(var i=0;i<tmpproductlst.length;i++){
+            console.log('for');
+            console.log(tmpproductlst[i].objProd.Id);
+            if(index == tmpproductlst[i].objProd.Id){
+                console.log('run');
+                tmpproduct =  tmpproductlst[i];
+            }
+        }
+        
+        if(tmpproduct.isSelected){
             Istrue = true;
         }
-        console.log(tmpMainWrapper[index]);
         if(Istrue){
-            console.log('Check true '+tmpMainWrapper[index].isSelected);
             component.set('v.IsselectProduct',true);
             component.set("v.showSection",  false);
             var objWrap = component.get("v.wrapMain");
@@ -233,21 +260,15 @@
         }
         else if(!Istrue)
         {
-            console.log('Check false '+tmpMainWrapper[index].isSelected);
-            var prodwrapper =  tmpMainWrapper[index];
             var objWrap = component.get("v.wrapMain");
-            console.log('Check false '+tmpMainWrapper[index]);
             helper.RemoveRecordOnCheck(component, event, objWrap ,prodwrapper);
         }
             else if(tmpMainWrapper.length = 0)
             {
-                console.log('Check tmpMainWrapper.length '+tmpMainWrapper[index].isSelected);
                 var msg = $A.get("$Label.c.Product_Selection");
                 component.set("v.wrapMain.strMessage", msg);
                 component.set("v.wrapMain.success", false);
-            }
-        
-        
+            }    
     },
     
     Productselect :function(component, event, helper) {
@@ -287,6 +308,8 @@
     
     SaveJS : function(component, event, helper)
     {
+        var saveval  = component.get("v.issave");
+        if(!saveval){
         var tmpWrapper = [];
         var wrapMain = component.get("v.wrapMain");
         var tmpMainWrapper = component.get("v.wrapMain.lstWrappTwo");
@@ -313,7 +336,6 @@
                tmpMainWrapper[i].objProdchild.IGST__c ==null ||
                tmpMainWrapper[i].objProdchild.IGST__c < 0
               ){
-                
                 Istrue = true;
             }
         }
@@ -344,13 +366,13 @@
                    tmplstSelectedTax[i].decTaxAmount < 0
                   ){
                     Ischarges = true;
-                }
-                
+                } 
             }  
         }
         if(!Istrue){
             if(!Ischarges){
                 var id = component.get("v.recordId");
+               	component.set('v.issave', true);
                 helper.SaveHelper(component, event, id);
             }else{
                 var toastEvent = $A.get("e.force:showToast");
@@ -371,7 +393,7 @@
                 });
                 toastEvent.fire(); 
            component.set("v.wrapMain.success", false);
-        }
+        }}
     },
     onSelectChange : function(component, event, helper)
     {
@@ -478,20 +500,14 @@
     
     
     selectTaxType: function(component,event,helper){
-        
         var TotalAmount =0;
-        
         var lstSalesReturn = component.get('v.wrapMain.lstWrappTwo');
-        console.log(component.get('v.wrapMain.lstWrappTwo[0].TotalAfterDiscount'));
-        console.log(lstSalesReturn);
         for(var i = 0; i < lstSalesReturn.length; i++) {
             if(lstSalesReturn[i].TotalAfterDiscount !=null && lstSalesReturn[i].TotalAfterDiscount !='')
                 TotalAmount = TotalAmount+lstSalesReturn[i].TotalAfterDiscount;
-            
             component.set("v.decTotalAmount",TotalAmount);
         }
         var TotalAmount = component.get("v.decTotalAmount");
-        //alert('..TotalAmount...'+TotalAmount);
         var StrSelectedTax = component.get("v.strTaxType");
         var lstTaxDetails = component.get("v.wrapMain.lstTaxDetails");
         var lstSelectedTax = component.get("v.lstSelectedTax");
@@ -543,8 +559,9 @@
             });
             toastEvent.fire();
         }			
-        component.set('v.lstSelectedTax', lstSelectedTax);
-        
+        component.set('v.lstSelectedTax', lstSelectedTax); 
+        helper.refreshCharge(component,event,helper);
+        helper.totalamount(component,event,helper);
         helper.TotalTaxAmount(component,event,helper);
     },
     
@@ -595,8 +612,17 @@
         console.log("Deletelineitem");
         var tmpMainWrapper =  component.get('v.wrapMain.lstWrappTwo');
         var RecordIndexStr = event.getSource().get("v.value");
-        var action = component.get('c.deleteRecord');
-        var lineitem = tmpMainWrapper[RecordIndexStr];
+        var action = component.get('c.deleteRecord'); 
+        var lineitem = '';
+        for(var i=0;i<tmpMainWrapper.length;i++){
+            console.log('for');
+            console.log(tmpMainWrapper[i].objProdchild.Product_Part__c);
+            if(RecordIndexStr == tmpMainWrapper[i].objProdchild.Product_Part__c){
+                console.log('run');
+                lineitem =  tmpMainWrapper[i];
+            }
+        }
+        
         action.setParams({
             "strWrap" : JSON.stringify(lineitem)
         });
@@ -782,13 +808,12 @@
         var templstcharge = component.get('v.lstSelectedTax');
         var TotalAmount = component.get('v.decTotalAmount');
         var igstvalue = component.get('v.wrapMain.igstvalue');
-        var damo = (templstcharge[tmpIndex].TaxPercentage * TotalAmount)/100;
+        var damo = parseInt((templstcharge[tmpIndex].TaxPercentage * TotalAmount)/100);
         templstcharge[tmpIndex].decTaxAmount = damo.toFixed(2);
         var dectaxamount =(templstcharge[tmpIndex].TaxPercentage * TotalAmount)/100;
         var IGSTAmount = (templstcharge[tmpIndex].IGST * dectaxamount)/100;
         var SGSTAmount = ((templstcharge[tmpIndex].SGST)*dectaxamount)/100;
         var CGSTAmount = ((templstcharge[tmpIndex].CGST)*dectaxamount)/100;
-        
         
         if(igstvalue){
             templstcharge[tmpIndex].NetAmount =  parseInt(IGSTAmount) + parseInt(dectaxamount);
@@ -797,7 +822,14 @@
             templstcharge[tmpIndex].NetAmount = parseInt(SGSTAmount) + parseInt(CGSTAmount) + parseInt(dectaxamount);
         }
         component.set("v.lstSelectedTax",templstcharge);
-        helper.TotalTaxAmount(component,event,helper);
+        var lstTotalSelectedTax = component.get("v.lstSelectedTax");
+        var TotalTaxAmount = 0;
+        //alert('...!@#..'+lstTotalSelectedTax.length);
+        for(var i = 0; i < lstTotalSelectedTax.length; i++) {
+            //alert('...'+lstTotalSelectedTax[i].decTaxAmount);
+            TotalTaxAmount =TotalTaxAmount+parseInt(lstTotalSelectedTax[i].decTaxAmount);
+        }
+        component.set('v.TotalTax', TotalTaxAmount);
         
     },
     ChargesAmountOnOhange:function(component, event, helper) {
@@ -820,9 +852,13 @@
             templstcharge[tmpIndex].NetAmount = parseInt(SGSTAmount) + parseInt(CGSTAmount) + parseInt(dectaxamount);
         }
         component.set("v.lstSelectedTax",templstcharge);
-        helper.TotalTaxAmount(component,event,helper);
-
-         
-     }
-    
+        var lstTotalSelectedTax = component.get("v.lstSelectedTax");
+        var TotalTaxAmount = 0;
+        //alert('...!@#..'+lstTotalSelectedTax.length);
+        for(var i = 0; i < lstTotalSelectedTax.length; i++) {
+            //alert('...'+lstTotalSelectedTax[i].decTaxAmount);
+            TotalTaxAmount =TotalTaxAmount+parseInt(lstTotalSelectedTax[i].decTaxAmount);
+        }
+        component.set('v.TotalTax', TotalTaxAmount);  
+     }   
 })

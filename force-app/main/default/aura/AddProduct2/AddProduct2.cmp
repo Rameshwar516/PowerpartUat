@@ -6,7 +6,7 @@
     <aura:handler event="aura:waiting" action="{!c.showSpinner}"/>
     <aura:handler event="aura:doneWaiting" action="{!c.hideSpinner}"/>
     -->
-    
+    <aura:attribute name="issave" type="boolean" default="false"/>
     <aura:handler name="init" value="{!this}" action="{!c.doinit}" />    
     <aura:attribute name="wrapMain" type="object" />
     <aura:attribute name="isListOpen12" type="boolean" default = "false" />
@@ -149,9 +149,9 @@
                                                 <tbody>
                                                     <aura:iteration items="{!v.wrapMain.lstWrapp}" var="cusProd" indexVar="index">
                                                         <tr width="100%" id="{!index}"> 
-                                                            <td class="dataCell" style="width: 8rem;" ><lightning:input type="checkbox" value="{!cusProd.isSelected}" checked="{!cusProd.isSelected}" name="{!index}" onchange="{!c.checkJs}"/></td>
+                                                            <td class="dataCell" style="width: 8rem;" ><lightning:input type="checkbox" value="{!cusProd.isSelected}" checked="{!cusProd.isSelected}" name="{!cusProd.objProd.Id}" onchange="{!c.checkJs}"/></td>
                                                             <td class="dataCell" style="width: 8rem;"><a href="{! '/' + cusProd.objProd.Id}"> {!cusProd.objProd.Name}</a></td>
-                                                              <td class="dataCell" style="width: 9rem;">{!cusProd.oldPartName}</td>
+                                                              <td class="dataCell" style="width: 9rem;"><div  class="slds-cell-wrap">{!cusProd.oldPartName}</div></td>
                                                             <td class="dataCell" style="width: 9rem;">{!cusProd.objProd.Part_Name__c}</td>
                                                             <td class="dataCell" style="width: 7rem;">
                                                                 <aura:if isTrue="{!v.wrapMain.isService}">
@@ -262,9 +262,9 @@
                                                             <td class=""  >
                                                                 <div class="slds-truncate" title="">
                                                                     <aura:if isTrue="{!cusProdTwo.isLineItem}">
-                                                                        <lightning:buttonIcon value="{!index}" alternativeText="Delete" variant="border-filled"  iconName="utility:delete"  onclick="{!c.Deletelineitem}" />
+                                                                        <lightning:buttonIcon value="{!cusProdTwo.objProdchild.Product_Part__c}" alternativeText="Delete" variant="border-filled"  iconName="utility:delete"  onclick="{!c.Deletelineitem}" />
                                                                         <aura:set attribute="else">
-                                                                            <lightning:buttonIcon value="{!index}" alternativeText="Delete" variant="border-filled"  iconName="utility:delete"  onclick="{!c.removeselectedpart}" />                                                                  		
+                                                                            <lightning:buttonIcon value="{!cusProdTwo.objProdchild.Product_Part__c}" alternativeText="Delete" variant="border-filled"  iconName="utility:delete"  onclick="{!c.removeselectedpart}" />                                                                  		
                                                                         </aura:set>
                                                                     </aura:if>
                                                                 </div>

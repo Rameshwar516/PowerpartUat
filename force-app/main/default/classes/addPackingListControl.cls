@@ -4,6 +4,7 @@ public class addPackingListControl {
     @AuraEnabled 
     public static string productOnLoad(string RecordId)
     {
+        
         WrappMain objWR = new WrappMain();  
         list<innerWrp> listIW = new list<innerWrp>();
         list<Packing_List_Line_Item__c> prelist = [SELECT BOX_No__c,Box_Type__c,DC_Date__c,Gross_Weight_Kgs__c,Height_Inches_CMS__c,Packing_List__r.Delivery_Note__c,
@@ -19,6 +20,9 @@ public class addPackingListControl {
             listIW.add(objIW);
         }
         objWR.inrWrap = listIW;
+        objWR.AllDone =  false;
+        if(listIW.isempty()) 
+        objWR.AllDone =  true;
         system.debug('....objWR...'+objWR);
         return json.serialize(objWR);
     }
@@ -30,6 +34,7 @@ public class addPackingListControl {
         list<Sales_Order_Dispatch_Delivery_Note__c> lstDN = new list<Sales_Order_Dispatch_Delivery_Note__c>();
         Packing_List__c objPackingList = new Packing_List__c();
         objPackingList.Delivery_Note__c = recordId;
+        objPackingList.Date__c =system.today();
         insert objPackingList;
         
         System.debug('add Record method called');
@@ -67,6 +72,16 @@ public class addPackingListControl {
             objwrap.success = false;
             objwrap.strMessage = e.getMessage();
         }
+        
+        String str = productOnLoad(recordId);
+        WrappMain objwrap2 = (WrappMain)Json.deserialize(str, WrappMain.class);
+        if(objwrap2.AllDone)
+        {
+            Sales_Order_Dispatch_Delivery_Note__c DNrecord = new Sales_Order_Dispatch_Delivery_Note__c();
+            DNrecord.id = recordId;
+            DNrecord.isTaxinvoice__c = true;
+            update DNrecord;
+        }
         system.debug('..........'+json.serialize(objwrap));
         return json.serialize(objwrap); 
     }   
@@ -77,6 +92,7 @@ public class addPackingListControl {
         @AuraEnabled public Boolean isSelectedProduct;
         @AuraEnabled public boolean success;       
         @AuraEnabled public string strMessage;
+        @AuraEnabled public boolean AllDone;  
     }
     
     public class innerWrp

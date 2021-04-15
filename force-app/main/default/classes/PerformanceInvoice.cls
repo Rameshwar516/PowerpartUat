@@ -22,6 +22,7 @@ public class PerformanceInvoice
     public decimal totalAmountNotIncludedTax{get;set;} 
     public string totalAmountaftertaxinWords{get;set;}
     public string sign{get;set;}
+    public string stamp{get;set;}
     
     public list<Line_item__c> Litem{get;set;}
     
@@ -89,10 +90,20 @@ public class PerformanceInvoice
         }
         
         user ur =[SELECT Id,Branch__c,User_Signature__c from user where id =:opp.OwnerId];
-        if(ur.User_Signature__c!=null)
+        if(!String.isBlank(ur.User_Signature__c))
         sign = ur.User_Signature__c;
+        
+        if(String.isBlank(ur.User_Signature__c))
+        sign ='https://powerparts--partcrm--c.visualforce.com/resource/1618317607000/DefaultSign?';
+        
         system.debug(sign);
         System.debug('----'+ur.Branch__c);
+        if(ur.Branch__c == 'Kolkata')
+            stamp='https://powerparts--partcrm--c.visualforce.com/resource/1618317202000/KolkataStamp?';
+         if(ur.Branch__c == 'Gurugram')
+            stamp='https://powerparts--partcrm--c.visualforce.com/resource/1618317202000/KolkataStamp?';
+        
+        
         
         //Pdf header data
         string branch = opp.Ware_House__r.branch__c;

@@ -116,6 +116,29 @@
     onIGSTChange: function(component, event, helper) {
         helper.onIGST(component, event, helper);
     },
+    deliverydateactionCheckbox : function(component, event, helper) {
+        var tmpMainWrapper =  component.get('v.wrapMains.wrapChildlst');
+        var isdeliverydate =  component.get('v.isdeliverydate');
+        if(isdeliverydate==true){
+            if(tmpMainWrapper.length>=2){
+                console.log(tmpMainWrapper[0].deliverydate);
+                if(tmpMainWrapper[0].deliverydate != null && tmpMainWrapper[0].deliverydate != ''){
+                    for(var i=1;i<tmpMainWrapper.length;i++){
+                        tmpMainWrapper[i].deliverydate = tmpMainWrapper[0].deliverydate;
+                    } 
+                }
+                else{
+                    var toastEvent = $A.get("e.force:showToast");
+                    toastEvent.setParams({
+                        "type":"error",
+                        "title": "Error!",
+                        "message": "Delivery date at first part have to be filled."
+                    });
+                    toastEvent.fire();
+                }
+            }
+        }
+        component.set("v.wrapMains.wrapChildlst",tmpMainWrapper);
+    },
     
- 
 })

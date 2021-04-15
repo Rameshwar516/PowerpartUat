@@ -176,6 +176,7 @@ public class TaxCumServiceInvoicePDF {
                     {
                         taxSummary ts = new taxSummary();
                         ts.percentage = key[i];
+                        System.debug(key[i]);
                         ts.taxamount = taxsummaryMap.get(ts.percentage);
                         ts.gstamount = ((ts.percentage*ts.taxamount)/100).setScale(2);
                         taxSummarylist.add(ts);  
@@ -212,8 +213,7 @@ public class TaxCumServiceInvoicePDF {
                 TotalAmount = subTotalAmount+TotalAmountWithCharges;
                 
                 if(subTotalTaxableAmount > 0 )
-                    GSTOnReverseCharge = (subTotalTaxableAmount *18 )/100;
-                
+                    GSTOnReverseCharge = ((subTotalTaxableAmount *18 )/100).setScale(2);
                     if(TotalAmount > 0){
                     RoundOffValue =TotalAmount;
                     TotalAmount = TotalAmount.round();

@@ -380,7 +380,7 @@ public with sharing class clsConvertLead
                 
                 if(objName.equalsIgnoreCase('Contact'))
                 {
-                    
+                    sObj.put('Salutation', objEnq.Salutation__c);
                     sObj.put('FirstName', objEnq.First_Name__c);
                     sObj.put('LastName', objEnq.name);
                     sObj.put('Phone', objEnq.Phone__c);
@@ -476,7 +476,7 @@ public with sharing class clsConvertLead
             
             if(objName.equalsIgnoreCase('Contact'))
             {
-                
+                sObj.put('Salutation', objEnq.Salutation__c);
                 sObj.put('FirstName', objEnq.First_Name__c);
                 sObj.put('LastName', objEnq.name);
                 sObj.put('Phone', objEnq.Phone__c);

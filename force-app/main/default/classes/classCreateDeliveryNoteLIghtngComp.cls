@@ -418,6 +418,7 @@ public class classCreateDeliveryNoteLIghtngComp {
         public Sales_Order_Line_Item__c soliChild{get;set;}  
         public Delivery_Note_Line_Item__c dnliChild{get;set;}
         public string productname;
+        public string Partserial;
         public string productid;
         public string productnumber;
         public decimal quantity;

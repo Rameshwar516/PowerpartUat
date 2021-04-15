@@ -27,7 +27,7 @@ public class Salesorderlineitemcomponentcontroler {
         if(so.Status__c=='Approved'){
                 recordlist.closed =booleantrue;
             } 
-        lineitemonrecord= [SELECT Amount__c,Available_Quantity__c,CGST_Amount__c,CGST__c,CreatedById,CreatedDate,Description__c,
+        lineitemonrecord= [SELECT Amount__c,Part_Serial__c,Available_Quantity__c,CGST_Amount__c,CGST__c,CreatedById,CreatedDate,Description__c,
                            Discount_Amount__c,Discount__c,Expected_Date__c,GST__c,HSN_Code__c,Id,IGST_Amount__c,IGST__c,IsDeleted,
                            LastActivityDate,LastModifiedById,LastModifiedDate,List_Price__c,Name,OwnerId,Part_Name_formula__c,
                            Product_Part__c,Quantity__c,Sales_Order__c,SGST_Amount__c,SGST__c,SystemModstamp,Taxable_Amount__c,
@@ -53,7 +53,7 @@ public class Salesorderlineitemcomponentcontroler {
                     objTD.SGST = ch.SGST__c;
                     objTD.IGST = ch.IGST__c;
                     objTD.objcharge = ch;
-                    objTD.decTaxAmount =  ch.Total_Amount__c;
+                    objTD.decTaxAmount =  ch.Charge_Amount__c;
                     objTD.NetAmount =  ch.Net_Amount__c;
                         objTD.ischargeItem = booleantrue;
                     TaxDetailslist.add(objTD);
@@ -103,8 +103,10 @@ public class Salesorderlineitemcomponentcontroler {
                     objchild.objProdchild = objOppPro;
                     objchild.PartName = objOppPro.Product_Part__r.Part_Name__c ;
                     objchild.Partnumber= objOppPro.Product_Part__r.name ;
+                    //objOppPro.Part_Serial__c = objOppPro.Part_Serial__c;
                     objchild.isSelected = booleantrue;
                     objchild.isLineItem = booleantrue;
+                    
                    // objchild.stockamount = stcountmap.get(objOppPro.Product_Part__c);
                     objchild.stockamount = stwraptmap.get(objOppPro.Product_Part__c).stockamount;
                     objchild.saleableamount = stwraptmap.get(objOppPro.Product_Part__c).saleableamount;
@@ -341,7 +343,7 @@ public class Salesorderlineitemcomponentcontroler {
     public static string removeRecord(string strWrap, string prodwrappstr)
     {
         WrappMain objwrap = (WrappMain)Json.deserialize(strWrap, WrappMain.class);      
-        prodwrapp prodwrappobj = (prodwrapp)Json.deserialize(prodwrappstr, prodwrapp.class);
+        prodwrappChild prodwrappobj = (prodwrappChild)Json.deserialize(prodwrappstr, prodwrappChild.class);
         List<prodwrappChild> lstWrapplineItem = objwrap.lstWrappTwo;
         List<prodwrapp> lstWrappProduct = objwrap.lstWrapp;
         Set<id> lineitemids = objwrap.lineitemid;
@@ -349,19 +351,19 @@ public class Salesorderlineitemcomponentcontroler {
         integer x=0;
         for(prodwrappChild prodchild : lstWrapplineItem){
             x++;
-            if(prodchild.objProdchild.Product_Part__c == prodwrappobj.objProd.id){
+            if(prodchild.objProdchild.Product_Part__c == prodwrappobj.objProdchild.Product_Part__c){
                 i=lstWrapplineItem.indexOf(prodchild);
                 System.debug('integer i '+i);
             }           
         }
         for(id prodchild : lineitemids){
-            if(prodchild == prodwrappobj.objProd.id){
+            if(prodchild == prodwrappobj.objProdchild.Product_Part__c){
                 lineitemids.remove(prodchild);
             }           
         }
         for(prodwrapp prodchild : lstWrappProduct){
             
-            if(prodchild.objProd.id == prodwrappobj.objProd.id){
+            if(prodchild.objProd.id == prodwrappobj.objProdchild.Product_Part__c){
                 x=lstWrappProduct.indexOf(prodchild);
                 prodchild.isSelected = false;
                 System.debug('integer x '+x);

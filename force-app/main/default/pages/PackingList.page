@@ -4,8 +4,8 @@
             @page 
             {
             size:10.54in 13.50in; 
-            margin-top: 180px;
-            margin-bottom: 180px;
+            margin-top: 5.50cm;
+            //margin-bottom: 180px;
             page-break-after:always;
             @top-center 
             {                   
@@ -226,7 +226,7 @@
                         <b><apex:outputText value=":" /></b>
                     </td>
                     <td style="border:none;"  valign="top" colspan="2">
-                        <apex:outputText value="" />
+                        <apex:outputText value="{!Packing_List__c.Delivery_Note__r.Shipping_Account__r.Shipping_GSTIN_No__c}" />
                     </td>
                 </tr>
                 
@@ -274,7 +274,7 @@
                         <b><apex:outputText value=":" /></b>
                     </td>
                     <td style="border:none;"  valign="top" colspan="2">
-                        <apex:outputText value="" />
+                        <apex:outputText value="{!Packing_List__c.Delivery_Note__r.Sales_Order__r.Opportunity__r.Reference_Number__c}" />
                     </td>
                 </tr>
                 
@@ -318,9 +318,7 @@
                     <td style="border:none;"  valign="top" colspan="2">
                         <apex:outputText value="{!objSODN.Payment_Method__c}" />
                     </td>
-                </tr>
-                
-                
+                </tr>              
                 <tr>
                     <td style="border:none;"  valign="top" >
                        {!shippingAcc.Name} 
@@ -403,7 +401,7 @@
                         <b><apex:outputText value=":" /></b>
                     </td>
                     <td style="border:none;"  valign="top" colspan="2">
-                        <apex:outputText value="" />
+                        <apex:outputText value="{!Packing_List__c.Delivery_Note__r.Docket_LR_No__c}" />
                     </td>
                 </tr>
                 
@@ -445,7 +443,7 @@
                         <b><apex:outputText value=":" /></b>
                     </td>
                     <td style="border:none;"  valign="top" colspan="2">
-                        <apex:outputText value="{!objSO.Shipping_Terms__c}" />
+                        <apex:outputText value="{!Packing_List__c.Delivery_Note__r.Sales_Order__r.Shipping_Terms__c}" />
                     </td>
                 </tr>
                 <tr>
@@ -468,43 +466,7 @@
                         <apex:outputText value="{!objSO.Payment_Terms__c}" />
                     </td>
                 </tr>
-                <!--
-                <tr>
-                    <td style="border:none;"  valign="top" >
-                       
-                    </td>
-                    <td style="border:none;"  valign="top" >
-                    
-                    </td>
-                    <td style="border:none;"  valign="top" colspan="2">
-                    
-                    </td>
-                    <td style="border:none;"  valign="top" colspan="4">
-                        <table style="width:100%; border:none; margin-top:40px;">
-                
-                            <tr style="border-top:1px solid black; border-bottom: none;">
-                                <td style="border-bottom: none; border-left: none; border-right: 1px solid black;" valign="top" >
-                                    <b>Shipping Terms</b>
-                                </td>
-                                <td style="border-bottom: none; border-left: none; border-right: none;" valign="top" >
-                                    <b>Payment Terms</b>
-                                </td>
-                            </tr>
-                            
-                            <tr style="border-top:1px solid black; border-bottom: none;">
-                                <td style="border-bottom: none; border-left: none; border-right: 1px solid black;" valign="top" >
-                                    {!objSO.Shipping_Terms__c}
-                                </td>
-                                <td style="border-bottom: none; border-left: none; border-right: none;" valign="top" >
-                                   {!objSO.Payment_Terms__c}
-                                </td>
-                            </tr>
-                            
-                        </table>
-                    </td>
-                   
-                </tr>
-                -->
+
                 
             </table>
             
@@ -615,10 +577,10 @@
                             <apex:variable var="Index" value="{!Index + 1}" />  {!Index}
                         </td>
                         <td style="border-bottom: none; border-left: none; border-right: none;" valign="top" >
-                            {!li.Part_Name__c}
+                            {!li.Part_No__r.Name}
                         </td>
                         <td style="border-bottom: none; border-left: none; border-right: none;" valign="top" colspan="2">
-                            {!li.Part_No__r.Specification__c}
+                            {!li.Part_No__r.Part_Name__c}
                         </td>
                         <td style="border-bottom: none; border-left: none; border-right: none;" valign="top">
                             {!li.Quantity__c}
@@ -627,7 +589,7 @@
                             <b>{!li.Part_No__r.uom__c}</b>
                         </td>
                          <td style="border-bottom: none; border-left: none; border-right: none;" valign="top">
-                            <b>Case {!Index}</b>
+                            <b>Case {!li.BOX_No__c}</b>
                         </td>
                     </tr> 
                 </apex:repeat>

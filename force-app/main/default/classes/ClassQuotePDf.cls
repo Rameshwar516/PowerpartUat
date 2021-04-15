@@ -68,7 +68,7 @@ public class ClassQuotePDf {
         String strId = ApexPages.currentPage().getParameters().get('id');
         
         quotee = [select id,Billing_Address__c,Contact_Name__c,Customer_Party__c,Date__c,Email__c,Mobile__c,Opportunity__c,
-                  Name,Quote_Type__c,Quote_Validity__c,Shipping_Account__c,Opportunity__r.LC_Date__c,Opportunity__r.Transporter_Name__c,Opportunity__r.LC_Term__c,Delivery_Period__c,Shipping_Address__c ,Quote_Number__c,Customer_Party__r.ShippingState,
+                  Name,Quote_Type__c,Quote_Validity__c,Remark__c,Shipping_Account__c,Opportunity__r.LC_Date__c,Opportunity__r.Transporter_Name__c,Opportunity__r.LC_Term__c,Delivery_Period__c,Shipping_Address__c ,Quote_Number__c,Customer_Party__r.ShippingState,
                    Quote__c.Opportunity__r.Office__c , Quote__c.Opportunity__r.Ware_House__r.Name,Quote__c.Opportunity__r.Ware_House__r.Branch__c,Quote__c.Opportunity__r.Ware_House__r.City__c
                    from Quote__c where id=:strId limit 1];
         
@@ -286,6 +286,6 @@ public class ClassQuotePDf {
             TotalTaxableAmount=0;
         }
         
-    }	*/
+    }   */
     
 }

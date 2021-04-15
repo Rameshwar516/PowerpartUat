@@ -108,6 +108,7 @@ public class InvoiceComponentController {
                     objchild.Partnumber= objOppPro.Part_Number__r.name ;
                     objchild.isSelected = booleantrue;
                     objchild.isLineItem = booleantrue;
+                    objchild.Hsncode = objOppPro.HSN_Code__c;
                    // objchild.stockamount = stcountmap.get(objOppPro.Product_Part__c);
                     objchild.stockamount = stwraptmap.get(objOppPro.Part_Number__c).stockamount;
                     objchild.saleableamount = stwraptmap.get(objOppPro.Part_Number__c).saleableamount;
@@ -391,6 +392,8 @@ public class InvoiceComponentController {
             for(prodwrappChild obj : OppLineChild)
             {
                 Invoice_Line_Item__c objOppProduct = obj.objProdchild;
+                
+                
                 if(objOppProduct.Quantity__c > 0 && objOppProduct.Unit_Price__c >0)
                 {
                     objOppProduct.invoice__c = RecordId;
@@ -496,6 +499,7 @@ public class InvoiceComponentController {
         @AuraEnabled public decimal  saleableamount{get;set;}
         @AuraEnabled public decimal  stockamount{get;set;}
         @AuraEnabled public decimal  POamount{get;set;}
+        @AuraEnabled public String Hsncode {get; set;}
         
     }
     

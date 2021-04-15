@@ -423,7 +423,7 @@ TotalGST = TotalIGST+ TotalCGST+ TotalSGST;*/
             FreightTotal = 0;
         }
     }
-      public class taxSummary{
+    public class taxSummary{
         public  Decimal percentage {get;set;}
         public  Decimal taxamount {get;set;}
         public  Decimal gstamount {get;set;}

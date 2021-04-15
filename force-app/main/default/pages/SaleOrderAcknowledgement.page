@@ -4,7 +4,7 @@
             @page 
             {  
             size:12.94in 13.90in; 
-            margin-top: 180px;
+            margin-top: 5.50cm;
             page-break-after:always;
             @top-center 
             {                   
@@ -42,6 +42,7 @@
             border-spacing: 0px;
             font-size:12px;
             font-family: Arial;
+            -fs-table-paginate: paginate;
             }
             
             td {
@@ -626,7 +627,7 @@
                     <td style="text-align:right"><apex:outputText value="{!subTotalAmount}" /></td>
                 </tr>
                 
-                <tr>
+                <!--<tr>
                     <td colspan="12"></td>
                     <td rowspan="1"></td>
                     <td colspan="2" rowspan="1" style="text-align:center"><b><apex:outputText value="CGST" /></b></td>
@@ -643,7 +644,7 @@
                     <td rowspan="1" style="text-align:center"><b>Amt (INR)</b></td>
                     <td rowspan="1" style="text-align:center"><b>Rate (%)</b></td>
                     <td rowspan="1" style="text-align:center"><b>Amt (INR)</b></td>
-                </tr>
+                </tr>-->
                 <apex:repeat value="{!lstCharges}" var="liCharge">
                     <tr>
                         <td colspan="12"><apex:outputText value="{!liCharge.Charges__r.Name}" /></td>
@@ -686,50 +687,40 @@
                         </div>
                         <div style="margin-top: 31px;;margin-left:50px">
                             <b><apex:outputText value="Tax Summary" /></b>
-                            <table width="30%" >
-                                <tr style="display: {!IF((TotalIGST != 0), 'table-row','none')};">
+                            <table width="60%" >
+                                <tr style="display: {!IF((igstbool), 'table-row','none')};">
                                     <td >
-                                        <table width="50%">
+                                        <table width="100%">
                                             <tr>
                                                 <td  style="border:none;">
                                                     <b><apex:outputText value="Tax Rate" /></b>
                                                 </td>
-                                                <td  style="border:none;">
-                                                    <b>&nbsp;</b>
-                                                </td>
-                                                <td  style="border:none;">
+                                               <td  style="border:none;">
                                                     <b><apex:outputText value="Taxable" /></b>
-                                                </td>
-                                                <td  style="border:none;">
-                                                    <b>&nbsp;</b>
                                                 </td>
                                                 <td  style="border:none;">
                                                     <b><apex:outputText value="IGST" /></b>
                                                 </td>
                                             </tr>
-                                            <tr>
-                                                <td  style="border:none;">
-                                                    <apex:outputText value="%" />
-                                                </td>
-                                                <td  style="border:none;">
-                                                    <b>&nbsp;</b>
-                                                </td>
-                                                <td  style="border:none;">
-                                                    <apex:outputText value="{!TotalTaxableAmount}" />
-                                                </td>
-                                                <td  style="border:none;">
-                                                    <b>&nbsp;</b>
-                                                </td>
-                                                <td  style="border:none;">
-                                                    <apex:outputText value="{!TotalIGST}" />
-                                                </td>
-                                            </tr>
+                                            <apex:repeat value="{!taxSummarylist}" var="tsl" >
+                                                <tr>
+                                                    <td  style="border:none;">
+                                                        <apex:outputText value="{!if(igstbool==true,tsl.percentage,0)} %" />
+                                                    </td>
+                                                    <td  style="border:none;">
+                                                        <apex:outputText value="{!if(igstbool==true,tsl.taxamount,0)}" />
+                                                    </td>
+                                                    <td  style="border:none;">
+                                                        <apex:outputText value="{!if(igstbool==true,tsl.gstamount,0)}" />
+                                                    </td>
+                                                </tr>
+                                            </apex:repeat>
                                         </table>
                                     </td>
                                 </tr>
-                                <tr style="display: {!IF((TotalCGST != 0), 'table-row','none')};">
+                                <tr style="display: {!IF((!igstbool), 'table-row','none')};">
                                     <td  >
-                                        <table width="50%">
+                                        <table width="100%">
                                             <tr>
                                                 <td  style="border:none;">
                                                     <b><apex:outputText value="Tax Rate" /></b>
@@ -741,23 +732,25 @@
                                                     <b><apex:outputText value="CGST" /></b>
                                                 </td>
                                             </tr>
-                                            <tr>
-                                                <td  style="border:none;">
-                                                    <apex:outputText value="%" />
-                                                </td>
-                                                <td  style="border:none;">
-                                                    <apex:outputText value="{!TotalTaxableAmount}" />
-                                                </td>
-                                                <td  style="border:none;">
-                                                    <apex:outputText value="{!TotalCGST}" />
-                                                </td>
-                                            </tr>
+                                            <apex:repeat value="{!taxSummarylist}" var="tsl" >
+                                                <tr>
+                                                    <td  style="border:none;">
+                                                        <apex:outputText value="{!if(igstbool==false,tsl.percentage,0)} %" />
+                                                    </td>
+                                                    <td  style="border:none;">
+                                                        <apex:outputText value="{!if(igstbool==false,tsl.taxamount,0)}" />
+                                                    </td>
+                                                    <td  style="border:none;">
+                                                        <apex:outputText value="{!if(igstbool==false,tsl.gstamount,0)}" />
+                                                    </td>
+                                                </tr>
+                                            </apex:repeat>
                                         </table>
                                     </td>
                                     
                                     <td  style="border:none;"></td>
-                                   <td >
-                                        <table width="50%">
+                                    <td >
+                                        <table width="100%">
                                             <tr>
                                                 <td width="33%" style="border:none;">
                                                     <b><apex:outputText value="Tax Rate" /></b>
@@ -769,17 +762,19 @@
                                                     <b><apex:outputText value="SGST" /></b>
                                                 </td>
                                             </tr>
-                                            <tr>
-                                                <td width="33%" style="border:none;">
-                                                    <apex:outputText value="%" />
-                                                </td>
-                                                <td width="33%" style="border:none;">
-                                                    <apex:outputText value="{!TotalTaxableAmount}" />
-                                                </td>
-                                                <td width="33%" style="border:none;">
-                                                    <apex:outputText value="{!TotalSGST}" />
-                                                </td>
-                                            </tr>
+                                            <apex:repeat value="{!taxSummarylist}" var="tsl" >
+                                                <tr>
+                                                    <td  style="border:none;">
+                                                        <apex:outputText value="{!if(igstbool==false,tsl.percentage,0)} %" />
+                                                    </td>
+                                                    <td  style="border:none;">
+                                                        <apex:outputText value="{!if(igstbool==false,tsl.taxamount,0)}" />
+                                                    </td>
+                                                    <td  style="border:none;">
+                                                        <apex:outputText value="{!if(igstbool==false,tsl.gstamount,0)}" />
+                                                    </td>
+                                                </tr>
+                                            </apex:repeat>
                                         </table>
                                     </td>
                                 </tr>
@@ -806,19 +801,13 @@
                     <td colspan="2" style="text-align:right"> <apex:outputText value="{!TotalAmount}" /></td>
                 </tr>
                 
-                <tr style="display: {!if(objSO.Customer_Name__r.TCS_Charges_Enable__c, 'table-row', 'none')}">
+                <tr style="display: {!if(Sales_Order__c.Customer_Name__r.TCS_Charges_Enable__c, '', 'none')}">
                     <td colspan="5"><b><apex:outputText value="TCS Charges : " /></b></td>
                     <td colspan="2" style="text-align:right"> <apex:outputText value="{!amountTCS}" /></td>
                 </tr>
-                <tr style="display: {!if(objSO.Customer_Name__r.TCS_Charges_Enable__c, 'table-row', 'none')}">
+                <tr style="display: {!if(Sales_Order__c.Customer_Name__r.TCS_Charges_Enable__c, '', 'none')}">
                     <td colspan="5"><b><apex:outputText value="Grand Total " /></b></td>
                     <td colspan="2" style="text-align:right"> <apex:outputText value="{!totalAmountWithTCS}" /></td>
-                </tr>
-                    
-                <tr>
-                    <td colspan="20">
-                        <br/><br/><br/><br/>   
-                    </td>
                 </tr>
                 <tr>
                     <td colspan="20" align="right">

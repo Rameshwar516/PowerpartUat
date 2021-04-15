@@ -2,47 +2,35 @@
     <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
     <aura:attribute name="toaddress" type="string"/>
     <aura:attribute name="tobodyy" type="string"/>
-    
     <aura:attribute name="messageLineItem" type="string"/>
-    
     <aura:attribute name="wrappr" type="Sobject"/>
     <div class="slds-text-heading--medium">
     <center> <b>SEND QUOTATION</b></center> 
     </div>
-    <div >
-        <lightning:input value="{!v.wrappr.objquote.Email__c}" aura:id="EmailAddress" type="text" label="To Email Address:" />
-        <lightning:input aura:id="CC" type="text"  label="CC Email Address:" />
-        <lightning:input aura:id="Subject" required="true" type="text" label="Subject" />
-        <!-- <lightning:inputRichText  aura:id="bodyid"  label="Body" value="{!v.wrappr.emailbody}" placeholder="Type something interesting"/>
-      --> <lightning:textarea aura:id="bodyid"    label="Body" value="{!v.wrappr.emailbody}" />
-        
-        
-    </div><br/>
-    
-    <div class="slds-m-left_xx-large" >
-        <div class="slds-m-left_xx-large" >
-            <div class="slds-m-left_xx-large" >
-                <div class="slds-m-left_xx-large" >
-                    <div class="slds-m-left_xx-large" >
-                        
-                        <div class="slds-m-left_xx-large" >
-                            <div class="slds-m-left_xx-large" >
-                                <div class="slds-m-left_xx-large" >
-                                    <lightning:button variant="neutral" 
-                                                      label="Cancel"
-                                                      title="Cancel"
-                                                      onclick="{! c.closeModel }"/>
-                                    <lightning:button variant="brand" 
-                                                      label="Send Email"
-                                                      title="Send"
-                                                      onclick="{! c.doSend }"/>
-                                    
-                                </div>
-                            </div>
-                        </div> 
-                    </div>
-                </div>
-            </div> 
-        </div> 
-    </div> 
+    <div class="c-container">
+        <div class="slds-grid slds-grid_vertical">
+            <div class="slds-col">
+                     <lightning:input value="{!v.wrappr.objquote.Email__c}" aura:id="EmailAddress" type="text" label="To Email Address:" />
+         </div>
+            <div class="slds-col">
+                 <lightning:input aura:id="CC" type="text"  label="CC Email Address:" />
+            </div>
+            <div class="slds-col">
+                 <lightning:input aura:id="Subject" required="true" type="text" label="Subject" value="{!v.wrappr.Subject}"/>
+        </div>
+            <div class="slds-col">
+                   <lightning:textarea aura:id="bodyid"    label="Body" value="{!v.wrappr.emailbody}" />
+     </div>
+            <div class="slds-col" style="padding-left:27%">
+                <lightning:button variant="neutral" 
+                                  label="Cancel"
+                                  title="Cancel"
+                                  onclick="{! c.closeModel }"/>
+                <lightning:button variant="brand" 
+                                  label="Send Email"
+                                  title="Send"
+                                  onclick="{! c.doSend }"/>
+            </div>
+        </div>
+    </div>
 </aura:component>

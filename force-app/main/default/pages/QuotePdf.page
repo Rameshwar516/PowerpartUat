@@ -573,7 +573,7 @@
                     <td style="text-align:right"><apex:outputText value="{!TotalAMount}" /></td>
                 </tr>
                 
-                <tr>
+              <!--  <tr>
                     <td colspan="12"></td>
                     <td rowspan="1"></td>
                     <td colspan="2" rowspan="1" style="text-align:center"><b><apex:outputText value="CGST" /></b></td>
@@ -590,7 +590,7 @@
                     <td rowspan="1" style="text-align:center"><b>Amt (INR)</b></td>
                     <td rowspan="1" style="text-align:center"><b>Rate (%)</b></td>
                     <td rowspan="1" style="text-align:center"><b>Amt (INR)</b></td>
-                </tr>
+                </tr>-->
                 <apex:repeat value="{!lstCharges}" var="liCharge">
                     <tr>
                         <td colspan="12" style="text-align:center"><apex:outputText value="{!liCharge.Charges__r.Name}" /></td>
@@ -627,7 +627,7 @@
                 </tr>
                 <tr>
                     <td colspan="13" rowspan="5" valign="top">
-                        <b><apex:outputText value="Remarks : "/></b> <apex:outputText value="{!Quote__c.Remark__c}"/>
+                        <b><apex:outputText value="Remarks : "/></b> <apex:outputText value="{!quotee.Remark__c}"/>
                     </td>
                     <td colspan="5"><b><apex:outputText value="Total CGST : " /></b></td>
                     <td colspan="2" style="text-align:right"> <apex:outputText value="{!totalAmountCgst}" /></td>

@@ -680,7 +680,7 @@
                         <td><apex:variable var="count" value="{!count+1}" />{!count}</td>
                         <td><apex:outputText value="{!objILI.Part_Number__r.Name}" /></td>
                         <td><apex:outputText value="{!objILI.Part_Number__r.Part_Name__c}" /></td>
-                        <td><apex:outputText value="{!objILI.HSN_SAC__c}" /></td>
+                        <td><apex:outputText value="{!objILI.HSN_Code__c}" /></td>
                         <td style="text-align:right"><apex:outputText value="{!objILI.Quantity__c}" /></td>
                         <td><apex:outputText value="{!objILI.Part_Number__r.UOM__c}" /></td>
                         <td style="text-align:right"><apex:outputText value="{!objILI.Unit_Price__c}" /></td>
@@ -797,7 +797,7 @@
                                 </td>
                                 <td width="5%" style="border:none;"></td>
                                 <td width="30%" >
-                                    <table>
+                                    <table >
                                         <tr>
                                             <td width="33%" style="border:none;">
                                                 <b><apex:outputText value="Tax Rate (%)" /></b>
@@ -861,7 +861,7 @@
                 </tr>
                 <tr>
                     <td colspan="5"><b><apex:outputText value="Total SGST : " /></b></td>
-                    <td colspan="2"> <apex:outputText value="{!TotalSGST}" /></td>
+                    <td colspan="2" style="text-align:right"> <apex:outputText value="{!TotalSGST}" /></td>
                 </tr>
                 <tr>
                     <td colspan="5"><b><apex:outputText value="Total IGST : " /></b></td>

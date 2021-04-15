@@ -40,14 +40,16 @@
             
             table 
             {
-            border-width: 5px;
-            border-spacing: 5px;
+            border-spacing: 0px;
+            font-size:12px;
+            font-family: Arial;
+            -fs-table-paginate: paginate; 
             }
             
             td {
-            //border-width: 1px;
+            border-width: 1px;
             padding: 4px;
-            //border-style: solid;
+            border-style: solid;
             border-color: #000000;
             }
             
@@ -162,53 +164,53 @@
                 
                 <div style="width:100%;"> 
                 <div style="float:left;width:100%;margin-top:5px">
-                <table style="width:100%; border:none;">
+                <table style="width:100%;border:1px solid black;border-collapse: collapse; margin-bottom:2%; margin-top:2%;">
                 
-                <tr style="border-top:1px solid black; border-bottom: none;">
-                    <td style="border-bottom: none; border-left: none; border-right: none;" valign="top" >
+                <tr >
+                    <td valign="top" >
                         <b>Sl. No.</b>
                     </td>
-                    <td style="border-bottom: none; border-left: none; border-right: none;" valign="top" >
+                    <td valign="top" >
                         <b>Description</b>
                     </td>
-                    <td style="border-bottom: none; border-left: none; border-right: none;" valign="top" colspan="2">
+                    <td valign="top" colspan="2">
                         <b>Qty.</b>
                     </td>
-                    <td style="border-bottom: none; border-left: none; border-right: none;" valign="top">
+                    <td valign="top">
                         <b>Amount</b>
                     </td>
-                    <td style="border-bottom: none; border-left: none; border-right: none;" valign="top">
+                    <td valign="top">
                         <b>GST%</b>
                     </td>
-                     <td style="border-bottom: none; border-left: none; border-right: none;" valign="top">
+                     <td valign="top">
                         <b>GST Amount</b>
                     </td>
-                    <td style="border-bottom: none; border-left: none; border-right: none;" valign="top">
+                    <td valign="top">
                         <b>Total Amount</b>
                     </td>
                 </tr> 
                 <apex:variable var="Index" value="{!0}"/>
                 <apex:repeat value="{!lineitem}" var="li">
-                    <tr style="border-top:1px solid black; border-bottom: none;">
-                        <td style="border-bottom: none; border-left: none; border-right: none;" valign="top" >
+                    <tr >
+                        <td valign="top" >
                             <apex:variable var="Index" value="{!Index + 1}" />  {!Index}
                         </td>
-                        <td style="border-bottom: none; border-left: none; border-right: none;" valign="top" >
+                        <td valign="top" >
                             {!li.Description__c}
                         </td>
-                        <td style="border-bottom: none; border-left: none; border-right: none;" valign="top" colspan="2">
+                        <td valign="top" colspan="2">
                             {!li.Quantity__c}
                         </td>
-                        <td style="border-bottom: none; border-left: none; border-right: none;" valign="top">
+                        <td valign="top">
                             {!li.Total_Amount_Formula__c }
                         </td>
-                        <td style="border-bottom: none; border-left: none; border-right: none;" valign="top">
+                        <td valign="top">
                             <b>{!li.GST__c }</b>
                         </td>
-                         <td style="border-bottom: none; border-left: none; border-right: none;" valign="top">
+                         <td valign="top">
                             <b>{!li.GST_Amount__c }</b>
                         </td>
-                        <td style="border-bottom: none; border-left: none; border-right: none;" valign="top">
+                        <td valign="top">
                             <b> {!li.Total_Amount_GST__c }</b>
                         </td>
                     </tr> 

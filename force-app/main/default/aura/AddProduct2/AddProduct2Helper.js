@@ -114,20 +114,15 @@
     
     RemoveRecordOnCheck : function(component, event, objWrap, prodwrapper) {
         var action = component.get('c.removeRecord');
-
-        action.setParams({
-            
+        action.setParams({   
             "strWrap" : JSON.stringify(objWrap),
             "prodwrappstr" : JSON.stringify(prodwrapper)
         });
-        action.setCallback(this, function(res) {
-            
-            if(res.getState() === "SUCCESS" && JSON.parse(res.getReturnValue()).success ) {
-                
+        action.setCallback(this, function(res) {          
+            if(res.getState() === "SUCCESS" && JSON.parse(res.getReturnValue()).success ) {               
                 component.set('v.wrapMain', JSON.parse(res.getReturnValue()));
                 this.refreshCharge(component,event,helper);
                 component.set("v.IsselectProduct",true);
-                
             }else if(res.getState() === "ERROR") {
                 var errors = res.getError();
                 if (errors) {
@@ -154,13 +149,14 @@
             "lstCharges" : JSON.stringify(component.get("v.lstSelectedTax")),
             "decTotalAmount" : component.get("v.decTotalAmount"),
         });
-        
         action.setCallback(this, function(res){
             if(res.getState() === "SUCCESS" && JSON.parse(res.getReturnValue()).success){
                 component.set('v.wrapMain.success', true);
                 component.set('v.wrapMain.strMessage', JSON.parse(res.getReturnValue()).strMessage);
                 window.location.assign('/lightning/r/Quote__c/'+component.get("v.recordId")+'/view');
-            }else if(res.getState() === "ERROR") {
+            }
+            else if(res.getState() === "ERROR") {
+                component.set('v.issave', false);
                 var errors = res.getError();
                 if (errors) {
                     if (errors[0] && errors[0].message) {
@@ -169,9 +165,11 @@
                 } else {
                     component.set("v.wrapMain.strMessage","Unknown error");
                 }
-            }else if (!JSON.parse(res.getReturnValue()).success) {
-                component.set("v.wrapMain.strMessage",JSON.parse(res.getReturnValue()).errorMessage);
             }
+                else if (!JSON.parse(res.getReturnValue()).success) {
+                    component.set('v.issave', false);
+                    component.set("v.wrapMain.strMessage",JSON.parse(res.getReturnValue()).errorMessage);
+                }
         });
         
         $A.enqueueAction(action);
@@ -217,7 +215,7 @@
         for(var i = 0; i < lstSalesReturn.length; i++) {
             if(lstSalesReturn[i].TotalAfterDiscount !=null && lstSalesReturn[i].TotalAfterDiscount !='')
                 TotalAmount = TotalAmount+lstSalesReturn[i].TotalAfterDiscount;
-            component.set("v.decTotalAmount",TotalAmount);
+            component.set("v.decTotalAmount",parseInt(TotalAmount));
         }
         
     },
@@ -232,7 +230,7 @@
             if(lstSalesReturn[i].TotalAfterDiscount !=null && lstSalesReturn[i].TotalAfterDiscount !='')
                 TotalAmount = TotalAmount+lstSalesReturn[i].TotalAfterDiscount;
             
-            component.set("v.decTotalAmount",TotalAmount);
+            component.set("v.decTotalAmount",parseInt(TotalAmount));
         }
         var TotalAmount = component.get("v.decTotalAmount");
         //alert('..TotalAmount...'+TotalAmount);
@@ -401,10 +399,8 @@
     TotalTaxAmount: function(component, event, helper){
     var lstTotalSelectedTax = component.get("v.lstSelectedTax");
     var TotalTaxAmount = 0;
-    //alert('...!@#..'+lstTotalSelectedTax.length);
     for(var i = 0; i < lstTotalSelectedTax.length; i++) {
-    //alert('...'+lstTotalSelectedTax[i].decTaxAmount);
-    TotalTaxAmount =TotalTaxAmount+lstTotalSelectedTax[i].NetAmount;
+    TotalTaxAmount =TotalTaxAmount+parseInt(lstTotalSelectedTax[i].NetAmount);
 }
  component.set('v.TotalTax', TotalTaxAmount);
 },

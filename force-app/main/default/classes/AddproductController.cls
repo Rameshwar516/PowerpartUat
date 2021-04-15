@@ -391,7 +391,7 @@ public class AddproductController {
     public static string removeRecord(string strWrap, string prodwrappstr)
     {
         WrappMain objwrap = (WrappMain)Json.deserialize(strWrap, WrappMain.class);      
-        prodwrapp prodwrappobj = (prodwrapp)Json.deserialize(prodwrappstr, prodwrapp.class);
+        prodwrappChild prodwrappobj = (prodwrappChild)Json.deserialize(prodwrappstr, prodwrappChild.class);
         List<prodwrappChild> lstWrapplineItem = objwrap.lstWrappTwo;
         List<prodwrapp> lstWrappProduct = objwrap.lstWrapp;
         List<prodwrapp> updatedlstWrappProduct = new List<prodwrapp>();
@@ -399,19 +399,19 @@ public class AddproductController {
         integer i=0;
         integer x=0;
         for(prodwrappChild prodchild : lstWrapplineItem){
-            if(prodchild.objProdchild.Product_Part__c == prodwrappobj.objProd.id){
+            if(prodchild.objProdchild.Product_Part__c == prodwrappobj.objProdchild.Product_Part__c){
                 i=lstWrapplineItem.indexOf(prodchild);
                 System.debug('integer i '+i);
             }           
         }
         for(id prodchild : lineitemids){
-            if(prodchild == prodwrappobj.objProd.id){
+            if(prodchild == prodwrappobj.objProdchild.Product_Part__c){
                 lineitemids.remove(prodchild);
             }           
         }
         for(prodwrapp prodchild : lstWrappProduct){
             
-            if(prodchild.objProd.id == prodwrappobj.objProd.id){
+            if(prodchild.objProd.id == prodwrappobj.objProdchild.Product_Part__c){
                 x=lstWrappProduct.indexOf(prodchild);
                 prodchild.isSelected = false;
                 System.debug('integer x '+x);
