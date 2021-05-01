@@ -56,7 +56,7 @@ public with sharing class customLookUpController
             string filter = '';
             if(strDeliveryNoteId != null && strDeliveryNoteId !=''){
                 map<string,Stock__c> mapNoOfStock = new map<string,Stock__c>();
-                for(Stock__c objStock : [Select Id,Name,Ware_House__c,Ware_House__r.City__c,Product_Part__c,Quantity__c,Total_Quantity__c from Stock__c]){
+                for(Stock__c objStock : [Select Id,Name,Ware_House__c,Ware_House__r.City__c,Product_Part__c,Quantity__c,Total_Quantity__c,(SELECT CreatedDate,Landed_Price__c FROM Stock_Landed_Amount__r Where Landed_Price__c > 0  ORDER BY CreatedDate DESC ) from Stock__c]){
                     mapNoOfStock.put(objStock.Product_Part__c+'-'+objStock.Ware_House__c,objStock);
                 }
                 map<String , Schema.SObjectType> globalDescription = Schema.getGlobalDescribe();
@@ -65,7 +65,7 @@ public with sharing class customLookUpController
                 List<string> leadfieldNames = new List<String>(describeResult.fields.getMap().keySet()); 
                 
                 /* Adding the object and filter by name to the soql */
-                string soql = 'select ' + string.join(leadfieldNames, ',') +',Sales_Order_Dispatch_Delivery_Note__r.Name,Sales_Order_Dispatch_Delivery_Note__r.Date__c,Ware_House__r.Name,Ware_House__r.City__c,Product_Part__r.Name,Product_Part__r.CreatedDate,Product_Part__r.Part_Name__c from ' + objectName ; 
+                string soql = 'select ' + string.join(leadfieldNames, ',') +',Sales_Order_Dispatch_Delivery_Note__r.Shipping_Account__c,Sales_Order_Dispatch_Delivery_Note__r.Contact_Person_Name__c, Sales_Order_Dispatch_Delivery_Note__r.Customer_Party__c,Sales_Order_Dispatch_Delivery_Note__r.Sales_Order__r.Contact_Person__c,Sales_Order_Dispatch_Delivery_Note__r.Sales_Order__r.Ware_House__c,Sales_Order_Dispatch_Delivery_Note__r.Name,Sales_Order_Dispatch_Delivery_Note__r.Date__c,Ware_House__r.Name,Ware_House__r.City__c,Product_Part__r.Name,Product_Part__r.CreatedDate,Product_Part__r.Part_Name__c from ' + objectName ; 
                 system.debug('......'+soql);
                 if(strDeliveryNoteId != '')     
                     soql += ' where Sales_Order_Dispatch_Delivery_Note__c =: strDeliveryNoteId';
@@ -79,10 +79,20 @@ public with sharing class customLookUpController
                     SubMainWraip objSMW = new SubMainWraip();
                     objSMW.objDNLI = objSODN;
                     objSMW.IsEdit = false;
+                  
+                    System.debug('Product_Part__c - '+objSODN.Product_Part__c );
+                    System.debug('Warehouse - '+objSODN.Sales_Order_Dispatch_Delivery_Note__r.Sales_Order__r.Ware_House__c);
                     Integer IntQty =0;
-                    if(objSODN.Product_Part__c !=null && objSODN.Ware_House__c !=null){
-                        IntQty = Integer.ValueOf(mapNoOfStock.get(objSODN.Product_Part__c+'-'+objSODN.Ware_House__c).Total_Quantity__c);
-                        objSMW.StockId =mapNoOfStock.get(objSODN.Product_Part__c+'-'+objSODN.Ware_House__c).Id; 
+                    if(objSODN.Product_Part__c !=null && objSODN.Sales_Order_Dispatch_Delivery_Note__r.Sales_Order__r.Ware_House__c !=null){
+                       System.debug('Warehouse - '+objSODN.Sales_Order_Dispatch_Delivery_Note__r.Sales_Order__r.Ware_House__c);
+                          
+                        Stock__C stk = mapNoOfStock.get(objSODN.Product_Part__c+'-'+objSODN.Sales_Order_Dispatch_Delivery_Note__r.Sales_Order__r.Ware_House__c);
+                       // IntQty = Integer.ValueOf(stk.Total_Quantity__c);
+                        System.debug('stock landed - '+stk.Stock_Landed_Amount__r.isempty());
+                         if(!stk.Stock_Landed_Amount__r.isempty()){
+                            objSMW.objDNLI.Sales_Price__c = stk.Stock_Landed_Amount__r[0].Landed_Price__c;
+                        }
+                       // objSMW.StockId =mapNoOfStock.get(objSODN.Product_Part__c+'-'+objSODN.Ware_House__c).Id; 
                     }
                     
                     system.debug('..IntQty..'+IntQty);

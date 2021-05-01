@@ -1,4 +1,5 @@
 public class MrnPurchanseOrderExt {
+    public Pdf_Header__mdt pdfheader{get;set;}  
     public MRN__c objMrn {get;set;}
     public List<MRN_Line_Item__c> objMrnItemList {get;set;}
     public List<Charges__c>objChargesList{get;set;}
@@ -6,10 +7,7 @@ public class MrnPurchanseOrderExt {
     public Decimal billQty{get;set;}
     public Decimal recQty{get;set;}
     public Decimal shortQty{get;set;}
-    public Decimal subTotalItemAmount{get;set;}
-    
-    public Pdf_Header__mdt pdfheader{get;set;}
-    
+    public Decimal subTotalItemAmount{get;set;} 
     public Decimal subTotalWithFreightAndSurchargeAmount{get;set;}
     public Decimal totalWithFreightAndSurchargeAmount{get;set;}
     public Decimal subTotalItemValueInINR{get;set;}
@@ -34,6 +32,8 @@ public class MrnPurchanseOrderExt {
     
     public ImportWrapper objIW{get;set;}
     
+    public string strNumberAndDate{get;set;}
+    
     
     public MrnPurchanseOrderExt(ApexPages.StandardController controller)      
     {
@@ -43,7 +43,7 @@ public class MrnPurchanseOrderExt {
             objMrnItemList = new List<MRN_Line_Item__c>();
             objChargesList = new List<Charges__c>();
             
-             pdfheader=new Pdf_Header__mdt();
+            pdfheader=new Pdf_Header__mdt();
             
             poQty=0; billQty=0; recQty=0; shortQty=0; subTotalItemAmount=0;
             subTotalWithFreightAndSurchargeAmount=0; totalWithFreightAndSurchargeAmount =0;
@@ -60,34 +60,45 @@ public class MrnPurchanseOrderExt {
             String strMrnQuery = 'Select OEM_Customer__r.ShippingStreet,OEM_Customer__r.ShippingCity, OEM_Customer__r.ShippingState,Ware_House__r.Branch__c,Ware_House__r.City__c, OEM_Customer__r.ShippingPostalCode, OEM_Customer__r.ShippingCountry, Contact_Name__r.Name, OEM_Customer__r.Name, OEM_Customer__r.BillingStreet,OEM_Customer__r.BillingCity, OEM_Customer__r.BillingState, OEM_Customer__r.BillingPostalCode, OEM_Customer__r.BillingCountry,OEM_Customer__r.Billing_State_Code__c,OEM_Customer__r.Shipping_State_Code__c,' +String.Join(lstMrnField, ',')+ ' From MRN__c where Id =: strId';
             String strMrnItemQuery = 'Select Part_Number__r.Name,Part_Number__r.Specification__c,Part_Number__r.Part_Name__c,' +String.Join(lstMrnItemField, ',')+ ' From MRN_Line_Item__c where MRN__c =: strId';
             String strChargesQuery = 'Select Charges__r.Name,' +String.Join(lstChargesField, ',')+ ' From Charges__c where MRN__c =: strId';
+            
+            
             List<MRN__c> lstPurchaseOrder =  Database.query(strMrnQuery);
             if(lstPurchaseOrder.size()>0){
                 objMrn=lstPurchaseOrder[0];
-                
-                 string branch = objMrn.Ware_House__r.Branch__c ;
-            List<String> pdfheaderField = UtilityClass.getAllFields('Pdf_Header__mdt');
-            String pdfHeaderQuery = 'Select ' +String.Join(pdfheaderField, ',')+ ' From Pdf_Header__mdt WHERE Branch__c =:branch Order by Effected_Date__c ASC LIMIT 1';
-            pdfheader =  Database.query(pdfHeaderQuery);
-                
-                system.debug('......objMrn.MRN_Delivery_Type__c..'+objMrn.MRN_Delivery_Type__c);
+                string branch = objMrn.Ware_House__r.Branch__c ;
+                List<String> pdfheaderField = UtilityClass.getAllFields('Pdf_Header__mdt');
+                String pdfHeaderQuery = 'Select ' +String.Join(pdfheaderField, ',')+ ' From Pdf_Header__mdt WHERE Branch__c =:branch Order by Effected_Date__c ASC LIMIT 1';
+                pdfheader =  Database.query(pdfHeaderQuery);
+               
                 objIW = new ImportWrapper();
+                
                 if(objMrn.MRN_Delivery_Type__c=='Import'){
-                objIW.TotalInvValue = objMrn.Ex_Work_Value__c?.setScale(2);
-                    
-                objIW.TotalInvValueInINR = (objMrn.Ex_Work_Value__c * objMrn.Exchange_Rate__c)?.setScale(2);
-                    
-                objIW.InvSurcharge = ((objMrn.Inv_Surcharge__c/objMrn.Ex_Work_Value__c)*100)?.setScale(2);
-                objIW.InvSurchargeInINR = (objMrn.Surcharge__c * objMrn.Exchange_Rate__c)?.setScale(2);
-                objIW.InsuranceOfBOEInINR = objIW.TotalInvValue * decimal.valueOf(objMrn.Insurance_of_BOE__c) * objMrn.Exchange_Rate__c;
-                objIW.InsuranceOfBOEInINR = objIW.InsuranceOfBOEInINR?.setScale(2);
-                objIW.FreightOfInvoice = (objMrn.Freight_of_Invoice__c)?.setScale(2);
-                objIW.FreightOfInvoiceInINR = (objMrn.Freight__c * objMrn.Exchange_Rate__c)?.setScale(2);
+                    objIW.TotalInvValue = objMrn.Ex_Work_Value__c?.setScale(2);
+                    objIW.TotalInvValueInINR = (objMrn.Ex_Work_Value__c * objMrn.Exchange_Rate__c)?.setScale(2);
+                    decimal exvalueper = objMrn.Ex_Work_Value__c/100; 
+                    decimal Surcharge =  objMrn.Inv_Surcharge__c;  
+                    objIW.InvSurcharge = objMrn.Inv_Surcharge__c;
+                    objIW.InvSurchargeInINR = (objMrn.Surcharge__c * objMrn.Exchange_Rate__c)?.setScale(2);
+                    objIW.InsuranceOfBOEInINR = objIW.TotalInvValue * decimal.valueOf(objMrn.Insurance_of_BOE__c) * objMrn.Exchange_Rate__c;
+                    objIW.InsuranceOfBOEInINR = objIW.InsuranceOfBOEInINR?.setScale(2);
+                    objIW.FreightOfInvoice = (objMrn.Freight_of_Invoice__c)?.setScale(2);
+                    objIW.FreightOfInvoiceInINR = (objMrn.Freight__c * objMrn.Exchange_Rate__c)?.setScale(2);
                 }
                 
             }
             objMrnItemList=Database.query(strMrnItemQuery);
             if(objMrnItemList.size()>0){
+                strNumberAndDate = '';
+                set<string> setofDocName = new set<string>();
                 for(MRN_Line_Item__c mrnObj:objMrnItemList){
+                    if(mrnObj.DOC_Number_Date__c != null && !setofDocName.contains(mrnObj.DOC_Number_Date__c))
+                    {
+                        setofDocName.add(mrnObj.DOC_Number_Date__c);
+                        if(strNumberAndDate == '')
+                            strNumberAndDate= mrnObj.DOC_Number_Date__c;
+                        else  
+                            strNumberAndDate= strNumberAndDate+', '+mrnObj.DOC_Number_Date__c;
+                    }
                     if(mrnObj.Quantity__c !=null){
                         poQty += mrnObj.Quantity__c;
                     }
@@ -174,10 +185,10 @@ public class MrnPurchanseOrderExt {
                         totalGSTAmount+=(chr.Total_Amount__c*chr.GST__c)/100;
                     }
                     if(objMrn.MRN_Delivery_Type__c == 'Import')
-                            totalBookAmount+= totalGSTAmount + chr.Total_Amount__c;
+                        totalBookAmount+= totalGSTAmount + chr.Total_Amount__c;
                     
                     if(objMrn.MRN_Delivery_Type__c == 'Domestic')
-                            totalBookAmount+= chr.CGST_Amount__c+ chr.SGST_Amount__c+ chr.IGST_Amount__c+ chr.Total_Amount__c;
+                        totalBookAmount+= chr.CGST_Amount__c+ chr.SGST_Amount__c+ chr.IGST_Amount__c+ chr.Total_Amount__c;
                     
                     if(objMrn.MRN_Delivery_Type__c == 'Import' && chr.Net_Amount__c >0)
                     {

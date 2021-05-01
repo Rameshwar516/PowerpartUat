@@ -11,6 +11,47 @@
                 console.log(resp.getReturnValue());
                 var retrnval =JSON.parse(resp.getReturnValue());
                 component.set('v.wrapMains', retrnval);
+                
+                var Childlst = component.get('v.wrapMains.wrapChildlst');
+                var selected = false;
+                var QuantyError = false;
+                var Alldone = false;
+                for(var i=0;i<Childlst.length;i++)
+                {
+                    console.log(Childlst[i].isSelected);
+                    if(Childlst[i].isSelected == true ){
+                        selected = true;
+                        if(Childlst[i].reMaininQTY > Childlst[i].quantity ){
+                            QuantyError = true; 
+                        }
+                    }
+                }
+                for(var i=0;i<Childlst.length;i++)
+                {   
+                    if(!Childlst[i].checkboxDisable){
+                        Alldone = false; 
+                        break;
+                    }
+                    else{
+                        Alldone = true;
+                    } 
+                }
+                
+                if(Alldone){
+                    
+                    var toastEvent = $A.get("e.force:showToast");
+                    toastEvent.setParams({
+                        title : 'Success',
+                        message: 'All parts delivery note created.',
+                        duration:' 5000',
+                        key: 'info_alt',
+                        type: 'success',
+                        mode: 'pester'
+                    });
+                    toastEvent.fire();
+                     $A.get("e.force:closeQuickAction").fire();
+                }
+                
             }
         })
         $A.enqueueAction(getmethod);
@@ -83,7 +124,7 @@
         var slctCheck = event.getSource().get("v.value");
         var rowindex = event.getSource().get("v.name");
          console.log('rowindex '+rowindex);
-        wrapperchild[rowindex].reMaininQTY=slctCheck;
+        wrapperchild[rowindex].reMaininQTY=parseInt(slctCheck);
         wrapperchild[rowindex].totalprice = wrapperchild[rowindex].salesprice*wrapperchild[rowindex].reMaininQTY;
         wrapperchild[rowindex].discountamount = (wrapperchild[rowindex].totalprice*wrapperchild[rowindex].discount)/100;
         wrapperchild[rowindex].totalamount = wrapperchild[rowindex].totalprice - wrapperchild[rowindex].discountamount;

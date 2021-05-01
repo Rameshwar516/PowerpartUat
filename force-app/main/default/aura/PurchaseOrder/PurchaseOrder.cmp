@@ -17,6 +17,7 @@
     <aura:attribute name="showModal" type="boolean" default="false"/>
     <aura:attribute name="showTAndC" type="boolean" default="false"/>
     <aura:attribute name="Error" type="boolean" default="false"/>
+    <aura:attribute name="currentObject" type="String" default="PO"/>
     
     <aura:attribute name="strTaxType" type="string" default="" />
     <aura:attribute name="lstSelectedTax" type="List" default="[]"/>
@@ -42,7 +43,7 @@
                                 <aura:if isTrue="{!v.wareHouse != null}">
                                     <br/>{!v.wareHouse.Name}
                                     <aura:set attribute ="else">
-                                        <c:CustomLookUpForPI  selectedRecord="{!v.wareHouse}" objectAPIName="Ware_House__c" IconName="standard:entity" />                 
+                                        <c:CustomLookUpForPI  selectedRecord="{!v.wareHouse}" objectAPIName="Ware_House__c" mainwrap="{!v.mainWrapper}" eventObject="{!v.currentObject}" IconName="standard:entity" />                 
                                     </aura:set>
                                 </aura:if>
                             </div>
@@ -62,7 +63,7 @@
                                 </div>
                                 <aura:if isTrue="{! !v.isDirect}" >
                                     <div class="slds-col slds-size_1-of-1 slds-p-around_xx-small">
-                                        <c:CustomLookUpForPI  selectedRecord="{!v.PurchaseIndent}" objectAPIName="Purchase_Indent__c" IconName="standard:orders" wareHouse="{!v.wareHouse.Id}"/>                 
+                                        <c:CustomLookUpForPI  selectedRecord="{!v.PurchaseIndent}" objectAPIName="Purchase_Indent__c" mainwrap="{!v.mainWrapper}"  eventObject="{!v.currentObject}" IconName="standard:orders" wareHouse="{!v.wareHouse.Id}"/>                 
                                     </div>
                                     <div class="slds-col slds-size_1-of-1 slds-p-around_xx-small">
                                         <lightning:pillContainer items="{!v.SelectedPurchaseIndent}" onitemremove="{!c.SelectedPIRemove}"></lightning:pillContainer>
@@ -100,7 +101,7 @@
                                     <aura:if isTrue="{! v.Supplier != null}">
                                         <b>{!v.Supplier.Name}</b>
                                     	<aura:set attribute="else">
-                                        	<c:CustomLookUpForPI  selectedRecord="{!v.Supplier}" objectAPIName="Account" IconName="standard:user" /> 
+                                        	<c:CustomLookUpForPI  selectedRecord="{!v.Supplier}" mainwrap="{!v.mainWrapper}"  eventObject="{!v.currentObject}" objectAPIName="Account" IconName="standard:user" /> 
                                         </aura:set>
                                     </aura:if>
                                                     
@@ -275,7 +276,7 @@
                                                     <td scope="row" data-label="Part No." >
                                                         <div  title="Part No.">
                                                             <aura:if isTrue="{!item.isEdit &amp;&amp; v.isDirect}">
-                                                                <c:CustomLookUpForPI  selectedRecord="{!item.objPart}" objectAPIName="Part__c" IconName="standard:all" wareHouse="{!v.wareHouse.Id}"/> 
+                                                                <c:CustomLookUpForPI  selectedRecord="{!item.objPart}" eventObject="{!v.currentObject}" objectAPIName="Part__c" IconName="standard:all"   mainwrap="{!v.mainWrapper}" wareHouse="{!v.wareHouse.Id}"/> 
                                                                 <aura:set attribute="else">
                                                                     {!item.objPart.Name}
                                                                 </aura:set>
@@ -294,15 +295,11 @@
                                                     </td>
                                                     <td scope="row" data-label="UOI" >
                                                         <div class="slds-truncate" title="UOI">
-                                                            <aura:if isTrue="{!item.isEdit}">
-                                                                <lightning:select name="UOI" label="" value="{!item.objPart.UOI__c}" >
-                                                                    <option value="">None</option>
-                                                                    <aura:iteration items="{!v.mainWrapper.UOIPickList}" var="item">
-                                                                        <option text="{!item.label}" value="{!item.value}" selected="{!item.value == item.objPart.UOI__c}"/>
-                                                                    </aura:iteration>
-                                                                </lightning:select>
-                                                                <aura:set attribute="else">
-                                                                    {!item.objPart.UOI__c}
+                                                          
+                                                            <aura:if isTrue ="{!item.UOI}">
+                                                                <lightning:input type="Text" value="{!item.UOI}" />
+                                                            	<aura:set attribute="else">
+                                                                    <lightning:input type="Text" value="{!item.objPart.UOI__c}"  />
                                                                 </aura:set>
                                                             </aura:if>
                                                         </div>
@@ -396,20 +393,14 @@
                                                             </aura:if>
                                                         </div>
                                                     </td>
-                                                    <!--td scope="row" data-label="Gross Amount" >
-                                                        <div class="slds-truncate" title="Gross Amount">
-                                                            <aura:if isTrue="{!item.isEdit}">
-                                                                <lightning:input type="number" value="{!item.GrossAmount}" disabled='true'/>
-                                                                <aura:set attribute="else">
-                                                                    {!item.GrossAmount}
+                                                     <td scope="row" data-label="HSN Code" >
+                                                        <div class="slds-truncate" title="HSN Code">
+                                                            <aura:if isTrue ="{!item.HSNCode}">
+                                                                <lightning:input type="Text" value="{!item.HSNCode}" />
+                                                            	<aura:set attribute="else">
+                                                                    <lightning:input type="Text" value="{!item.objPart.HSN_CODE__c}"  />
                                                                 </aura:set>
                                                             </aura:if>
-                                                        </div>
-                                                    </td-->
-                                                    <td scope="row" data-label="HSN Code" >
-                                                        <div class="slds-truncate" title="HSN Code">
-                                                           {!item.HSNCode}
-                                                             <lightning:input type="Text" value="{!item.HSNCode}"  />
                                                         </div>
                                                     </td>
                                                     <td scope="row" data-label="CGST" style="{!'display : '+(v.isCGST_SGST ? ' ' : 'none')}">
@@ -534,7 +525,7 @@
                                                         <td style="{!'display : '+(v.isCGST_SGST ? ' ' : 'none')}"></td>
                                                         <td style="{!'display : '+(v.isCGST_SGST ? ' ' : 'none')}"></td>
                                                         <td style="{!'display : '+(v.isIGST ? ' ' : 'none')}"></td>
-                                                        <td></td>
+                                                        
                                                         <td>
                                                             <div class="slds-form-element__help" id="error-message-unique-id" style="color:#c23934">{!item.strDeliveryDateErr}</div>
                                                         </td>
@@ -756,7 +747,7 @@
                                         <b>Zip/Postal Code :</b>
                                     </div>
                                     <div class="slds-col slds-size_3-of-4 slds-p-around_xx-small slds-text-align_right">
-                                        <lightning:input type="number" value="{!v.mainWrapper.objPurchaseOrder.Billing_Zip_Postal_Code__c}" />
+                                        <lightning:input type="text" value="{!v.mainWrapper.objPurchaseOrder.Billing_Zip_Postal_Code__c}" />
                                     </div>
                                 </div>
                                 
@@ -814,14 +805,26 @@
                                         <b>Zip/Postal Code :</b>
                                     </div>
                                     <div class="slds-col slds-size_3-of-4 slds-p-around_xx-small slds-text-align_right">
-                                        <lightning:input type="number" value="{!v.mainWrapper.objPurchaseOrder.Shipping_Zip_Postal_Code__c}" />
+                                       <lightning:input type="text" value="{!v.mainWrapper.objPurchaseOrder.Shipping_Zip_Postal_Code__c}" /> 
+                                        
                                     </div>
                                 </div>
                                 
                             </div>
                         </div>
                     </div>
+                    <div class="slds-grid slds-wrap" style="background-color:#FFF;">
+                        <div class="slds-col slds-size_1-of-3 slds-p-around_small slds-text-align_left">
+                        </div>
+                        <div class="slds-col slds-size_1-of-3 slds-p-around_small slds-text-align_center">
+                            <lightning:button label="Save" onclick="{!c.submitJS}" class="slds-button slds-button_brand"/>
+                            <lightning:button label="Cancel" onclick="{!c.cancelJS}" class="slds-button"/>
+                        </div>
+                        <div class="slds-col slds-size_1-of-3 slds-p-around_small slds-text-align_right">
+                        </div>
+                    </div>
                 </div>
+                
             </lightning:tab>
         </lightning:tabset>
     </div>

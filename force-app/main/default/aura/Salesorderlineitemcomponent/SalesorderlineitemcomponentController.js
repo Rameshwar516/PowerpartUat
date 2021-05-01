@@ -1,6 +1,7 @@
 ({
     doinit : function(component, event, helper) {
         var id = component.get("v.recordId");
+        component.set("v.isSpinner", true);
         helper.pageLoadClassMethod(component, event, id);
     },
     
@@ -44,7 +45,7 @@
         if(isdeliverydate==true){
             if(tmpMainWrapper.length>=2){
                 console.log(tmpMainWrapper[0].objProdchild.Expected_Date__c);
-                if(tmpMainWrapper[0].objProdchild.Expected_Date__c != null && tmpMainWrapper[0].objProdchild.Expected_Date__c != ' '){
+                if(tmpMainWrapper[0].objProdchild.Expected_Date__c != null && tmpMainWrapper[0].objProdchild.Expected_Date__c != ''){
                     for(var i=1;i<tmpMainWrapper.length;i++){
                         tmpMainWrapper[i].objProdchild.Expected_Date__c = tmpMainWrapper[0].objProdchild.Expected_Date__c;
                     } 
@@ -154,52 +155,57 @@
     },
     
      checkJs :function(component, event, helper) {
+        
         var tmpWrapper = [];
         var index = event.getSource().get('v.name');
         var tmpMainWrapper = component.get("v.wrapMain.lstWrappTwo");
         var tmpproductlst = component.get("v.wrapMain.lstWrapp");
         var Istrue = false; 
-        var prodwrapper = '';
-        var tmpproduct = '';
-        for(var i=0;i<tmpMainWrapper.length;i++){
-            console.log('for');
-            console.log(tmpMainWrapper[i].objProdchild.Product_Part__c);
-            if(index == tmpMainWrapper[i].objProdchild.Product_Part__c){
-                console.log('run');
-                prodwrapper =  tmpMainWrapper[i];
-            }
-        }
+        var prodwrapper ;
+        var tmpproduct ;
+        
         
         for(var i=0;i<tmpproductlst.length;i++){
-            console.log('for');
-            console.log(tmpproductlst[i].objProd.Id);
-            if(index == tmpproductlst[i].objProd.Id){
-                console.log('run');
+            if(index == tmpproductlst[i].objProd.Id){  
                 tmpproduct =  tmpproductlst[i];
             }
         }
         
-        if(tmpproduct.isSelected){
-            Istrue = true;
-        }
+         if(tmpproduct.isSelected){
+             Istrue = true;
+           }
+         
+         
         if(Istrue){
             component.set('v.IsselectProduct',true);
             component.set("v.showSection",  false);
             var objWrap = component.get("v.wrapMain");
             helper.AddRecordOnCheck(component, event, objWrap);
+            
         }
         else if(!Istrue)
         {
+            for(var i=0;i<tmpMainWrapper.length;i++){
+                console.log('for-- '+index);
+                console.log(tmpMainWrapper[i].objProdchild.Product_Part__c);
+                if(index == tmpMainWrapper[i].objProdchild.Product_Part__c){
+                    console.log('run');
+                    prodwrapper =  tmpMainWrapper[i];
+                }
+            }
             var objWrap = component.get("v.wrapMain");
             helper.RemoveRecordOnCheck(component, event, objWrap ,prodwrapper);
+            
         }
             else if(tmpMainWrapper.length = 0)
             {
                 var msg = $A.get("$Label.c.Product_Selection");
                 component.set("v.wrapMain.strMessage", msg);
                 component.set("v.wrapMain.success", false);
-            }    
+            } 
+         
     },
+    
      removeselectedpart :function(component, event, helper) {
         var index = event.getSource().get('v.value');
         var tmpMainWrapper = component.get("v.wrapMain.lstWrappTwo");
@@ -275,14 +281,19 @@
                tmpMainWrapper[i].objProdchild.Unit_Price__c < 1 ||
                tmpMainWrapper[i].objProdchild.Discount__c ==null ||
                tmpMainWrapper[i].objProdchild.Discount__c < 0 ||
+               tmpMainWrapper[i].objProdchild.Discount__c > 100 ||
                tmpMainWrapper[i].DiscountAmount ==null ||
                tmpMainWrapper[i].DiscountAmount < 0 ||
                tmpMainWrapper[i].objProdchild.CGST__c == null ||
                tmpMainWrapper[i].objProdchild.CGST__c < 0 ||
+               tmpMainWrapper[i].objProdchild.CGST__c > 100 ||
                tmpMainWrapper[i].objProdchild.SGST__c == null ||
                tmpMainWrapper[i].objProdchild.SGST__c < 0 ||
+               tmpMainWrapper[i].objProdchild.SGST__c > 100 ||
                tmpMainWrapper[i].objProdchild.IGST__c == null ||
-               tmpMainWrapper[i].objProdchild.IGST__c < 0){
+               tmpMainWrapper[i].objProdchild.IGST__c < 0 ||
+               tmpMainWrapper[i].objProdchild.IGST__c > 100
+              ){
                 Istrue = true;
             }
         }
@@ -339,7 +350,7 @@
                 toastEvent.setParams({
                     "type":"error",
                     "title": "Error!",
-                    "message": "Error Add Parts section !!! Value less than 0  or Blank not valid."
+                    "message": "Error Add Parts section !!! Value less than 0,percentage value more than 100 or Blank not valid."
                 });
                 toastEvent.fire(); component.set("v.wrapMain.success", false);
         }
@@ -507,6 +518,8 @@
         }			
         component.set('v.lstSelectedTax', lstSelectedTax);
         helper.refreshCharge(component,event,helper);
+         helper.totalamount(component,event,helper);
+
        // helper.TotalTaxAmount(component,event,helper);
     },
     
@@ -555,43 +568,7 @@
     
     Deletelineitem : function(component,event,helper){
         console.log("Deletelineitem");
-        var tmpMainWrapper =  component.get('v.wrapMain.lstWrappTwo');
-        var RecordIndexStr = event.getSource().get("v.value");
-        var action = component.get('c.deleteRecord'); 
-        var lineitem = '';
-        for(var i=0;i<tmpMainWrapper.length;i++){
-            console.log('for');
-            console.log(tmpMainWrapper[i].objProdchild.Product_Part__c);
-            if(RecordIndexStr == tmpMainWrapper[i].objProdchild.Product_Part__c){
-                console.log('run');
-                lineitem =  tmpMainWrapper[i];
-            }
-        }
-        action.setParams({
-            "strWrap" : JSON.stringify(lineitem)
-        });
-        
-        action.setCallback(this, function(res){
-            if(res.getState() === "SUCCESS"){
-                console.log(event.getSource().get("v.value"));
-                tmpMainWrapper.splice(RecordIndexStr,1);
-                component.set("v.wrapMain.lstWrappTwo",tmpMainWrapper);
-                helper.refreshCharge(component,event,helper);
-                helper.totalamount(component,event,helper);
-            }else if(res.getState() === "ERROR") {
-                var errors = res.getError();
-                if (errors) {
-                    if (errors[0] && errors[0].message) {
-                        component.set("v.wrapMain.strMessage",errors[0].message);
-                    }
-                } else {
-                    component.set("v.wrapMain.strMessage","Unknown error");
-                }
-            }else if (!JSON.parse(res.getReturnValue()).success) {
-                component.set("v.wrapMain.strMessage",JSON.parse(res.getReturnValue()).errorMessage);
-            }
-        });
-        $A.enqueueAction(action);
+        helper.Deletelineitemhelper(component,event,helper);
     },
     
 	CalculateCGST : function(component,event,helper){
@@ -722,7 +699,7 @@
         
     },
     
-    Deletelineitem : function(component,event,helper){
+    Deletelineitem2 : function(component,event,helper){
         console.log("Deletelineitem");
         var tmpMainWrapper =  component.get('v.wrapMain.lstWrappTwo');
         var RecordIndexStr = event.getSource().get("v.value");
@@ -766,7 +743,7 @@
         if(isdiscount==true){
             if(tmpMainWrapper.length>=2){
                 console.log(tmpMainWrapper[0].objProdchild.Discount__c);
-                if(tmpMainWrapper[0].objProdchild.Discount__c != null && tmpMainWrapper[0].objProdchild.Discount__c != ' '){
+                if(tmpMainWrapper[0].objProdchild.Discount__c != null && tmpMainWrapper[0].objProdchild.Discount__c != ''){
                     for(var i=0;i<tmpMainWrapper.length;i++){
                         var child = tmpMainWrapper[i].objProdchild;
                         tmpMainWrapper[i].objProdchild.Discount__c = tmpMainWrapper[0].objProdchild.Discount__c;
@@ -783,7 +760,7 @@
                     toastEvent.setParams({
                         "type":"error",
                         "title": "Error!",
-                        "message": "Delivery date at first part have to be filled."
+                        "message": "Discount at first part have to be filled."
                     });
                     toastEvent.fire();
                 }
@@ -812,6 +789,8 @@
                 TotalTaxAmount =TotalTaxAmount+parseInt(lstTotalSelectedTax[i].decTaxAmount);
             }
             component.set('v.TotalTax', TotalTaxAmount);
+
+            helper.totalamount(component,event,helper);
     },
      ChargesAmountOnOhange:function(component, event, helper) {
         var tmpIndex = event.getSource().get("v.name");
@@ -835,13 +814,12 @@
         }
          component.set("v.lstSelectedTax",templstcharge);
          var lstTotalSelectedTax = component.get("v.lstSelectedTax");
-        var TotalTaxAmount = 0;
-        //alert('...!@#..'+lstTotalSelectedTax.length);
-        for(var i = 0; i < lstTotalSelectedTax.length; i++) {
-            //alert('...'+lstTotalSelectedTax[i].decTaxAmount);
-            TotalTaxAmount =TotalTaxAmount+parseInt(lstTotalSelectedTax[i].decTaxAmount);
-        }
-        component.set('v.TotalTax', TotalTaxAmount);
+         var TotalTaxAmount = 0;
+         helper.totalamount(component,event,helper);
+         for(var i = 0; i < lstTotalSelectedTax.length; i++) {
+             TotalTaxAmount =TotalTaxAmount+parseInt(lstTotalSelectedTax[i].NetAmount);
+         }
+         component.set('v.TotalTax', TotalTaxAmount);
     }
     
 })

@@ -47,16 +47,16 @@ public class classPdfCreditNote {
         if(strId!=null){
             
             
-            dcNote=[select id,Amount__c,Bill_To_Customer_Name__r.Name,Billing_Address__c,Billing_GSTIN_No__c,Container_No__c,Customer_Party__c,
+            dcNote=[select id,Bill_To_Customer_Name__r.Name,Billing_Address__c,Billing_GSTIN_No__c,Container_No__c,Customer_Party__c,
                     Delivery_Term__c,Detail__c,Dispatch_Address__c,Dispatch_Date__c,Dispatch_No__c,ESN_No__c,Dispatch_To_Customer_Name__r.name,
-                    LC_Date__c,LC_Expected_Date__c,createdDate,LC_Term__c,MRN__c,Sales_Order_Return__c,MRN__r.OEM_Customer__c,Payment_Method__c,Shipping_GSTIN_No__c,Name,
+                    LC_Date__c,LC_Expected_Date__c,createdDate,LC_Term__c,MRN__c,Sales_Order_Return__c,Sales_Order_Return__r.Customer_Party__c,MRN__r.OEM_Customer__c,Payment_Method__c,Shipping_GSTIN_No__c,Name,
                     Voucher_Date__c from DC_Note__c where id =:strId];
             
             DateTime dT = dcNote.createdDate;
             dte = date.newinstance(dT.year(), dT.month(), dT.day());
             
             
-            dcNoteLi=[select id,Amount__c,CGST_Amount__c,HSN_Code__c,Part_Number__r.Name,CGST__c,Name,Discount_Currency__c,Discount__c,
+            dcNoteLi=[select id,Amount__c,CGST_Amount__c,Part_Number__r.HSN_Code__c,Part_Number__r.Name,CGST__c,Name,Discount_Currency__c,Discount__c,
                       IGST_Amount__c,IGST__c,Part_Name__c,Part_Number__c, Part_Number__r.UOM__c,Quantity__c,SGST_Amount__c,SGST__c,
                       Doc_No__c,Taxable_Amount__c,Net_Amount__c,Total_Amount__c,Unit__c,Unit_Price__c from DC_Note_Line_Item__c where Doc_No__c =:dcNote.id];
             
@@ -135,7 +135,7 @@ public class classPdfCreditNote {
             totalAmountaftertaxinWords = UtilityClass.NoToWord(TotalFinalAmountAfterTaxRoundOff.intValue());
                 totalAmountaftertaxinWords = totalAmountaftertaxinWords+' rupees only';
             
-            sor=[select id,Amount__c,Bill_To_Customer_Name__c,Billing_Address__c,Billing_GSTIN_No__c,Container_No__c,Customer_Party__c,Dispatch_Address__c,
+            sor=[select id,Bill_To_Customer_Name__c,Billing_Address__c,Billing_GSTIN_No__c,Container_No__c,Customer_Party__c,Dispatch_Address__c,
                  Dispatch_To_Customer_Name__c,MRN__c,Shipping_GSTIN_No__c,Name from Sales_Order_Return__c where id=:dcNote.Sales_Order_Return__c];
             
             //    sorli=[select id,Amount__c,CGST_Amount__c,CGST__c,Discount__c,Discount_Currency__c,Doc_Date__c,Doc_No__c,IGST_Amount__c,IGST__c,
@@ -148,7 +148,7 @@ public class classPdfCreditNote {
             
             OEMdcNote=[select id ,GSTIN_No__c,BillingCity,BillingCountry,BillingState,BillingStreet,BillingAddress,BillingPostalCode,
                        ShippingCity,ShippingPostalCode,ShippingStreet,ShippingState,ShippingAddress, name,Shipping_State_Code__c,
-                       ShippingCountry, Billing_State_Code__c from Account where id =:dcNote.Bill_To_Customer_Name__c ];
+                       ShippingCountry, Billing_State_Code__c from Account where id =:dcNote.Customer_Party__c ];
             
           strBillingAddress = '';
         strBillingAddress = OEMdcNote?.BillingStreet;

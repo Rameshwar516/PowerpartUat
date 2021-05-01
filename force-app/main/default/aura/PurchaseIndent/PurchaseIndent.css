@@ -4,3 +4,5 @@
 .THIS .textareaClass {
   height: 230px;
 }
+
+.THIS .slds-th__action{ justify-content: center !important; }

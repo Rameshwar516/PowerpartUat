@@ -19,7 +19,7 @@
         var getInputkeyWord = component.get("v.SearchKeyWord");
         // check if getInputKeyWord size id more then 0 then open the lookup result List and 
         // call the helper 
-        // else close the lookup result List part.   
+        // else close the lookup result List part. 
         if( getInputkeyWord && getInputkeyWord.length > 0 ){
             var forOpen = component.find("searchRes");
             $A.util.addClass(forOpen, 'slds-is-open');
@@ -56,6 +56,7 @@
         var selectedAccountGetFromEvent = event.getParam("recordByEvent");
         component.set("v.selectedRecord" , selectedAccountGetFromEvent);
         //alert(selectedAccountGetFromEvent);
+        
         var forclose = component.find("lookup-pill");
         $A.util.addClass(forclose, 'slds-show');
         $A.util.removeClass(forclose, 'slds-hide');

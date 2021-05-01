@@ -1,26 +1,28 @@
-<aura:component controller="ClassOnQuoteEmailSend" implements="force:lightningQuickActionWithoutHeader,force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes"  access="global" >
+<aura:component controller="classInvoiceSendOnEmail" implements="force:lightningQuickActionWithoutHeader,force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global" >
+     
     <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
     <aura:attribute name="toaddress" type="string"/>
     <aura:attribute name="tobodyy" type="string"/>
     <aura:attribute name="messageLineItem" type="string"/>
     <aura:attribute name="wrappr" type="Sobject"/>
+    
     <div class="slds-text-heading--medium">
-    <center> <b>SEND QUOTATION</b></center> 
+        <center> <b>SEND INVOICE</b></center> 
     </div>
     <div class="c-container">
         <div class="slds-grid slds-grid_vertical">
             <div class="slds-col">
-                     <lightning:input value="{!v.wrappr.objquote.Email__c}" aura:id="EmailAddress" type="text" label="To Email Address:" />
-         </div>
-            <div class="slds-col">
-                 <lightning:input aura:id="CC" type="text"  label="CC Email Address:" />
+                <lightning:input value="{!v.wrappr.objinvoice.Email__c}" aura:id="EmailAddress" type="text" label="To Email Address:" />
             </div>
             <div class="slds-col">
-                 <lightning:input aura:id="Subject" required="true" type="text" label="Subject" value="{!v.wrappr.Subject}"/>
-        </div>
+                <lightning:input aura:id="CC" type="text"  label="CC Email Address:" />
+            </div>
             <div class="slds-col">
-                   <lightning:textarea class="tallTextArea" aura:id="bodyid"    label="Body" value="{!v.wrappr.emailbody}" />
-     </div>
+                <lightning:input aura:id="Subject" required="true" type="text" label="Subject" value="{!v.wrappr.Subject}"/>
+            </div>
+            <div class="slds-col">
+                <lightning:textarea class="tallTextArea" aura:id="bodyid"    label="Body" value="{!v.wrappr.emailbody}" />
+            </div>
             <div class="slds-col slds-m-top_small " style="padding-left:27%">
                 <lightning:button variant="neutral" 
                                   label="Cancel"

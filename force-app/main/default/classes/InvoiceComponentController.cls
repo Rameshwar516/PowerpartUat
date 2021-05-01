@@ -52,13 +52,14 @@ public class InvoiceComponentController {
                     objTD.strTaxId = ch.Charges__c;
                     objTD.strTaxName = ch.Charges__r.Name;
                     objTD.TaxPercentage = ch.Charge_Percentage__c.setscale(2);
+                    
                     objTD.CGST = ch.CGST__c ;
                     objTD.SGST = ch.SGST__c;
                     objTD.IGST = ch.IGST__c;
                     objTD.objcharge = ch;
-                    objTD.decTaxAmount =  ch.Total_Amount__c;
+                    objTD.decTaxAmount =  ch.Charge_Amount__c;
                     objTD.NetAmount =  ch.Net_Amount__c;
-                        objTD.ischargeItem = booleantrue;
+                    objTD.ischargeItem = booleantrue;
                     TaxDetailslist.add(objTD);
                 } 
             }

@@ -3,11 +3,13 @@
 	  // call the apex class method 
      var action = component.get("c.searchLookupValue");
       // set param to method  
-     // console.log('......'+component.get("v.strRecordId"))
+     console.log('......'+component.get("v.mainwrap"));
         action.setParams({
             'queryText': getInputkeyWord,
             'objectName' : component.get("v.objectAPIName"),
-            'wareHouse' : component.get("v.wareHouse")
+            'wareHouse' : component.get("v.wareHouse"),
+            'strWrap' : JSON.stringify(component.get("v.mainwrap")),
+            'eveobject':component.get("v.eventObject"),
           });
       // set a callBack    
         action.setCallback(this, function(response) {

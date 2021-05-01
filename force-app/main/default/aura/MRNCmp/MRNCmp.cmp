@@ -7,6 +7,7 @@
     <aura:attribute name="SuccessMessage" type ="string" default="" />
     <aura:attribute name="spinnerIsVisibile" type="Boolean" default="false"/>
     <aura:attribute name="strType" type="string" default="" />
+    <aura:attribute name="strTypeOld" type="string" default="" />
     <aura:attribute name="selectedRecord" type="string" default="" />
     <aura:attribute name="selectedPurchaseOrderRecord" type="string" default="" />
     <aura:attribute name="lstDeliveryNoteLI" type="list" />
@@ -19,7 +20,6 @@
     <aura:attribute name="TotalTax" type="decimal" default=""/>
     <aura:attribute name="decTotalAmount" type="decimal" default="0"/>
     <aura:attribute name="Isdisabled" type="Boolean" default="false"/>
-    
     <aura:attribute name="selectedWareHouseRecord" type="string" default="" />
     <aura:attribute name="lstWareHouseLI" type="list" />
     <aura:attribute name="ObjWareHouseLI" type="object" />
@@ -28,6 +28,7 @@
     <aura:attribute name="Isdiscount" type="Boolean" default="false"/>
     <aura:attribute name="IsEdit" type="Boolean" default="false"/>
     <aura:attribute name="customduty" type="string" default="10" />
+    <aura:attribute name="currentObject" type="String" default="MRN"/>
     
     <aura:html tag="style">
         .cuf-content {
@@ -46,58 +47,51 @@
     
     <div class="slds-grid slds-wrap" style="background-color:#ffffff;">
         
-        
         <aura:if isTrue="{!not(empty(v.recordId))}">
             <div class="slds-col slds-size_12-of-12 slds-p-top_medium slds-p-bottom_medium">
                 <div class="slds-grid slds-gutters">
-                    <div class="slds-col slds-size_4-of-12">
-                        
+                    <div class="slds-col slds-size_4-of-12">    
                     </div>			
                     <div class="slds-col slds-size_4-of-12 slds-text-align_center">
                         <lightning:button label="Update" onclick="{!c.UpdateRecord}" class="slds-button slds-button_brand"/>
                         <lightning:button label="Cancel" onclick="{!c.Cancel}" class="slds-button"/>
                     </div>
                     <div class="slds-col slds-size_4-of-12">
-                        
                     </div>
                 </div>
             </div>
-            
             <aura:set attribute="else">
                 <div class="slds-col slds-size_12-of-12 slds-p-top_medium slds-p-bottom_medium">
                     <div class="slds-grid slds-gutters">
                         <div class="slds-col slds-size_5-of-12">
-                            
                         </div>			
                         <div class="slds-col slds-size_2-of-12 slds-text-align_center">
                             <lightning:button label="Submit" onclick="{!c.submitJS}" class="slds-button slds-button_brand"/>
                             <lightning:button label="Cancel" onclick="{!c.Cancel}" class="slds-button"/>
                         </div>
-                        <div class="slds-col slds-size_5-of-12">
-                            
+                        <div class="slds-col slds-size_5-of-12">  
                         </div>
                     </div>
                 </div>
             </aura:set>
         </aura:if>
+        
         <br/>	
+        
         <div class="slds-col slds-size_12-of-12 slds-p-top_medium slds-p-bottom_medium slds-scrollable_y" style="height:28rem;">
             <lightning:tabset selectedTabId="one">
-                <lightning:tab label="Add Purchase Order" id="one">
-                    <div class="slds-col slds-size_12-of-12 slds-p-top_medium slds-p-bottom_medium">
-                        
+                <lightning:tab label="Add MRN" id="one">
+                    <div class="slds-col slds-size_12-of-12 slds-p-top_medium slds-p-bottom_medium"> 
                         <div class="slds-grid slds-gutters">
                             <div class="slds-col slds-size_6-of-12">
                                 <div class="slds-grid slds-gutters">
-                                    <div class="slds-col slds-size_1-of-12">
-                                        
+                                    <div class="slds-col slds-size_1-of-12">   
                                     </div>
                                     <div class="slds-col slds-size_4-of-12">
                                         <label class="slds-float_left">Type</label>
                                     </div>
                                     <div class="slds-col slds-size_6-of-12" style="margin-top: -3%;">
-                                        
-                                        <lightning:select name="" label="" value="{!v.strType}" onchange="{!c.ChangeType}">
+                                      <lightning:select name="" label="" value="{!v.strType}" onchange="{!c.ChangeType}" disabled="{!if(empty(v.recordId),false,true)}">
                                             <option value="">--None--</option>
                                             <option value="Sales Return">Sales Return</option>
                                             <option value="Purchase Order">Purchase Order</option>
@@ -105,8 +99,7 @@
                                         </lightning:select>
                                     </div>
                                     <div class="slds-col slds-size_1-of-12">
-                                        
-                                    </div>
+                                     </div>
                                 </div>
                             </div>
                             <div class="slds-col slds-size_6-of-12">
@@ -122,6 +115,7 @@
                                             </div>
                                             <div class="slds-col slds-size_6-of-12" style="margin-top: -3%;">  
                                                 <c:CustomLookupPP selectedRecord="{!v.selectedRecord}" objectAPIName="Sales_Order_Dispatch_Delivery_Note__c" IconName="standard:user" lstDeliveryNoteLI="{!v.lstDeliveryNoteLI}" ObjDeliveryNoteLI="{!v.ObjDeliveryNoteLI}"/>
+                                               
                                             </div>
                                             <div class="slds-col slds-size_1-of-12">
                                                 
@@ -136,7 +130,7 @@
                                                     <label class="slds-float_left"> Delivery Type</label>
                                                 </div>
                                                 <div class="slds-col slds-size_6-of-12" style="margin-top: -3%;">
-                                                    <lightning:select name="Delivery_Type" label="" required="true"  value="{!v.mainWrap.objMRN.MRN_Delivery_Type__c}">
+                                                    <lightning:select name="Delivery_Type" label="" required="true"  value="{!v.mainWrap.objMRN.MRN_Delivery_Type__c}" disabled="{!if(empty(v.recordId),false,true)}">
                                                         <option value="">--None--</option>
                                                         <aura:iteration items="{!v.mainWrap.lstDeliveryType}" var="DT">
                                                             <option value="{!DT}">{!DT}</option>
@@ -291,7 +285,7 @@
                                                 <label class="slds-float_left"> Supplier :</label>
                                             </div>
                                             <div class="slds-col slds-size_6-of-12" style="margin-top: -2%;"> 
-                                                <c:CustomLookUpForPI selectedRecord="{!v.Supplier}" objectAPIName="Account" IconName="standard:user" />    
+                                                <c:CustomLookUpForPI selectedRecord="{!v.Supplier}" objectAPIName="Account" mainwrap="{!v.mainWrap}" IconName="standard:user" />    
                                             </div>
                                             
                                             <div class="slds-col slds-size_1-of-12">
@@ -406,10 +400,6 @@
                                                     <th scope="col">
                                                         <div class="slds-truncate" title="Doc. Date">Received MRN Qty	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
                                                     </th>
-                                                    
-                                                    <!--<th scope="col">
-       <div class="slds-truncate" title="Stock Actual">Stock Actual</div>
-      </th>-->
                                                     <th scope="col">
                                                         <div class="slds-truncate" title="Rate">Rate&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
                                                     </th>
@@ -458,11 +448,9 @@
                                                 <aura:iteration items="{!v.mainWrap.lstMRNLineItems}" var="obj" indexVar="index">
                                                     <tr>
                                                         <td class="slds-truncate"> 
-                                                            <!--	<lightning:buttonIcon value="{!index}" alternativeText="Edit Row" variant="border-filled" iconName="utility:edit" onclick="{!c.EditMRNLI}" class="AlignCenter"/>
-       -->	
+                                                            <div style="margin-top:12px"></div>
                                                         </td>
-                                                        
-                                                        <td class="slds-truncate">{!index+1} </td>
+                                                         <td class="slds-truncate"><div style="margin-top:12px">{!index+1}</div> </td>
                                                         <td class="slds-truncate" title="{!obj.ObjMRNLI.Part_Number__r.Name}">
                                                             <lightning:input id="partId" type="Text" value="{!obj.ObjMRNLI.Part_Number__r.Name}" disabled="true" />
                                                         </td>
@@ -473,33 +461,39 @@
                                                             <lightning:input id="partName" type="Text" value="{!obj.ObjMRNLI.Specification__c}" disabled="true" />
                                                         </td>
                                                         <td class="slds-truncate" title="{!obj.ObjMRNLI.Received_QTY__c}">
-                                                            <input data-row-index="{!index}" onchange="{!c.CalculateMRNQty}" type="Text" value="{!obj.ObjMRNLI.Received_QTY__c}" class="slds-input" style="margin-top: 8%;" disabled="{!v.IsEdit}"/>
+                                                            <lightning:input name="{!index}" id="partName" onchange="{!c.CalculateMRNQty}" type="number" default="0" min="0" value="{!obj.ObjMRNLI.Received_QTY__c}" disabled="{!v.IsEdit}" />
+                                                            <!--<input data-row-index="{!index}" onchange="{!c.CalculateMRNQty}" type="Text" value="{!obj.ObjMRNLI.Received_QTY__c}" class="slds-input" style="margin-top: 8%;" disabled="{!v.IsEdit}"/>-->
                                                         </td>
                                                         <!--<td class="slds-truncate"><lightning:input id="partName" type="Number" value="{!obj.StockTotalProduct}" disabled="{!obj.IsEdit}" /></td>-->
                                                         <td  class="slds-truncate" title="{!obj.ObjMRNLI.Sales_Price__c}">     
-                                                            <input data-row-index="{!index}" onchange="{!c.CalculateMRNRate}" type="text" value="{!obj.ObjMRNLI.Sales_Price__c}" class="slds-input" style="margin-top: 22%;" disabled="{!v.IsEdit}"/>
+                                                            <lightning:input name="{!index}" id="partName" onchange="{!c.CalculateMRNRate}" type="number" default="0" min="0" value="{!obj.ObjMRNLI.Sales_Price__c}" disabled="{!v.IsEdit}" />
+                                                            <!--<input data-row-index="{!index}" onchange="{!c.CalculateMRNRate}" type="text" value="{!obj.ObjMRNLI.Sales_Price__c}" class="slds-input" style="margin-top: 22%;" disabled="{!v.IsEdit}"/>-->
                                                         </td>
                                                         <td class="slds-truncate" title="{!obj.ObjMRNLI.Total_Amount__c}">
                                                             <lightning:input id="partId" type="number" value="{!obj.ObjMRNLI.Total_Amount__c}" default="0" disabled="true"/>
                                                         </td>
                                                         <td class="slds-truncate" title="{!obj.ObjMRNLI.Discount__c}">
-                                                            <input data-row-index="{!index}" onchange="{!c.CalculateMRNDisRate}" type="Number" default="0" value="{!obj.ObjMRNLI.Discount__c}" class="slds-input" style="margin-top: 22%;" disabled="{!v.IsEdit}"/>
+                                                            <lightning:input name="{!index}" id="partName" onchange="{!c.CalculateMRNDisRate}" type="number" default="0" min="0" value="{!obj.ObjMRNLI.Discount__c}" disabled="{!v.IsEdit}" />
+                                                            <!--<input data-row-index="{!index}" onchange="{!c.CalculateMRNDisRate}" type="Number" default="0" value="{!obj.ObjMRNLI.Discount__c}" class="slds-input" style="margin-top: 22%;" disabled="{!v.IsEdit}"/>-->
                                                         </td>
                                                         <td class="slds-truncate" title="{!obj.ObjMRNLI.Discount_Amount__c}">
-                                                            <input data-row-index="{!index}" onchange="{!c.CalculateMRNDisAmount}" type="text" value="{!obj.ObjMRNLI.Discount_Amount__c}" class="slds-input" style="margin-top: 22%;" disabled="{!v.IsEdit}"/>
-                                                            
-                                                        </td>
+                                                            <lightning:input name="{!index}" id="partName" onchange="{!c.CalculateMRNDisAmount}" type="number" default="0" min="0" value="{!obj.ObjMRNLI.Discount_Amount__c}" disabled="{!v.IsEdit}" />
+                                                            <!--<input data-row-index="{!index}" onchange="{!c.CalculateMRNDisAmount}" type="text" value="{!obj.ObjMRNLI.Discount_Amount__c}" class="slds-input" style="margin-top: 22%;" disabled="{!v.IsEdit}"/>-->
+                                                         </td>
                                                         <td class="slds-truncate" title="{!obj.ObjMRNLI.Taxable_Amount_Formula__c}">
                                                             <lightning:input id="partId" type="number" value="{!obj.ObjMRNLI.Taxable_Amount_Formula__c}" disabled="true" default="0"/>
                                                         </td>
                                                         <td class="slds-truncate" title="{!obj.ObjMRNLI.CGST__c}">
-                                                            <input data-row-index="{!index}" onchange="{!c.CalculateMRNCGST}" type="text" value="{!obj.ObjMRNLI.CGST__c}" class="slds-input" style="margin-top: 22%;" default="0" disabled="{!v.IsEdit}"/>
+                                                            <lightning:input name="{!index}" id="partName" onchange="{!c.CalculateMRNCGST}" type="number" default="0" min="0" value="{!obj.ObjMRNLI.CGST__c}" disabled="{!v.IsEdit}" />
+                                                            <!--<input data-row-index="{!index}" onchange="{!c.CalculateMRNCGST}" type="text" value="{!obj.ObjMRNLI.CGST__c}" class="slds-input" style="margin-top: 22%;" default="0" disabled="{!v.IsEdit}"/>-->
                                                         </td>
                                                         <td class="slds-truncate" title="{!obj.ObjMRNLI.SGST__c}">
-                                                            <input data-row-index="{!index}" onchange="{!c.CalculateMRNSGST}" type="text" value="{!obj.ObjMRNLI.SGST__c}" class="slds-input" style="margin-top: 22%;" default="0" disabled="{!v.IsEdit}"/>
+                                                            <lightning:input name="{!index}" id="partName" onchange="{!c.CalculateMRNSGST}" type="number" default="0" min="0" value="{!obj.ObjMRNLI.SGST__c}" disabled="{!v.IsEdit}" />
+                                                           <!--<input data-row-index="{!index}" onchange="{!c.CalculateMRNSGST}" type="text" value="{!obj.ObjMRNLI.SGST__c}" class="slds-input" style="margin-top: 22%;" default="0" disabled="{!v.IsEdit}"/>-->
                                                         </td>
                                                         <td class="slds-truncate" title="{!obj.ObjMRNLI.IGST__c}">
-                                                            <input data-row-index="{!index}" onchange="{!c.CalculateMRNIGST}" type="text" value="{!obj.ObjMRNLI.IGST__c}" class="slds-input" style="margin-top: 22%;" default="0" disabled="{!v.IsEdit}"/>
+                                                             <lightning:input name="{!index}" id="partName" onchange="{!c.CalculateMRNIGST}" type="number" default="0" min="0" value="{!obj.ObjMRNLI.IGST__c}" disabled="{!v.IsEdit}" />
+                                                            <!--<input data-row-index="{!index}" onchange="{!c.CalculateMRNIGST}" type="text" value="{!obj.ObjMRNLI.IGST__c}" class="slds-input" style="margin-top: 22%;" default="0" disabled="{!v.IsEdit}"/>-->
                                                         </td>
                                                         <td class="slds-truncate" title="{!obj.ObjMRNLI.Net_Amount_Formula__c}">
                                                             <lightning:input id="partId" type="number" default="0" value="{!obj.ObjMRNLI.Net_Amount_Formula__c}" disabled="true" />
@@ -516,7 +510,6 @@
                                                         <td class="slds-truncate" title="{!obj.ObjMRNLI.Remarks__c}">
                                                             <lightning:input id="partId" type="Text" value="{!obj.ObjMRNLI.Remarks__c}" disabled="{!v.IsEdit}"/>
                                                         </td>
-                                                        
                                                     </tr>
                                                 </aura:iteration>
                                             </tbody>
@@ -534,12 +527,6 @@
                                                         <th scope="col">
                                                             <div class="slds-truncate" title="SR.N.">SR.N.</div>
                                                         </th>
-                                                        <!--<th scope="col">
-          <div class="slds-truncate" title="Doc No.">Doc No.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-        </th>
-        <th scope="col">
-          <div class="slds-truncate" title="Doc. Date">Doc. Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-        </th>-->
                                                         <th scope="col">
                                                             <div class="slds-truncate" title="Part No.">Part No.</div>
                                                         </th>
@@ -552,10 +539,6 @@
                                                         <th scope="col">
                                                             <div class="slds-truncate" title="Doc. Date">Received <br/>MRN Qty	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
                                                         </th>
-                                                        
-                                                        <!--<th scope="col">
-         <div class="slds-truncate" title="Stock Actual">Stock <br/>Actual</div>
-        </th>-->
                                                         <th scope="col">
                                                             <div class="slds-truncate" title="Rate">Rate&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
                                                         </th>
@@ -571,12 +554,6 @@
                                                         <th scope="col">
                                                             <div class="slds-truncate" title="Gross Amount">Gross Amount</div>
                                                         </th>
-                                                        <!--<th scope="col">
-         <div class="slds-truncate" title="Assessable Value">Assessable Value</div>
-        </th>
-        <th scope="col">
-         <div class="slds-truncate" title="HSN CODE">HSN CODE</div>
-        </th>-->
                                                         <th scope="col">
                                                             <div class="slds-truncate" title="CGST%">CGST%</div>
                                                         </th>
@@ -600,18 +577,18 @@
                                                         </th>
                                                         <th scope="col">
                                                             <div class="slds-truncate" title="Remarks">Remarks&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-                                                        </th>
-                                                        
+                                                        </th>  
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     <aura:iteration items="{!v.ObjDeliveryNoteLI.lstSubMain}" var="obj" indexVar="index">
                                                         <tr>
                                                             <td class="slds-truncate"> 
-                                                                <!--		<lightning:buttonIcon value="{!index}" alternativeText="Edit Row" variant="border-filled" iconName="utility:edit" onclick="{!c.EditSalesOrderRecord}" class="AlignCenter"/>
-         -->	<lightning:buttonIcon value="{!index}" alternativeText="Delete" variant="border-filled"  iconName="utility:delete"  onclick="{!c.DeleteSalesOrderLIRecord}" class="AlignCenter"/>
-                                                            </td>
-                                                            <td class="slds-truncate">{!index+1} </td>
+                                                                <div style="margin-top:12px">
+                                                                <!--<lightning:buttonIcon value="{!index}" alternativeText="Edit Row" variant="border-filled" iconName="utility:edit" onclick="{!c.EditSalesOrderRecord}" class="AlignCenter"/>-->													<lightning:buttonIcon value="{!index}" alternativeText="Delete" variant="border-filled"  iconName="utility:delete"  onclick="{!c.DeleteSalesOrderLIRecord}" class="AlignCenter"/>
+                                                            
+                                                                </div></td>
+                                                            <td class="slds-truncate"><div style="margin-top:12px">{!index+1}</div> </td>
                                                             <td class="slds-truncate" title="{!obj.ObjMRNLI.Part_Number__r.Name}">
                                                                 <lightning:input id="partId" type="Text" value="{!obj.objDNLI.Product_Part__r.Name}" disabled="true"/>
                                                             </td>
@@ -623,33 +600,41 @@
                                                             </td>
                                                             <td>
                                                                 <div  class="slds-truncate" title="{!obj.objDNLI.Quantity__c}">
-                                                                    <input data-row-index="{!index}" onchange="{!c.CalculateQuantity}" type="text" value="{!obj.objDNLI.Quantity__c}" class="slds-input" style="margin-top: 22%;" disabled="{!v.IsEdit}"/>
+                                                                    <!--<input data-row-index="{!index}" onchange="{!c.CalculateQuantity}" type="text" value="{!obj.objDNLI.Quantity__c}" class="slds-input" style="margin-top: 22%;" disabled="{!v.IsEdit}"/>-->
+                                                                    <lightning:input name="{!index}" id="partId" type="number" onchange="{!c.CalculateQuantity}" value="{!obj.objDNLI.Quantity__c}" disabled="{!v.IsEdit}" default="0"/>
                                                                 </div>
                                                             </td>
                                                             <td class="slds-truncate">
                                                                 <div  class="slds-truncate" title="{!obj.objDNLI.Sales_Price__c}">
-                                                                    <input data-row-index="{!index}" onchange="{!c.CalculateRate}" type="text" value="{!obj.objDNLI.Sales_Price__c}" class="slds-input" style="margin-top: 22%;" disabled="{!v.IsEdit}"/>
+                                                                    <lightning:input name="{!index}" id="partId" type="number" onchange="{!c.CalculateRate}"  value="{!obj.objDNLI.Sales_Price__c}" disabled="{!v.IsEdit}" default="0"/>
+                                                                    <!--<input data-row-index="{!index}" onchange="{!c.CalculateRate}" type="text" value="{!obj.objDNLI.Sales_Price__c}" class="slds-input" style="margin-top: 22%;" disabled="{!v.IsEdit}"/>-->
                                                                 </div>
                                                             </td>
                                                             <td class="slds-truncate" title="{!obj.objDNLI.Total_Amount__c}">
                                                                 <lightning:input id="partId" type="number" value="{!obj.objDNLI.Total_Amount__c}" disabled="true" default="0"/>
                                                             </td>
                                                             <td class="slds-truncate" title="{!obj.objDNLI.Discount__c}">
-                                                                <input data-row-index="{!index}" onchange="{!c.CalculateDiscountRate}" type="text" value="{!obj.objDNLI.Discount__c}" class="slds-input" style="margin-top: 22%;" disabled="{!v.IsEdit}"/>
+                                                                <lightning:input name="{!index}" id="partId" type="number" onchange="{!c.CalculateDiscountRate}"  value="{!obj.objDNLI.Discount__c}" disabled="{!v.IsEdit}" default="0"/>
+                                                                <!--<input data-row-index="{!index}" onchange="{!c.CalculateDiscountRate}" type="text" value="{!obj.objDNLI.Discount__c}" class="slds-input" style="margin-top: 22%;" disabled="{!v.IsEdit}"/>-->
                                                             </td>
                                                             <td class="slds-truncate" title="{!obj.objDNLI.Discount_Currency__c}">
-                                                                <input data-row-index="{!index}" onchange="{!c.CalculateDiscount}" type="text" value="{!obj.objDNLI.Discount_Currency__c}" class="slds-input" style="margin-top: 22%;" disabled="{!v.IsEdit}"/>
+                                                                <lightning:input name="{!index}" id="partId" type="number" onchange="{!c.CalculateDiscount}"  value="{!obj.objDNLI.Discount_Currency__c}" disabled="{!v.IsEdit}" default="0"/>
+                                                                <!--<input data-row-index="{!index}" onchange="{!c.CalculateDiscount}" type="text" value="{!obj.objDNLI.Discount_Currency__c}" class="slds-input" style="margin-top: 22%;" disabled="{!v.IsEdit}"/>-->
                                                             </td>
                                                             <td class="slds-truncate" title="{!obj.objDNLI.Taxable_Amount__c}">
                                                                 <lightning:input id="partId" type="number" value="{!obj.objDNLI.Taxable_Amount__c}" disabled="true" default="0"/>
                                                             </td>
                                                             <td class="slds-truncate" title="{!obj.objDNLI.CGST__c}">
-                                                                <input data-row-index="{!index}" onchange="{!c.CalculateSalesCGST}" default="0" type="text" value="{!obj.objDNLI.CGST__c}" class="slds-input" style="margin-top: 22%;" disabled="{!v.IsEdit}"/>
+                                                                <lightning:input name="{!index}" id="partId" type="number" onchange="{!c.CalculateSalesCGST}"  value="{!obj.objDNLI.CGST__c}" disabled="{!v.IsEdit}" default="0"/>
+                                                                <!--<input data-row-index="{!index}" onchange="{!c.CalculateSalesCGST}" default="0" type="text" value="{!obj.objDNLI.CGST__c}" class="slds-input" style="margin-top: 22%;" disabled="{!v.IsEdit}"/>-->
                                                             </td>
                                                             <td class="slds-truncate" title="{!obj.objDNLI.SGST__c}">
-                                                                <input data-row-index="{!index}" onchange="{!c.CalculateSalesSGST}" default="0" type="text" value="{!obj.objDNLI.SGST__c}" class="slds-input" style="margin-top: 22%;" disabled="{!v.IsEdit}"/></td>
+                                                                <lightning:input name="{!index}" id="partId" type="number" onchange="{!c.CalculateSalesSGST}"  value="{!obj.objDNLI.SGST__c}" disabled="{!v.IsEdit}" default="0"/>
+                                                                <!--<input data-row-index="{!index}" onchange="{!c.CalculateSalesSGST}" default="0" type="text" value="{!obj.objDNLI.SGST__c}" class="slds-input" style="margin-top: 22%;" disabled="{!v.IsEdit}"/>-->
+                                                            </td>
                                                             <td class="slds-truncate" title="{!obj.objDNLI.IGST__c}">
-                                                                <input data-row-index="{!index}" onchange="{!c.CalculateSalesIGST}" default="0" type="text" value="{!obj.objDNLI.IGST__c}" class="slds-input" style="margin-top: 22%;" disabled="{!v.IsEdit}"/>
+                                                                <lightning:input name="{!index}" id="partId" type="number" onchange="{!c.CalculateSalesIGST}"  value="{!obj.objDNLI.IGST__c}" disabled="{!v.IsEdit}" default="0"/>
+                                                                <!--<input data-row-index="{!index}" onchange="{!c.CalculateSalesIGST}" default="0" type="text" value="{!obj.objDNLI.IGST__c}" class="slds-input" style="margin-top: 22%;" disabled="{!v.IsEdit}"/>-->
                                                             </td>
                                                             <td class="slds-truncate" title="{!obj.objDNLI.Gross_Amount__c}">
                                                                 <lightning:input id="partId" type="number" value="{!obj.objDNLI.Gross_Amount__c}" default="0" disabled="true" />
@@ -668,13 +653,11 @@
                                                             </td>
                                                         </tr>
                                                     </aura:iteration>
-                                                    
                                                 </tbody>
                                             </table>
                                         </div>
                                     </aura:set>
                                 </aura:if>
-                                
                             </div>
                         </aura:if>
                         
@@ -751,7 +734,7 @@
                                                         </aura:if>
                                                         <th scope="col" rowspan="2" style="text-align: center;">
                                                             <div class="slds-truncate" title="Item Price/Unit (GBP)"> Item Price/ <br/>Unit   <aura:if isTrue="{!v.mainWrap.objMRN.MRN_Delivery_Type__c =='Import'}">
-                                                                (GBP)
+                                                                ({!v.mainWrap.objMRN.Currency__c})
                                                                 <aura:set attribute="else">
                                                                     (INR)
                                                                 </aura:set>
@@ -760,7 +743,7 @@
                                                         </th>	
                                                         <th scope="col" rowspan="2" style="text-align: center;">
                                                             <div class="slds-truncate" title="Item Price/Unit (GBP)">Total Item <br/>Amount <aura:if isTrue="{!v.mainWrap.objMRN.MRN_Delivery_Type__c =='Import'}">
-                                                                (GBP)
+                                                                ({!v.mainWrap.objMRN.Currency__c})
                                                                 <aura:set attribute="else">
                                                                     (INR)
                                                                 </aura:set>
@@ -768,7 +751,7 @@
                                                         </th>
                                                         <aura:if isTrue="{!v.mainWrap.objMRN.MRN_Delivery_Type__c =='Import'}">										
                                                             <th scope="col" rowspan="2">
-                                                                <div class="slds-truncate" title="Item Price/Unit (GBP)" style="text-align: center;">Item Value <br/>With Freigh &#38; <br/>Surchargeb(GBP) </div>
+                                                                <div class="slds-truncate" title="Item Price/Unit (GBP)" style="text-align: center;">Item Value <br/>With Freigh &#38; <br/>Surchargeb({!v.mainWrap.objMRN.Currency__c}) </div>
                                                             </th>	
                                                             <th scope="col" rowspan="2">
                                                                 <div class="slds-truncate" title="Item Price/Unit (GBP)" style="text-align: center;">Total Item<br/> Value In<br/> (INR)</div>
@@ -810,6 +793,7 @@
                                                         </th>	
                                                     </tr>
                                                     <tr>
+                                                       
                                                         <aura:if isTrue="{!v.mainWrap.objMRN.MRN_Delivery_Type__c =='Import'}">	
                                                             <th scope="col" style="text-align: center; width: 5rem;" >
                                                                 <div class="slds-truncate" title="Item Price/Unit (GBP)">Duty<br/> Rate</div>
@@ -828,7 +812,7 @@
                                                         <th scope="col" style="text-align: center;">
                                                             <div class="slds-truncate" title="Amount">&nbsp;&nbsp;&nbsp;Amount&nbsp;&nbsp;&nbsp;</div>
                                                         </th>
-                                                        <aura:if isTrue="{!v.mainWrap.objMRN.MRN_Delivery_Type__c =='Domestic'}">	
+                                                        <aura:if isTrue="{!v.mainWrap.objMRN.MRN_Delivery_Type__c =='Domestic' || v.mainWrap.objMRN.MRN_Delivery_Type__c =='' || v.mainWrap.objMRN.MRN_Delivery_Type__c == null}">	
                                                             <th scope="col" style="width: 5rem; text-align: center;" >
                                                                 <div class="slds-truncate" title="Rate">Rate&nbsp;&nbsp;&nbsp; </div>
                                                             </th>	
@@ -849,17 +833,18 @@
                                                         <aura:iteration items="{!v.mainWrap.lstDeliveryNoteLIWrap}" var="obj" indexVar="index">
                                                             <tr>
                                                                 <td class="slds-truncate">   
-                                                                    <aura:if isTrue="{!and(v.strType =='Direct', v.recordId == '')}">
+                                                                  <div style="margin-top:12px">  <aura:if isTrue="{!and(v.strType =='Direct', v.recordId == '')}">
                                                                         <lightning:buttonIcon value="{!index}" alternativeText="Add Row" variant="border-filled" iconName="utility:add"  onclick="{!c.addRow}" class="AlignCenter"/>
                                                                         <aura:set attribute="else">
                                                                             <aura:if isTrue="{!and(v.strType =='Direct', v.mainWrap.lstDeliveryNoteLIWrap.length == index+1)}">
-                                                                                <lightning:buttonIcon value="{!index}" alternativeText="Add Row" variant="border-filled"  iconName="utility:add"  onclick="{!c.addRow}" class="AlignCenter"/>
-                                                                            </aura:if>
+                                                                               <lightning:buttonIcon value="{!index}" alternativeText="Add Row" variant="border-filled"  iconName="utility:add"  onclick="{!c.addRow}" class="AlignCenter"/>
+                                                                                
+                                                                                </aura:if>
                                                                         </aura:set>
                                                                     </aura:if>
                                                                     <lightning:buttonIcon value="{!index}" alternativeText="Delete" variant="border-filled"  iconName="utility:delete" class="AlignCenter" onclick="{!c.DeleteRecord}"/> 
-                                                                </td>
-                                                                <td class="slds-truncate">{!index+1} </td>
+                                                                </div></td>
+                                                                <td class="slds-truncate"><div style="margin-top:12px">{!index+1}</div> </td>
                                                                 <aura:if isTrue="{!v.strType =='Purchase Order'}">
                                                                     
                                                                     <td class="slds-truncate">
@@ -876,7 +861,7 @@
                                                                         <aura:if isTrue="{!obj.IsEdit}">
                                                                             <lightning:input id="partId" type="string" value="{!obj.objPart.Name}" disabled="true"/>
                                                                             <aura:set attribute="else">
-                                                                                <c:CustomLookUpForPI selectedRecord="{!obj.objPart}" objectAPIName="Part__c" IconName="standard:all"/> 
+                                                                                <c:CustomLookUpForPI selectedRecord="{!obj.objPart}" eventObject="{!v.currentObject}" objectAPIName="Part__c" mainwrap="{!v.mainWrap}" IconName="standard:all" /> 
                                                                             </aura:set>
                                                                         </aura:if>
                                                                         <aura:set attribute="else">
@@ -907,10 +892,12 @@
                                                                     <lightning:input id="partId" type="number" default="0" value="{!obj.IntPOQty}" disabled="{!v.IsEdit}"/>
                                                                 </td>
                                                                 <td class="slds-truncate" title="{!obj.IntBillQty}">
-                                                                    <input data-row-index="{!index}" type="text" value="{!obj.IntBillQty}" class="slds-input" style="margin-top: 22%;" disabled="{!v.IsEdit}" onchange="{!c.CalculateBillQty}"/>
+                                                                   <!-- <input data-row-index="{!index}" type="text" value="{!obj.IntBillQty}" class="slds-input" style="margin-top: 22%;" disabled="{!v.IsEdit}" onchange="{!c.CalculateBillQty}"/> -->
+                                                                		<lightning:input name="{!index}" id="partId" type="number" default="0" value="{!obj.IntBillQty}" disabled="{!v.IsEdit}" onchange="{!c.CalculateBillQty}"/>
                                                                 </td>
                                                                 <td class="slds-truncate" title="{!obj.IntReceiptQty}">
-                                                                    <input data-row-index="{!index}" onchange="{!c.CalculateDeliveryNoteQty}" type="text" value="{!obj.IntReceiptQty}" class="slds-input" style="margin-top: 22%;" disabled="{!v.IsEdit}"/>
+                                                                    <!--<input data-row-index="{!index}" onchange="{!c.CalculateDeliveryNoteQty}" min="0" type="text" value="{!obj.IntReceiptQty}" class="slds-input"  disabled="{!v.IsEdit}"/>-->
+                                                                	<lightning:input name="{!index}" id="partId" type="number" default="0" value="{!obj.IntReceiptQty}" disabled="{!v.IsEdit}" onchange="{!c.CalculateDeliveryNoteQty}"/>
                                                                 </td>
                                                                 <td class="slds-truncate" title="{!obj.IntAcceptQty}">
                                                                     <lightning:input id="partId" type="number" default="0" value="{!obj.IntAcceptQty}" disabled="true"/>
@@ -940,7 +927,9 @@
                                                                     </aura:if>
                                                                 </td>
                                                                 <td class="slds-truncate" title="{!obj.IntPriceGBP}">
-                                                                    <input data-row-index="{!index}" onchange="{!c.CalculateTotalPriceGBP}" type="text" value="{!obj.IntPriceGBP}" class="slds-input" style="margin-top: 22%;" disabled="{!v.IsEdit}"/>
+                                                                  <!--  <input data-row-index="{!index}" onchange="{!c.CalculateTotalPriceGBP}" type="text" value="{!obj.IntPriceGBP}" class="slds-input" style="margin-top: 22%;" disabled="{!v.IsEdit}"/> -->
+                                                                        <lightning:input name="{!index}" id="partId" type="Number" default="0" value="{!obj.IntPriceGBP}" step="0.01" disabled="{!v.IsEdit}"  onchange="{!c.CalculateTotalPriceGBP}"/>
+                                                                
                                                                 </td>
                                                                 <td class="slds-truncate" title="{!obj.IntTotalAmountGBP}">
                                                                     <lightning:input id="partId" type="Number" default="0" value="{!obj.IntTotalAmountGBP}" step="0.01" disabled="true" format="#,##0,000.00"/>
@@ -989,20 +978,26 @@
                                                                     </td>
                                                                     <aura:set attribute="else" >
                                                                         <td class="slds-truncate" title="{!obj.IntCGSTRate}">
-                                                                            <input data-row-index="{!index}" onchange="{!c.CalculateCGSTAmount}" type="text"  value="{!obj.IntCGSTRate}" class="slds-input" style="margin-top: 22%;" disabled="{!v.IsEdit}"/>
+                                                                            <!-- <input data-row-index="{!index}" onchange="{!c.CalculateCGSTAmount}" type="text"  value="{!obj.IntCGSTRate}" class="slds-input" style="margin-top: 22%;" disabled="{!v.IsEdit}"/>
+                                                                            --><lightning:input name="{!index}" id="partId" type="Number" default="0" min="0" max="100" onchange="{!c.CalculateCGSTAmount}" value="{!obj.IntCGSTRate}" step="0.01" disabled="{!v.IsEdit}"/>
+                                                                       
                                                                         </td>
                                                                         <td class="slds-truncate" title="{!obj.IntCGSTAmount}">
                                                                             <lightning:input id="partId" type="Number" default="0" value="{!obj.IntCGSTAmount}" step="0.01" disabled="true" format="#,##0,000.00"/>
+                                                                        	
                                                                         </td>
                                                                         <td class="slds-truncate" title="{!obj.IntSGSTRate}">
-                                                                            <input data-row-index="{!index}" onchange="{!c.CalculateSGSTAmount}" type="text" value="{!obj.IntSGSTRate}" class="slds-input" style="margin-top: 22%;" disabled="{!v.IsEdit}"/>
+                                                                            <!--<input data-row-index="{!index}" onchange="{!c.CalculateSGSTAmount}" type="text" value="{!obj.IntSGSTRate}" class="slds-input" style="margin-top: 22%;" disabled="{!v.IsEdit}"/>
+                                                                         --><lightning:input name="{!index}" id="partId" type="Number" default="0" min="0" max="100" onchange="{!c.CalculateSGSTAmount}" value="{!obj.IntSGSTRate}" step="0.01" disabled="{!v.IsEdit}"/>
+                                                                        
                                                                         </td>
                                                                         <td class="slds-truncate" title="{!obj.IntSGSTAmount}">
                                                                             <lightning:input id="partId" type="Number" default="0" value="{!obj.IntSGSTAmount}" step="0.01" disabled="true" format="#,##0,000.00"/>
                                                                         </td>
                                                                         <td class="slds-truncate" title="{!obj.IntIGSTRate}">
-                                                                            <input data-row-index="{!index}" onchange="{!c.CalculateIGSTAmount}" type="text" value="{!obj.IntIGSTRate}" class="slds-input" style="margin-top: 22%;" disabled="{!v.IsEdit}"/>
-                                                                            <!--<lightning:input id="partId" type="Number" value="{!obj.IntIGSTRate}" disabled="{!obj.IsEdit}"/>-->
+                                                                          <!--  <input data-row-index="{!index}" onchange="{!c.CalculateIGSTAmount}" type="text" value="{!obj.IntIGSTRate}" class="slds-input" style="margin-top: 22%;" disabled="{!v.IsEdit}"/>
+                                                                           --><lightning:input name="{!index}" id="partId" type="Number" default="0" min="0" max="100" onchange="{!c.CalculateIGSTAmount}" value="{!obj.IntIGSTRate}" step="0.01" disabled="{!v.IsEdit}"/>
+                                                                        
                                                                         </td>
                                                                         <td class="slds-truncate" title="{!obj.IntIGSTAmount}">
                                                                             <lightning:input id="partId" type="Number" default="0" value="{!obj.IntIGSTAmount}" step="0.01" disabled="true" format="#,##0,000.00"/>

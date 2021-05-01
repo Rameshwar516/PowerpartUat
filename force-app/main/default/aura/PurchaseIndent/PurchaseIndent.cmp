@@ -379,8 +379,8 @@
         <br/><br/>
         <div class="slds-grid slds-wrap" style="background-color:#FFF;">
             <div class="slds-col slds-size_1-of-3 slds-p-around_small slds-text-align_left">
-                <lightning:button label="Add Term &amp; Condition" onclick="{!c.AddTandCJS}" class="slds-button slds-button_success"/>
-            </div>
+             <!--    <lightning:button label="Add Term &amp; Condition" onclick="{!c.AddTandCJS}" class="slds-button slds-button_success"/>
+            --></div> 
             <div class="slds-col slds-size_1-of-3 slds-p-around_small slds-text-align_center">
                 <lightning:button label="Save" onclick="{!c.submitJS}" class="slds-button slds-button_brand"/>
                 <lightning:button label="Cancel" onclick="{!c.cancelJS}" class="slds-button"/>
@@ -472,7 +472,7 @@
         <div class="slds-backdrop slds-backdrop_open"></div>
     </aura:if>
     
-    <!-- Modal for Term and condition -->
+    <!-- Modal for Term and condition 
     <aura:if isTrue="{!v.showTAndC}">
         <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-modal_medium" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1">
             <div class="slds-modal__container">
@@ -489,5 +489,5 @@
             </div>
         </section>
         <div class="slds-backdrop slds-backdrop_open"></div>
-    </aura:if>
+    </aura:if>-->
 </aura:component>

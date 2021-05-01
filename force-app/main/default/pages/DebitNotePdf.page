@@ -104,7 +104,7 @@
                 </tr>
             </table>
         </div>
-         <table style="width:100%;border:2px solid black;">
+         <table style="width:100%;border:1px solid black; margin-top: 25px;">
              <tr >
                  <td>
              <center><b><apex:outputText value="DEBIT NOTE" style="font-size:20px;font-family: Arial;" /></b><br/></center>    
@@ -188,7 +188,10 @@
                         <center><apex:outputText value=":" /></center>
                     </td>
                     <td style="border:none;"  valign="top">
-                        <apex:outputText value="{!MrndcNote.E_Way_Bill_Date__c}" /> 
+                        <apex:outputText value="{0, date, dd - MMM - yyyy}">
+                            <apex:param value="{!MrndcNote.E_Way_Bill_Date__c}" />
+                        </apex:outputText>
+                        
                     </td>
                     <td style="border:none;"  valign="top">
                         
@@ -229,7 +232,7 @@
                         <b><apex:outputText value=":" /></b>
                     </td>
                     <td style="border:none;border-top: 2px solid black;"  valign="top" colspan="2">
-                        <apex:outputText value="{!dcNote.Dispatch_To_Customer_Name__r.Name}" />
+                        <apex:outputText value="{!DC_Note__c.Shipping_Account__r.Name}" />
                     </td>
                 </tr>
                 <tr>
@@ -240,12 +243,14 @@
                         <b><apex:outputText value=":" /></b>
                     </td>
                     <td style="border:none;"  valign="top" colspan="2">
-                      <!--  <apex:outputText value="{!strBillingAddress}" />-->
+                      <!--  <apex:outputText value="{!strBillingAddress}" />
                          <apex:outputText value="{!DC_Note__c.Customer_Party__r.BillingStreet}" /> <br/>
                           <apex:outputText value="{!DC_Note__c.Customer_Party__r.BillingCity}" /> <br/>
                           <apex:outputText value="{!DC_Note__c.Customer_Party__r.BillingState}" /> <br/>
                           <apex:outputText value="{!DC_Note__c.Customer_Party__r.BillingPostalCode}" /> <br/>
-                        <apex:outputText value="{!DC_Note__c.Customer_Party__r.BillingCountry}" /> 
+                        <apex:outputText value="{!DC_Note__c.Customer_Party__r.BillingCountry}" /> -->
+                        <apex:outputText value="{!DC_Note__c.Billing_Address__c}" escape="false"/>
+                        
                     </td>
                     
                     <td style="border:none;border-left: 2px solid black;"  valign="top" >
@@ -255,12 +260,13 @@
                         <b><apex:outputText value=":" /></b>
                     </td>
                     <td style="border:none;"  valign="top" colspan="2">
-                       <!-- <apex:outputText value="{!strShippingAddress}" />-->
+                       <!-- <apex:outputText value="{!strShippingAddress}" />
                         <apex:outputText value="{!DC_Note__c.Customer_Party__r.ShippingStreet}" /> <br/>
                           <apex:outputText value="{!DC_Note__c.Customer_Party__r.ShippingCity}" /> <br/>
                           <apex:outputText value="{!DC_Note__c.Customer_Party__r.ShippingState}" /> <br/>
                           <apex:outputText value="{!DC_Note__c.Customer_Party__r.ShippingPostalCode}" /> <br/>
-                        <apex:outputText value="{!DC_Note__c.Customer_Party__r.ShippingCountry}" /> 
+                        <apex:outputText value="{!DC_Note__c.Customer_Party__r.ShippingCountry}" /> -->
+                        <apex:outputText value="{!DC_Note__c.Shipping_Address_Formula__c}" escape="false" />
                     </td>
                 </tr>
                 <tr>
@@ -281,7 +287,7 @@
                         <center><apex:outputText value=":" /></center>
                     </td>
                     <td style="border:none;"  valign="top" colspan="2">
-                        <apex:outputText value="{!DC_Note__c.Customer_Party__r.Shipping_GSTIN_No__c}" /> 
+                        <apex:outputText value="{!DC_Note__c.Shipping_Account__r.Shipping_GSTIN_No__c}" /> 
                     </td>
                 </tr>
                 
@@ -311,11 +317,11 @@
                         <center><apex:outputText value=":" /></center>
                     </td>
                     <td style="border:none;"  valign="top">
-                        <apex:outputText value="{!DC_Note__c.Customer_Party__r.ShippingState}" /> 
+                        <apex:outputText value="{!DC_Note__c.Shipping_Account__r.ShippingState}" /> 
                     </td>
                     <td style="border:none;border-top: 2px solid black;border-left: 2px solid black;"  valign="top">
                         <b><apex:outputText value="State Code :" /></b> 
-                        <apex:outputText value="{!strShippingCode}" />
+                        <apex:outputText value="{!DC_Note__c.Shipping_Account__r.Shipping_State_Code__c}" />
                     </td> 
                 </tr>
                 
@@ -401,7 +407,7 @@
                         <td style="text-align:right"><apex:variable var="count" value="{!count+1}" />{!count}</td>
                         <td><apex:outputText value="{!li.Part_Number__r.Name}" /></td>
                         <td><apex:outputText value="{!li.Part_Name__c}" /></td>
-                        <td><apex:outputText value="{!li.HSN_Code__c}" /></td>
+                        <td><apex:outputText value="{!li.Part_Number__r.HSN_CODE__c}" /></td>
                         <td style="text-align:right"><apex:outputText value="{!li.Quantity__c}" /></td>
                         <td style="text-align:right"><apex:outputText value="{!li.Part_Number__r.UOM__c}" /></td>
                         <td style="text-align:right"><apex:outputText value="{!li.Unit_Price__c}" /></td>

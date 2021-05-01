@@ -325,7 +325,7 @@ public class AddproductController {
                 partid.add(pd.objProd.id);
             }
             
-            list<Part__History> parthistory = [SELECT Field,NewValue,OldValue,ParentId FROM Part__History WHERE ParentId IN: partid];
+            list<Part__History> parthistory = [SELECT Field,NewValue,OldValue,ParentId FROM Part__History WHERE ParentId IN: partid Order by createddate ASC];
             
             map<string,string> partoldfieldvalue = new map<string,string>();
             if(!parthistory.isempty())

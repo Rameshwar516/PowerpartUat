@@ -20,6 +20,7 @@
 .THIS .slds-input__spinner{
     display: none;
 }
-.THIS.slds-form-element__label  {
-    display: none;
+.THIS.slds-form-element__label 
+{
+    display: none !important;
 }

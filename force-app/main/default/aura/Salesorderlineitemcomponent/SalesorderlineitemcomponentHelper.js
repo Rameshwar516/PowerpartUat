@@ -80,6 +80,7 @@
 				component.set("v.wrapMain.strMessage",JSON.parse(res.getReturnValue()).errorMessage);
             }
         });
+        
         $A.enqueueAction(action);
     },
 	
@@ -107,20 +108,22 @@
 				component.set("v.wrapMain.strMessage",JSON.parse(res.getReturnValue()).errorMessage);
             }
         });
+        
         $A.enqueueAction(action);
     },
     
     
 	RemoveRecordOnCheck : function(component, event, objWrap, prodwrapper) {
+        component.set("v.isdisable",true);
+
         var action = component.get('c.removeRecord');
-        
         action.setParams({
             
             "strWrap" : JSON.stringify(objWrap),
             "prodwrappstr" : JSON.stringify(prodwrapper)
         });
 		action.setCallback(this, function(res) {
-            
+            component.set("v.isdisable",false);
             if(res.getState() === "SUCCESS" && JSON.parse(res.getReturnValue()).success ) {
                    
               component.set('v.wrapMain', JSON.parse(res.getReturnValue()));
@@ -140,7 +143,71 @@
 				component.set("v.wrapMain.strMessage",JSON.parse(res.getReturnValue()).errorMessage);
             }
         });
-        $A.enqueueAction(action);
+            $A.enqueueAction(action);
+    },
+    
+    
+    
+    
+    Deletelineitemhelper : function(component,event,helper){
+      var tmpMainWrapper =  component.get('v.wrapMain.lstWrappTwo');
+        var lstnew =[];
+        var protmpMainWrapper =  component.get('v.wrapMain.lstWrapp');
+        var lineitemid = event.getSource().get("v.value");
+         console.log(lineitemid);
+        var action = component.get('c.deleteRecord'); 
+        var lineitem ;
+        action.setParams({
+            "SOlineID":lineitemid,
+        });
+        var proid;
+        action.setCallback(this, function(res){
+            if(res.getState() === "SUCCESS"){
+                console.log("Success");
+                for(var i=0;i<tmpMainWrapper.length;i++){   
+                    console.log(i+' - '+tmpMainWrapper[i].isLineItem);
+                    if(tmpMainWrapper[i].isLineItem ==true  ){
+                        if(lineitemid != tmpMainWrapper[i].objProdchild.Id){
+                            console.log(lineitemid+" --- "+tmpMainWrapper[i].objProdchild.Id);
+                            lstnew.push(tmpMainWrapper[i]);  
+                        } 
+                        else{
+                            proid =tmpMainWrapper[i].objProdchild.Product_Part__c;
+                        }
+                    }
+                    else 
+                    {
+                        lstnew.push(tmpMainWrapper[i]);
+                        console.log(tmpMainWrapper[i].PartName);
+                    }
+                    
+                }
+                         
+           /* for(var i=0;i<protmpMainWrapper.length;i++){
+                    if(proid == protmpMainWrapper[i].objProdchild.Id){
+                        protmpMainWrapper[i].isSelected =false;
+                    }
+                }*/            
+                
+                component.set("v.wrapMain.lstWrappTwo",lstnew);
+                component.set("v.wrapMain.lstWrapp",protmpMainWrapper);
+                helper.refreshCharge(component,event,helper);
+                helper.totalamount(component,event,helper);
+                
+            }else if(res.getState() === "ERROR") {
+                var errors = res.getError();
+                if (errors) {
+                    if (errors[0] && errors[0].message) {
+                        component.set("v.wrapMain.strMessage",errors[0].message);
+                    }
+                } else {
+                    component.set("v.wrapMain.strMessage","Unknown error");
+                }
+            }else if (!JSON.parse(res.getReturnValue()).success) {
+                component.set("v.wrapMain.strMessage",JSON.parse(res.getReturnValue()).errorMessage);
+            }
+        });
+        $A.enqueueAction(action);   
     },
     
     SaveHelper: function(component, event, id) {
@@ -254,7 +321,7 @@
         var lstTotalSelectedTax = component.get("v.lstSelectedTax");
         var TotalTaxAmount = 0;
         for(var i = 0; i < lstTotalSelectedTax.length; i++) {
-            TotalTaxAmount =TotalTaxAmount+lstTotalSelectedTax[i].NetAmount;
+            TotalTaxAmount =parseInt(TotalTaxAmount)+parseInt(lstTotalSelectedTax[i].NetAmount);
         }
         component.set('v.TotalTax', TotalTaxAmount);
     },	

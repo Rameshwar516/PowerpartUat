@@ -68,7 +68,7 @@ public class SalesOrderHelper {
                             if(objSO.Ware_House__c != null && mapWareHouseProductbasedStockId.containskey(objSO.Ware_House__c+'-'+objSOI.Product_Part__c) && mapWareHouseProductbasedStockId.get(objSO.Ware_House__c+'-'+objSOI.Product_Part__c) != null)
                             {
                                 System.debug('objSO.Ware_House__c------- '+objSO.Ware_House__c);
-                                if(mapIdRelatedStock.get(mapWareHouseProductbasedStockId.get(objSO.Ware_House__c+'-'+objSOI.Product_Part__c)).Total_Unbooked_Quantity__c > objSOI.Quantity__c)
+                                if(mapIdRelatedStock.get(mapWareHouseProductbasedStockId.get(objSO.Ware_House__c+'-'+objSOI.Product_Part__c)).Total_Unbooked_Quantity__c >= objSOI.Quantity__c)
                                 {
                                     Stock__c objStock = new stock__c();
                                     objStock = mapIdRelatedStock.get(mapWareHouseProductbasedStockId.get(objSO.Ware_House__c+'-'+objSOI.Product_Part__c));
@@ -130,7 +130,7 @@ public class SalesOrderHelper {
                             if(objSO.Ware_House__c != null && mapWareHouseProductbasedStockId.containskey(objSO.Ware_House__c+'-'+objSOI.Product_Part__c) && mapWareHouseProductbasedStockId.get(objSO.Ware_House__c+'-'+objSOI.Product_Part__c) != null)
                             {
                                 System.debug('objSO.Ware_House__c------- '+objSO.Ware_House__c);
-                                if(mapIdRelatedStock.get(mapWareHouseProductbasedStockId.get(objSO.Ware_House__c+'-'+objSOI.Product_Part__c)).Total_Unbooked_Quantity__c > objSOI.Quantity__c)
+                                if(mapIdRelatedStock.get(mapWareHouseProductbasedStockId.get(objSO.Ware_House__c+'-'+objSOI.Product_Part__c)).Total_Unbooked_Quantity__c >= objSOI.Quantity__c)
                                 {
                                     Stock__c objStock = new stock__c();
                                     objStock = mapIdRelatedStock.get(mapWareHouseProductbasedStockId.get(objSO.Ware_House__c+'-'+objSOI.Product_Part__c));
@@ -176,7 +176,7 @@ public class SalesOrderHelper {
                                 System.debug('objSO.Ware_House__c---else---- ');
                                 Stock__c objStock2 = new stock__c();
                                 objStock2 = mapIdRelatedStock.get(mapWareHouseProductbasedStockId.get(strwareHouseDifferent+'-'+objSOI.Product_Part__c));
-                                if(objStock2.Total_Unbooked_Quantity__c > objSOI.Quantity__c)
+                                if(objStock2.Total_Unbooked_Quantity__c >= objSOI.Quantity__c)
                                 {
                                     objStock2.Freeze_Quantity__c = objStock2.Freeze_Quantity__c + objSOI.Quantity__c;
                                     mapIdRelatedStock.put(objStock2.Id,objStock2);

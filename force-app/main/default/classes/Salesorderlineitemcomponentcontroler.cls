@@ -216,10 +216,10 @@ public class Salesorderlineitemcomponentcontroler {
             if(filter.trim() != ''){
                 
                 if(wrapproductId.size() > 0 ){
-                    soql += ' where id NOT IN : wrapproductId and ( name Like ' + filter + ' or Part_Name__c LIKE ' + filter + ')';
+                    soql += ' where id NOT IN : wrapproductId and ( name Like ' + filter + ' or Part_Name__c LIKE ' + filter + ') AND Stock_Available__c != 0';
                 }
                 else{
-                    soql += ' where ( name Like ' + filter + ' or Part_Name__c LIKE ' + filter + ')';
+                    soql += ' where ( name Like ' + filter + ' or Part_Name__c LIKE ' + filter + ') AND Stock_Available__c != 0';
                 }
             }   
             system.debug('====='+soql);
@@ -248,7 +248,7 @@ public class Salesorderlineitemcomponentcontroler {
             if(wrapproductId.size() > 0 ){
                 string soql2 = 'select ' + string.join(leadfieldNames, ',') +',(SELECT Id, Total_Quantity__c, Ware_House__r.City__c,Total_Unbooked_Quantity__c from Stocks__r)  from ' + objectName ; 
                 if(filter.trim() != ''){    
-                    soql2 += ' where id IN : wrapproductId and ( name Like ' + filter + ' or Part_Name__c LIKE ' + filter + ')';
+                    soql2 += ' where id IN : wrapproductId and ( name Like ' + filter + ' or Part_Name__c LIKE ' + filter + ') AND Stock_Available__c != 0';
                 } 
                 soql2 += 'order by Name limit 10';
                 for(Part__c pr :Database.query(soql2)){
@@ -277,7 +277,7 @@ public class Salesorderlineitemcomponentcontroler {
                 partid.add(pd.objProd.id);
             }
             
-            list<Part__History> parthistory = [SELECT Field,NewValue,OldValue,ParentId FROM Part__History WHERE ParentId IN: partid];
+            list<Part__History> parthistory = [SELECT Field,NewValue,OldValue,ParentId FROM Part__History WHERE ParentId IN: partid Order by createddate ASC];
             
             map<string,string> partoldfieldvalue = new map<string,string>();
             if(!parthistory.isempty())
@@ -342,7 +342,9 @@ public class Salesorderlineitemcomponentcontroler {
     @AuraEnabled
     public static string removeRecord(string strWrap, string prodwrappstr)
     {
-        WrappMain objwrap = (WrappMain)Json.deserialize(strWrap, WrappMain.class);      
+        System.debug('prodwrappstr--------'+prodwrappstr);
+        WrappMain objwrap = (WrappMain)Json.deserialize(strWrap, WrappMain.class);
+        if(prodwrappstr != null){      
         prodwrappChild prodwrappobj = (prodwrappChild)Json.deserialize(prodwrappstr, prodwrappChild.class);
         List<prodwrappChild> lstWrapplineItem = objwrap.lstWrappTwo;
         List<prodwrapp> lstWrappProduct = objwrap.lstWrapp;
@@ -372,8 +374,9 @@ public class Salesorderlineitemcomponentcontroler {
         System.debug('size '+lstWrapplineItem.size());
         lstWrapplineItem.remove(i);
         objwrap.lstWrapp = lstWrappProduct;
-        objwrap.lstWrappTwo =  lstWrapplineItem;
-        return json.serialize(objwrap);
+        objwrap.lstWrappTwo =  lstWrapplineItem;  
+        }
+        return json.serialize(objwrap); 
     }
     
     @AuraEnabled
@@ -532,14 +535,16 @@ public class Salesorderlineitemcomponentcontroler {
     }  
     
     @AuraEnabled
-    public static string deleteRecord(string strWrap)
+    public static string deleteRecord(String SOlineID)
     {      
-        prodwrappChild objwrap = (prodwrappChild)Json.deserialize(strWrap, prodwrappChild.class);
+         System.debug('----------- '+SOlineID);
+       // prodwrappChild objwrap = (prodwrappChild)Json.deserialize(strWrap, prodwrappChild.class);
+        //System.debug('----------- '+objwrap);
         try{
-           Delete objwrap.objProdchild;
+           Delete [SELECT id from Sales_Order_Line_Item__c where id =:SOlineID];
         }
          catch(exception ex){
-                
+             System.debug('error----'+ex.getMessage() );   
             }
         return null;
     }

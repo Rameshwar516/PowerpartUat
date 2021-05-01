@@ -29,10 +29,29 @@
         component.set("v.ObjDeliveryNoteLI.lstSubMain",tmpMainWrapper);
     },
 	
-	UpdateRecord: function(component,event,helper)
+    UpdateRecord: function(component,event,helper)
     {
-		helper.UpdateRecord(component, event);
-	},
+        var tmpMainWrapper = component.get("v.mainWrap.lstDeliveryNoteLIWrap");
+        var iserror = false;
+        for(var i=0;i<tmpMainWrapper.length;i++)
+        {
+            if(tmpMainWrapper[i].IntAcceptQty<0)
+                iserror = true;
+        }
+        if(iserror){
+            var toastEvent = $A.get("e.force:showToast");
+            toastEvent.setParams({
+                "type":"error",
+                "title": "Error!",
+                "message": "Value should not be less than 0."
+            });
+            toastEvent.fire();
+        }
+        else{
+            
+            helper.UpdateRecord(component, event);
+        }
+    },
 	EditMRNLI: function(component,event,helper)
     {
         var RecordIndexStr = event.getSource().get("v.value");
@@ -89,9 +108,17 @@
 		var emptylist = []; 
 		var lstSalesReturn = component.get("v.ObjDeliveryNoteLI.lstSubMain");
 		var lstDeliveryNote = component.get("v.mainWrap.lstDeliveryNoteLIWrap");
-		var strType = component.get("v.strType");
+		var strTypevar = component.get("v.strType");
+        var strTypeold = component.get("v.strTypeOld");
+        
+        if(strTypeold == ''){
+            component.set("v.strTypeOld",strTypevar);
+            console.log('old value'+component.get("v.strTypeOld"));
+        }
+        console.log(strTypevar);
+        console.log(component.get("v.strTypeOld"));
 		//alert('lstSalesReturn.length...'+lstSalesReturn);
-		component.set("v.TotalTax",null);
+		/*component.set("v.TotalTax",null);
 		component.set("v.selectedRecord",null);
 		if(lstSalesReturn !=null){
 			component.set("v.ObjDeliveryNoteLI.lstSubMain",emptylist);
@@ -101,18 +128,34 @@
 			component.set("v.mainWrap.lstDeliveryNoteLIWrap",emptylist);
 			component.set("v.lstSelectedTax",emptylist);
 			component.set("v.itemsPurchaseOrderLI",emptylist);
-		}
+		}*/
+        
+        // new code 18 apr Rameshwar start
+
+        if( strTypeold == '' ){
+      
+        }
+        else if(strTypeold != '' && strTypeold != strTypevar){
+            
+            console.log('if');
+            helper.pageLoad(component, event); 
+            component.set("v.strTypeOld",strTypevar);
+            component.set("v.strType",strTypevar);
+            //component.set("v.mainWrap.objMRN.MRN_Type__c",strTypevar); 
+            console.log(strTypevar);
+            console.log(component.get("v.strTypeOld"));
+        }
 	},
 	
 	CalculateQuantity : function(component,event,helper){
 		var target = event.target;
-        var rowIndex = target.getAttribute("data-row-index");
+        var rowIndex = event.getSource().get("v.name");
         var tmpMainWrapper = component.get("v.ObjDeliveryNoteLI.lstSubMain");
 		for(var i=0;i<tmpMainWrapper.length;i++)
         {
             if(rowIndex == i){
 				if(tmpMainWrapper[i].objDNLI != null && tmpMainWrapper[i].objDNLI.Sales_Price__c != null){
-					var BillQTY = event.target.value;
+					var BillQTY = event.getSource().get("v.value");
 					var Amount = BillQTY* tmpMainWrapper[i].objDNLI.Sales_Price__c;
 					if(tmpMainWrapper[i].objDNLI.Discount_Currency__c ==null || tmpMainWrapper[i].objDNLI.Discount_Currency__c == '')
 						tmpMainWrapper[i].objDNLI.Discount_Currency__c =0;
@@ -156,13 +199,13 @@
 	
 	CalculateRate : function(component,event,helper){
 		var target = event.target;
-        var rowIndex = target.getAttribute("data-row-index");
+        var rowIndex = event.getSource().get("v.name");
         var tmpMainWrapper = component.get("v.ObjDeliveryNoteLI.lstSubMain");
 		for(var i=0;i<tmpMainWrapper.length;i++)
         {
             if(rowIndex == i){
 				if(tmpMainWrapper[i].objDNLI != null && tmpMainWrapper[i].objDNLI.Quantity__c != null){
-					var BillQTY = event.target.value;
+					var BillQTY = event.getSource().get("v.value");
 					var Amount = BillQTY* tmpMainWrapper[i].objDNLI.Quantity__c;
 					if(tmpMainWrapper[i].objDNLI.Discount_Currency__c ==null || tmpMainWrapper[i].objDNLI.Discount_Currency__c == '')
 						tmpMainWrapper[i].objDNLI.Discount_Currency__c =0;
@@ -203,13 +246,13 @@
 	
 	CalculateDiscount : function(component,event,helper){
 		var target = event.target;
-        var rowIndex = target.getAttribute("data-row-index");
+        var rowIndex = event.getSource().get("v.name");
         var tmpMainWrapper = component.get("v.ObjDeliveryNoteLI.lstSubMain");
 		for(var i=0;i<tmpMainWrapper.length;i++)
         {
             if(rowIndex == i){
 				if(tmpMainWrapper[i].objDNLI != null && tmpMainWrapper[i].objDNLI.Quantity__c != null && tmpMainWrapper[i].objDNLI.Sales_Price__c != null){
-					var BillQTY = event.target.value;
+					var BillQTY = event.getSource().get("v.value");
 					
 					tmpMainWrapper[i].objDNLI.Discount_Currency__c = BillQTY;
 					var Amount = tmpMainWrapper[i].objDNLI.Total_Amount__c;
@@ -250,12 +293,12 @@
 	
 	CalculateDiscountRate : function(component,event,helper){
 		var target = event.target;
-        var rowIndex = target.getAttribute("data-row-index");
+        var rowIndex = event.getSource().get("v.name");
         var tmpMainWrapper = component.get("v.ObjDeliveryNoteLI.lstSubMain");
 		var isdiscount =  component.get('v.Isdiscount');
         if(isdiscount==true){
 			if(rowIndex == 0){
-				var BillQTY = event.target.value;
+				var BillQTY = event.getSource().get("v.value");
 				tmpMainWrapper[0].objDNLI.Discount__c = BillQTY;
 				if(tmpMainWrapper[0].objDNLI.Discount__c != null && tmpMainWrapper[0].objDNLI.Discount__c != ''){
 					for(var i=0;i<tmpMainWrapper.length;i++)
@@ -317,7 +360,7 @@
 			{
 				if(rowIndex == i){
 					if(tmpMainWrapper[i].objDNLI != null && tmpMainWrapper[i].objDNLI.Quantity__c != null && tmpMainWrapper[i].objDNLI.Sales_Price__c != null){
-						var BillQTY = event.target.value;
+						var BillQTY = event.getSource().get("v.value");
 						tmpMainWrapper[i].objDNLI.Discount__c = BillQTY;
 						var Amount = tmpMainWrapper[i].objDNLI.Total_Amount__c;
 						if(tmpMainWrapper[i].objDNLI.Discount_Currency__c ==null || tmpMainWrapper[i].objDNLI.Discount_Currency__c == '')
@@ -414,12 +457,12 @@
 	
 	CalculateSalesCGST: function (component, event) {
 		var target = event.target;
-        var rowIndex = target.getAttribute("data-row-index");
+        var rowIndex = event.getSource().get("v.name");
         var tmpMainWrapper = component.get("v.ObjDeliveryNoteLI.lstSubMain");
 		for(var i=0;i<tmpMainWrapper.length;i++)
         {
             if(rowIndex == i){
-				var IntGST = event.target.value;
+				var IntGST = event.getSource().get("v.value");
 				var IntCGST =0;
 				var IntSGST =0;
 				var IntIGST =0;
@@ -443,12 +486,12 @@
 	
 	CalculateSalesSGST: function (component,event,helper) {
 		var target = event.target;
-        var rowIndex = target.getAttribute("data-row-index");
+        var rowIndex = event.getSource().get("v.name");
         var tmpMainWrapper = component.get("v.ObjDeliveryNoteLI.lstSubMain");
 		for(var i=0;i<tmpMainWrapper.length;i++)
         {
             if(rowIndex == i){
-				var IntGST = event.target.value;
+				var IntGST = event.getSource().get("v.value");
 				var IntCGST =0;
 				var IntSGST =0;
 				var IntIGST =0;
@@ -472,12 +515,12 @@
 	
 	CalculateSalesIGST: function (component,event,helper) {
 		var target = event.target;
-        var rowIndex = target.getAttribute("data-row-index");
+        var rowIndex = event.getSource().get("v.name");
         var tmpMainWrapper = component.get("v.ObjDeliveryNoteLI.lstSubMain");
 		for(var i=0;i<tmpMainWrapper.length;i++)
         {
             if(rowIndex == i){
-				var IntGST = event.target.value;
+				var IntGST = event.getSource().get("v.value");
 				var IntCGST =0;
 				var IntSGST =0;
 				var IntIGST =0;
@@ -694,17 +737,29 @@
 	},
 	CalculateBillQty : function(component,event,helper){
         
-		var target = event.target;
-        var rowIndex = target.getAttribute("data-row-index");
+		//var target = event.getSource().get("v.value");
+        var rowIndex = event.getSource().get("v.name");
         var tmpMainWrapper = component.get("v.mainWrap.lstDeliveryNoteLIWrap");
         
 		for(var i=0;i<tmpMainWrapper.length;i++)
         {
             if(rowIndex == i){
-				var IntBillQty = event.target.value;
+				var IntBillQty =event.getSource().get("v.value");
 				tmpMainWrapper[i].IntBillQty = IntBillQty;
 				
 				tmpMainWrapper[i].IntAcceptQty =  IntBillQty - tmpMainWrapper[i].IntReceiptQty;
+                 if(tmpMainWrapper[i].IntAcceptQty<0){
+                    var toastEvent = $A.get("e.force:showToast");
+                        toastEvent.setParams({
+                            "type":"error",
+                            "title": "Error!",
+                            "message": "Value should not be less than 0."
+                        });
+                        toastEvent.fire();
+                }
+                else{ 
+                
+                    
 				tmpMainWrapper[i].IntTotalAmountGBP = tmpMainWrapper[i].IntPriceGBP*IntBillQty;
                 var IntExWorkValue = component.get("v.mainWrap.objMRN.Ex_Work_Value__c");
 					var IntSurcharge = component.get("v.mainWrap.objMRN.Surcharge__c");
@@ -755,22 +810,24 @@
 					}
                 
 				component.set("v.mainWrap.lstDeliveryNoteLIWrap",tmpMainWrapper);
-			}else{
+			}
+        }else{
 				component.set("v.mainWrap.lstDeliveryNoteLIWrap",tmpMainWrapper);
 			}
+           
 		}
         component.set("v.mainWrap.lstDeliveryNoteLIWrap",tmpMainWrapper);
     },
 					
 	CalculateDeliveryNoteQty : function(component,event,helper){
-		var target = event.target;
-        var rowIndex = target.getAttribute("data-row-index");
+		//var target = event.target;
+        var rowIndex = event.getSource().get("v.name");
         var tmpMainWrapper = component.get("v.mainWrap.lstDeliveryNoteLIWrap");
 		for(var i=0;i<tmpMainWrapper.length;i++)
         {
             if(rowIndex == i){
 				if(tmpMainWrapper[i].IntBillQty != null){
-					var IntBillQty = event.target.value;
+					var IntBillQty =event.getSource().get("v.value");
 					tmpMainWrapper[i].IntReceiptQty = IntBillQty;
 					tmpMainWrapper[i].IntAcceptQty = tmpMainWrapper[i].IntBillQty - IntBillQty;
 					/*var Amount = IntBillQty * tmpMainWrapper[i].objPOLI.Sales_Price__c;
@@ -802,14 +859,14 @@
         component.set("v.mainWrap.lstDeliveryNoteLIWrap",tmpMainWrapper);
     },
 	CalculateTotalPriceGBP : function(component,event,helper){
-		var target = event.target;
-        var rowIndex = target.getAttribute("data-row-index");
+		//var target = event.target;
+        var rowIndex = event.getSource().get("v.name");
         var tmpMainWrapper = component.get("v.mainWrap.lstDeliveryNoteLIWrap");
 		for(var i=0;i<tmpMainWrapper.length;i++)
         {
             if(rowIndex == i){
 				if(tmpMainWrapper[i].IntBillQty !=null){
-					var IntBillQty = event.target.value;
+					var IntBillQty = event.getSource().get("v.value");
 					tmpMainWrapper[i].IntPriceGBP = IntBillQty;
 					tmpMainWrapper[i].IntTotalAmountGBP =  tmpMainWrapper[i].IntBillQty * IntBillQty;
 					var IntExWorkValue = component.get("v.mainWrap.objMRN.Ex_Work_Value__c");
@@ -874,14 +931,14 @@
 	
 	
 	CalculateCGSTAmount : function(component,event,helper){
-		var target = event.target;
-        var rowIndex = target.getAttribute("data-row-index");
+		//var target = event.target;
+        var rowIndex = event.getSource().get("v.name");
         var tmpMainWrapper = component.get("v.mainWrap.lstDeliveryNoteLIWrap");
 		for(var i=0;i<tmpMainWrapper.length;i++)
         {
             if(rowIndex == i){
 				if(tmpMainWrapper[i].IntTaxableValue !=null){
-					var IntBillQty = event.target.value;
+					var IntBillQty = event.getSource().get("v.value");
 					tmpMainWrapper[i].IntCGSTRate = IntBillQty;
 					tmpMainWrapper[i].IntCGSTAmount =  tmpMainWrapper[i].IntTaxableValue * IntBillQty/100;
 					//tmpMainWrapper[i].IntTotalInsuranceCost = tmpMainWrapper[i].IntCGSTAmount + tmpMainWrapper[i].IntSGSTAmount + tmpMainWrapper[i].IntIGSTAmount;
@@ -895,14 +952,14 @@
         component.set("v.mainWrap.lstDeliveryNoteLIWrap",tmpMainWrapper);
 	},
 	CalculateSGSTAmount : function(component,event,helper){
-		var target = event.target;
-        var rowIndex = target.getAttribute("data-row-index");
+		//var target = event.target;
+        var rowIndex =event.getSource().get("v.name");
         var tmpMainWrapper = component.get("v.mainWrap.lstDeliveryNoteLIWrap");
 		for(var i=0;i<tmpMainWrapper.length;i++)
         {
             if(rowIndex == i){
 				if(tmpMainWrapper[i].IntTaxableValue !=null){
-					var IntBillQty = event.target.value;
+					var IntBillQty = event.getSource().get("v.value");
 					tmpMainWrapper[i].IntSGSTRate = IntBillQty;
 					tmpMainWrapper[i].IntSGSTAmount =  tmpMainWrapper[i].IntTaxableValue * IntBillQty/100;
 					//tmpMainWrapper[i].IntTotalInsuranceCost = tmpMainWrapper[i].IntCGSTAmount + tmpMainWrapper[i].IntSGSTAmount + tmpMainWrapper[i].IntIGSTAmount;
@@ -917,14 +974,14 @@
 	},
 	
 	CalculateIGSTAmount : function(component,event,helper){
-		var target = event.target;
-        var rowIndex = target.getAttribute("data-row-index");
+		//var target = event.target;
+        var rowIndex = event.getSource().get("v.name");;
         var tmpMainWrapper = component.get("v.mainWrap.lstDeliveryNoteLIWrap");
 		for(var i=0;i<tmpMainWrapper.length;i++)
         {
             if(rowIndex == i){
 				if(tmpMainWrapper[i].IntTaxableValue !=null){
-					var IntBillQty = event.target.value;
+					var IntBillQty = event.getSource().get("v.value");;
 					tmpMainWrapper[i].IntIGSTRate = IntBillQty;
 					tmpMainWrapper[i].IntIGSTAmount =  tmpMainWrapper[i].IntTaxableValue * IntBillQty/100;
 					tmpMainWrapper[i].IntTotalInsuranceCost =tmpMainWrapper[i].IntTaxableValue+ tmpMainWrapper[i].IntCGSTAmount + tmpMainWrapper[i].IntSGSTAmount + tmpMainWrapper[i].IntIGSTAmount;
@@ -1384,14 +1441,14 @@
     },
 	
 	CalculateMRNQty : function(component,event,helper){
-		var target = event.target;
-        var rowIndex = target.getAttribute("data-row-index");
+		//var target = event.target;
+        var rowIndex = event.getSource().get("v.name");
         var tmpMainWrapper = component.get("v.mainWrap.lstMRNLineItems");
 		for(var i=0;i<tmpMainWrapper.length;i++)
         {
             if(rowIndex == i){
 				if(tmpMainWrapper[i].ObjMRNLI != null && tmpMainWrapper[i].ObjMRNLI.Sales_Price__c != null){
-					var IntBillQty = event.target.value;
+					var IntBillQty = event.getSource().get("v.value");
 					var Amount = IntBillQty * tmpMainWrapper[i].ObjMRNLI.Sales_Price__c;
 					tmpMainWrapper[i].ObjMRNLI.Received_QTY__c = IntBillQty;
 					tmpMainWrapper[i].ObjMRNLI.Total_Amount__c = Amount;
@@ -1433,14 +1490,14 @@
 	
 	
 	CalculateMRNRate : function(component,event,helper){
-		var target = event.target;
-        var rowIndex = target.getAttribute("data-row-index");
+		//var target = event.target;
+        var rowIndex = event.getSource().get("v.name");
         var tmpMainWrapper = component.get("v.mainWrap.lstMRNLineItems");
 		for(var i=0;i<tmpMainWrapper.length;i++)
         {
             if(rowIndex == i){
 				if(tmpMainWrapper[i].ObjMRNLI != null && tmpMainWrapper[i].ObjMRNLI.Received_QTY__c != null){
-					var IntBillQty = event.target.value;
+					var IntBillQty = event.getSource().get("v.value");
 					var Amount = IntBillQty * tmpMainWrapper[i].ObjMRNLI.Received_QTY__c;
 					tmpMainWrapper[i].ObjMRNLI.Sales_Price__c = IntBillQty;
 					tmpMainWrapper[i].ObjMRNLI.Total_Amount__c = Amount;
@@ -1482,15 +1539,15 @@
 	
 	
 	CalculateMRNDisRate : function(component,event,helper){
-		var target = event.target;
-        var rowIndex = target.getAttribute("data-row-index");
+		//var target = event.target;
+        var rowIndex = event.getSource().get("v.name");
         var tmpMainWrapper = component.get("v.mainWrap.lstMRNLineItems");
 		var IsdiscountCheckbox =  component.get('v.Isdiscount');
 		//alert(rowIndex+'...IsdiscountCheckbox'+IsdiscountCheckbox);
 		if(IsdiscountCheckbox==true)
 		{
 			if(rowIndex == 0){
-				var IntBillQty = event.target.value;
+				var IntBillQty = event.getSource().get("v.value");
 				tmpMainWrapper[0].ObjMRNLI.Discount__c = IntBillQty;
 				if(tmpMainWrapper[0].ObjMRNLI.Discount__c != null && tmpMainWrapper[0].ObjMRNLI.Discount__c != ''){
 					for(var i=0;i<tmpMainWrapper.length;i++)
@@ -1665,13 +1722,13 @@
 	
 	CalculateMRNDisAmount : function(component,event,helper){
 		var target = event.target;
-        var rowIndex = target.getAttribute("data-row-index");
+        var rowIndex = event.getSource().get("v.name");
         var tmpMainWrapper = component.get("v.mainWrap.lstMRNLineItems");
 		for(var i=0;i<tmpMainWrapper.length;i++)
         {
             if(rowIndex == i){
 				if(tmpMainWrapper[i].ObjMRNLI != null && tmpMainWrapper[i].ObjMRNLI.Total_Amount__c != null){
-					var IntBillQty = event.target.value;
+					var IntBillQty = event.getSource().get("v.value");
 					var Amount = tmpMainWrapper[i].ObjMRNLI.Total_Amount__c;
 					tmpMainWrapper[i].ObjMRNLI.Discount_Amount__c = IntBillQty;
 					tmpMainWrapper[i].ObjMRNLI.Total_Amount__c = Amount;
@@ -1716,13 +1773,13 @@
 	
 	CalculateMRNCGST : function(component,event,helper){
 		var target = event.target;
-        var rowIndex = target.getAttribute("data-row-index");
+        var rowIndex =event.getSource().get("v.name");
         var tmpMainWrapper = component.get("v.mainWrap.lstMRNLineItems");
 		for(var i=0;i<tmpMainWrapper.length;i++)
         {
             if(rowIndex == i){
 				if(tmpMainWrapper[i].ObjMRNLI != null){
-					var IntGST = event.target.value;
+					var IntGST =event.getSource().get("v.value");
 					var IntCGST =0;
 					var IntSGST =0;
 					var IntIGST =0;
@@ -1746,13 +1803,13 @@
 	
 	CalculateMRNSGST : function(component,event,helper){
 		var target = event.target;
-        var rowIndex = target.getAttribute("data-row-index");
+        var rowIndex = event.getSource().get("v.name");
         var tmpMainWrapper = component.get("v.mainWrap.lstMRNLineItems");
 		for(var i=0;i<tmpMainWrapper.length;i++)
         {
             if(rowIndex == i){
 				if(tmpMainWrapper[i].ObjMRNLI != null && tmpMainWrapper[i].ObjMRNLI.Taxable_Amount_Formula__c != null){
-					var IntGST = event.target.value;
+					var IntGST = event.getSource().get("v.value");
 					var IntCGST =0;
 					var IntSGST =0;
 					var IntIGST =0;
@@ -1776,13 +1833,13 @@
 	
 	CalculateMRNIGST : function(component,event,helper){
 		var target = event.target;
-        var rowIndex = target.getAttribute("data-row-index");
+        var rowIndex = event.getSource().get("v.name");
         var tmpMainWrapper = component.get("v.mainWrap.lstMRNLineItems");
 		for(var i=0;i<tmpMainWrapper.length;i++)
         {
             if(rowIndex == i){
 				if(tmpMainWrapper[i].ObjMRNLI != null && tmpMainWrapper[i].ObjMRNLI.Taxable_Amount_Formula__c != null){
-					var IntGST = event.target.value;
+					var IntGST = event.getSource().get("v.value");
 					var IntCGST =0;
 					var IntSGST =0;
 					var IntIGST =0;
@@ -1855,7 +1912,28 @@
     },
 	
     submitJS : function(component,event,helper){
-		helper.CreateMRN(component, event);
+        var Type = component.get('v.strType');
+        var selected = component.get('v.selectedRecord');
+        var MRN_Delivery_Type__c = component.get('v.mainWrap.objMRN.MRN_Delivery_Type__c');
+        var Supplier = component.get('v.Supplier');
+        if(Type == 'Sales Return' && selected!= null && selected!= ''){
+            helper.CreateMRN(component, event);
+        }
+        else if((Type == 'Purchase Order' || Type == 'Direct') && (MRN_Delivery_Type__c != null && MRN_Delivery_Type__c != '') && Supplier != null && selected!= null ){
+            helper.CreateMRN(component, event);
+        }
+        else{
+            var toastEvent = $A.get("e.force:showToast");
+            toastEvent.setParams({
+                "type":"error",
+                "title": "Error!",
+                "message": "Please fill all information."
+            });
+            toastEvent.fire();
+            $A.get("e.force:closeQuickAction").fire();
+        }
+        
+		
 	},
 	Cancel : function(component,event,helper){
 		var urlEvent = $A.get("e.force:navigateToURL");

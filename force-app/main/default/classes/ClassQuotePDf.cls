@@ -194,28 +194,33 @@ public class ClassQuotePDf {
             
             for(Line_Item__c liobj : Litem){
                 if(liobj.Taxable_Amount_Formula__c!=null){
-                    totaltaxable=(totaltaxable+liobj.Taxable_Amount_Formula__c).round();
+                    totaltaxable=(totaltaxable+liobj.Taxable_Amount_Formula__c);
                 }
                 if(liobj.CGST_Amount_Formula__c!=null){
-                    totalCgst=(totalCgst+ liobj.CGST_Amount_Formula__c).round();
+                    totalCgst=(totalCgst+ liobj.CGST_Amount_Formula__c);
                 }
                 if(liobj.SGST_Amount_Formula__c!=null){
-                    totalSgst=(totalSgst+ liobj.SGST_Amount_Formula__c).round();
+                    totalSgst=(totalSgst+ liobj.SGST_Amount_Formula__c);
                 }
                 if(liobj.IGST_Amount_Formula__c!=null){
-                    totalIgst=(totalIgst+ liobj.IGST_Amount_Formula__c).round();
+                    totalIgst=(totalIgst+ liobj.IGST_Amount_Formula__c);
                 }
                 if(liobj.Net_Amount__c!=null){
-                    TotalAMount=(TotalAMount+ liobj.Net_Amount__c).round();
+                    TotalAMount=(TotalAMount+ liobj.Net_Amount__c);
                 }
                 totalGsttax=totalCgst+totalSgst+totalIgst;
                 totalAmountaftertax=TotalAMount+totalGsttax;
-                totalAmountaftertax.round();
                 if(totalAmountaftertax > 0){
-                    totalAmountaftertax = totalAmountaftertax.round();
                     totalAmountaftertaxinWords = UtilityClass.NoToWord(totalAmountaftertax.intValue());
                 }
             }
+
+            totaltaxable=totaltaxable.round();
+            totalCgst=totalCgst.round();
+            totalSgst=totalSgst.round();
+            totalIgst=totalIgst.round();
+            TotalAMount=TotalAMount.round();
+            totalAmountaftertax = totalAmountaftertax.round();
             totalAmountNotIncludedTax = 0;
             totalTax = 0;
             totalTax= totalIgst+totalSgst+totalCgst;

@@ -1,6 +1,8 @@
 ({
 	pageLoad : function(component, event,strPurchaseOrderId) {
 		var action = component.get('c.doInit');
+        
+        
 		component.set('v.spinnerIsVisibile', true);
 		action.setParams({
 			'strRecordId' : component.get("v.recordId")
@@ -13,7 +15,18 @@
 				//alert('...!!!'+component.get("v.mainWrap.lstDeliveryNoteLIWrap").length);
 				//component.set("v.mainWrap.lstDeliveryNoteLIWrap", component.get("v.mainWrap.lstDeliveryNoteLIWrap"));
 				component.set("v.TotalTax",component.get("v.mainWrap.TotalTaxAmount"));
-				component.set("v.strType", component.get("v.mainWrap.objMRN.MRN_Type__c"));
+                
+                console.log('id '+component.get("v.mainWrap.objMRN.Id"));
+
+                if( typeof component.get("v.mainWrap.objMRN.Id") === 'undefined'){  
+                    component.set("v.strType",component.get("v.strType")); 
+                }
+                else{
+                    component.set("v.strType", component.get("v.mainWrap.objMRN.MRN_Type__c")); 
+                    console.log('helper else '+component.get("v.mainWrap.objMRN.MRN_Type__c"));
+                    
+                }
+                
 				component.set('v.spinnerIsVisibile', false);
 			}
 		});

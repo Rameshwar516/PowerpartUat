@@ -145,13 +145,25 @@
                 </div>  
                     
                 <div style="width:100%;"> 
-                    <div style="float:left;width:50%;">
+                    <div style="float:left;width:40%;">
                         Engine Serial No.: {!Quote__c.Opportunity__r.Customer_Asset__r.Name}
                     </div>
-                    
-                    <div style="float:left;width:50%;">
+                     <div style="float:left;margin-left:8%;text-align:center;">
+                        
+                    </div>
+                    <div style="float:right;width:30%;">
                         Application: {!Quote__c.Opportunity__r.Customer_Asset__r.Applications__c}
                     </div>
+                </div>
+                 <div style="width:100%;"> 
+                    <div style="float:left; width:100%;">&nbsp;
+                    </div>
+                </div>  
+                 <div style="width:100%;"> 
+                    <div style="float:left;width:40%;">
+                       <b>Subject </b>: 
+                    </div>
+                    
                 </div>
                 
                 <div style="width:100%;"> 
@@ -221,8 +233,11 @@
             
                <div style="width:100%;"> 
                     <div style="float:left;width:100%;">
-                        Terms &amp; Conditions: <br/><apex:outputfield value="{!Quote__c.Term_and_Condition__c}"/>
+                        <u><b>Terms &amp; Conditions </b></u>: <br/><apex:outputfield value="{!Quote__c.Term_and_Condition__c}"/>
                     </div>
+                </div>
+                <div style="float:left;width:100%;margin-top: 25px;">
+                    Kindly Send the PO for Engineers Visit enable us to Proceed further
                 </div>
                 <div style="width:100%;"> 
                     <div style="float:left;width:100%;">

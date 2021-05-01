@@ -176,7 +176,7 @@
                         <center><apex:outputText value=":" /></center>
                     </td>
                     <td style="border:none;" width="18%" valign="top">
-                        <apex:outputText value="{!objInvoice.Name}" /> 
+                        <apex:outputText value="{!objInvoice.Invoice_Number__c}" /> 
                     </td>
                     <td style="border:none;" width="12%" valign="top"></td>
                     

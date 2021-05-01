@@ -29,6 +29,7 @@ public class UpsertPackingList {
             objIW.strRemark = objDNLI.Remark__c;
             listIW.add(objIW);
         }
+        /*
         if(!listIW.isempty()) for(innerWrp pl:listIW) prePartId.add(pl.objDNLI.Part_No__c);
         list<Delivery_Note_Line_Item__c> ObjDN =[Select id, Product_Part__c,Product_Part__r.Name,
                                                  Product_Part__r.Part_Name__c, Quantity__c,Sales_Order_Dispatch_Delivery_Note__c
@@ -45,7 +46,7 @@ public class UpsertPackingList {
                 objIW.isSelected= false;
                 listIW.add(objIW);
             }
-        
+        */
         objWR.inrWrap = listIW;
         system.debug('....objWR...'+objWR);
         return json.serialize(objWR);

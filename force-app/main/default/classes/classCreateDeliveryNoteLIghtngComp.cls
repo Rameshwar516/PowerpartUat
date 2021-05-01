@@ -222,6 +222,7 @@ public class classCreateDeliveryNoteLIghtngComp {
                     sOD.LC_Date__c= wrap.objSales_Order.LC_Date__c;
                     sOD.LC_Term__c= wrap.objSales_Order.LC_Term__c;
                     sOD.Customer_Party__c= wrap.objSales_Order.Customer_Name__c;
+                    sOD.Contact_Person_Name__c=wrap.objSales_Order.Contact_Person__c;
                     sOD.Mode__c= wrap.objSales_Order.Mode_of_Transport__c;
                     sOD.Remark__c= wrap.objSales_Order.Remark__c;
                     sOD.Shipping_Account__c= wrap.objSales_Order.Shipping_Account__c;

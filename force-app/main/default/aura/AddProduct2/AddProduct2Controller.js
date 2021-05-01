@@ -85,14 +85,14 @@
                             });
                             toastEvent.fire();
                         }
-                        else{
-                            tmpWrapper[i].DiscountAmount = (event.getSource().get("v.value") * tmpWrapper[i].totalAmount)/100;
-                            tmpWrapper[i].TotalAfterDiscount = tmpWrapper[i].totalAmount - tmpWrapper[i].DiscountAmount;
-                            tmpWrapper[i].CGSTAmount= (child.CGST__c * tmpWrapper[i].TotalAfterDiscount)/100;
-                            tmpWrapper[i].SGSTAmount= (child.SGST__c * tmpWrapper[i].TotalAfterDiscount)/100;
-                            tmpWrapper[i].IGSTAmount= (child.IGST__c * tmpWrapper[i].TotalAfterDiscount)/100;
-                            tmpWrapper[i].NetTotalAmount = tmpWrapper[i].TotalAfterDiscount+tmpWrapper[i].CGSTAmount+tmpWrapper[i].SGSTAmount+tmpWrapper[i].IGSTAmount;  
-                        }
+                            else{
+                                tmpWrapper[i].DiscountAmount = (event.getSource().get("v.value") * tmpWrapper[i].totalAmount)/100;
+                                tmpWrapper[i].TotalAfterDiscount = tmpWrapper[i].totalAmount - tmpWrapper[i].DiscountAmount;
+                                tmpWrapper[i].CGSTAmount= (child.CGST__c * tmpWrapper[i].TotalAfterDiscount)/100;
+                                tmpWrapper[i].SGSTAmount= (child.SGST__c * tmpWrapper[i].TotalAfterDiscount)/100;
+                                tmpWrapper[i].IGSTAmount= (child.IGST__c * tmpWrapper[i].TotalAfterDiscount)/100;
+                                tmpWrapper[i].NetTotalAmount = tmpWrapper[i].TotalAfterDiscount+tmpWrapper[i].CGSTAmount+tmpWrapper[i].SGSTAmount+tmpWrapper[i].IGSTAmount;  
+                            }
                     }
                     else{
                         if(event.getSource().get("v.value") < 0){
@@ -104,13 +104,16 @@
                             });
                             toastEvent.fire();
                         }
+                        
                         else{
                             child.Discount__c = (event.getSource().get("v.value")*100 )/ tmpWrapper[i].totalAmount;
-                            tmpWrapper[i].TotalAfterDiscount = tmpWrapper[i].totalAmount - event.getSource().get("v.value");
-                            tmpWrapper[i].CGSTAmount= (child.CGST__c * tmpWrapper[i].TotalAfterDiscount)/100;
-                            tmpWrapper[i].SGSTAmount= (child.SGST__c * tmpWrapper[i].TotalAfterDiscount)/100;
-                            tmpWrapper[i].IGSTAmount= (child.IGST__c * tmpWrapper[i].TotalAfterDiscount)/100;
-                            tmpWrapper[i].NetTotalAmount = tmpWrapper[i].TotalAfterDiscount+tmpWrapper[i].CGSTAmount+tmpWrapper[i].SGSTAmount+tmpWrapper[i].IGSTAmount;  
+                                                        
+                                tmpWrapper[i].TotalAfterDiscount = tmpWrapper[i].totalAmount - event.getSource().get("v.value");
+                                tmpWrapper[i].CGSTAmount= (child.CGST__c * tmpWrapper[i].TotalAfterDiscount)/100;
+                                tmpWrapper[i].SGSTAmount= (child.SGST__c * tmpWrapper[i].TotalAfterDiscount)/100;
+                                tmpWrapper[i].IGSTAmount= (child.IGST__c * tmpWrapper[i].TotalAfterDiscount)/100;
+                                tmpWrapper[i].NetTotalAmount = tmpWrapper[i].TotalAfterDiscount+tmpWrapper[i].CGSTAmount+tmpWrapper[i].SGSTAmount+tmpWrapper[i].IGSTAmount;  
+                            
                             
                         }
                     }
@@ -327,14 +330,18 @@
                tmpMainWrapper[i].objProdchild.Sales_Price__c < 1|| 
                tmpMainWrapper[i].objProdchild.Discount__c ==null ||
                tmpMainWrapper[i].objProdchild.Discount__c < 0 || 
+               tmpMainWrapper[i].objProdchild.Discount__c > 100 || 
                tmpMainWrapper[i].DiscountAmount ==null ||
                tmpMainWrapper[i].DiscountAmount < 0 || 
                tmpMainWrapper[i].objProdchild.CGST__c ==null ||
                tmpMainWrapper[i].objProdchild.CGST__c < 0 ||
+               tmpMainWrapper[i].objProdchild.CGST__c > 100 ||
                tmpMainWrapper[i].objProdchild.SGST__c ==null ||
                tmpMainWrapper[i].objProdchild.SGST__c < 0||
+               tmpMainWrapper[i].objProdchild.SGST__c > 100||
                tmpMainWrapper[i].objProdchild.IGST__c ==null ||
-               tmpMainWrapper[i].objProdchild.IGST__c < 0
+               tmpMainWrapper[i].objProdchild.IGST__c < 0 ||
+               tmpMainWrapper[i].objProdchild.IGST__c > 100
               ){
                 Istrue = true;
             }
@@ -389,7 +396,7 @@
                 toastEvent.setParams({
                     "type":"error",
                     "title": "Error!",
-                    "message": "Error Add Parts section !!! Value less than 0  or Blank not valid."
+                    "message": "Error Add Parts section !!! Value less than 0,percentage value more than 100 or Blank not valid."
                 });
                 toastEvent.fire(); 
            component.set("v.wrapMain.success", false);
@@ -746,7 +753,7 @@
         if(isdeliverydate==true){
             if(tmpMainWrapper.length>=2){
                 console.log(tmpMainWrapper[0].objProdchild.Delivery_Date__c);
-                if(tmpMainWrapper[0].objProdchild.Delivery_Date__c != null && tmpMainWrapper[0].objProdchild.Delivery_Date__c != ' '){
+                if(tmpMainWrapper[0].objProdchild.Delivery_Date__c != null && tmpMainWrapper[0].objProdchild.Delivery_Date__c != ''){
                     for(var i=1;i<tmpMainWrapper.length;i++){
                         tmpMainWrapper[i].objProdchild.Delivery_Date__c = tmpMainWrapper[0].objProdchild.Delivery_Date__c;
                     } 
@@ -773,10 +780,11 @@
     discountactionCheckbox : function(component, event, helper) {
         var tmpMainWrapper =  component.get('v.wrapMain.lstWrappTwo');
         var isdiscount =  component.get('v.isdiscount');
+        
         if(isdiscount==true){
             if(tmpMainWrapper.length>=2){
                 console.log(tmpMainWrapper[0].objProdchild.Discount__c);
-                if(tmpMainWrapper[0].objProdchild.Discount__c != null && tmpMainWrapper[0].objProdchild.Discount__c != ' '){
+                if(tmpMainWrapper[0].objProdchild.Discount__c != null && tmpMainWrapper[0].objProdchild.Discount__c != ''){
                     for(var i=0;i<tmpMainWrapper.length;i++){
                         var child = tmpMainWrapper[i].objProdchild;
                         tmpMainWrapper[i].objProdchild.Discount__c = tmpMainWrapper[0].objProdchild.Discount__c;

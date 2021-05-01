@@ -79,6 +79,7 @@
     },
     onRemainQtyChange: function(component, event, helper) {
         console.log('change');
+        
         var rowindex = event.getSource().get("v.name");
         var wrapperchild=component.get("v.wrapMains.wrapChildlst");
         console.log(event.getSource().get("v.value"));

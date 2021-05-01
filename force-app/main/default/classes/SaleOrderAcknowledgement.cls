@@ -195,6 +195,20 @@ Billing State And Billing Code, Shipping State and Shipping Code
              igstbool=false;
             
             List<Sales_Order_Line_Item__c> lstSOI = Database.query(strSalesOrderItemQuery);
+            set<string> productIDSet = new set<string>();
+            if(lstSOI.size() > 0){
+                for(Sales_Order_Line_Item__c objSOLI : lstSOI)
+            		productIDSet.add(objSOLI.Product_Part__c);
+            } 
+            system.debug('-----AND Ware_House__c=:objSO.Ware_House__c-------------------'+objSO.Ware_House__c);
+            String warehouse = objSO.Ware_House__c; 
+                List<String> lststockField = UtilityClass.getAllFields('Stock__c');
+                String strStockQuery = 'Select ' +String.Join(lststockField, ',')+' From Stock__c where Product_Part__c IN:productIDSet AND Ware_House__c=: warehouse';
+                list<stock__c> stocklist = Database.query(strStockQuery);
+            Map<string,stock__c> stockmap = new Map<string,stock__c>(); 
+            if(!stocklist.isempty()) for(stock__c st:stocklist) stockmap.put(st.Product_Part__c, st);
+            
+            
             if(lstSOI.size() > 0){
                 for(Sales_Order_Line_Item__c objSOLI : lstSOI){
                     wrapper objWrap = new wrapper();
@@ -206,6 +220,10 @@ Billing State And Billing Code, Shipping State and Shipping Code
                     if(objSOLI.CGST__c > 0 && objSOLI.Taxable_Amount__c > 0)
                         objWrap.CGSTAmount = ((objSOLI.Taxable_Amount__c * objSOLI.CGST__c)/100).setScale(2);
                     
+                    if(stockmap.containskey(objSOLI.Product_Part__c) && objSOLI.Quantity__c <= stockmap.get(objSOLI.Product_Part__c).Total_Unbooked_Quantity__c){
+                        System.debug(objSOLI.Quantity__c+' ------ '+stockmap.get(objSOLI.Product_Part__c).Total_Unbooked_Quantity__c);
+                        objWrap.isAvailable =true;
+                    }
                     lstSOIW.add(objWrap);
                     
                     subTotalTaxableAmount = subTotalTaxableAmount+objSOLI.Taxable_Amount__c ;
@@ -238,25 +256,17 @@ Billing State And Billing Code, Shipping State and Shipping Code
                         taxsummaryMap.put(objSOLI.IGST__c,taxammount);
                         system.debug('IGST');
                     }
-                    else{
-                        
+                    else{  
                         if(objSOLI.SGST__c > 0 ){
                             decimal taxammount =  taxsummaryMap.get(objSOLI.SGST__c)+objSOLI.Taxable_Amount__c;
                             taxsummaryMap.put(objSOLI.SGST__c,taxammount);
                             
                         }
-                        
-                        system.debug(objSOLI.IGST__c );
-                        system.debug(taxsummaryMap.get(objSOLI.IGST__c));
                         if(objSOLI.IGST__c > 0 ){
                             decimal taxammount =  taxsummaryMap.get(objSOLI.IGST__c)+objSOLI.Taxable_Amount__c;
-                            taxsummaryMap.put(objSOLI.IGST__c,taxammount); 
-                            
-                        }
-                        
-                    } 
-                
-                    
+                            taxsummaryMap.put(objSOLI.IGST__c,taxammount);  
+                        } 
+                    }      
                 }
                 
                 
@@ -274,15 +284,7 @@ Billing State And Billing Code, Shipping State and Shipping Code
                     }
                 }
                 system.debug('list size '+taxSummarylist.size());
-                
-                
-                
-                
-                
-                
-                
-                
-                
+
                 
                 if(objSO.Packing_Charges__c > 0 && subTotalTaxableAmount > 0)
                     objGSTCharge.PackingCharges = ((subTotalTaxableAmount*objSO.Packing_Charges__c)/100).setScale(2);
@@ -348,15 +350,16 @@ TotalGST = TotalIGST+ TotalCGST+ TotalSGST;*/
             for(Charges__c objCharg : lstCharges)
             {
                 TotalTaxableAmount = TotalTaxableAmount+objCharg.Charge_Amount__c;
-                totalAmountCgst = objCharg.CGST_Amount__c;
-                totalAmountSgst = objCharg.SGST_Amount__c;
-                totalAmountIgst = objCharg.IGST_Amount__c;
+                totalAmountCgst = totalAmountCgst+objCharg.CGST_Amount__c;
+                totalAmountSgst = totalAmountSgst+objCharg.SGST_Amount__c;
+                totalAmountIgst = totalAmountIgst+objCharg.IGST_Amount__c;
                 TotalAmountWithCharges = TotalAmountWithCharges+objCharg.Net_Amount__c;
-            }      
+            }  
+            system.debug('...'+totalAmountCgst+'..'+totalAmountSgst+'....'+totalAmountIgst);
             TotalTaxableAmount = TotalTaxableAmount.round();
-            TotalIGST = (SubTotalIGST+TotalIGST+ totalAmountIgst).round();
-            TotalCGST = (SubTotalCGST+totalAmountCgst+TotalCGST).round();
-            TotalSGST = (SubTotalSGST+totalAmountSgst+TotalSGST).round();
+            TotalIGST = (SubTotalIGST+TotalIGST+ totalAmountIgst);
+            TotalCGST = (SubTotalCGST+totalAmountCgst+TotalCGST);
+            TotalSGST = (SubTotalSGST+totalAmountSgst+TotalSGST);
             TotalGST = TotalIGST+ TotalCGST+ TotalSGST;
             TotalAmount = (subTotalAmount+TotalAmountWithCharges).round();
             
@@ -388,12 +391,14 @@ TotalGST = TotalIGST+ TotalCGST+ TotalSGST;*/
         public Decimal CGSTAmount{get; set;}
         public Decimal SGSTAmount{get; set;}
         public Decimal IGSTAmount{get; set;}
+        public Boolean isAvailable{get; set;}
         
         public wrapper(){
             objSOLI = new Sales_Order_Line_Item__c();
             CGSTAmount = 0;
             SGSTAmount = 0;
             IGSTAmount = 0;
+            isAvailable=false;
         }
         
     }

@@ -1,5 +1,5 @@
 <apex:page sidebar="false" standardController="Quote__c" applyBodyTag="false" extensions="ClsAMCQuote" renderAs="pdf">
-
+    
     <head>
         <style type="text/css">
             @page 
@@ -48,7 +48,7 @@
             }
             
             td {
-             border-width: 1px;
+            border-width: 1px;
             padding: 4px;
             border-style: solid;
             border-color: #000000;
@@ -74,6 +74,7 @@
                     <apex:outputText value="Ph.  : +91 124 4036614/4019215" style="padding-left:4px;font-family: Arial; size: 12pt;"/><br/>
                     <apex:outputText value="Email: " style="padding-left:4px;font-family: Arial; size: 12pt;"/><u style="color:blue;font-family: Arial; size: 12pt;">powerparts@powerparts.in</u><br/>
                 </div>
+                
                 <div style="float:left;margin-left:8%;text-align:center;">
                     
                 </div>
@@ -94,9 +95,9 @@
                     </div>
                     <div style="float:right; width:30%;">
                         Date:
-                            <apex:outputText value="{0, date, d'/'MM'/'y}">
-                                <apex:param value="{!Quote__c.Date__c}"/>
-                            </apex:outputText>
+                        <apex:outputText value="{0, date, d'/'MM'/'y}">
+                            <apex:param value="{!Quote__c.Date__c}"/>
+                        </apex:outputText>
                     </div>
                 </div>
                 
@@ -128,12 +129,12 @@
                     <div style="float:left; width:100%;">&nbsp;
                     </div>
                 </div>  
-                    
+                
                 <div style="width:100%;"> 
-                    <div style="float:left;width:25%;">
+                    <div style="float:left;width:30%;">
                         Engine Serial No.: {!Quote__c.Opportunity__r.Customer_Asset__r.Name}
                     </div>
-                    <div style="float:left;width:25%;">
+                    <div style="float:left;width:20%;">
                         Make: {!Quote__c.Opportunity__r.Customer_Asset__r.Engine_Make__c}
                     </div>
                     <div style="float:left;width:25%;">
@@ -145,96 +146,136 @@
                 </div>
                 
                 <div style="width:100%;"> 
+                    <div style="float:left; width:100%;">&nbsp;
+                    </div>
+                </div>  
+                
+                <div class="slds-m-top_large">
+                    <div style="width:100%;">
+                        <div style="float:left; width:40%;">
+                            <u><b> Subject Annual Maintenance Contract :</b></u> 
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="width:100%;"> 
                     <div style="float:left;width:100%;margin-top:5px">
                         &nbsp;<br/>
                         Dear Sir, <br/><br/>
-                            We are pleased to enclose our scope of work for Annual Maintenance Contract for subject Diesel Generating Set.
+                        We are pleased to enclose our scope of work for Annual Maintenance Contract for subject Diesel Generating Set.
                     </div>
                 </div>
                 
                 <div style="width:100%;"> 
-                <div style="float:left;width:100%;margin-top:5px">
-                    
-                <table style="width:100%; border:1px solid black; border-collapse: collapse; margin-bottom:2%; margin-top:2%;">
-                
-                <tr >
-                    <td valign="top" >
-                        <b>Sl. No.</b>
-                    </td>
-                    <td valign="top" >
-                        <b>Description</b>
-                    </td>
-                    <td valign="top" colspan="2">
-                        <b>Qty.</b>
-                    </td>
-                    <td valign="top">
-                        <b>Amount</b>
-                    </td>
-                    <td valign="top">
-                        <b>GST%</b>
-                    </td>
-                     <td valign="top">
-                        <b>GST Amount</b>
-                    </td>
-                    <td valign="top">
-                        <b>Total Amount</b>
-                    </td>
-                </tr> 
-                <apex:variable var="Index" value="{!0}"/>
-                <apex:repeat value="{!lineitem}" var="li">
-                    <tr >
-                        <td valign="top" >
-                            <apex:variable var="Index" value="{!Index + 1}" />  {!Index}
-                        </td>
-                        <td valign="top" >
-                            {!li.Description__c}
-                        </td>
-                        <td valign="top" colspan="2">
-                            {!li.Quantity__c}
-                        </td>
-                        <td valign="top">
-                            {!li.Total_Amount_Formula__c }
-                        </td>
-                        <td valign="top">
-                            <b>{!li.GST__c }</b>
-                        </td>
-                         <td valign="top">
-                            <b>{!li.GST_Amount__c }</b>
-                        </td>
-                        <td valign="top">
-                            <b> {!li.Total_Amount_GST__c }</b>
-                        </td>
-                    </tr> 
-                </apex:repeat>
-            </table>
-            </div>
-            </div>
-            
-               <div style="width:100%;"> 
-                    <div style="float:left;width:100%;">
-                        Scope of the Service Agreement: <br/><apex:outputfield value="{!Quote__c.Scope_of_the_Service_Agreement__c}"/>
+                    <div style="float:left;width:100%;margin-top:5px">
+                        
+                        <table style="width:100%; border:1px solid black; border-collapse: collapse; margin-bottom:2%; margin-top:2%;">
+                            
+                            <tr >
+                                <td valign="top" >
+                                    <b>Sl. No.</b>
+                                </td>
+                                <td valign="top" >
+                                    <b>Description</b>
+                                </td>
+                                <td valign="top" colspan="2">
+                                    <b>Qty.</b>
+                                </td>
+                                <td valign="top">
+                                    <b>Amount</b>
+                                </td>
+                                <td valign="top">
+                                    <b>GST%</b>
+                                </td>
+                                <td valign="top">
+                                    <b>GST Amount</b>
+                                </td>
+                                <td valign="top">
+                                    <b>Total Amount</b>
+                                </td>
+                            </tr> 
+                            <apex:variable var="Index" value="{!0}"/>
+                            <apex:repeat value="{!lineitem}" var="li">
+                                <tr >
+                                    <td valign="top" >
+                                        <apex:variable var="Index" value="{!Index + 1}" />  {!Index}
+                                    </td>
+                                    <td valign="top" >
+                                        {!li.Description__c}
+                                    </td>
+                                    <td valign="top" colspan="2">
+                                        {!li.Quantity__c}
+                                    </td>
+                                    <td valign="top">
+                                        {!li.Total_Amount_Formula__c }
+                                    </td>
+                                    <td valign="top">
+                                        <b>{!li.GST__c }</b>
+                                    </td>
+                                    <td valign="top">
+                                        <b>{!li.GST_Amount__c }</b>
+                                    </td>
+                                    <td valign="top">
+                                        <b> {!li.Total_Amount_GST__c }</b>
+                                    </td>
+                                </tr> 
+                            </apex:repeat>
+                        </table>
                     </div>
                 </div>
                 
                 <div style="width:100%;"> 
                     <div style="float:left;width:100%;">
-                        Obligations of the customer: <br/><apex:outputfield value="{!Quote__c.Obligations_of_the_customer__c}"/>
+                        <u><B>Scope of the Service Agreement</B></u>: <br/> <br/><apex:outputfield value="{!Quote__c.Scope_of_the_Service_Agreement__c}"/>
+                    </div>
+                </div> <br/>
+                
+                <div style="width:100%;"> 
+                    <div style="float:left; width:100%;">&nbsp;
+                    </div>
+                </div>  
+                
+                <div style="width:100%;" class="slds-m-top_medium"> 
+                    <div style="float:left;width:100%; ">
+                        <u><B>Obligations of the customer </B></u>:<br/> <br/><apex:outputfield value="{!Quote__c.Obligations_of_the_customer__c}"/>
+                    </div>
+                </div> <br/>
+                
+                <div style="width:100%;"> 
+                    <div style="float:left; width:100%;">&nbsp;
+                    </div>
+                </div>  
+                
+                <div style="width:100%;" class="slds-m-top_medium"> 
+                    <div style="float:left;width:100%;">
+                        <u><B> Indemnity, Limitation of Liability</B></u>: <br/> <br/><p>
+                        
+                        <apex:outputfield value="{!Quote__c.Indemnity_Limitation_of_Liability__c}"/></p>
+                    </div>
+                </div> <br/>
+                
+                <div style="width:100%;"> 
+                    <div style="float:left; width:100%;">&nbsp;
+                    </div>
+                </div>  
+                <div style="width:100%;" class="slds-m-top_medium"> 
+                    <div style="float:left;width:100%;">
+                        <u><b>Payment</b></u>: &nbsp;&nbsp; &nbsp;&nbsp; {!Quote__c.Payment_Term__c}<br/> <br/>
+                        <u><b>Duration Of Contract</b></u>: &nbsp; <b>{!Quote__c.Duration_of_contract__c}</b><br/> <br/>
+                        <u><b>Termination</b></u>: &nbsp; {!Quote__c.Termination__c} <br/> 
                     </div>
                 </div>
-                
-                <div style="width:100%;"> 
-                    <div style="float:left;width:100%;">
-                        Indemnity, Limitation of Liability: <br/><apex:outputfield value="{!Quote__c.Indemnity_Limitation_of_Liability__c}"/>
+                                <div style="width:100%;"> 
+                    <div style="float:left; width:100%;">&nbsp;
                     </div>
-                </div>
-                
-                <div style="width:100%;"> 
+                </div>  
+                <div style="width:100%;" class="slds-m-top_medium"> 
                     <div style="float:left;width:100%;">
-                        Excluded Services : <br/><apex:outputfield value="{!Quote__c.Excluded_Services__c}"/>
+                        <u><B>Excluded Services  </B></u>:<br/> <br/><apex:outputfield value="{!Quote__c.Excluded_Services__c}"/>
                     </div>
-                </div> 
+                </div> <br/>
                 
-                <div style="width:100%;"> 
+                <div style="width:100%;" class="slds-m-top_medium"> 
                     <div style="float:left;width:100%;">
                         &nbsp;<br/><br/>
                         Thanking You, <br/>

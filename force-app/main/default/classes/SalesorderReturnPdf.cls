@@ -1,5 +1,7 @@
 public class SalesorderReturnPdf {
-    
+    public Sales_Order_Return__c lstSOR{get; set;}
+     public list<Contact> conlst{get; set;}
+    public Contact con{get; set;}
     public List<Sales_Order_Return_Line_Item__c> lstSORlineitem{get; set;}
     public Pdf_Header__mdt pdfheader{get;set;}
     public Decimal GrossTotal{get; set;}
@@ -16,6 +18,10 @@ public class SalesorderReturnPdf {
         String pdfHeaderQuery = 'Select ' +String.Join(pdfheaderField, ',')+ ' From Pdf_Header__mdt Order by Effected_Date__c ASC LIMIT 1';
         pdfheader =  Database.query(pdfHeaderQuery);
        
+        lstSOR=[select id, Shipping_Account__c from Sales_Order_Return__c where id =:strId ];
+        
+        conlst=[select id,name,email, Mobilephone from contact where Accountid =:lstSOR.Shipping_Account__c limit 1 ]; 
+        con=conlst[0];
         GrossTotal = 0;
         TCSAmount = 0;
         NetValue = 0;

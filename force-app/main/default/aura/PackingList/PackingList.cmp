@@ -14,6 +14,7 @@
     <aura:attribute name="SuccessMessage" type="String" default=""/>
     <aura:attribute name="totalprice" type="string" default=""/>
     <aura:attribute name="isErrorRow" type="boolean" default="false"/>
+    <aura:attribute name="isSelectAll" type="boolean" default="false"/>
     <aura:html tag="style">
         .cuf-content {
         padding: 0 0rem !important;
@@ -43,8 +44,8 @@
                         <table class="slds-table slds-table--bordered slds-table_striped slds-table--cell-buffer slds-max-medium-table--stacked-horizontal slds-table--header-fixed" >
                             <thead>
                                 <tr class="slds-line-height_reset">
-                                    <th class="" scope="col" style="width: 1rem; text-align:center;">
-                                        <div class="slds-truncate slds-cell-wrap" title="checkbox"></div>
+                                    <th class="" scope="col" style="width: 1rem; ">
+                                        <div class="slds-truncate slds-cell-wrap" title="checkbox"><lightning:input type="checkbox" value="{!v.isSelectAll}" checked="{!v.isSelectAll}" onchange="{!c.checkall}"/></div>
                                     </th>
                                     <th class="" scope="col" style="width: 3rem; text-align:center;">
                                         <div class="slds-truncate slds-cell-wrap" title="Product Number">Product Number</div>

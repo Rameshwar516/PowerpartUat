@@ -198,9 +198,9 @@ public class TaxCumServiceInvoicePDF {
                 for(Charges__c objCharg : lstCharges)
                 {
                     TotalTaxableAmount = TotalTaxableAmount+objCharg.Charge_Amount__c;
-                    totalAmountCgst = objCharg.CGST_Amount__c;
-                    totalAmountSgst = objCharg.SGST_Amount__c;
-                    totalAmountIgst = objCharg.IGST_Amount__c;
+                    totalAmountCgst = totalAmountCgst+objCharg.CGST_Amount__c;
+                    totalAmountSgst = totalAmountSgst+objCharg.SGST_Amount__c;
+                    totalAmountIgst = totalAmountIgst+objCharg.IGST_Amount__c;
                     TotalAmountWithCharges = TotalAmountWithCharges+objCharg.Net_Amount__c;
                 }   
                 

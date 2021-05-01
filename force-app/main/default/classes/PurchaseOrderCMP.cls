@@ -10,7 +10,7 @@ public class PurchaseOrderCMP {
         objMainWrap.billToPickList = getPickVal(Purchase_Order__c.Bill_To__c.getDescribe());
         objMainWrap.shipToPickList = getPickVal(Purchase_Order__c.Ship_To__c.getDescribe());
         objMainWrap.currencyPickList = getPickVal(Purchase_Order__c.Currency__c.getDescribe());
-        objMainWrap.UOIPickList = getPickVal(Part__c.UOI__c.getDescribe());
+       objMainWrap.UOIPickList = getPickVal(Part__c.UOI__c.getDescribe());
         
         List<tax__c> taxlist =[SELECT Basic_Percentage__c,Id,Name,Tax_Percentage__c FROM Tax__c];
         for(Tax__c objTax : taxlist){
@@ -89,6 +89,11 @@ public class PurchaseOrderCMP {
                         objOIW.Quantity = objPOI.Quantity__c;
                         objOIW.Unit = '';
                         objOIW.Rate = objPOI.Sales_Price__c;
+						/*if(mapIdVsPart.containskey(objPOI.Product_Part__c) && mapIdVsPart.get(objPOI.Product_Part__c).UOI__c != null)
+							objOIW.UOI = mapIdVsPart.get(objPOI.Product_Part__c).UOI__c;*/
+						
+						objOIW.UOI = objPOI.UOI_Text__c;
+						
                         objOIW.Amount = objPOI.Total_Amount__c;
                         objOIW.DiscRate = objPOI.Discount__c;
                         objOIW.DiscAmount = objPOI.Discount_Amount__c;
@@ -174,9 +179,19 @@ public class PurchaseOrderCMP {
                 else
                    lstFilterItem.addAll(lst);
                     
-                    	
+                        
                 for(Purchase_Indent_Line_Item__c obj : lstFilterItem)
                     setId.add(obj.Product_Part__c);
+				
+				map<Id, Part__c> mapIdVsPart = new map<Id, Part__c>();
+				
+				 if(setId.size() > 0){
+					for(Part__c objPart : [Select Id, Name,Part_Name__c,Usage__c,HSN_CODE__c,List_Price_Standard_price__c,UOI__c
+										   from Part__c where Id =:setId])
+					{
+						mapIdVsPart.put(objPart.Id, objPart);
+					}
+				}
                 
                 for(Stock__c objStock : [Select Id, Product_In__c, Product_Out__c, Product_Part__c, Total_Quantity__c,Ware_House__c
                                          from Stock__c 
@@ -188,6 +203,9 @@ public class PurchaseOrderCMP {
                 
                 for(Purchase_Indent_Line_Item__c obj : lstFilterItem){
                     IndentItemWrapper objwrap = new IndentItemWrapper();
+					
+					if(mapIdVsPart.containskey(obj.Product_Part__c) && mapIdVsPart.get(obj.Product_Part__c).UOI__c != null)
+						obj.UOI_Text__c = mapIdVsPart.get(obj.Product_Part__c).UOI__c;
                     objwrap.objPILI = obj;
                     if(mapIdvsStock.containsKey(obj.Product_Part__c))
                         objwrap.objStock = mapIdvsStock.get(obj.Product_Part__c);
@@ -217,7 +235,8 @@ public class PurchaseOrderCMP {
             objMainWrap = (mainWrapper)Json.deserialize(strMainWrapper, mainWrapper.class);
             objMainWrap.success = true;
             if(objMainWrap.objPurchaseOrder != null){
-                
+                objMainWrap.objPurchaseOrder.Shipping_Zip_Postal_Code__c=Integer.valueof(objMainWrap.objPurchaseOrder.Shipping_Zip_Postal_Code__c);
+                objMainWrap.objPurchaseOrder.Billing_Zip_Postal_Code__c=Integer.valueof(objMainWrap.objPurchaseOrder.Billing_Zip_Postal_Code__c);
                 upsert objMainWrap.objPurchaseOrder;
                 
                 String strPurchaseOrderId =objMainWrap.objPurchaseOrder.Id;
@@ -235,10 +254,13 @@ public class PurchaseOrderCMP {
                     obj.Purchase_Order__c = objMainWrap.objPurchaseOrder.Id;
                     obj.Product_Part__c = objOIW.objPart.Id;
                     obj.Name = objOIW.objPart.Part_Name__c;
-                    obj.UOI__c = objOIW.objPart.UOI__c;
+                    if(objMainWrap.objPurchaseOrder.Against__c == 'Direct')
+                    	obj.UOI_Text__c = objOIW.objPart.UOI__c;
+                    else
+                        obj.UOI_Text__c = objOIW.UOI;
                     obj.Doc_No__c = objOIW.DocNo;
                     if(objOIW.DocDate != null)
-                    	obj.Doc_Date__c = objOIW.DocDate.date();
+                        obj.Doc_Date__c = objOIW.DocDate.date();
                     obj.Quantity__c = objOIW.Quantity;
                     obj.Sales_Price__c = objOIW.Rate;
                     obj.Discount__c = objOIW.DiscRate;
@@ -249,9 +271,10 @@ public class PurchaseOrderCMP {
                     obj.Remark__c = objOIW.remarks;
                     obj.Specification__c = objOIW.specification;
                     if(String.isNotBlank(objOIW.strIndentItemId))
-                    	obj.Purchase_Indent_Line_Item__c = objOIW.strIndentItemId;
+                        obj.Purchase_Indent_Line_Item__c = objOIW.strIndentItemId;
                     obj.Application__c = objOIW.application;
                     obj.Stock_Actual__c = objOIW.stockActual;
+                    
                     lstPOLI.add(obj);
                 }
                 if(lstPOLI.size() > 0)
@@ -263,7 +286,7 @@ public class PurchaseOrderCMP {
                     if(setIdPOLI.size() > 0){
                         for(Purchase_Order_Line_Item__c obj : lstSavedPOLI)
                             if(!setIdPOLI.contains(obj.Id))
-                            	DeletePOLIList.add(obj);
+                                DeletePOLIList.add(obj);
                     }
                     else{
                         DeletePOLIList.addAll(lstSavedPOLI);
@@ -302,7 +325,7 @@ public class PurchaseOrderCMP {
                     if(setIdCharges.size() > 0){
                         for(Charges__c obj : lstSavedCharges)
                             if(!setIdCharges.contains(obj.Id))
-                            	deleteLStCharges.add(obj);
+                                deleteLStCharges.add(obj);
                     }
                     else{
                         deleteLStCharges.addAll(lstSavedCharges);
@@ -400,6 +423,7 @@ public class PurchaseOrderCMP {
         public Part__c objPart;
         public string strId;
         public string DocNo;
+        public string UOI;
         public Datetime DocDate;    
         public String specification;
         public String strIndentItemId;
