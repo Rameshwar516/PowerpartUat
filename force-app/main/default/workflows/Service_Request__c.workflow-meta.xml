@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workflow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <alerts>
+        <fullName>Email_Alert_for_Category_A_Service_request</fullName>
+        <ccEmails>db@powerparts.in</ccEmails>
+        <ccEmails>msb@powerparts.in</ccEmails>
+        <description>Email Alert for Category A Service request</description>
+        <protected>false</protected>
+        <senderType>CurrentUser</senderType>
+        <template>unfiled$public/Category_A_Service_request_not_closed</template>
+    </alerts>
+    <alerts>
+        <fullName>Email_Alert_for_Category_B_Service_request</fullName>
+        <ccEmails>db@powerparts.in</ccEmails>
+        <ccEmails>msb@powerparts.in</ccEmails>
+        <description>Email Alert for Category B Service request</description>
+        <protected>false</protected>
+        <senderType>CurrentUser</senderType>
+        <template>unfiled$public/Category_B_Service_request_not_Close</template>
+    </alerts>
+    <alerts>
+        <fullName>Is_passed_14_days</fullName>
+        <ccEmails>db@powerparts.in</ccEmails>
+        <ccEmails>msb@powerparts.in</ccEmails>
+        <description>Is passed 14 days</description>
+        <protected>false</protected>
+        <recipients>
+            <type>creator</type>
+        </recipients>
+        <senderType>CurrentUser</senderType>
+        <template>unfiled$public/Service_Request_C_Category</template>
+    </alerts>
+    <alerts>
+        <fullName>Send_Acknowledgement_Email</fullName>
+        <description>Send Acknowledgement Email</description>
+        <protected>false</protected>
+        <recipients>
+            <field>Customer_Email__c</field>
+            <type>email</type>
+        </recipients>
+        <senderType>CurrentUser</senderType>
+        <template>unfiled$public/Customer_Service_Acknowledgement_Template</template>
+    </alerts>
+    <alerts>
+        <fullName>Send_Email_To_Service_Manger</fullName>
+        <ccEmails>abhi.sisodia38@gmail.com</ccEmails>
+        <description>Send Email To Service Manger</description>
+        <protected>false</protected>
+        <recipients>
+            <field>Service_Manager_Email__c</field>
+            <type>email</type>
+        </recipients>
+        <senderType>CurrentUser</senderType>
+        <template>unfiled$public/Email_Notification_for_Service_Manger_For_Part_Approval</template>
+    </alerts>
+    <alerts>
+        <fullName>Send_Email_to_queue</fullName>
+        <description>Send Email to queue</description>
+        <protected>false</protected>
+        <recipients>
+            <type>owner</type>
+        </recipients>
+        <senderType>CurrentUser</senderType>
+        <template>unfiled$public/Service_Request_Generation_notification</template>
+    </alerts>
+    <fieldUpdates>
+        <fullName>Count_On_Hold_Hours</fullName>
+        <field>On_Hold_Hours__c</field>
+        <formula>if(ISNULL(On_Hold_Hours__c ), (NOW()-  DateTimeCalculation__c)*24*60,On_Hold_Hours__c +(NOW()-  DateTimeCalculation__c)*24*60)</formula>
+        <name>Count On Hold Hours</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Formula</operation>
+        <protected>false</protected>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>UpdateDateTime</fullName>
+        <field>DateTimeCalculation__c</field>
+        <formula>NOW()</formula>
+        <name>UpdateDateTime</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Formula</operation>
+        <protected>false</protected>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Update_Closed_Date</fullName>
+        <field>Closed_Date_Time__c</field>
+        <formula>Now()</formula>
+        <name>Update Closed Date</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Formula</operation>
+        <protected>false</protected>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Update_Date_Time_Reported</fullName>
+        <field>Date_Time_Reported__c</field>
+        <formula>NOW()</formula>
+        <name>Update Date/Time Reported</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Formula</operation>
+        <protected>false</protected>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Update_Field_On_Changed</fullName>
+        <field>On_Change_Status_DateTime__c</field>
+        <formula>NOW()</formula>
+        <name>Update Field On Changed</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Formula</operation>
+        <protected>false</protected>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Update_Service_Manager_Email_Field</fullName>
+        <field>Service_Manager_Email__c</field>
+        <formula>Owner:User.Manager.Email</formula>
+        <name>Update Service Manager Email Field</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Formula</operation>
+        <protected>false</protected>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Update_Status_Field</fullName>
+        <field>Status__c</field>
+        <literalValue>In Progress</literalValue>
+        <name>Update Status Field</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Update_Status_Field_with_Part_Requested</fullName>
+        <description>Update Status Field &quot;Part Requested&quot; . if Part is Created.</description>
+        <field>Status__c</field>
+        <literalValue>Parts Requested</literalValue>
+        <name>Update Status Field with Part Requested</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Update_Text_type_Category</fullName>
+        <field>Category_Update__c</field>
+        <formula>text(Failure_Category__c)</formula>
+        <name>Update Text type Category</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Formula</operation>
+        <protected>false</protected>
+    </fieldUpdates>
+    <rules>
+        <fullName>Change status to be In Progress</fullName>
+        <actions>
+            <name>Update_Status_Field</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>true</active>
+        <description>When first time owner is changed status will be in progress.</description>
+        <formula>AND ( 	(PRIORVALUE( OwnerId) != OwnerId ),   	OR 	( 		ISPICKVAL( Status__c , &quot;New&quot;), 		ISPICKVAL( Status__c , &quot;&quot;) 	)    )</formula>
+        <triggerType>onAllChanges</triggerType>
+    </rules>
+    <rules>
+        <fullName>Changed From On Hold</fullName>
+        <actions>
+            <name>Count_On_Hold_Hours</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <actions>
+            <name>Update_Field_On_Changed</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>true</active>
+        <formula>ISCHANGED( Status__c )  &amp;&amp; text(PRIORVALUE(Status__c)) = &apos;On Hold&apos;</formula>
+        <triggerType>onAllChanges</triggerType>
+    </rules>
+    <rules>
+        <fullName>Current Date time</fullName>
+        <actions>
+            <name>Update_Date_Time_Reported</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>true</active>
+        <criteriaItems>
+            <field>Service_Request__c.CreatedDate</field>
+            <operation>notEqual</operation>
+        </criteriaItems>
+        <triggerType>onCreateOnly</triggerType>
+    </rules>
+    <rules>
+        <fullName>Is Category Change</fullName>
+        <actions>
+            <name>Update_Text_type_Category</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>true</active>
+        <formula>!ISNEW() &amp;&amp;  ISCHANGED(Failure_Category__c)</formula>
+        <triggerType>onAllChanges</triggerType>
+    </rules>
+    <rules>
+        <fullName>Owner Changed Notification</fullName>
+        <active>false</active>
+        <formula>ISCHANGED(OwnerId)</formula>
+        <triggerType>onAllChanges</triggerType>
+    </rules>
+    <rules>
+        <fullName>Send Acknowledgement Email</fullName>
+        <actions>
+            <name>Send_Acknowledgement_Email</name>
+            <type>Alert</type>
+        </actions>
+        <active>true</active>
+        <criteriaItems>
+            <field>Service_Request__c.Customer_Email__c</field>
+            <operation>notEqual</operation>
+        </criteriaItems>
+        <description>Send Acknowledgement Email to customer</description>
+        <triggerType>onCreateOrTriggeringUpdate</triggerType>
+    </rules>
+    <rules>
+        <fullName>Send Email to Queue</fullName>
+        <actions>
+            <name>Send_Email_to_queue</name>
+            <type>Alert</type>
+        </actions>
+        <active>true</active>
+        <criteriaItems>
+            <field>Service_Request__c.isServiceReqCreatedByEmail__c</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Service_Request__c.Status__c</field>
+            <operation>equals</operation>
+            <value>New</value>
+        </criteriaItems>
+        <description>Email will be sent to the queue when a service request has been created by email.</description>
+        <triggerType>onCreateOnly</triggerType>
+    </rules>
+    <rules>
+        <fullName>Send Email to Service Manager</fullName>
+        <actions>
+            <name>Send_Email_To_Service_Manger</name>
+            <type>Alert</type>
+        </actions>
+        <actions>
+            <name>Update_Service_Manager_Email_Field</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>true</active>
+        <criteriaItems>
+            <field>Service_Request__c.Send_Email_to_Service_Manager__c</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Service_Request__c.OwnerId</field>
+            <operation>notEqual</operation>
+        </criteriaItems>
+        <description>Send email to Service Manager to approve the part request.</description>
+        <triggerType>onCreateOrTriggeringUpdate</triggerType>
+    </rules>
+    <rules>
+        <fullName>Update Closed Status</fullName>
+        <actions>
+            <name>Update_Closed_Date</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>true</active>
+        <formula>ISCHANGED( Status__c ) &amp;&amp; text(Status__c)==&apos;Closed&apos;</formula>
+        <triggerType>onAllChanges</triggerType>
+    </rules>
+    <rules>
+        <fullName>Update On Hold</fullName>
+        <actions>
+            <name>UpdateDateTime</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>true</active>
+        <criteriaItems>
+            <field>Service_Request__c.Status__c</field>
+            <operation>equals</operation>
+            <value>On Hold</value>
+        </criteriaItems>
+        <triggerType>onCreateOrTriggeringUpdate</triggerType>
+    </rules>
+    <rules>
+        <fullName>Update Status to In Progress</fullName>
+        <actions>
+            <name>Update_Status_Field_with_Part_Requested</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>true</active>
+        <criteriaItems>
+            <field>Service_Request__c.Part_Request_Count_Number__c</field>
+            <operation>greaterThan</operation>
+            <value>0</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Service_Request__c.Status__c</field>
+            <operation>contains</operation>
+            <value>New,In Progress</value>
+        </criteriaItems>
+        <description>Update status to In progress when part is created</description>
+        <triggerType>onAllChanges</triggerType>
+    </rules>
+</Workflow>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>validation_of_checkbox_bin_and_pricing</fullName>
+    <active>true</active>
+    <errorConditionFormula>With_Bin_Number__c == true &amp;&amp;  Without_Pricing__c == true</errorConditionFormula>
+    <errorMessage>Only one can be selected without pricing or without bin number.</errorMessage>
+</ValidationRule>

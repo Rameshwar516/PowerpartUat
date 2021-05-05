@@ -834,17 +834,17 @@
                             <td><apex:outputText value="{!objMrnItem.Short_QTY__c}" /></td>
                             <td><apex:outputText value="{!objMrnItem.UOM__c}" /></td>
                             <td><apex:outputText value="{!objMrnItem.UOI__c}" /></td>
-                            <td><apex:outputText value="{!objMrnItem.Sales_Price__c}" /></td>
-                            <td><apex:outputText value="{!objMrnItem.Total_Amount_GBP__c}" /></td>
-                            <td><apex:outputText value="{!objMrnItem.Item_Value_with_Freight_and_Surcharges__c}" /></td>
-                            <td><apex:outputText value="{!objMrnItem.Total_Item_Value_in_INR__c}" /></td>
-                            <td><apex:outputText value="{!objMrnItem.Assessable_Value_Including_Insurance__c}" /></td>
+                            <td><apex:outputText value="{!objMrnItem.Item_Price_Unit__c}" /></td>
+                            <td><apex:outputText value="{!objMrnItem.Total_Amount_Input__c}" /></td>
+                            <td><apex:outputText value="{0, number, 00.00}"> <apex:param value="{!objMrnItem.Item_Value_With_Freight_Surcharge__c}" /></apex:outputText></td>
+                            <td><apex:outputText value="{0, number, 00.00}"> <apex:param value="{!objMrnItem.Total_Item_Value_In_INR_input__c}" /></apex:outputText></td>
+                            <td><apex:outputText value="{0, number, 00.00}"> <apex:param value="{!objMrnItem.Assessable_Value_INR__c}" /></apex:outputText></td>
                             <td><apex:outputText value="{!objMrnItem.Duty_Rates__c}" /></td>
                             <td><apex:outputText value="{!objMrnItem.Sur_Rate__c}" /></td>
                             <td><apex:outputText value="{!objMrnItem.Custom_Duty_Amount__c}" /></td>
-                             <td><apex:outputText value="{!objMrnItem.Total_Landed_Amount__c}" /></td>
+                            <td><apex:outputText value="{!objMrnItem.Total_Landed_Amount__c}" /></td>
                             <td><apex:outputText value="{!objMrnItem.Landed_Cost_Unit_Rate__c}" /></td>
-                            <td><apex:outputText value="{!objMrnItem.Taxable_Amount_Formula__c}" /></td>
+                            <td><apex:outputText value="{0, number, 00.00}"> <apex:param value="{!objMrnItem.PO_Taxable_Amount_input__c}" /></apex:outputText></td>
                             <td><apex:outputText value="{!objMrnItem.GST__c}" /> <apex:outputText value="%" rendered="{!objMrnItem.GST__c != null}"/></td>
                             <td><apex:outputText value="{!objMrnItem.GST_Amount__c}" /></td>
                             <td><apex:outputText value="{!objMrnItem.Total_For_Book_formula__c}" /></td>                        
@@ -861,19 +861,19 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td><apex:outputText value="{!subTotalItemAmount}"/></td>
-                        <td><apex:outputText value="{!subTotalWithFreightAndSurchargeAmount}"/></td>
-                        <td><apex:outputText value="{!subTotalItemValueInINR}"/></td>
-                        <td><apex:outputText value="{!subTotalAssessableValue}"/></td>
+                        <td><apex:outputText value="{0, number, 00.00}"> <apex:param value="{!subTotalItemAmount}" /></apex:outputText></td>
+                        <td><apex:outputText value="{0, number, 00.00}"> <apex:param value="{!subTotalWithFreightAndSurchargeAmount}" /></apex:outputText></td>
+                        <td><apex:outputText value="{0, number, 00.00}"> <apex:param value="{!subTotalItemValueInINR}" /></apex:outputText></td>
+                        <td><apex:outputText value="{0, number, 00.00}"> <apex:param value="{!subTotalAssessableValue}" /></apex:outputText></td>
                         <td></td>
                         <td></td>
-                        <td><apex:outputText value="{!subTotalCustomDutyAmount}"/></td>
-                        <td><apex:outputText value="{!subTotalLandedAmountInInr}"/></td>
+                        <td><apex:outputText value="{0, number, 00.00}"> <apex:param value="{!subTotalCustomDutyAmount}" /></apex:outputText></td>
+                        <td><apex:outputText value="{0, number, 00.00}"> <apex:param value="{!subTotalLandedAmountInInr}" /></apex:outputText></td>
                         <td></td>
-                        <td> <apex:outputText value="{!subTotalTaxableValue}"/></td>
+                        <td><apex:outputText value="{0, number, 00.00}"> <apex:param value="{!subTotalTaxableValue}" /></apex:outputText></td>
                         <td></td>
-                        <td><apex:outputText value="{!subTotalGSTAmount}" /></td>
-                        <td><apex:outputText value="{!subTotalBookAmount}" /></td>
+                        <td><apex:outputText value="{0, number, 00.00}"> <apex:param value="{!subTotalGSTAmount}" /></apex:outputText></td>
+                        <td><apex:outputText value="{0, number, 00.00}"> <apex:param value="{!subTotalBookAmount}" /></apex:outputText></td>
                     </tr>
                     <apex:repeat value="{!objChargesList}" var="objCharges" >
                         <tr>
@@ -939,19 +939,19 @@
                     
                     <tr style="background-color:#d3d4d5;">
                         <td colspan="12"><center><apex:outputText value="Total Rs:" /></center></td>
-                        <td><apex:outputText value="{!objMrn.Sum_Of_Charges__c}" /></td>
-                        <td><apex:outputText value="{!totalWithFreightAndSurchargeAmount}" /></td>
-                        <td><apex:outputText value="{!totalItemValueInINR}" /></td>
+                        <td><apex:outputText value="{0, number, 00.00}"> <apex:param value="{!objMrn.Sum_Of_Charges__c}" /></apex:outputText></td>
+                        <td><apex:outputText value="{0, number, 00.00}"> <apex:param value="{!totalWithFreightAndSurchargeAmount}" /></apex:outputText></td>
+                        <td><apex:outputText value="{0, number, 00.00}"> <apex:param value="{!totalItemValueInINR}" /></apex:outputText></td>
                         <td></td>
                         <td>-</td>
                         <td>-</td>
-                        <td><apex:outputText value="{!subTotalCustomDutyAmount}" /></td>
-                        <td><apex:outputText value="{!subTotalLandedAmountInInr}" /></td>
+                        <td><apex:outputText value="{0, number, 00.00}"> <apex:param value="{!subTotalCustomDutyAmount}" /></apex:outputText></td>
+                        <td><apex:outputText value="{0, number, 00.00}"> <apex:param value="{!subTotalLandedAmountInInr}" /></apex:outputText></td>
                         <td>-</td>
                         <td></td>
                         <td><!--apex:outputText value="0" /--></td>
-                        <td><apex:outputText value="{!totalGSTAmount}" /></td> 
-                        <td><apex:outputText value="{!totalBookAmount}" /></td>
+                        <td><apex:outputText value="{0, number, 00.00}"> <apex:param value="{!totalGSTAmount}" /></apex:outputText></td>
+                        <td><apex:outputText value="{0, number, 00.00}"> <apex:param value="{!totalBookAmount}" /></apex:outputText></td>
                     </tr>
                     <tr>
                         <td colspan="15" style="border:none;border-left: 2px solid;border-bottom: 2px solid;line-height: 5;">
@@ -1101,19 +1101,19 @@
                             <td><apex:outputText value="{!objMrnItem.Received_QTY__c}" /></td>
                             <td><apex:outputText value="{!objMrnItem.Short_QTY__c}" /></td>
                             <td><apex:outputText value="{!objMrnItem.UOM__c}" /></td>
-                            <td><apex:outputText value="{!objMrnItem.Sales_Price__c}" /></td>
-                            <td><apex:outputText value="{!objMrnItem.Total_Amount_GBP__c}" /></td>
+                            <td><apex:outputText value="{!objMrnItem.Item_Price_Unit__c}" /></td>
+                            <td><apex:outputText value="{!objMrnItem.Total_Item_Value_In_INR_input__c}" /></td>
                             <td><apex:outputText value="{!objMrnItem.Landed_Cost_Unit_Rate__c}" /></td>
                             <td><apex:outputText value="{!objMrnItem.Total_Landed_Amount__c}" /></td>
-                            <td><apex:outputText value="{!objMrnItem.Taxable_Amount_Formula__c}" /></td>
-                            <td><apex:outputText value="{!objMrnItem.CGST__c}" /></td>
-                            <td><apex:outputText value="{!objMrnItem.CGST_Amount_Formula__c}" /></td>
-                            <td><apex:outputText value="{!objMrnItem.SGST__c}" /></td>
-                            <td><apex:outputText value="{!objMrnItem.SGST_Amount_Formula__c}" /></td>
-                            <td><apex:outputText value="{!objMrnItem.IGST__c}" /></td>
-                            <td><apex:outputText value="{!objMrnItem.IGST_Amount_Formula__c}" /></td>
+                            <td><apex:outputText value="{0, number, 00.00}"> <apex:param value="{!objMrnItem.PO_Taxable_Amount_input__c}" /></apex:outputText></td>
+                            <td><apex:outputText value="{!objMrnItem.PO_CGST__c}" /></td>
+                            <td><apex:outputText value="{!objMrnItem.PO_CGST_Amount__c}" /></td>
+                            <td><apex:outputText value="{!objMrnItem.PO_SGST__c}" /></td>
+                            <td><apex:outputText value="{!objMrnItem.PO_SGST_Amount__c}" /></td>
+                            <td><apex:outputText value="{!objMrnItem.PO_IGST__c}" /></td>
+                            <td><apex:outputText value="{!objMrnItem.PO_IGST_Amount__c}" /></td>
                             <!--<td><apex:outputText value="{!objMrnItem.Total_for_Books__c}" /> </td>-->
-                            <td><apex:outputText value="{!objMrnItem.Net_Amount_Formula__c}" /> </td>
+                            <td><apex:outputText value="{!objMrnItem.Total_For_Book_formula__c}" /> </td>
                         </tr>
                     </apex:repeat>
                     
@@ -1182,8 +1182,7 @@
                             <apex:outputText value=" {!strAmount}" />
                         </td>
                         <td style="border:none;border-bottom: 2px solid;">
-                            <!--<b><apex:outputText value="This is stock value"/> </b>-->
-                            
+                         
                         </td>
                         <td style="border:none;border-bottom: 2px solid;"></td>
                         <td style="border:none;border-bottom: 2px solid;"></td>
@@ -1191,12 +1190,7 @@
                         <td style="border:none;border-bottom: 2px solid;"></td>
                         <td style="border:none;border-bottom: 2px solid;"></td>
                         <td style="border:none;border-bottom: 2px solid;"></td>
-                        <!--<td style="border:none;border-bottom: 2px solid;"></td>
-                        <td style="border:none;border-bottom: 2px solid;"></td>
-                        <td style="border:none;border-bottom: 2px solid;"></td>
-                        <td style="border:none;border-bottom: 2px solid;"></td>
-                        <td style="border:none;border-bottom: 2px solid;"></td>
-                        <td style="border:none;border-bottom: 2px solid;"></td>-->
+                       
                         <td style="border:none;border-bottom: 2px solid;border-right: 2px solid;"></td>
                     </tr>
                     <tr>

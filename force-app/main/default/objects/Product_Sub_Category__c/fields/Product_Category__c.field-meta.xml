@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Product_Category__c</fullName>
+    <externalId>false</externalId>
+    <label>Product Category</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>DEEP SEA ELECTRONICS</fullName>
+                <default>false</default>
+                <label>DEEP SEA ELECTRONICS</label>
+            </value>
+            <value>
+                <fullName>DG SET</fullName>
+                <default>false</default>
+                <label>DG SET</label>
+            </value>
+            <value>
+                <fullName>FG WILSON</fullName>
+                <default>false</default>
+                <label>FG WILSON</label>
+            </value>
+            <value>
+                <fullName>HOUSEKEEPING</fullName>
+                <default>false</default>
+                <label>HOUSEKEEPING</label>
+            </value>
+            <value>
+                <fullName>LOCAL ENGINE PARTS</fullName>
+                <default>false</default>
+                <label>LOCAL ENGINE PARTS</label>
+            </value>
+            <value>
+                <fullName>MANITOU</fullName>
+                <default>false</default>
+                <label>MANITOU</label>
+            </value>
+            <value>
+                <fullName>MANUAL</fullName>
+                <default>false</default>
+                <label>MANUAL</label>
+            </value>
+            <value>
+                <fullName>OIL</fullName>
+                <default>false</default>
+                <label>OIL</label>
+            </value>
+            <value>
+                <fullName>PERKINS ENGINE</fullName>
+                <default>false</default>
+                <label>PERKINS ENGINE</label>
+            </value>
+            <value>
+                <fullName>PERKINS ENGINE PARTS</fullName>
+                <default>false</default>
+                <label>PERKINS ENGINE PARTS</label>
+            </value>
+            <value>
+                <fullName>SKODA</fullName>
+                <default>false</default>
+                <label>SKODA</label>
+            </value>
+            <value>
+                <fullName>STATIONERY</fullName>
+                <default>false</default>
+                <label>STATIONERY</label>
+            </value>
+            <value>
+                <fullName>TOOLS</fullName>
+                <default>false</default>
+                <label>TOOLS</label>
+            </value>
+            <value>
+                <fullName>TRAINING</fullName>
+                <default>false</default>
+                <label>TRAINING</label>
+            </value>
+            <value>
+                <fullName>WORKSHOP</fullName>
+                <default>false</default>
+                <label>WORKSHOP</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

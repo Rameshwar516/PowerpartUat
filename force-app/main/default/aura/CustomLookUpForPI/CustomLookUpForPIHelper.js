@@ -3,7 +3,7 @@
 	  // call the apex class method 
      var action = component.get("c.searchLookupValue");
       // set param to method  
-     console.log('......'+component.get("v.mainwrap"));
+     console.log(component.get("v.mainwrap"));
         action.setParams({
             'queryText': getInputkeyWord,
             'objectName' : component.get("v.objectAPIName"),

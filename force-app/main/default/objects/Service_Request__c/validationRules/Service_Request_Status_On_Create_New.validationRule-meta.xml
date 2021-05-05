@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Service_Request_Status_On_Create_New</fullName>
+    <active>true</active>
+    <errorConditionFormula>ISNEW() &amp;&amp;  NOT(ISPICKVAL(Status__c, &apos;New&apos;))</errorConditionFormula>
+    <errorDisplayField>Status__c</errorDisplayField>
+    <errorMessage>Please select New.</errorMessage>
+</ValidationRule>

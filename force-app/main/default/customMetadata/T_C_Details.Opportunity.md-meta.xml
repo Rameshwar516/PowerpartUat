@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Opportunity</label>
+    <protected>false</protected>
+    <values>
+        <field>Effected_Date__c</field>
+        <value xsi:type="xsd:date">2021-02-03</value>
+    </values>
+    <values>
+        <field>Term_And_Condition__c</field>
+        <value xsi:type="xsd:string">1. Interest 24% per annum will be charged on accounts unpaid against presentation. 
+2. Our responsibility ceases on delivery of materials to carriers.
+ 3. Goods supplied to order will not be taken back. 
+4. Subject to Delhi jurisdiction. 
+5. E. &amp; O.E</value>
+    </values>
+</CustomMetadata>

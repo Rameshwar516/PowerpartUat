@@ -125,12 +125,15 @@
             component.set("v.Error", false);
     },
     addRowHelper :function(component, event,POIWrapper){
+        
         //For same Delivery date 
         var strDeliveryDate = null;
         if(POIWrapper.length > 0 && component.get('v.isdeliverydate')){
            strDeliveryDate = POIWrapper[0].DeliveryDate; 
         }
         
+        console.log('addrowhelper');
+        console.log(component.get("v.mainWrapper"));
         var tmpLineItemWrap = {
             "objPart" : {"attributes":{"type":"Part__c"}},
             "strId" : '',
@@ -156,7 +159,7 @@
             "IGSTRate" : 0,
             "IGSTAmount" : 0,
             "NetAmount" : 0,
-            "DeliveryDate" : strDeliveryDate,
+            "DeliveryDate" : '',
             "application" : '',
             "Remarks" : '',
             "isEdit" : true

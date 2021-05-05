@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Tax_Invoice</fullName>
+    <active>true</active>
+    <label>Tax Invoice</label>
+    <picklistValues>
+        <picklist>Export_Type__c</picklist>
+        <values>
+            <fullName>Supply meant for Export on payment of IGST</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Supply meant for Export under Letter of Undertaking without payment of IGST</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Supply meant for SEZ Unit%2FSEZ Developer with payment of Integrated Tax</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Supply meant for SEZ%2FSEZ Developer under Bond without payment of Integrated Tax</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Supply meant for SEZ%2FSEZ Developer under LUT without payment of Integrated Tax</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Invoice_Type__c</picklist>
+        <values>
+            <fullName>Duplicate  for Supplier%2FTransporter</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Original for Recipient</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Triplicate for Supplier</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Status__c</picklist>
+        <values>
+            <fullName>Approved</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cancelled</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Draft</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Transport_Mode__c</picklist>
+        <values>
+            <fullName>By Air</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>By Hand</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>By Road</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>By Ship</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>By Train</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>None</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Other</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Type__c</picklist>
+        <values>
+            <fullName>Export</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>FOC</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sales</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Service</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Supply</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Warranty</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+</RecordType>

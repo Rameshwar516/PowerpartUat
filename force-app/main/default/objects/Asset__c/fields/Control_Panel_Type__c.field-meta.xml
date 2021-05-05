@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Control_Panel_Type__c</fullName>
+    <externalId>false</externalId>
+    <label>Control Panel Type</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Standard Control Panel</fullName>
+                <default>false</default>
+                <label>Standard Control Panel</label>
+            </value>
+            <value>
+                <fullName>AMF Control Panel</fullName>
+                <default>false</default>
+                <label>AMF Control Panel</label>
+            </value>
+            <value>
+                <fullName>Synchronizing Control Panel</fullName>
+                <default>false</default>
+                <label>Synchronizing Control Panel</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

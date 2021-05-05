@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Enquiry</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Enquiries</value>
+    </caseValues>
+    <layouts>
+        <layout>Enquiry Dynamic Page</layout>
+        <sections>
+            <label></label>
+            <section>Additional Information</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Description</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>PI Information</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>PI Term And Condition</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Shipping Details</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Enquiry Layout</layout>
+        <sections>
+            <label></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Opportunity Layout</layout>
+        <sections>
+            <label></label>
+            <section>Additional Information</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Description</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>PI Information</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>PI Term And Condition</section>
+        </sections>
+    </layouts>
+    <quickActions>
+        <label></label>
+        <name>Add_Products</name>
+    </quickActions>
+    <quickActions>
+        <label></label>
+        <name>Create_Quote</name>
+    </quickActions>
+    <quickActions>
+        <label></label>
+        <name>Create_Quote_flow</name>
+    </quickActions>
+    <quickActions>
+        <label></label>
+        <name>Create_Sales_Order</name>
+    </quickActions>
+    <quickActions>
+        <label></label>
+        <name>Proforma_Invoice_Popup</name>
+    </quickActions>
+    <quickActions>
+        <label></label>
+        <name>Send_Proforma_Invoice</name>
+    </quickActions>
+    <startsWith>Vowel</startsWith>
+    <validationRules>
+        <errorMessage></errorMessage>
+        <name>Enquiry_Enquiry_Type</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage></errorMessage>
+        <name>OpportunituCloseWonSyncRule</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage></errorMessage>
+        <name>Opportunity_not_close_won_line_item</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage></errorMessage>
+        <name>Prevent_change_Stage_if_Closed_won</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage></errorMessage>
+        <name>Stage_Closed_Lost_Reason_Required</name>
+    </validationRules>
+    <webLinks>
+        <label></label>
+        <name>Proforma_Invoice</name>
+    </webLinks>
+</CustomObjectTranslation>

@@ -235,19 +235,13 @@
         var prodwrapper = '';
         var tmpproduct = '';
         for(var i=0;i<tmpMainWrapper.length;i++){
-            console.log('for');
-            console.log(tmpMainWrapper[i].objProdchild.Product_Part__c);
             if(index == tmpMainWrapper[i].objProdchild.Product_Part__c){
-                console.log('run');
                 prodwrapper =  tmpMainWrapper[i];
             }
         }
         
         for(var i=0;i<tmpproductlst.length;i++){
-            console.log('for');
-            console.log(tmpproductlst[i].objProd.Id);
             if(index == tmpproductlst[i].objProd.Id){
-                console.log('run');
                 tmpproduct =  tmpproductlst[i];
             }
         }
@@ -261,8 +255,9 @@
             var objWrap = component.get("v.wrapMain");
             helper.AddRecordOnCheck(component, event, objWrap);
         }
-        else if(!Istrue)
+        else if(!Istrue && prodwrapper!="")
         {
+            console.log(JSON.stringify(prodwrapper));
             var objWrap = component.get("v.wrapMain");
             helper.RemoveRecordOnCheck(component, event, objWrap ,prodwrapper);
         }

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>On_Hold_Hours_Minutes__c</fullName>
+    <externalId>false</externalId>
+    <formula>TEXT(FLOOR(TAT_Remaining__c / 60))
+&amp;&apos;hr&apos;&amp; 
+TEXT(ROUND(MOD(TAT_Remaining__c ,60), 0))
+&amp;&apos;min&apos;</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>TAT Remaining</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

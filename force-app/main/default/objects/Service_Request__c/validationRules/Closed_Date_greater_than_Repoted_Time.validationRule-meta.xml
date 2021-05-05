@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Closed_Date_greater_than_Repoted_Time</fullName>
+    <active>true</active>
+    <description>Closed Date will be greater than reported date and attended date</description>
+    <errorConditionFormula>OR( Closed_Date_Time__c &lt;  Date_Time_Reported__c  ,Closed_Date_Time__c &lt;   Date_Time_Attended__c )</errorConditionFormula>
+    <errorDisplayField>Closed_Date_Time__c</errorDisplayField>
+    <errorMessage>Close date  should be greater then reported date and attended date.</errorMessage>
+</ValidationRule>

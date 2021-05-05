@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>AMC</label>
+    <protected>false</protected>
+    <values>
+        <field>Duration_of_contract__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Excluded_Services__c</field>
+        <value xsi:type="xsd:string">1.	The following items / parts / components and services are specifically excluded from the coverage of this Service Agreement.
+2.	Repair work resulting from negligence of customers operators or loading / unloading of engine / machine.
+3.	All charges pertaining to transportation, loading , use of lifting equipment and untrained manpower.         
+4.	Repair of sub-assemblies of the Engine / machine which are required to be done at workshop.
+5.	Top or major overhauling.
+6.	Repairs to canopy.
+7.	Any cost of repairs arising out of not following the instruction of the users handbook or use of the engine / machine in an unprofessional abnormal or extreme manner or gross negligence.
+8.	Any spare parts that may be required to perform maintenance work or repair work along with the specialized services required to perform repair work</value>
+    </values>
+    <values>
+        <field>Indemnity_Limitation_of_Liability__c</field>
+        <value xsi:type="xsd:string">1.	The customer agrees to indemnify, defend and hold M/s Powerparts private Limited harmless from all claims, liabilities, suits, losses, damages and  expenses arising from the operation, condition , maintenance, use and ownership of the Engine / machine and from the customers default of this agreement.
+2.	M/s Powerparts Private Limited shall be liable to the customer only for direct losses arising from damage caused to the DG set/ Engine due to acts of willful damage and gross negligence on the part of M/s Powerparts Private Limited in the course of providing service under this agreement or at the workshop. M/s Powerparts private Limited shall bear such losses by repairing the DG set/ engine so that it is returned to its condition prior to such damage.
+3.	M/s Powerparts Private limited will not be liable to any losses attributable to causes beyond powerparts Pvt. ltd. reasonable control, including acts of god, other events of force majeure, fire, theft or other acts of third parties or for any consequential or indirect damage or loss.
+4.	M/s Powerparts Pvt. Ltd. shall not be responsible to offer the customer a replacement engine/ machine, loss of use, loss of profits or incidental or consequential damages.</value>
+    </values>
+    <values>
+        <field>Obligations_of_the_customer__c</field>
+        <value xsi:type="xsd:string">1.	Daily maintenance as prescribed by the manufacturer in the operator’s manual / users handbook.
+2.	To inform us as soon as possible if he is not satisfied with our performance.
+3.	Give the service technician access to the Engine / machine to perform the scope of work as also allowing him to inspect and observe how the engine / machine is being used.
+4.	Use of correct grade of fuel, coolant and lubricating oil as prescribed in the users manual.
+5.	Provide all parts and labour for any work required that is not covered in the scope of work. This includes all parts and labour required for acts of vandalism, theft, accidents, fire , acts of god, neglect and operational use.
+6.	Inform the service provider if the hours run meter is not working.
+7.	Ensure that all parts used are Genuine parts and any maintenance performed is done by the Authorized Perkins dealer/ distributor.
+8.	The Engine / machine is strictly used as per the manufacturers recommendations.
+9.	Not overload the Engine / machine or use it for any other purpose than it was not designed. 
+10.	All Service reports submitted must be signed by the customer, failure to do so is treated as a violation of the terms and conditions of the agreement. The service provider will be at liberty to take appropriate action but not limited to termination of this agreement.
+11.	Report any accident that the engine / machine is involved in.
+12.	Should allow the service provider to collect fuel , oil and coolant samples for analysis as and when required. The results of any tests will be conveyed to the customer in writing and appropriate rectification action to be taken by the customer, any failure arising due to sub standard quality of fuel , oil and coolant  will be the responsibility of the customer.   
+13.	Periodically cleaning of the bulk storage fuel tanks / day tanks , Radiator and heat exchanger. 
+14.	Maintaining of the Log books for proper record keeping on daily basis .
+15.	Provide all genuine parts that are required for performing scheduled maintenance and service.</value>
+    </values>
+    <values>
+        <field>Quote_Recot_type__c</field>
+        <value xsi:type="xsd:string">AMC</value>
+    </values>
+    <values>
+        <field>Scope_of_the_Service_Agreement__c</field>
+        <value xsi:type="xsd:string">1.	Inspection on the general status of the engine and its components.
+2.	Notify the customer at least 3 days ahead to schedule all maintenance.
+3.	Conduct all scheduled routine maintenance as per the maintenance schedule.
+4.	 Provide skilled service technicians.
+5.	Equalising of Bridge pieces and valve adjustment.
+6.	Recommending list of genuine parts for stock.
+7.	Responding to a Service call as soon as possible.
+8.	After each visit a report will be generated and discussed.
+9.	Our engineer will visit you Quarterly/Monthly. Besides the above we will also provide you breakdown calls as and when required.</value>
+    </values>
+    <values>
+        <field>Termination__c</field>
+        <value xsi:type="xsd:string">The agreement can be terminated if agreed by both parties or at the					expiry of the period of the agreement.</value>
+    </values>
+    <values>
+        <field>Terms_Conditions__c</field>
+        <value xsi:nil="true"/>
+    </values>
+</CustomMetadata>

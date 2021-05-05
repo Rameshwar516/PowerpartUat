@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Quote_Type__c</fullName>
+    <externalId>false</externalId>
+    <label>Quote Type</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Consumables</fullName>
+                <default>false</default>
+                <label>Consumables</label>
+            </value>
+            <value>
+                <fullName>DEO</fullName>
+                <default>false</default>
+                <label>DEO</label>
+            </value>
+            <value>
+                <fullName>ELC</fullName>
+                <default>false</default>
+                <label>ELC</label>
+            </value>
+            <value>
+                <fullName>Engine parts</fullName>
+                <default>false</default>
+                <label>Engine parts</label>
+            </value>
+            <value>
+                <fullName>OTO</fullName>
+                <default>false</default>
+                <label>OTO</label>
+            </value>
+            <value>
+                <fullName>Overhaul</fullName>
+                <default>false</default>
+                <label>Overhaul</label>
+            </value>
+            <value>
+                <fullName>Repair engine</fullName>
+                <default>false</default>
+                <label>Repair engine</label>
+            </value>
+            <value>
+                <fullName>Replacement engine</fullName>
+                <default>false</default>
+                <label>Replacement engine</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

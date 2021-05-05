@@ -1,9 +1,7 @@
-public class PurchaseOrderCMP {
+public without sharing class PurchaseOrderCMP {
     
     @AuraEnabled
-    public static string doInit(String strRecordID){
-       
-        
+    public static string doInit(String strRecordID){     
         mainWrapper objMainWrap = new mainWrapper();
         objMainWrap.againstPickList = getPickVal(Purchase_Order__c.Against__c.getDescribe());
         objMainWrap.applicationPickList = getPickVal(Opportunity__c.Application__c.getDescribe());

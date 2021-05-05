@@ -38,7 +38,7 @@
     
     <aura:attribute name="isdeliverydate" type="boolean" default="false" />
     <aura:attribute name="isdiscount" type="boolean" default="false" />
-    
+    <aura:attribute name="isdisable" type="boolean" default="false" />
     
     <aura:html tag="style">
         .cuf-content {
@@ -149,7 +149,7 @@
                                                 <tbody>
                                                     <aura:iteration items="{!v.wrapMain.lstWrapp}" var="cusProd" indexVar="index">
                                                         <tr width="100%" id="{!index}"> 
-                                                            <td class="dataCell" style="width: 8rem;" ><lightning:input type="checkbox" value="{!cusProd.isSelected}" checked="{!cusProd.isSelected}" name="{!cusProd.objProd.Id}" onchange="{!c.checkJs}"/></td>
+                                                            <td class="dataCell" style="width: 8rem;" ><lightning:input type="checkbox" value="{!cusProd.isSelected}" checked="{!cusProd.isSelected}" name="{!cusProd.objProd.Id}" onchange="{!c.checkJs}" disabled="{!v.isdisable}"/></td>
                                                             <td class="dataCell" style="width: 8rem;"><a href="{! '/' + cusProd.objProd.Id}"> {!cusProd.objProd.Name}</a></td>
                                                               <td class="dataCell" style="width: 9rem;"><div  class="slds-cell-wrap">{!cusProd.oldPartName}</div></td>
                                                             <td class="dataCell" style="width: 9rem;">{!cusProd.objProd.Part_Name__c}</td>

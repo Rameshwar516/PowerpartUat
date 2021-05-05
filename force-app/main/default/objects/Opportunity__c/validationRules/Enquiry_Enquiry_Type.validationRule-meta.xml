@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Enquiry_Enquiry_Type</fullName>
+    <active>true</active>
+    <errorConditionFormula>INCLUDES(Opportunity_Type__c  , &apos;Sales&apos;) &amp;&amp; INCLUDES(Opportunity_Type__c  , &apos;Service&apos;)</errorConditionFormula>
+    <errorDisplayField>Opportunity_Type__c</errorDisplayField>
+    <errorMessage>Only Enquiry will be Sales or Service.</errorMessage>
+</ValidationRule>

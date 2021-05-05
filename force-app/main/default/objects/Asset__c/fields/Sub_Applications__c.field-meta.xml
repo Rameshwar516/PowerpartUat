@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Sub_Applications__c</fullName>
+    <externalId>false</externalId>
+    <label>Sub Applications</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>Applications__c</controllingField>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>BANK SECTOR</fullName>
+                <default>false</default>
+                <label>BANK SECTOR</label>
+            </value>
+            <value>
+                <fullName>DEFENCE SECTOR</fullName>
+                <default>false</default>
+                <label>DEFENCE SECTOR</label>
+            </value>
+            <value>
+                <fullName>EDUCATION AND RESEARCH INSTITUTIONS</fullName>
+                <default>false</default>
+                <label>EDUCATION AND RESEARCH INSTITUTIONS</label>
+            </value>
+            <value>
+                <fullName>GOVERNMENT SECTOR</fullName>
+                <default>false</default>
+                <label>GOVERNMENT SECTOR</label>
+            </value>
+            <value>
+                <fullName>HOSPITAL</fullName>
+                <default>false</default>
+                <label>HOSPITAL</label>
+            </value>
+            <value>
+                <fullName>HOTEL, SHOPPING MALL AND TOURISM</fullName>
+                <default>false</default>
+                <label>HOTEL, SHOPPING MALL AND TOURISM</label>
+            </value>
+            <value>
+                <fullName>INFRASTRUCTURE, REALTY AND CONSTRUCTION</fullName>
+                <default>false</default>
+                <label>INFRASTRUCTURE, REALTY AND CONSTRUCTION</label>
+            </value>
+            <value>
+                <fullName>IT AND TELECOM</fullName>
+                <default>false</default>
+                <label>IT AND TELECOM</label>
+            </value>
+            <value>
+                <fullName>MANUFACTURING UNIT</fullName>
+                <default>false</default>
+                <label>MANUFACTURING UNIT</label>
+            </value>
+            <value>
+                <fullName>POWER GENERATION</fullName>
+                <default>false</default>
+                <label>POWER GENERATION</label>
+            </value>
+            <value>
+                <fullName>PRINT AND MEDIA</fullName>
+                <default>false</default>
+                <label>PRINT AND MEDIA</label>
+            </value>
+            <value>
+                <fullName>PROCESSING (MEAT, MILK ETC) PLANTS</fullName>
+                <default>false</default>
+                <label>PROCESSING (MEAT, MILK ETC) PLANTS</label>
+            </value>
+            <value>
+                <fullName>RESIDENTIAL</fullName>
+                <default>false</default>
+                <label>RESIDENTIAL</label>
+            </value>
+            <value>
+                <fullName>SHIPPING</fullName>
+                <default>false</default>
+                <label>SHIPPING</label>
+            </value>
+            <value>
+                <fullName>COMPRESSOR</fullName>
+                <default>false</default>
+                <label>COMPRESSOR</label>
+            </value>
+            <value>
+                <fullName>PAVERS</fullName>
+                <default>false</default>
+                <label>PAVERS</label>
+            </value>
+            <value>
+                <fullName>WELDING MACHINE</fullName>
+                <default>false</default>
+                <label>WELDING MACHINE</label>
+            </value>
+            <value>
+                <fullName>AGRI PUMP</fullName>
+                <default>false</default>
+                <label>AGRI PUMP</label>
+            </value>
+            <value>
+                <fullName>HARVESTOR</fullName>
+                <default>false</default>
+                <label>HARVESTOR</label>
+            </value>
+            <value>
+                <fullName>TRACTOR</fullName>
+                <default>false</default>
+                <label>TRACTOR</label>
+            </value>
+            <value>
+                <fullName>ANODE TAPPING VEHICLE</fullName>
+                <default>false</default>
+                <label>ANODE TAPPING VEHICLE</label>
+            </value>
+            <value>
+                <fullName>BACKHOE LOADER</fullName>
+                <default>false</default>
+                <label>BACKHOE LOADER</label>
+            </value>
+            <value>
+                <fullName>SIDE LOADER</fullName>
+                <default>false</default>
+                <label>SIDE LOADER</label>
+            </value>
+            <value>
+                <fullName>SKID STEER LOADER</fullName>
+                <default>false</default>
+                <label>SKID STEER LOADER</label>
+            </value>
+            <value>
+                <fullName>TELE HANDLER</fullName>
+                <default>false</default>
+                <label>TELE HANDLER</label>
+            </value>
+            <value>
+                <fullName>FORK LIFT TRUCK</fullName>
+                <default>false</default>
+                <label>FORK LIFT TRUCK</label>
+            </value>
+            <value>
+                <fullName>METAL TAPPING VEHICLE</fullName>
+                <default>false</default>
+                <label>METAL TAPPING VEHICLE</label>
+            </value>
+            <value>
+                <fullName>DG SET</fullName>
+                <default>false</default>
+                <label>DG SET</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Agricultural</controllingFieldValue>
+            <valueName>AGRI PUMP</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Agricultural</controllingFieldValue>
+            <valueName>HARVESTOR</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Agricultural</controllingFieldValue>
+            <valueName>TRACTOR</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>DG Set</controllingFieldValue>
+            <valueName>DG SET</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Electric power</controllingFieldValue>
+            <valueName>BANK SECTOR</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Electric power</controllingFieldValue>
+            <valueName>DEFENCE SECTOR</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Electric power</controllingFieldValue>
+            <valueName>EDUCATION AND RESEARCH INSTITUTIONS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Electric power</controllingFieldValue>
+            <valueName>GOVERNMENT SECTOR</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Electric power</controllingFieldValue>
+            <valueName>HOSPITAL</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Electric power</controllingFieldValue>
+            <valueName>HOTEL, SHOPPING MALL AND TOURISM</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Electric power</controllingFieldValue>
+            <valueName>INFRASTRUCTURE, REALTY AND CONSTRUCTION</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Electric power</controllingFieldValue>
+            <valueName>IT AND TELECOM</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Electric power</controllingFieldValue>
+            <valueName>MANUFACTURING UNIT</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Electric power</controllingFieldValue>
+            <valueName>POWER GENERATION</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Electric power</controllingFieldValue>
+            <valueName>PRINT AND MEDIA</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Electric power</controllingFieldValue>
+            <valueName>PROCESSING (MEAT, MILK ETC) PLANTS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Electric power</controllingFieldValue>
+            <valueName>RESIDENTIAL</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Electric power</controllingFieldValue>
+            <valueName>SHIPPING</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Industrial</controllingFieldValue>
+            <valueName>COMPRESSOR</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Industrial</controllingFieldValue>
+            <valueName>PAVERS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Industrial</controllingFieldValue>
+            <valueName>WELDING MACHINE</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Material Handling</controllingFieldValue>
+            <valueName>ANODE TAPPING VEHICLE</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Material Handling</controllingFieldValue>
+            <valueName>BACKHOE LOADER</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Material Handling</controllingFieldValue>
+            <valueName>SIDE LOADER</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Material Handling</controllingFieldValue>
+            <valueName>SKID STEER LOADER</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Material Handling</controllingFieldValue>
+            <valueName>TELE HANDLER</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Material Handling</controllingFieldValue>
+            <valueName>FORK LIFT TRUCK</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Material Handling</controllingFieldValue>
+            <valueName>METAL TAPPING VEHICLE</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

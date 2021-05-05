@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>UOI__c</fullName>
+    <externalId>false</externalId>
+    <label>UOI</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>ABC</fullName>
+                <default>false</default>
+                <label>ABC</label>
+            </value>
+            <value>
+                <fullName>DEF</fullName>
+                <default>false</default>
+                <label>DEF</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

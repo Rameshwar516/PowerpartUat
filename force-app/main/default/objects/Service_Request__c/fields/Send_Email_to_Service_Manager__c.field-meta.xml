@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Send_Email_to_Service_Manager__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>This will use in workflow to send an email to service manager.</description>
+    <externalId>false</externalId>
+    <label>Send Email to Service Manager</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

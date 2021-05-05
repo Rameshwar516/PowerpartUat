@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Is_Manager_Exist</fullName>
+    <active>true</active>
+    <description>Owner don&apos;t have a Manager.</description>
+    <errorConditionFormula>IsBlank($User.ManagerId ) &amp;&amp; Is_Warranty_Claim__c</errorConditionFormula>
+    <errorDisplayField>OwnerId</errorDisplayField>
+    <errorMessage>Check the owner have a Manager.</errorMessage>
+</ValidationRule>

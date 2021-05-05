@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Bank Details 1</label>
+    <protected>true</protected>
+    <values>
+        <field>Bank_Account_Number__c</field>
+        <value xsi:type="xsd:string">05860500000002</value>
+    </values>
+    <values>
+        <field>Bank_Address__c</field>
+        <value xsi:type="xsd:string">,16, Parliament Street, New Delhi 110001</value>
+    </values>
+    <values>
+        <field>Bank_Name__c</field>
+        <value xsi:type="xsd:string">BANK OF BARODA</value>
+    </values>
+    <values>
+        <field>Created_Date__c</field>
+        <value xsi:type="xsd:dateTime">2021-01-29T09:40:00.000Z</value>
+    </values>
+    <values>
+        <field>IFC_RTGS_NEFT__c</field>
+        <value xsi:type="xsd:string">BARB0PARLIA</value>
+    </values>
+</CustomMetadata>

@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Issues__c</fullName>
+    <externalId>false</externalId>
+    <label>Issues</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>Known_Issue__c</controllingField>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Valve spring failure</fullName>
+                <default>false</default>
+                <label>Valve spring failure</label>
+            </value>
+            <value>
+                <fullName>Exhaust bellows - Manifold to Manifold 2 ply</fullName>
+                <default>false</default>
+                <label>Exhaust bellows - Manifold to Manifold 2 ply</label>
+            </value>
+            <value>
+                <fullName>Exhaust bellows - Turbo charger outlet to exhaust 2 ply</fullName>
+                <default>false</default>
+                <label>Exhaust bellows - Turbo charger outlet to exhaust 2 ply</label>
+            </value>
+            <value>
+                <fullName>Coolant pump weep hole seepage</fullName>
+                <default>false</default>
+                <label>Coolant pump weep hole seepage</label>
+            </value>
+            <value>
+                <fullName>Injector - circlip failure in old version</fullName>
+                <default>false</default>
+                <label>Injector - circlip failure in old version</label>
+            </value>
+            <value>
+                <fullName>4016-61TRG - Charge cooler</fullName>
+                <default>false</default>
+                <label>4016-61TRG - Charge cooler</label>
+            </value>
+            <value>
+                <fullName>4016-61TRG Actuator lever</fullName>
+                <default>false</default>
+                <label>4016-61TRG Actuator lever</label>
+            </value>
+            <value>
+                <fullName>Fan Shroud welding crack</fullName>
+                <default>false</default>
+                <label>Fan Shroud welding crack</label>
+            </value>
+            <value>
+                <fullName>4012/4016 ASOV malfunction</fullName>
+                <default>false</default>
+                <label>4012/4016 ASOV malfunction</label>
+            </value>
+            <value>
+                <fullName>Premature Cylinder head valve recession</fullName>
+                <default>false</default>
+                <label>Premature Cylinder head valve recession</label>
+            </value>
+            <value>
+                <fullName>Rear oil seal seepage</fullName>
+                <default>false</default>
+                <label>Rear oil seal seepage</label>
+            </value>
+            <value>
+                <fullName>Front oil seal seepage</fullName>
+                <default>false</default>
+                <label>Front oil seal seepage</label>
+            </value>
+            <value>
+                <fullName>Flywheel housing to crankcase – oil seepage</fullName>
+                <default>false</default>
+                <label>Flywheel housing to crankcase – oil seepage</label>
+            </value>
+            <value>
+                <fullName>Heater kit need for 4006D CPCBII</fullName>
+                <default>false</default>
+                <label>Heater kit need for 4006D CPCBII</label>
+            </value>
+            <value>
+                <fullName>Charging Alternator guard failure</fullName>
+                <default>false</default>
+                <label>Charging Alternator guard failure</label>
+            </value>
+            <value>
+                <fullName>Fuel Solenoid relay failure</fullName>
+                <default>false</default>
+                <label>Fuel Solenoid relay failure</label>
+            </value>
+            <value>
+                <fullName>Fuel Solenoid failure</fullName>
+                <default>false</default>
+                <label>Fuel Solenoid failure</label>
+            </value>
+            <value>
+                <fullName>Alternator Bearing failures in 4006D CPCBII</fullName>
+                <default>false</default>
+                <label>Alternator Bearing failures in 4006D CPCBII</label>
+            </value>
+            <value>
+                <fullName>Belt tensioner pulley bearing failure</fullName>
+                <default>false</default>
+                <label>Belt tensioner pulley bearing failure</label>
+            </value>
+            <value>
+                <fullName>Oil Pressure switch malfunction in 4016 TRG</fullName>
+                <default>false</default>
+                <label>Oil Pressure switch malfunction in 4016 TRG</label>
+            </value>
+            <value>
+                <fullName>Governor Ball joint crimp loose</fullName>
+                <default>false</default>
+                <label>Governor Ball joint crimp loose</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Yes</controllingFieldValue>
+            <valueName>Valve spring failure</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Yes</controllingFieldValue>
+            <valueName>Exhaust bellows - Manifold to Manifold 2 ply</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Yes</controllingFieldValue>
+            <valueName>Exhaust bellows - Turbo charger outlet to exhaust 2 ply</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Yes</controllingFieldValue>
+            <valueName>Coolant pump weep hole seepage</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Yes</controllingFieldValue>
+            <valueName>Injector - circlip failure in old version</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Yes</controllingFieldValue>
+            <valueName>4016-61TRG - Charge cooler</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Yes</controllingFieldValue>
+            <valueName>4016-61TRG Actuator lever</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Yes</controllingFieldValue>
+            <valueName>Fan Shroud welding crack</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Yes</controllingFieldValue>
+            <valueName>4012/4016 ASOV malfunction</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Yes</controllingFieldValue>
+            <valueName>Premature Cylinder head valve recession</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Yes</controllingFieldValue>
+            <valueName>Rear oil seal seepage</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Yes</controllingFieldValue>
+            <valueName>Front oil seal seepage</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Yes</controllingFieldValue>
+            <valueName>Flywheel housing to crankcase – oil seepage</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Yes</controllingFieldValue>
+            <valueName>Heater kit need for 4006D CPCBII</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Yes</controllingFieldValue>
+            <valueName>Charging Alternator guard failure</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Yes</controllingFieldValue>
+            <valueName>Fuel Solenoid relay failure</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Yes</controllingFieldValue>
+            <valueName>Fuel Solenoid failure</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Yes</controllingFieldValue>
+            <valueName>Alternator Bearing failures in 4006D CPCBII</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Yes</controllingFieldValue>
+            <valueName>Belt tensioner pulley bearing failure</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Yes</controllingFieldValue>
+            <valueName>Oil Pressure switch malfunction in 4016 TRG</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Yes</controllingFieldValue>
+            <valueName>Governor Ball joint crimp loose</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,26 @@
+.THIS .headwidth  {
+    width:75px !important;  
+}
+.THIS .cellwidth {
+    width:100px !important;
+    
+}
+.THIS .textcenter {
+    text-align: center !important;
+    
+}
+
+.THIS .textsize {
+    font-size: 10px !important;  
+}
+
+.THIS .padding {
+    padding-left: 10px !important;  
+}
+.THIS .slds-input__spinner{
+    display: none;
+}
+.THIS.slds-form-element__label 
+{
+    display: none !important;
+}

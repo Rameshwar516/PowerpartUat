@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Total_Landed_Amount__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(  ISPICKVAL(MRN__r.MRN_Delivery_Type__c, &apos;Import&apos;)  , 
+( Total_Item_Value_In_INR_input__c + Custom_Duty_Amount__c)+ (  Total_Amount_Input__c * MRN__r.Exchange_Rate__c *    MRN__r.dcCharges__c  )+ ( Total_Amount_Input__c * MRN__r.Exchange_Rate__c * MRN__r.clgCharges__c ),
+ Total_Item_Value_In_INR_input__c +(Total_Item_Value_In_INR_input__c * MRN__r.Total_Charges_Percentage__c ))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Total Landed Amount (INR)</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

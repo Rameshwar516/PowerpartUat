@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>New_Asset_Layout</fullName>
+    <fields>Name</fields>
+    <fields>Engine_Family_List__c</fields>
+    <fields>Engine_Model__c</fields>
+    <fields>OEM__c</fields>
+    <fields>End_Customer__c</fields>
+    <label>New Asset Layout</label>
+</CompactLayout>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>OpportunituCloseWonSyncRule</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND( ISPICKVAL( Stage__c , &quot;Closed Won&quot;) , ISBLANK(Syncquote__c  ) )</errorConditionFormula>
+    <errorMessage>Quote Related To Opportunity is not  Synced</errorMessage>
+</ValidationRule>

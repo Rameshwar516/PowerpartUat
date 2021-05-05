@@ -1,9 +1,12 @@
-public class CustomLookupForPI {
+public without sharing class  CustomLookupForPI {
     
     @AuraEnabled
     public static List <sObject> searchLookupValue(string queryText, String objectName, string wareHouse, String strWrap,String eveobject) {
-        System.debug('---- '+eveobject);
+        System.debug('--wareHouse-- '+wareHouse);
         System.debug('--strWrap-- '+strWrap);
+        System.debug('--queryText-- '+queryText);
+        System.debug('--eveobject-- '+eveobject);
+        System.debug('--objectName-- '+objectName);
         Set<string> existpartid = new set<string>();
         if(string.isNotBlank(strWrap) && objectName == 'Part__c'){
             if(eveobject == 'MRN'){
@@ -18,7 +21,7 @@ public class CustomLookupForPI {
                 PurchaseOrderCMP.mainWrapper objmainWrap = (PurchaseOrderCMP.mainWrapper)Json.deserialize(strWrap, PurchaseOrderCMP.mainWrapper.class);
                 for(PurchaseOrderCMP.OrderItemWapper oiw : objmainWrap.lstOIW){
                     existpartid.add(oiw.objPart.id);
-                    System.debug('---- '+oiw.objPart+'..'+oiw.UOI);
+                    System.debug('---- '+oiw.objPart);
                 } 
             }
         }

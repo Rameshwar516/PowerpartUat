@@ -186,15 +186,13 @@
         else if(!Istrue)
         {
             for(var i=0;i<tmpMainWrapper.length;i++){
-                console.log('for-- '+index);
-                console.log(tmpMainWrapper[i].objProdchild.Product_Part__c);
                 if(index == tmpMainWrapper[i].objProdchild.Product_Part__c){
-                    console.log('run');
                     prodwrapper =  tmpMainWrapper[i];
                 }
             }
             var objWrap = component.get("v.wrapMain");
-            helper.RemoveRecordOnCheck(component, event, objWrap ,prodwrapper);
+            if(prodwrapper !=null){
+            helper.RemoveRecordOnCheck(component, event, objWrap ,prodwrapper);}
             
         }
             else if(tmpMainWrapper.length = 0)

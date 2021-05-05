@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SharingRules xmlns="http://soap.sforce.com/2006/04/metadata">
+    <sharingCriteriaRules>
+        <fullName>Service_Request_Kolkata_Sharing</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Service Request Kolkata Sharing</label>
+        <sharedTo>
+            <role>Service_Manager_Kolkata</role>
+        </sharedTo>
+        <criteriaItems>
+            <field>OwnerId</field>
+            <operation>equals</operation>
+            <value>0052u000000dNvs</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingOwnerRules>
+        <fullName>Record_sharing_to_A_I</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Record sharing to A&amp;I</label>
+        <sharedTo>
+            <role>A_I_Manager</role>
+        </sharedTo>
+        <sharedFrom>
+            <role>A_I_Manager</role>
+        </sharedFrom>
+    </sharingOwnerRules>
+</SharingRules>

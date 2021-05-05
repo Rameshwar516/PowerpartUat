@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Not_A_Know_Issue</fullName>
+    <active>true</active>
+    <errorConditionFormula>text(Known_Issue__c) = &apos;New Issue&apos; &amp;&amp; Isblank( New_Issue__c )</errorConditionFormula>
+    <errorDisplayField>New_Issue__c</errorDisplayField>
+    <errorMessage>Please provide the issue details.</errorMessage>
+</ValidationRule>

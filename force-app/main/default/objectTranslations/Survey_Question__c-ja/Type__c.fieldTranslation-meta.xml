@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>タイプ</label>
+    <name>Type__c</name>
+    <picklistValues>
+        <masterLabel>Free Text</masterLabel>
+        <translation>フリーテキスト</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Multi-Select--Vertical</masterLabel>
+        <translation>複数選択　縦並び</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Single Select--Horizontal</masterLabel>
+        <translation>単一選択　横並び</translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Single Select--Vertical</masterLabel>
+        <translation>単一選択　縦並び</translation>
+    </picklistValues>
+</CustomFieldTranslation>

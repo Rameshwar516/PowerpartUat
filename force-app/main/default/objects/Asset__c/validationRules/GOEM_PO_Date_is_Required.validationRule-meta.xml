@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>GOEM_PO_Date_is_Required</fullName>
+    <active>false</active>
+    <description>GOEM PO DATE is required when GOEM PO No have an value.</description>
+    <errorConditionFormula>AND( NOT( ISBLANK( PO_No__c ) ) , ISBLANK( PO_Date__c ) )</errorConditionFormula>
+    <errorDisplayField>PO_Date__c</errorDisplayField>
+    <errorMessage>GOEM PO Date is Required</errorMessage>
+</ValidationRule>

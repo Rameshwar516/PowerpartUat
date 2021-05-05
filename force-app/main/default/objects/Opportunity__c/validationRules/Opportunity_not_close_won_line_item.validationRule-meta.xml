@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Opportunity_not_close_won_line_item</fullName>
+    <active>true</active>
+    <description>Opportunity will not close won if total line-item &lt;=0</description>
+    <errorConditionFormula>AND( ISPICKVAL( Stage__c , &quot;Closed Won&quot;) , Total_Line_Items__c  &lt;= 0)</errorConditionFormula>
+    <errorMessage>Opportunity will not close won if Total line Item is less than 0.</errorMessage>
+</ValidationRule>

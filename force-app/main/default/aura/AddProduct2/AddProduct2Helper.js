@@ -113,12 +113,14 @@
     
     
     RemoveRecordOnCheck : function(component, event, objWrap, prodwrapper) {
+        component.set("v.isdisable",true);
         var action = component.get('c.removeRecord');
         action.setParams({   
             "strWrap" : JSON.stringify(objWrap),
             "prodwrappstr" : JSON.stringify(prodwrapper)
         });
-        action.setCallback(this, function(res) {          
+        action.setCallback(this, function(res) { 
+            component.set("v.isdisable",false);
             if(res.getState() === "SUCCESS" && JSON.parse(res.getReturnValue()).success ) {               
                 component.set('v.wrapMain', JSON.parse(res.getReturnValue()));
                 this.refreshCharge(component,event,helper);

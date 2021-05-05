@@ -93,11 +93,31 @@ public class ClassOnPIEmailSend {
             mail.setPlainTextBody(Bodyy);
             mails.add(mail);
             
-            attachdoc.Body=pageData;   
+            /*attachdoc.Body=pageData;   
             attachdoc.Name = at.name + ' ' + 'PI' + '.pdf';
             attachdoc.ParentId = at.Id;
             attachdoc.IsPrivate=false;
-            insert attachdoc;
+            insert attachdoc;*/
+              // content document
+                
+                String yourFilesContent = 'Proforma_Invoice_pdf.pdf';
+ 
+                ContentVersion conVer = new ContentVersion();
+                conVer.ContentLocation = 'S'; // to use S specify this document is in Salesforce, to use E for external files
+                conVer.PathOnClient = 'Proforma_Invoice_pdf.pdf'; // The files name, extension is very important here which will help the file in preview.
+                conVer.Title = 'Proforma Invoice'; // Display name of the files
+                conVer.VersionData = pageData; // converting your binary string to Blog
+                insert conVer;    //Insert ContentVersion
+                
+                
+                // First get the Content Document Id from ContentVersion Object
+                Id conDoc = [SELECT ContentDocumentId FROM ContentVersion WHERE Id =:conVer.Id].ContentDocumentId;
+                //create ContentDocumentLink  record 
+                ContentDocumentLink conDocLink = New ContentDocumentLink();
+                conDocLink.LinkedEntityId = at.id; // Specify RECORD ID here i.e Any Object ID (Standard Object/Custom Object)
+                conDocLink.ContentDocumentId = conDoc;  //ContentDocumentId Id from ContentVersion
+                conDocLink.shareType = 'I';
+                insert conDocLink;
         }   
         if(mails.size()>0){
             Messaging.sendEmail(mails);
@@ -111,7 +131,7 @@ public class ClassOnPIEmailSend {
         public boolean success;
         public  opportunity__c objquote;
         public string emailbody;
-        public string Subject;
+        public string subject;
         public boolean islineItemAvailable;
     }
 

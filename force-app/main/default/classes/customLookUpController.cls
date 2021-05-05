@@ -91,6 +91,9 @@ public with sharing class customLookUpController
                         System.debug('stock landed - '+stk.Stock_Landed_Amount__r.isempty());
                          if(!stk.Stock_Landed_Amount__r.isempty()){
                             objSMW.objDNLI.Sales_Price__c = stk.Stock_Landed_Amount__r[0].Landed_Price__c;
+                            //objSMW.objDNLI.Total_Amount__c = objSMW.objDNLI.Sales_Price__c * objSMW.objDNLI.Quantity__c;
+                            //objSMW.objDNLI.Discount_Currency__c = objSMW.objDNLI.Total_Amount__c * objSMW.objDNLI.Discount__c/100;
+                            //objSMW.objDNLI.Taxable_Amount__c = objSMW.objDNLI.Total_Amount__c - objSMW.objDNLI.Discount__c;   
                         }
                        // objSMW.StockId =mapNoOfStock.get(objSODN.Product_Part__c+'-'+objSODN.Ware_House__c).Id; 
                     }

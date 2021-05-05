@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>PDFHeader</label>
+    <protected>false</protected>
+    <values>
+        <field>Address_Header__c</field>
+        <value xsi:type="xsd:string">PowerParts Head Office</value>
+    </values>
+    <values>
+        <field>Address_Line1__c</field>
+        <value xsi:type="xsd:string">114, PACE CITY-I, SECTOR - 37,</value>
+    </values>
+    <values>
+        <field>Address_Line_2__c</field>
+        <value xsi:type="xsd:string">Gurugram - 122001, HARYANA (INDIA)</value>
+    </values>
+    <values>
+        <field>BANK__c</field>
+        <value xsi:type="xsd:string">Our Banker. BANK OF BARODA , 16,Parliament Street, New Delhi 110001</value>
+    </values>
+    <values>
+        <field>Bank_A_C_No__c</field>
+        <value xsi:type="xsd:string">Bank A/C No. 05860500000002</value>
+    </values>
+    <values>
+        <field>Branch__c</field>
+        <value xsi:type="xsd:string">Gurugram</value>
+    </values>
+    <values>
+        <field>Effected_Date__c</field>
+        <value xsi:type="xsd:date">2021-02-04</value>
+    </values>
+    <values>
+        <field>Email__c</field>
+        <value xsi:type="xsd:string">powerparts@powerparts.in</value>
+    </values>
+    <values>
+        <field>Gstin__c</field>
+        <value xsi:type="xsd:string">GSTIN NO. 06AABCP9737D1ZE</value>
+    </values>
+    <values>
+        <field>Header__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>IEC_No__c</field>
+        <value xsi:type="xsd:string">IEC No. 0598060456</value>
+    </values>
+    <values>
+        <field>IFC_RTGS_NEFT__c</field>
+        <value xsi:type="xsd:string">IFC/RTGS/NEFT. BARB0PARLIA</value>
+    </values>
+    <values>
+        <field>PAN_No__c</field>
+        <value xsi:type="xsd:string">PAN No. AABCP9737D</value>
+    </values>
+    <values>
+        <field>Tel__c</field>
+        <value xsi:type="xsd:string">Tel. 0124-4036614,4019215</value>
+    </values>
+</CustomMetadata>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workflow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <alerts>
+        <fullName>Sales_order_dispatched</fullName>
+        <description>Sales order dispatched</description>
+        <protected>false</protected>
+        <recipients>
+            <type>owner</type>
+        </recipients>
+        <senderType>CurrentUser</senderType>
+        <template>unfiled$public/Sales_order_dispatch_notification</template>
+    </alerts>
+    <rules>
+        <fullName>Delivery Note Completed</fullName>
+        <active>false</active>
+        <criteriaItems>
+            <field>Sales_Order_Dispatch_Delivery_Note__c.Status__c</field>
+            <operation>equals</operation>
+            <value>Completed</value>
+        </criteriaItems>
+        <triggerType>onCreateOrTriggeringUpdate</triggerType>
+    </rules>
+</Workflow>

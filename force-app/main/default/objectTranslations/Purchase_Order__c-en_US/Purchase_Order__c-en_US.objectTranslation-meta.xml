@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Purchase Order</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Purchase Orders</value>
+    </caseValues>
+    <layouts>
+        <layout>Purchase Order Layout</layout>
+        <sections>
+            <label></label>
+            <section>Account / Contact Information</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Additional information</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Address Information</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Purchase Order Terms &amp; Conditions</section>
+        </sections>
+    </layouts>
+    <quickActions>
+        <label></label>
+        <name>Edit_Purchase_Order</name>
+    </quickActions>
+    <quickActions>
+        <label></label>
+        <name>Generate_Purchase_Order_popup</name>
+    </quickActions>
+    <startsWith>Consonant</startsWith>
+    <validationRules>
+        <errorMessage></errorMessage>
+        <name>Shipping_Customer_Ware_House_Select</name>
+    </validationRules>
+    <webLinks>
+        <label></label>
+        <name>Generate_Purchase_Order</name>
+    </webLinks>
+</CustomObjectTranslation>

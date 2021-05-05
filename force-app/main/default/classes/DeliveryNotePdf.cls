@@ -40,11 +40,12 @@ public class DeliveryNotePdf {
         if(DeliveryNoteList.size()>0){
            objdlvrynot =DeliveryNoteList[0];
         }
+        if(objdlvrynot.Shipping_Account__c!=null){
         list<contact> conlist = [select id, name,mobilephone,email ,isPrimary__c from contact where isPrimary__c= true AND Accountid =:objdlvrynot.Shipping_Account__c limit 1];
         
         if(!conlist.isempty())
         ShippingObjCon = conlist[0];
-        
+        }
         List<String> Chargeritem = UtilityClass.getAllFields('Charges__c');
         String strCharges = 'Select ' +String.Join(Chargeritem, ',')+',Charges__r.name From Charges__c where Delivery_Note__c =: strId';
         System.debug('strChanges--- '+strCharges);
@@ -87,8 +88,10 @@ public class DeliveryNotePdf {
                 childwrapper wdli = new childwrapper();
                 wdli.objDLI = dli;
                 system.debug('dli.Product_Part__c  '+dli.Product_Part__c);
+                if(mapStock.containsKey(dli.Product_Part__c)){
                 wdli.binnumber = mapStock.get(dli.Product_Part__c).Bin_Number__c;
-                GrossTotal = GrossTotal + dli.Gross_Amount__c;
+                }
+                    GrossTotal = GrossTotal + dli.Gross_Amount__c;
                 Quantity=Quantity+dli.Quantity__c;
                 
                 Deliverylineitemwrapper.add(wdli);

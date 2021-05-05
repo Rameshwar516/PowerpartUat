@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workflow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fieldUpdates>
+        <fullName>Update_Freeze_Quantity</fullName>
+        <field>Freeze_Quantity__c</field>
+        <formula>Freeze_Quantity__c - Unfreeze_Quantity__c</formula>
+        <name>Update Freeze Quantity</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Formula</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>true</reevaluateOnChange>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Update_Product_Out</fullName>
+        <field>Product_Out__c</field>
+        <formula>Freeze_Quantity__c - Unfreeze_Quantity__c</formula>
+        <name>Update Product Out</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Formula</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>true</reevaluateOnChange>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Update_Unfreeze_to_Blank</fullName>
+        <field>Unfreeze_Quantity__c</field>
+        <formula>0</formula>
+        <name>Update Unfreeze to Blank</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Formula</operation>
+        <protected>false</protected>
+    </fieldUpdates>
+    <rules>
+        <fullName>If Product In Updated</fullName>
+        <actions>
+            <name>Update_Unfreeze_to_Blank</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>false</active>
+        <formula>ISCHANGED( Unfreeze_Quantity__c )</formula>
+        <triggerType>onAllChanges</triggerType>
+    </rules>
+    <rules>
+        <fullName>Is Unfreeze Amount</fullName>
+        <actions>
+            <name>Update_Freeze_Quantity</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>true</active>
+        <criteriaItems>
+            <field>Stock__c.Unfreeze_Quantity__c</field>
+            <operation>greaterThan</operation>
+            <value>0</value>
+        </criteriaItems>
+        <triggerType>onCreateOrTriggeringUpdate</triggerType>
+    </rules>
+</Workflow>

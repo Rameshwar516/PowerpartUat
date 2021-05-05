@@ -86,20 +86,20 @@
                 
                 <div style="width:100%;"> 
                     <div style="float:left; width:40%;">
-                        Offer No.: {!Quote__c.Quote_Number__c}
+                       <b> Offer No.:</b> {!Quote__c.Quote_Number__c}
                     </div>
                     <div style="float:left;margin-left:8%;text-align:center;">
                         
                     </div>
                     <div style="float:right; width:30%;">
-                        Ref. No.:
+                        <b>Ref. No.:</b>
                             {!Quote__c.Opportunity__r.Reference_Number__c}
                     </div>
-                </div>
-                
+                </div><br/>
+                <br/>
                 <div style="width:100%;"> 
                     <div style="float:left; width:40%;">
-                        Date: 
+                        <b>Date:</b> 
                             <apex:outputText value="{0, date, d'/'MM'/'y}">
                                 <apex:param value="{!Quote__c.Date__c}"/>
                             </apex:outputText>
@@ -108,51 +108,53 @@
                         
                     </div>
                     <div style="float:right; width:30%;">
-                        Ref. Date:
+                        <b>Ref. Date :</b>
                             <apex:outputText value="{0, date, d'/'MM'/'y}">
                                 <apex:param value="{!Quote__c.Opportunity__r.Reference_Date__c}"/>
                             </apex:outputText>
                     </div>
-                </div>
+                </div><br/>
+                <br/>
                 
                 <div style="width:100%;"> 
                     <div style="float:left; width:40%;">
-                        Customer Name: {!Quote__c.Customer_Party__r.Name}
+                        <b>Customer Name:</b> {!Quote__c.Customer_Party__r.Name}
                     </div>
                     <div style="float:left;margin-left:8%;text-align:center;">
                         
                     </div>
                     <div style="float:right; width:30%;">
                         
-                    </div>
-                </div>
+                    </div>                                       
+                </div><br/>
                 
                 <div style="width:100%;"> 
                     <div style="float:left; width:40%;">
-                        Address: <apex:outputfield value="{!Quote__c.Billing_Address__c}"/>
+                        
+                       <b>Address : </b> <apex:outputfield value="{!Quote__c.Billing_Address__c}"/>
                     </div>
                     <div style="float:left;margin-left:8%;text-align:center;">
                         
                     </div>
                     <div style="float:right; width:30%;">
-                        Site Address: <apex:outputfield value="{!Quote__c.Shipping_Address__c}"/>
+                      <b>  Site Address: </b><apex:outputfield value="{!Quote__c.Shipping_Address__c}"/>
                     </div>
                 </div>
                 
                 <div style="width:100%;"> 
                     <div style="float:left; width:100%;">&nbsp;
                     </div>
-                </div>  
+                </div>                                                                     
                     
                 <div style="width:100%;"> 
                     <div style="float:left;width:40%;">
-                        Engine Serial No.: {!Quote__c.Opportunity__r.Customer_Asset__r.Name}
+                        <b>Engine Serial No. :</b>{!Quote__c.Opportunity__r.Customer_Asset__r.Name}
                     </div>
                      <div style="float:left;margin-left:8%;text-align:center;">
                         
                     </div>
                     <div style="float:right;width:30%;">
-                        Application: {!Quote__c.Opportunity__r.Customer_Asset__r.Applications__c}
+                     <b> Application:</b> {!Quote__c.Opportunity__r.Customer_Asset__r.Applications__c}
                     </div>
                 </div>
                  <div style="width:100%;"> 

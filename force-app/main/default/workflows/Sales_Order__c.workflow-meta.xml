@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workflow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <alerts>
+        <fullName>Notify</fullName>
+        <description>Notify Order dispatch</description>
+        <protected>false</protected>
+        <recipients>
+            <type>owner</type>
+        </recipients>
+        <senderType>CurrentUser</senderType>
+        <template>unfiled$public/Sales_order_dispatch_notification</template>
+    </alerts>
+    <alerts>
+        <fullName>Sales_order_dispatch_notification</fullName>
+        <description>Sales order dispatch notification</description>
+        <protected>false</protected>
+        <recipients>
+            <type>owner</type>
+        </recipients>
+        <senderType>CurrentUser</senderType>
+        <template>unfiled$public/Sales_order_dispatch_notification</template>
+    </alerts>
+    <fieldUpdates>
+        <fullName>Sales_Order_Discount_Approved</fullName>
+        <field>Approval__c</field>
+        <literalValue>Approved</literalValue>
+        <name>Sales Order Discount Approved</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Sales_Order_Discount_Reject</fullName>
+        <field>Approval__c</field>
+        <literalValue>Reject</literalValue>
+        <name>Sales Order Discount Reject</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+    </fieldUpdates>
+    <rules>
+        <fullName>Sales order dispatch notification</fullName>
+        <actions>
+            <name>Sales_order_dispatch_notification</name>
+            <type>Alert</type>
+        </actions>
+        <active>false</active>
+        <criteriaItems>
+            <field>Sales_Order__c.Status__c</field>
+            <operation>equals</operation>
+            <value>Approved</value>
+        </criteriaItems>
+        <triggerType>onAllChanges</triggerType>
+    </rules>
+</Workflow>

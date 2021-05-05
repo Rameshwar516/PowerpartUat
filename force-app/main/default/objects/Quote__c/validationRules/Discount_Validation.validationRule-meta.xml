@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Discount_Validation</fullName>
+    <active>false</active>
+    <errorConditionFormula>Quote_Percentage_Max__c  &gt;=   Max_Discount__c &amp;&amp;  TEXT(Approval__c)  &lt;&gt; &quot;Approved&quot;</errorConditionFormula>
+    <errorMessage>Max Discount Reached. Please submit this Quote for Aproval.</errorMessage>
+</ValidationRule>

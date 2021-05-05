@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>Kolkata</fullName>
+        <default>false</default>
+        <label>Kolkata</label>
+    </customValue>
+    <customValue>
+        <fullName>Gurugram</fullName>
+        <default>false</default>
+        <label>Gurugram</label>
+    </customValue>
+    <masterLabel>Branch</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

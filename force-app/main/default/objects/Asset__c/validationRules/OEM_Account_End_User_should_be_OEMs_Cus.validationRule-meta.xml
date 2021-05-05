@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>OEM_Account_End_User_should_be_OEMs_Cus</fullName>
+    <active>false</active>
+    <errorConditionFormula>text(OEM__r.Type) =&apos;OEM&apos; &amp;&amp; not(text(End_Customer__r.Type) =&apos;OEM’s Customer&apos;)</errorConditionFormula>
+    <errorDisplayField>End_Customer__c</errorDisplayField>
+    <errorMessage>End Customer should be OEM&apos;s Customer.</errorMessage>
+</ValidationRule>

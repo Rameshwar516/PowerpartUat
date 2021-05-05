@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Delivery Note</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Delivery Notes</value>
+    </caseValues>
+    <layouts>
+        <layout>Delivery Note Layout</layout>
+        <sections>
+            <label></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Shipping Details</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Sales Order Dispatch (Delivery Note) Layout</layout>
+        <sections>
+            <label></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Payment Dispatch Information</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Shipping Details</section>
+        </sections>
+    </layouts>
+    <quickActions>
+        <label></label>
+        <name>Add_Part</name>
+    </quickActions>
+    <quickActions>
+        <label></label>
+        <name>Create_Packing_List</name>
+    </quickActions>
+    <quickActions>
+        <label></label>
+        <name>Create_Packing_List_Item</name>
+    </quickActions>
+    <quickActions>
+        <label></label>
+        <name>Generate_Delivery_Notep_pop</name>
+    </quickActions>
+    <quickActions>
+        <label></label>
+        <name>Generate_Tax_Invoice</name>
+    </quickActions>
+    <quickActions>
+        <label></label>
+        <name>Update_Delivery_Part</name>
+    </quickActions>
+    <startsWith>Consonant</startsWith>
+    <validationRules>
+        <errorMessage></errorMessage>
+        <name>validation_of_checkbox_bin_and_pricing</name>
+    </validationRules>
+    <webLinks>
+        <label></label>
+        <name>Generate_Delivery_Note</name>
+    </webLinks>
+</CustomObjectTranslation>

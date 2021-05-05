@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Item_Value_with_Freight_and_Surcharges__c</fullName>
+    <externalId>false</externalId>
+    <formula>Total_Amount_GBP__c + ( Total_Amount_GBP__c* MRN__r.Freight_of_Invoice__c )/100 + (Total_Amount_GBP__c* MRN__r.Inv_Surcharge__c )/100</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Item Value with Freight and Surcharges</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

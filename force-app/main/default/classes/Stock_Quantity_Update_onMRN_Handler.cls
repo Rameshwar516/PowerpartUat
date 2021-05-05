@@ -49,7 +49,7 @@ public class Stock_Quantity_Update_onMRN_Handler {
                             }
                             else{
                                 if(mli.Bill_QTY__c!= null){
-                                    objStock.Product_IN__c = objStock.Product_IN__c+mli.Bill_QTY__c;
+                                    objStock.Product_IN__c = objStock.Product_IN__c+mli.Received_QTY__c;
                                     mapIdRelatedStock.put(objStock.Id,objStock);}
                             }
                         }
