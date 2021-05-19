@@ -466,41 +466,37 @@
             <br/>
             <table style="width:100%;border:2px solid black;border-collapse: collapse;">
                 <tr>
-                    <th  width="5%" rowspan="2" style="text-align:center">
+                    <th  width="3%" rowspan="2" style="text-align:center">
                         <apex:outputText value="S No." />
                     </th>
-                    <th  width="5%" rowspan="2" style="text-align:center">
+                    <th  width="7%" rowspan="2" style="text-align:center">
                         <apex:outputText value="Part No" />
                     </th>
-                    <th  width="5%" rowspan="2" style="text-align:center">
+                    <th  width="8%" rowspan="2" style="text-align:center">
                         <apex:outputText value="Description" />
                     </th>
-                    <th  width="5%" rowspan="2" style="text-align:center">
+                    <th  width="4%" rowspan="2" style="text-align:center">
                         <apex:outputText value="HSN/ SAC" />
                     </th>
-                    <th  width="5%" rowspan="2" style="text-align:center">
+                    <th  width="4%" rowspan="2" style="text-align:center">
                         <apex:outputText value="Qty" />
                     </th>
                     <th  width="5%" rowspan="2" style="text-align:center">
                         <apex:outputText value="UOM"/>
                     </th>
-                    <th  width="5%" rowspan="2" style="text-align:center">
+                    <th  width="7%" rowspan="2" style="text-align:center">
                         <apex:outputText value="Rate" />
                     </th>
-                    <th  width="5%" rowspan="2" style="text-align:center">
+                    <th  width="7%" rowspan="2" style="text-align:center">
                         <apex:outputText value="Amount" />
                     </th>
-                    <th  width="5%" rowspan="2" style="text-align:center">
+                    <th  width="4%" rowspan="2" style="text-align:center">
                         <apex:outputText value="Disc %" />
                     </th>
-                    <!--<th  width="5%" rowspan="2">
-<apex:outputText value="Disc Amt" />
-</th>-->
-                    
-                    <th  width="10%" rowspan="2" colspan="2" style="text-align:center">
+                    <th  width="7%" rowspan="2" colspan="2" style="text-align:center">
                         <apex:outputText value="Disc Amt" />
                     </th>
-                    <th  width="5%" rowspan="2" colspan="2" style="text-align:center">
+                    <th  width="7%" rowspan="2" colspan="2" style="text-align:center">
                         <apex:outputText value="Taxable Value" />
                     </th>
                     <th  width="10%" colspan="2" style="text-align:center">
@@ -512,7 +508,7 @@
                     <th  width="10%" colspan="2" style="text-align:center">
                         <apex:outputText value="IGST" />
                     </th>
-                    <th width="10%" rowspan="2" style="text-align:center">
+                    <th width="7%" rowspan="2" style="text-align:center">
                         <apex:outputText value="Total"/>
                     </th>
                 </tr>  

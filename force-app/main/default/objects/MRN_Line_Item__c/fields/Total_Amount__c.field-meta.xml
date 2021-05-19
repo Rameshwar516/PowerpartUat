@@ -4,8 +4,6 @@
     <externalId>false</externalId>
     <formula>if(ISPICKVAL(MRN__r.MRN_Type__c, &apos;Sales Return&apos;),  Quantity__c  ,  Bill_QTY__c  )* Sales_Price__c</formula>
     <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-    <inlineHelpText>Sales Return Case ( Received Quantity * sales price)
-Purchase Order Case ( Short Quantity * sales price)</inlineHelpText>
     <label>Total Amount</label>
     <precision>18</precision>
     <required>false</required>

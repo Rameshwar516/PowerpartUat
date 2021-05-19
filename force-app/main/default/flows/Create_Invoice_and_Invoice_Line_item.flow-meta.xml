@@ -399,6 +399,12 @@
             </value>
         </inputAssignments>
         <inputAssignments>
+            <field>Reverse_Charge__c</field>
+            <value>
+                <elementReference>get_delivery_note.Sales_Order__r.Opportunity__r.Reverse_Charges__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>Shipping_Account__c</field>
             <value>
                 <elementReference>get_delivery_note.Shipping_Account__c</elementReference>

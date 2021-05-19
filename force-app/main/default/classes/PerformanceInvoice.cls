@@ -222,14 +222,14 @@ public class PerformanceInvoice
              system.debug('totalIgst'+totalIgst);
         }
         
-        totalCgst=totalCgst.round();
-        totalSgst=totalSgst.round();
-        totalIgst=totalIgst.round();
-        totalAmount=totalAmount.round();
-        totalAmountNotIncludedTax=totalAmountNotIncludedTax.round();
+        //totalCgst=totalCgst.round();
+        //totalSgst=totalSgst.round();
+      //totalIgst=totalIgst.round();
+      //  totalAmount=totalAmount.round();
+       //totalAmountNotIncludedTax=totalAmountNotIncludedTax.round();
         
        totalTax= totalIgst+totalSgst+totalCgst;
-       totalTax=totalTax.round();
+       //totalTax=totalTax.round();
        
         /*if(totalAmount> 0){
             totalAmount= totalAmount.round();
@@ -266,22 +266,22 @@ public class PerformanceInvoice
             totalAmountSumNotIncludedTax = totalAmountSumNotIncludedTax+objCharg?.Charge_Amount__c;
         }
         totalAmountCgst = totalAmountCgst+totalCgst;
-        totalAmountCgst=totalAmountCgst.round();
+        //totalAmountCgst=totalAmountCgst.round();
         totalAmountSgst = totalAmountSgst+totalSgst;
-        totalAmountSgst=totalAmountSgst.round();
+        //totalAmountSgst=totalAmountSgst.round();
         totalAmountIgst = totalAmountIgst+totalIgst;
-        totalAmountIgst=totalAmountIgst.round();
+        //totalAmountIgst=totalAmountIgst.round();
         TotalGSTCharges = totalAmountCgst+totalAmountSgst+totalAmountIgst;
-        TotalGSTCharges=TotalGSTCharges.round();
+        //TotalGSTCharges=TotalGSTCharges.round();
         
-        totalAmountSumNotIncludedTax=totalAmountSumNotIncludedTax.round();
+        //totalAmountSumNotIncludedTax=totalAmountSumNotIncludedTax.round();
         
-        TotalAmountWithCharges = TotalAmountWithCharges+totalAmount;
+        TotalAmountWithCharges = (TotalAmountWithCharges+totalAmount).round();
         totalAmountaftertaxinWords = UtilityClass.NoToWord(TotalAmountWithCharges.intValue());
         totalAmountaftertaxinWords = 'Rupees '+totalAmountaftertaxinWords+' only';
-        TotalAmountWithCharges=TotalAmountWithCharges.round();
+        //TotalAmountWithCharges=TotalAmountWithCharges.round();
         totalAmountSumNotIncludedTax = totalAmountSumNotIncludedTax+totalAmountNotIncludedTax;
-        totalAmountSumNotIncludedTax=totalAmountSumNotIncludedTax.round();
+        //totalAmountSumNotIncludedTax=totalAmountSumNotIncludedTax.round();
         
         decimal amountTCSPer = 0;
         amountTCS = 0;

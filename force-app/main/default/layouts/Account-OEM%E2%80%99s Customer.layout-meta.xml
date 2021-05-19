@@ -356,7 +356,6 @@
     </relatedLists>
     <relatedLists>
         <fields>NAME</fields>
-        <fields>Customer_Name__c</fields>
         <fields>Contact_person__c</fields>
         <fields>PO_Date__c</fields>
         <relatedList>Purchase_Order__c.Supplier__c</relatedList>

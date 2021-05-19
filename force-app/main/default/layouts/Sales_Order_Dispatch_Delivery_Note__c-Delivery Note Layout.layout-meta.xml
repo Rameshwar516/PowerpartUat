@@ -75,6 +75,10 @@
                 <behavior>Edit</behavior>
                 <field>Contact_Person_Name__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Billing_Address__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>

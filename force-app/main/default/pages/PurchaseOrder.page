@@ -143,15 +143,15 @@
                         <center><apex:outputText value=":" /></center>
                     </td>
                     <td style="border:none;"  valign="top" rowspan="3">
-                        <apex:outputText value="{!objSupplier.BillingStreet}" escape="false" />
-                        <apex:outputText value="," rendered="{!IF((objSupplier.BillingCity != ''), true , false)}"/>&nbsp;
-                        <apex:outputText value="{!objSupplier.BillingCity}" escape="false" />
-                        <apex:outputText value="<br/>" rendered="{!IF((objSupplier.BillingState != ''), true , false)}" escape="false"/>&nbsp;
-                        <apex:outputText value="{!objSupplier.BillingState}" escape="false" />
-                        <apex:outputText value="," rendered="{!IF((objSupplier.BillingCountry != ''), true , false)}"/>&nbsp;
-                        <apex:outputText value="{!objSupplier.BillingCountry}" escape="false" />
-                        <apex:outputText value="," rendered="{!IF((objSupplier.BillingPostalCode != ''), true , false)}"/>&nbsp;
-                        <apex:outputText value="{!objSupplier.BillingPostalCode}" escape="false" />
+                        <apex:outputText value="{!Purchase_Order__c.Supplier__r.BillingStreet}" escape="false" />
+                        <apex:outputText value="," rendered="{!IF((Purchase_Order__c.Supplier__r.BillingCity != ''), true , false)}"/>&nbsp;
+                        <apex:outputText value="{!Purchase_Order__c.Supplier__r.BillingCity}" escape="false" />
+                        <apex:outputText value="<br/>" rendered="{!IF((Purchase_Order__c.Supplier__r.BillingState != ''), true , false)}" escape="false"/>&nbsp;
+                        <apex:outputText value="{!Purchase_Order__c.Supplier__r.BillingState}" escape="false" />
+                        <apex:outputText value="," rendered="{!IF((Purchase_Order__c.Supplier__r.BillingCountry != ''), true , false)}"/>&nbsp;
+                        <apex:outputText value="{!Purchase_Order__c.Supplier__r.BillingCountry}" escape="false" />
+                        <apex:outputText value="," rendered="{!IF((Purchase_Order__c.Supplier__r.BillingPostalCode != ''), true , false)}"/>&nbsp;
+                        <apex:outputText value="{!Purchase_Order__c.Supplier__r.BillingPostalCode}" escape="false" />
                     </td>
                     <td style="border:none;"  valign="top" rowspan="3">
                          

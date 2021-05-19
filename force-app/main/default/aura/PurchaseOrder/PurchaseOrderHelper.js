@@ -168,7 +168,7 @@
         component.set("v.OrderItemWapper", POIWrapper);
     },
     AddPurchaseOrderItemsHelper : function(component, event, POItems, PIItems){
-        alert('test');
+       
         for(var i=0 ; i< PIItems.length; i++){
             if(PIItems[i].isSelected){
                 var tmpLineItemWrap = {
@@ -197,7 +197,7 @@
                     "IGSTRate" : 0,
                     "IGSTAmount" : 0,
                     "NetAmount" : 0,
-                    "DeliveryDate" : null,
+                    "DeliveryDate" : PIItems[i].objPILI.Expected_date__c,
                     "application" : PIItems[i].objPILI.Application__c,
                     "Remarks" : PIItems[i].objPILI.Remark__c,
                     "isEdit" : true

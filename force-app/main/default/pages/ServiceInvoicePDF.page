@@ -107,7 +107,7 @@
                     <td style="border:none;" width="25%" valign="top" rowspan="3">
                     </td>
                     <td style="border:none;font-size:15px;" width="50%" valign="top" rowspan="3" >
-                        <center><b><apex:outputText value=" SERVICE INVOICE" /></b></center>
+                        <center><b><apex:outputText value=" TAX INVOICE" /></b></center>
                     </td>
                     <td width="3%"><br/></td>
                     <td style="border:none;" width="22%" valign="top">

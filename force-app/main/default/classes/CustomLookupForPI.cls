@@ -30,9 +30,11 @@ public without sharing class  CustomLookupForPI {
         String searchKey = queryText + '%';
         String sQuery = '';
 		String strFields = '';
+        
         if(String.isNotBlank(objectName)){
             if(objectName == 'Part__c')
-                strFields = 'Id, Name,Part_Name__c,Usage__c,HSN_CODE__c,List_Price_Standard_price__c,UOM__c,UOI__c,(select id, Total_Quantity__c, Ware_House__c from Stocks__r where Ware_House__c =: wareHouse)';
+                strFields = 'Id, Name,Part_Name__c,Usage__c,HSN_CODE__c,List_Price_Standard_price__c,UOM__c,UOI__c';
+                //strFields = 'Id, Name,Part_Name__c,Usage__c,HSN_CODE__c,List_Price_Standard_price__c,UOM__c,UOI__c,(select id, Total_Quantity__c, Ware_House__c from Stocks__r where Ware_House__c =: wareHouse)';
             else if(objectName == 'User')
                 strFields = 'Id, Name';
             else if(objectName == 'Sales_Order__c')

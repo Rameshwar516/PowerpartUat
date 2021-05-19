@@ -4,6 +4,7 @@ public class AddproductController {
     @AuraEnabled 
     public static string productOnLoad(string RecordId)
     {
+        boolean isServiceQt=true;
         string warehouse = '';
         string warehousename = '';
         recordlist = new WrappMain();
@@ -23,13 +24,15 @@ public class AddproductController {
         //Getting line item from current record
         //Getting State from account  to know IGST will apply or not
         if(objname  =='Quote__c'){
-            Quoteobj=[SELECT Id,Opportunity__r.stage__c,Customer_Party__r.Billing_State_Code__c,Opportunity__r.Ware_House__r.State_Code__c,Opportunity__r.Office__c,Opportunity__r.Ware_House__c,Opportunity__r.isService__c From Quote__c WHERE id=:RecordId];
+            Quoteobj=[SELECT Id,Quote_Type__c,Opportunity__r.stage__c,Customer_Party__r.Billing_State_Code__c,Opportunity__r.Ware_House__r.State_Code__c,Opportunity__r.Office__c,Opportunity__r.Ware_House__c,Opportunity__r.isService__c From Quote__c WHERE id=:RecordId];
             state=Quoteobj.Customer_Party__r.Billing_State_Code__c;
             warehouse =Quoteobj.Opportunity__r.Ware_House__c;
             warehousename=Quoteobj.Opportunity__r.Ware_House__r.State_Code__c;
             if(Quoteobj.Opportunity__r.stage__c == 'Closed Won'||Quoteobj.Opportunity__r.stage__c == 'Closed Lost'){
                 recordlist.closed =booleantrue;
             } 
+            if(Quoteobj.Quote_Type__c=='Service' || Quoteobj.Quote_Type__c=='AMC')
+            isServiceQt = false;
             service = Quoteobj?.Opportunity__r.isService__c; 
             lineitemonrecord = [SELECT Amount_Formula__c,Application__c,CGST_Amount_Formula__c,CGST__c,CreatedById,
                                 CreatedDate,Delivery_Date__c,Description__c,DiscountN__c,Discount_Amount__c,Discount__c,
@@ -153,6 +156,7 @@ public class AddproductController {
             recordlist.isSelectedProduct = false;
             recordlist.quoteId.add(RecordId);
             recordlist.igstvalue=IGST;
+            recordlist.isServiceQuote = isServiceQt;
             recordlist.success = true;
             recordlist.lstTaxType = new list<TaxType>();
             recordlist.lstTaxDetails = new List<TaxDetails>();
@@ -670,7 +674,10 @@ public class AddproductController {
         @AuraEnabled public list<TaxDetails> lstCharges;
         @AuraEnabled public boolean closed; 
         @AuraEnabled public string wrname;
-        @AuraEnabled public boolean isService; 
+        @AuraEnabled public boolean isService;
+        @AuraEnabled public boolean isServiceQuote;
+        
+        
     }
     
     public class prodwrapp

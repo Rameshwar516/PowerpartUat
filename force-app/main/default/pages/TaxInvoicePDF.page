@@ -892,15 +892,19 @@
                         <br/>
                     </td>
                 </tr>
-                <tr>
-                    <td colspan="4"><b><apex:outputText value="GST Payable on Reverse Charge :" /></b></td>
-                    <td colspan="2" style="text-align:right"><apex:outputText value="{!GSTOnReverseCharge}" /></td>
-                </tr>
+                <apex:pageBlock rendered="{!if( Invoice__c.Reverse_Charge__c=='Yes',true,false)}">
+                    <tr>
+                        <td colspan="4"><b><apex:outputText value="GST Payable on Reverse Charge :" /></b></td>
+                        <td colspan="2" style="text-align:right"><apex:outputText value="{!GSTOnReverseCharge}" /></td>
+                    </tr>
+                    
+                </apex:pageBlock>
                 <tr>
                     <td colspan="6">
                         <apex:outputText value="Certified that the particulars given above are true and correct." />
                     </td>
                 </tr>
+                
                 <tr>
                     <td colspan="6" rowspan="11">
                         <br/><br/><br/>

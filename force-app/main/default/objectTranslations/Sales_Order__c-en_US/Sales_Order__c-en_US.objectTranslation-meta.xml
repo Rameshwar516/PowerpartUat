@@ -76,6 +76,10 @@
         <errorMessage></errorMessage>
         <name>Status_Order_Approved</name>
     </validationRules>
+    <validationRules>
+        <errorMessage></errorMessage>
+        <name>Status_not_change_after_approved</name>
+    </validationRules>
     <webLinks>
         <label></label>
         <name>Sales_Order_Acknowledgement</name>

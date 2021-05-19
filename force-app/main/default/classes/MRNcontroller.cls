@@ -794,10 +794,10 @@ public class MRNcontroller {
                 WrapperResult objWrap = new WrapperResult();
                 system.debug(objPO.Id+'...objPO.Id......'+objPO.Purchase_Order_Number__c);
                 objWrap.RecordId = objPO.Id;
-                if(objPO.Ref_No__c != null)
+                /*if(objPO.Ref_No__c != null)
                     objWrap.RecordName = objPO.Purchase_Order_Number__c+'('+objPO.Ref_No__c+')';
                 else
-                    objWrap.RecordName = objPO.Purchase_Order_Number__c;
+                    objWrap.RecordName = objPO.Purchase_Order_Number__c;*/
                 system.debug(objWrap.RecordId+'...objWrap.RecordId.....'+objWrap.RecordName);
                 objmainWrap.LstWrapperResult.add(objWrap);
             }   

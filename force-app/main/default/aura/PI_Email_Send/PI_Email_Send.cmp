@@ -12,7 +12,7 @@
     <div >
         <lightning:input value="{!v.wrappr.objquote.Contact_Person__r.Email}" aura:id="EmailAddress" type="text" label="To Email Address:" />
         <lightning:input aura:id="CC" type="text"  label="CC Email Address:" />
-        <lightning:input aura:id="Subject" required="true" type="text" label="Subject" value="{!v.wrappr.Subject}"/>
+        <lightning:input aura:id="Subject" required="true" type="text" label="Subject" value="{!v.wrappr.subject}"/>
         <!-- <lightning:inputRichText  aura:id="bodyid"  label="Body" value="{!v.wrappr.emailbody}" placeholder="Type something interesting"/>
       --> <lightning:textarea class="tallTextArea" aura:id="bodyid"    label="Body" value="{!v.wrappr.emailbody}" />
         

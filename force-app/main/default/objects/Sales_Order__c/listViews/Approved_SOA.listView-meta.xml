@@ -8,5 +8,10 @@
     <columns>Status__c</columns>
     <columns>Type_SOA__c</columns>
     <filterScope>Everything</filterScope>
+    <filters>
+        <field>Status__c</field>
+        <operation>equals</operation>
+        <value>Approved</value>
+    </filters>
     <label>Approved SOA</label>
 </ListView>

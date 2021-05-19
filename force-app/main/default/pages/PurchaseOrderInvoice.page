@@ -199,7 +199,7 @@
                         <b><apex:outputText value=":" /></b>
                     </td>
                     <td style="border:none;"  valign="top" colspan="2">
-                        <apex:outputText value="{!PurchaseOrd.Supplier__r.Name}" /><!--<apex:outputText value="{!Acc.name}" />-->
+                        <apex:outputText value="{!Purchase_Order__c.Supplier__r.Name}" />
                     </td>
                     
                     <td style="border:none;border-left: 2px solid black;"  valign="top" >
@@ -224,8 +224,16 @@
                         <b><apex:outputText value=":" /></b>
                     </td>
                     <td style="border:none;"  valign="top" colspan="2">
-                        <apex:outputText value="{!strBillingAddress}" />
-                    </td>
+                        <apex:outputText value="{!Purchase_Order__c.Supplier__r.BillingStreet}" escape="false" />
+                        <apex:outputText value="," rendered="{!IF((Purchase_Order__c.Supplier__r.BillingCity != '' && Purchase_Order__c.Supplier__r.BillingCity != null), true , false)}"/>&nbsp;
+                        <apex:outputText value="{!Purchase_Order__c.Supplier__r.BillingCity}" escape="false" />
+                        <apex:outputText value="<br/>" rendered="{!IF((Purchase_Order__c.Supplier__r.BillingState != '' && Purchase_Order__c.Supplier__r.BillingState != null), true , false)}" escape="false"/>&nbsp;
+                        <apex:outputText value="{!Purchase_Order__c.Supplier__r.BillingState}" escape="false" />
+                        <apex:outputText value="," rendered="{!IF((Purchase_Order__c.Supplier__r.BillingPostalCode != ''), true , false)}"/>&nbsp;
+                        <apex:outputText value="{!Purchase_Order__c.Supplier__r.BillingPostalCode}" escape="false" />
+                        <apex:outputText value="," rendered="{!IF((Purchase_Order__c.Supplier__r.BillingCountry != ''), true , false)}"/>&nbsp;
+                        <apex:outputText value="{!Purchase_Order__c.Supplier__r.BillingCountry}" escape="false" />
+                        </td>
                     
                     <td style="border:none;border-left: 2px solid black;"  valign="top" >
                         <b><apex:outputText value="Mode of Transport" /></b>
@@ -280,19 +288,17 @@
                         <apex:outputText value="{!PurchaseOrd.Shipping_Terms__c}" />
                     </td>
                 </tr>
-                
                 <tr>
                     <td style="border:none;"  valign="top" colspan="2">
-                        <b><apex:outputText value="Cont. Name" /></b>
+                        <b><apex:outputText value="Contact Person" /></b>
                     </td>
                     <td style="border:none;"  valign="top" >
                         <b><apex:outputText value="Contact No" /></b>
                     </td>
                     <td style="border:none;"  valign="top" >
-                        <b><apex:outputText value="Email" /></b>
+                        <b><apex:outputText value="E-Mail Id" /></b>
                     </td>
-                    
-                    <td style="border:none;border-left: 2px solid black;"  valign="top">
+                     <td style="border:none;border-left: 2px solid black;"  valign="top">
                         <b><apex:outputText value="Payment Terms" /></b>
                     </td>
                     <td style="border:none;"  valign="top" >
@@ -302,7 +308,29 @@
                         <apex:outputText value="{!PurchaseOrd.Payment_terms__c}" />
                     </td>
                 </tr>
+                
                 <tr>
+                    <td style="border:none;"  valign="top" colspan="2">
+                        <apex:outputText value="{!objSupplierContact.Name}" />
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                        <apex:outputText value="{!objSupplierContact.MobilePhone}" />
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                        <apex:outputText value="{!objSupplierContact.Email}" />
+                    </td>
+                     <td style="border:none;border-left: 2px solid black;"  valign="top" colspan="2">
+                       
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                       
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                       
+                    </td>
+                   
+                </tr>
+                <!--   <tr>
                     <td style="border:none;"  valign="top" colspan="2">
                         <apex:outputText value="{!Con.Name}" />
                     </td>
@@ -322,7 +350,7 @@
                     <td style="border:none;"  valign="top" >
                        
                     </td>
-                </tr>
+                </tr>-->
                 
                 <tr>
                     <td style="border:none;"  valign="top">
@@ -332,7 +360,7 @@
                         <center><apex:outputText value=":" /></center>
                     </td>
                     <td style="border:none;"  valign="top" colspan="2">
-                        <apex:outputText value="{!Acc.GSTIN_No__c}" /> 
+                        <apex:outputText value="{!Purchase_Order__c.Supplier__r.GSTIN_No__c}" /> 
                     </td>
                     
                     <td style="border:none;border-left: 2px solid black"  valign="top">
@@ -353,11 +381,11 @@
                         <center><apex:outputText value=":" /></center>
                     </td>
                     <td style="border:none;"  valign="top">
-                        <apex:outputText value="{!strBillingState}" /> 
+                        <apex:outputText value="{!Purchase_Order__c.Supplier__r.BillingState}" /> 
                     </td>
                     <td style="border:none;border-top: 2px solid black;border-left: 2px solid black;"  valign="top">
                         <b><apex:outputText value="State Code :" /></b> 
-                        <apex:outputText value="{!strBillingCode}" />
+                        <apex:outputText value="{!Purchase_Order__c.Supplier__r.Billing_State_Code__c}" />
                     </td> 
                     
                     <td style="border:none;border-left: 2px solid black"  valign="top">
@@ -390,7 +418,7 @@
                         <b><apex:outputText value=":" /></b>
                     </td>
                     <td style="border:none;border-top: 2px solid black;"  valign="top" colspan="2">
-                        <apex:outputText value="{!PurchaseOrd.Ware_House__r.Name}" />
+                        <apex:outputText value="{!Purchase_Order__c.Ware_House__r.Name}" />
                     </td>
                     
                     <td style="border:none;border-top: 2px solid black;border-left: 2px solid black;"  valign="top" >
@@ -421,7 +449,16 @@
                         <b><apex:outputText value=":" /></b>
                     </td>
                     <td style="border:none;"  valign="top" colspan="2">
-                        <apex:outputText value="{!strWHShippingAddress}" />
+                         <apex:outputText value="{!Purchase_Order__c.Shipping_Street__c}" escape="false" />
+                        <apex:outputText value="," rendered="{!IF((Purchase_Order__c.Shipping_City__c != '' && Purchase_Order__c.Shipping_City__c != null), true , false)}"/>&nbsp;
+                        <apex:outputText value="{!Purchase_Order__c.Shipping_City__c}" escape="false" />
+                        <apex:outputText value="<br/>" rendered="{!IF((Purchase_Order__c.Shipping_State_Province__c != '' && Purchase_Order__c.Shipping_State_Province__c != null), true , false)}" escape="false"/>&nbsp;
+                        <apex:outputText value="{!Purchase_Order__c.Shipping_State_Province__c}" escape="false" />
+                       <apex:outputText value="," rendered="{!IF((Purchase_Order__c.Shipping_Zip_Postal_Code__c != ''), true , false)}"/>&nbsp;
+                        <apex:outputText value="{!Purchase_Order__c.Shipping_Zip_Postal_Code__c}" escape="false" />
+                        <apex:outputText value="," rendered="{!IF((Purchase_Order__c.Shipping_Country__c != ''), true , false)}"/>&nbsp;
+                        <apex:outputText value="{!Purchase_Order__c.Shipping_Country__c}" escape="false" />
+                        <!--<apex:outputText value="{!strWHShippingAddress}" />-->
                     </td>
                 </tr>
                 <tr>
@@ -447,23 +484,23 @@
                 </tr>
                 <tr>
                     <td style="border:none;"  valign="top" colspan="2">
-                        <apex:outputText value="{!Con.Name}" />
+                        <apex:outputText value="{!Purchase_Order__c.Ware_House__r.Contact_Person__c}" />
                     </td>
                     <td style="border:none;"  valign="top" >
-                        <apex:outputText value="{!con.MobilePhone}" />
+                        <apex:outputText value="{!Purchase_Order__c.Ware_House__r.Contact_No__c}" />
                     </td>
                     <td style="border:none;"  valign="top" >
-                        <apex:outputText value="{!con.email}" />
+                        <apex:outputText value="{!Purchase_Order__c.Ware_House__r.E_Mail__c	}" />
                     </td>
                     
                     <td style="border:none;border-left: 2px solid black;"  valign="top" colspan="2">
-                        <apex:outputText value="{!Con.Name}" />
+                        <apex:outputText value="{!contName}" />
                     </td>
                     <td style="border:none;"  valign="top" >
-                        <apex:outputText value="{!con.MobilePhone}" />
+                        <apex:outputText value="{!contPhone}" />
                     </td>
                     <td style="border:none;"  valign="top" >
-                        <apex:outputText value="{!con.email}" />
+                        <apex:outputText value="{!contemail}" />
                     </td>
                 </tr>
                 
@@ -475,7 +512,7 @@
                         <center><apex:outputText value=":" /></center>
                     </td>
                     <td style="border:none;"  valign="top" colspan="2">
-                        <apex:outputText value="{!Acc.GSTIN_No__c}" /> 
+                        <apex:outputText value="{!Purchase_Order__c.Ware_House__r.GSTIN_No__c}" /> 
                     </td>
                     
                     <td style="border:none;border-left: 2px solid black"  valign="top">
@@ -485,7 +522,7 @@
                         <center><apex:outputText value=":" /></center>
                     </td>
                     <td style="border:none;"  valign="top" colspan="2">
-                        <apex:outputText value="{!Acc.GSTIN_No__c}" /> 
+                        <apex:outputText value="{!wareHouseSCGst}" /> 
                     </td>
                 </tr>
                 <tr>
@@ -496,11 +533,11 @@
                         <center><apex:outputText value=":" /></center>
                     </td>
                     <td style="border:none;"  valign="top">
-                        <apex:outputText value="{!strBillingState}" /> 
+                        <apex:outputText value="{!Purchase_Order__c.Ware_House__r.State_Province__c}" /> 
                     </td>
                     <td style="border:none;border-top: 2px solid black;border-left: 2px solid black;"  valign="top">
                         <b><apex:outputText value="State Code :" /></b> 
-                        <apex:outputText value="{!strBillingCode}" />
+                        <apex:outputText value="{!Purchase_Order__c.Ware_House__r.State_Code__c}" />
                     </td> 
                     
                     <td style="border:none;border-left: 2px solid black"  valign="top">
@@ -510,11 +547,11 @@
                         <center><apex:outputText value=":" /></center>
                     </td>
                     <td style="border:none;"  valign="top">
-                        <apex:outputText value="{!strShippingState}" /> 
+                        <apex:outputText value="{!wareHouseSCState}" /> 
                     </td>
                     <td style="border:none;border-top: 2px solid black;border-left: 2px solid black;"  valign="top">
                         <b><apex:outputText value="State Code :" /></b> 
-                        <apex:outputText value="{!strShippingCode}" />
+                        <apex:outputText value="{!wareHouseSCStateCode  }" />
                     </td> 
                 </tr>
                 

@@ -616,12 +616,11 @@
         var RecordIndexStr = event.getSource().get("v.value");
         var action = component.get('c.deleteRecord'); 
         var lineitem = '';
+        var index = 0;
         for(var i=0;i<tmpMainWrapper.length;i++){
-            console.log('for');
-            console.log(tmpMainWrapper[i].objProdchild.Product_Part__c);
             if(RecordIndexStr == tmpMainWrapper[i].objProdchild.Product_Part__c){
-                console.log('run');
                 lineitem =  tmpMainWrapper[i];
+                index=i;
             }
         }
         
@@ -631,8 +630,7 @@
         
         action.setCallback(this, function(res){
             if(res.getState() === "SUCCESS"){
-                console.log(event.getSource().get("v.value"));
-                tmpMainWrapper.splice(RecordIndexStr,1);
+                tmpMainWrapper.splice(index,1);
                 component.set("v.wrapMain.lstWrappTwo",tmpMainWrapper);
                 helper.refreshCharge(component,event,helper);
                 helper.totalamount(component,event,helper);
@@ -842,7 +840,7 @@
         var igstvalue = component.get('v.wrapMain.igstvalue');
         var tper = (templstcharge[tmpIndex].decTaxAmount * 100)/TotalAmount;
         templstcharge[tmpIndex].TaxPercentage =tper.toFixed(2);
-        var dectaxamount =(templstcharge[tmpIndex].TaxPercentage * TotalAmount)/100;
+        var dectaxamount =templstcharge[tmpIndex].decTaxAmount;
         var IGSTAmount = (templstcharge[tmpIndex].IGST * dectaxamount)/100;
         var SGSTAmount = ((templstcharge[tmpIndex].SGST)*dectaxamount)/100;
         var CGSTAmount = ((templstcharge[tmpIndex].CGST)*dectaxamount)/100;

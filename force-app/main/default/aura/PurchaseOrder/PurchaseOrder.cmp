@@ -85,7 +85,7 @@
                                     <b>Supplier Reference Number :</b>
                                 </div>
                                 <div class="slds-col slds-size_3-of-12 slds-p-around_xx-small slds-text-align_right">
-                                    <lightning:input type="Number" value="{!v.mainWrapper.objPurchaseOrder.Ref_No__c}" varient="label-hidden" />
+                                    <lightning:input type="text" value="{!v.mainWrapper.objPurchaseOrder.Ref_No__c}" varient="label-hidden" />
                                 </div>
                                 <div class="slds-col slds-size_3-of-12 slds-p-around_xx-small slds-text-align_right">
                                     <b>Supplier Reference Date :</b>
@@ -693,7 +693,7 @@
                     <lightning:button label="Cancel" onclick="{!c.cancelJS}" class="slds-button"/>
                 </div>
             </lightning:tab>
-            <lightning:tab label="Address Details" id="three">
+            <!-- <lightning:tab label="Address Details" id="three">
                 <div class="slds-box" style="background-color:white">
                     <div class="slds-grid slds-wrap">
                         <div class="slds-col slds-size_1-of-2 slds-p-around_small">
@@ -707,8 +707,8 @@
                                         <b>Bill To :</b>
                                     </div>
                                     <div class="slds-col slds-size_3-of-4 slds-p-around_xx-small slds-text-align_right">
-                                        <lightning:select aura:id="addressId" name="Bill TO" label="" value="{!v.mainWrapper.objPurchaseOrder.Bill_To__c}"  ><!-- onchange="{!c.onchangeAddress}" -->
-                                            <option value="">-- None --</option>
+                                        <lightning:select aura:id="addressId" name="Bill TO" label="" value="{!v.mainWrapper.objPurchaseOrder.Bill_To__c}"  >
+                                            <option value=""> None </option>
                                             <aura:iteration items="{!v.mainWrapper.billToPickList}" var="item">
                                                 <option text="{!item.label}" value="{!item.value}" />
                                             </aura:iteration>
@@ -765,8 +765,8 @@
                                         <b>Ship To :</b>
                                     </div>
                                     <div class="slds-col slds-size_3-of-4 slds-p-around_xx-small slds-text-align_right">
-                                        <lightning:select aura:id="addressId" name="Ship TO" label="" value="{!v.mainWrapper.objPurchaseOrder.Ship_To__c}"  ><!-- onchange="{!c.onchangeAddress}" -->
-                                            <option value="">-- None --</option>
+                                        <lightning:select aura:id="addressId" name="Ship TO" label="" value="{!v.mainWrapper.objPurchaseOrder.Ship_To__c}"  >
+                                            <option value=""> None </option>
                                             <aura:iteration items="{!v.mainWrapper.shipToPickList}" var="item">
                                                 <option text="{!item.label}" value="{!item.value}" />
                                             </aura:iteration>
@@ -825,8 +825,8 @@
                     </div>
                 </div>
                 
-            </lightning:tab>
-        </lightning:tabset>
+            </lightning:tab> -->
+        </lightning:tabset> 
     </div>
         <aura:if isTrue="{!v.showModal}">
         <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-modal_large" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1">

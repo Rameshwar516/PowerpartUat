@@ -167,7 +167,14 @@
     </nameField>
     <pluralLabel>Db/Cr Notes</pluralLabel>
     <recordTypeTrackHistory>false</recordTypeTrackHistory>
-    <searchLayouts></searchLayouts>
+    <searchLayouts>
+        <searchResultsAdditionalFields>RECORDTYPE</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Sales_From__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Customer_Party__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>ESN_No__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>CREATED_DATE</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>OWNER.ALIAS</searchResultsAdditionalFields>
+    </searchLayouts>
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>

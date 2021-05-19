@@ -4,7 +4,10 @@
         helper.Onloadmethod(component, event, getrecId);
 	},
     createDeliveryNote: function(component, event, helper) {
-        
+        console.log(component.get('v.isSave'));
+        if(component.get('v.isSave')==false){
+            component.set("v.isSave",true);
+            console.log('run');
         var Childlst = component.get('v.wrapMains.wrapChildlst');
         var selected = false;
         var QuantyError = false;
@@ -46,9 +49,11 @@
                     type: 'error',
                 });
                 toastEvent.fire();  
+                component.set("v.isSave",FALSE);
             }
         }
         else if(selected == false && Alldone == false){
+            
             var toastEvent = $A.get("e.force:showToast");
             toastEvent.setParams({
                 title : 'Error',
@@ -56,8 +61,9 @@
                 type: 'error',
             });
             toastEvent.fire();
+            component.set("v.isSave",FALSE);
         }
-            
+           } 
 
     },
     selectAll: function(component, event, helper) {

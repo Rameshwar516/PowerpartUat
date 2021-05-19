@@ -161,7 +161,7 @@
     <label>Ware House</label>
     <nameField>
         <label>Ware House Name</label>
-        <trackHistory>false</trackHistory>
+        <trackHistory>true</trackHistory>
         <type>Text</type>
     </nameField>
     <pluralLabel>Ware Houses</pluralLabel>

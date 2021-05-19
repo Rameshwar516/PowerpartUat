@@ -48,6 +48,10 @@
                 <behavior>Edit</behavior>
                 <field>Quote_Status__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>RecordType_Picklist__c</field>
+            </layoutItems>
         </layoutColumns>
         <style>TwoColumnsTopToBottom</style>
     </layoutSections>

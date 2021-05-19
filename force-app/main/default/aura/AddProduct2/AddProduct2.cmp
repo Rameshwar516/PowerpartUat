@@ -207,12 +207,14 @@
                                                         <th class="slds-cell-shrink slds-text-align_center padding" scope="col"  >
                                                             <div class="slds-truncate slds-cell-fixed slds-cell-wrap" title="Total Price" >Total Price</div>
                                                         </th>
+                                                        <aura:if isTrue="{!v.wrapMain.isServiceQuote}">
                                                         <th class="slds-cell-shrink slds-text-align_center padding" scope="col" Style="Width:3rem" >
                                                             <div class="slds-truncate slds-cell-fixed " title="Discount %" Style="Width:4rem">Discount %<lightning:input type="checkbox" label="Same" name="input2" checked="{!v.isdiscount}" onchange="{!c.discountactionCheckbox}"/></div>
                                                         </th>
                                                         <th class="slds-cell-shrink slds-text-align_center padding" scope="col"   Style="Width:4rem">
                                                             <div class="slds-truncate slds-cell-fixed slds-cell-wrap" title="Discount Amount" >Discount Amount</div>
                                                         </th>
+                                                        </aura:if>    
                                                         <th class="slds-cell-shrink slds-text-align_center padding" scope="col"  >
                                                             <div class="slds-truncate slds-cell-fixed slds-cell-wrap" title="Total Amount" >Total Amount</div>
                                                         </th>
@@ -278,9 +280,11 @@
                                                             <td class="slds-text-align_left " ><div class="slds-truncate" title="{!cusProdTwo.objProdchild.Sales_Price__c}"><lightning:input id="price"  variant="label-hidden" name="{!index}" min="1" step="0.01" type="number" value="{!cusProdTwo.objProdchild.Sales_Price__c}" onchange="{!c.QuantityPriceChange}"/></div></td>
                                                             <td class="slds-text-align_left" ><div class="slds-truncate" title="{!cusProdTwo.totalAmount}"><lightning:input id="quantity"  variant="label-hidden" name="{!index}" type="number" step="0.01" value="{!cusProdTwo.totalAmount}" disabled="true" /></div></td>
                                                             <td class="slds-text-align_left"  ><div class="slds-truncate" title="{!cusProdTwo.objProdchild.Discount__c}"><lightning:input id="discountpercent"  variant="label-hidden" name="{!index}" min="0" max="100" step="0.01" type="number" formatter="percent-fixed" maxlength='5' value="{!cusProdTwo.objProdchild.Discount__c}" onchange="{!c.dischange}" default="0"/></div></td>
+                                                            <aura:if isTrue="{!v.wrapMain.isServiceQuote}">
                                                             <td class="slds-text-align_left" ><div class="slds-truncate" title="{!cusProdTwo.DiscountAmount}"><lightning:input id="Discountamount"  variant="label-hidden" name="{!index}" min="0" step="0.01" type="number" value="{!cusProdTwo.DiscountAmount}" onchange="{!c.dischange}" default="0"/></div></td>
                                                             <td class="slds-text-align_left" ><div class="slds-truncate" title="{!cusProdTwo.TotalAfterDiscount}"><lightning:input id="quantity"  variant="label-hidden" name="{!index}" type="number" step="0.01" value="{!cusProdTwo.TotalAfterDiscount}" disabled="true"/></div></td>
-                                                            <td class="slds-text-align_left" ><div class="slds-truncate" title="{!cusProdTwo.objProdchild.HSN_Code__c}"><lightning:input  type="Text" variant="label-hidden"  value="{!cusProdTwo.objProdchild.HSN_Code__c}" disabled="false"/></div></td>
+                                                            </aura:if>
+                                                                <td class="slds-text-align_left" ><div class="slds-truncate" title="{!cusProdTwo.objProdchild.HSN_Code__c}"><lightning:input  type="Text" variant="label-hidden"  value="{!cusProdTwo.objProdchild.HSN_Code__c}" disabled="false"/></div></td>
                                                             <!-- Check CGST and SGST  -->
                                                             <aura:if isTrue="{!!v.wrapMain.igstvalue}">
                                                                 <td class="slds-text-align_left" ><div class="slds-truncate" title="{!cusProdTwo.objProdchild.CGST__c}"><lightning:input id="CGSTPercentage" variant="label-hidden"  name="{!index}" step="0.01" type="number" min="0" formatter="percent-fixed" maxlength='5' value="{!cusProdTwo.objProdchild.CGST__c}" onchange="{!c.AllGSTChange}" default="0"/></div></td>
@@ -384,6 +388,7 @@
                     
                     
                 </lightning:tab>
+                <aura:if isTrue="{!v.wrapMain.isServiceQuote}">
                 <!-- Tax details tab -->
                 <lightning:tab label="Add Charges" id="two">
                     
@@ -511,7 +516,8 @@
                             </div>
                         </div>
                     </div>
-                </lightning:tab>               
+                </lightning:tab>  
+                </aura:if>
             </lightning:tabset>        
         </aura:if>   
     </lightning:layoutItem>

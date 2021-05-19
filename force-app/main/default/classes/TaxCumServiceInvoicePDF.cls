@@ -213,7 +213,9 @@ public class TaxCumServiceInvoicePDF {
                 TotalAmount = subTotalAmount+TotalAmountWithCharges;
                 
                 if(subTotalTaxableAmount > 0 )
+                    if(objInvoice.Reverse_Charge__c=='Yes')
                     GSTOnReverseCharge = ((subTotalTaxableAmount *18 )/100).setScale(2);
+                
                     if(TotalAmount > 0){
                     RoundOffValue =TotalAmount;
                     TotalAmount = TotalAmount.round();

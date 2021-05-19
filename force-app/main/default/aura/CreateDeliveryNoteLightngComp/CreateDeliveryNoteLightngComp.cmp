@@ -3,6 +3,7 @@
     <aura:handler name="init" value="{!this}" action="{!c.doinit}" />
     <aura:attribute name="wrapMains" type="object" />
     <aura:attribute name="disableCheckBox" type="Boolean" />
+    <aura:attribute name="isSave" type="Boolean" default="false" />
     <aura:attribute name="isdeliverydate" type="boolean" default="false" />
     
     <aura:html tag="style">
@@ -33,10 +34,10 @@
                         <th class="" scope="col" style="text-align:center" >
                             <div class="slds-truncate slds-cell-wrap " title="Product Name">Product Name</div>
                         </th>
-                        <th class="" scope="col" style="text-align:center" >
-                            <div class="slds-truncate slds-cell-wrap" title="SO Qty">SO Qty</div>
+                        <th class="" scope="col" style="width:5%;text-align:center" >
+                            <div class="slds-truncate slds-cell-wrap" title="SO Qty" >SO Qty</div>
                         </th>
-                        <th class="" scope="col" style="text-align:center" >
+                        <th class="" scope="col" style="width:5%;text-align:center" >
                             <div class="slds-truncate slds-cell-wrap" title="Quantity">Quantity</div>
                         </th>
                         <th class="" scope="col" style="width:7% !important; text-align:center;">
@@ -58,13 +59,13 @@
                             <div class="slds-truncate slds-cell-wrap" title="Discount" >HSN Code</div>
                         </th>
                         <aura:if isTrue="{!!v.wrapMains.igstvalue}">
-                            <th class="" scope="col" style="text-align:center" >
+                            <th class="" scope="col" style="width:5%; text-align:center" >
                                 <div class="slds-truncate slds-cell-wrap" title="CGST%">CGST%</div>
                             </th>
                             <th class="" scope="col" style="width:7% !important; text-align:center;">
                                 <div class="slds-truncate slds-cell-wrap" title="CGST Amount">CGST Amount</div>
                             </th>
-                            <th class="" scope="col" style="text-align:center" >
+                            <th class="" scope="col" style="width:5%; text-align:center" >
                                 <div class="slds-truncate slds-cell-wrap" title="SGST%">SGST%</div>
                             </th>
                             <th class="" scope="col" style="width:7% !important; text-align:center;">
@@ -72,7 +73,7 @@
                             </th>
                         </aura:if>
                         <aura:if isTrue="{!v.wrapMains.igstvalue}">
-                            <th class="" scope="col" style="text-align:center;" >
+                            <th class="" scope="col" style="width:5%; text-align:center;" >
                                 <div class="slds-truncate slds-cell-wrap" title="IGST%">IGST%</div>
                             </th>
                             <th class="" scope="col" style="width:7% !important; text-align:center;">
@@ -106,10 +107,10 @@
                             <td class="dataCell">
                                 {!cusProd.productname}
                             </td>
-                            <td class="dataCell">
+                            <td class="dataCell" style="text-align:center">
                                 {!cusProd.quantity}
                             </td>
-                            <td class="dataCell" title="{!cusProd.reMaininQTY}"><lightning:input name="{!index}" variant="label-hidden" type="Number" min="0" value="{!cusProd.reMaininQTY}" required="true" onchange="{!c.onRemainQtyChange}" disabled="{!cusProd.checkboxDisable}"/></td>
+                            <td class="dataCell" title="{!cusProd.reMaininQTY}" style="text-align:center"><lightning:input style="text-align:center" name="{!index}" variant="label-hidden" type="Number" min="0" value="{!cusProd.reMaininQTY}" required="true" onchange="{!c.onRemainQtyChange}" disabled="{!cusProd.checkboxDisable}"/></td>
                             <td class="dataCell" title="{!cusProd.salesprice}"> 
                                 <lightning:input id="price"  variant="label-hidden" name="{!index}" min="1" step="0.01" type="number" value="{!cusProd.salesprice}"  onchange="{!c.onSalesPriceChange}" disabled="true"/>
                             </td>

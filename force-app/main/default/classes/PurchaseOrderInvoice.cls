@@ -11,7 +11,8 @@ public class PurchaseOrderInvoice
     public decimal totalAmount{get;set;} 
     public decimal totalAmountNotIncludedTax{get;set;} 
     public string totalAmountaftertaxinWords{get;set;}
-    
+    public Contact objSupplierContact {get;set;}
+    public Account objSupplier {get;set;}
     public list<Purchase_Order_Line_Item__c> POLitem{get;set;}
     
     public string strBillingAddress{get;set;}
@@ -31,7 +32,15 @@ public class PurchaseOrderInvoice
     public list<Charges__c> lstCharges{get;set;}
     public decimal TotalAmountWithCharges{get;set;}
     public decimal TotalGSTCharges{get;set;}
+    //////////////////////////////
+    public string wareHouseSCStateCode{get;set;}
+       public string wareHouseSCState{get;set;}
+      public string contName{get;set;}
+      public string contPhone{get;set;}
+      public string contemail{get;set;}
+     public string wareHouseSCGst{get;set;}
     
+    //////////////////////////////
     public decimal totalAmountCgst{get;set;}
     public decimal totalAmountSgst{get;set;}
     public decimal totalAmountIgst{get;set;} 
@@ -44,32 +53,90 @@ public class PurchaseOrderInvoice
         PurchaseOrd=new Purchase_Order__c();
         con=new contact();
         Acc=new Account();
-        
         id queryString = ApexPages.currentPage().getParameters().get('id');
+        List<String> lstPurchaseOrderField = UtilityClass.getAllFields('Purchase_Order__c');
+        List<String> lstPurchaseOrderItemField = UtilityClass.getAllFields('Purchase_Order_Line_Item__c');
+        
+        String strPurchaseOrderQuery = 'Select ' +String.Join(lstPurchaseOrderField, ',')+ ' ,Shipping_Ware_House__r.GSTIN_No__c,Shipping_Customer__r.GSTIN_No__c,Shipping_Ware_House__r.Contact_No__c,Shipping_Ware_House__r.E_Mail__c,Shipping_Ware_House__r.Contact_Person__c,Shipping_Ware_House__r.State_Province__c,Shipping_Customer__r.shippingState,Shipping_Ware_House__r.State_Code__c,Shipping_Ware_House__r.Name ,Shipping_Customer__r.Name , Shipping_Customer__r.Shipping_State_Code__c From Purchase_Order__c where Id =: queryString';
+        String strPurchaseOrderItemQuery = 'Select ' +String.Join(lstPurchaseOrderItemField, ',')+ '  From Purchase_Order_Line_Item__c where Purchase_Order__c =: queryString';
         
         
-        PurchaseOrd=[select Id,Name,Against__c,Bill_To__c,Billing_City__c,Billing_Country__c,Billing_State__c,Billing_Street__c,Billing_Zip_Postal_Code__c,Contact_No__c,Contact_person__c,Customer_Name__c,Delivery_Domestic__c,Email__c,Freight_Domestic__c,IGST_Domestic__c,Insurance_Domestic__c,Insurance_Import__c,Local_Supplier__c,Mode_of_Shipping__c,Payment_Domestic__c,Payment_terms__c,PO_Date__c,Purchase_Order_Number__c,Ref_Date__c,Ref_No__c,Ship_To__c,Shipping_City__c,Shipping_Country__c,Shipping_State_Province__c,Shipping_Street__c,Shipping_Terms__c,Shipping_Zip_Postal_Code__c,Supplier__c,Supplier__r.Name,Supplier_Name__c,Transportation_Mode__c,Transporter_Name__c,Ware_House__c,Ware_House__r.Name,CreatedDate,Term_And_Conditions__c,Bill_To_Formula__c,Billing_Street_formula__c,Billing_City_Formula__c,Billing_State_Formula__c,Billing_Country_Formula__c,Shipping_Ware_House__c,Shipping_Ware_House__r.Name,Shipping_Customer__c,Shipping_Customer__r.Name,Ship_To_Formula__c,Shipping_Street_Formula__c,Shipping_City_Formula__c,Shipping_Zip_Postal_Code_Formula__c,Shipping_State_Formula__c,Shipping_Country_Formula__c,Currency__c from Purchase_Order__c where id =:queryString limit 1];  
+        
+        List<Purchase_Order__c> lstPurchaseOrder =  Database.query(strPurchaseOrderQuery);
+        if(!lstPurchaseOrder.isEmpty())
+        PurchaseOrd=lstPurchaseOrder[0];  
+            /////////////////////////////
+        if(String.isNotEmpty(PurchaseOrd.Shipping_Ware_House__r.Name)){
+            if(String.isNotEmpty(PurchaseOrd.Shipping_Ware_House__r.State_Code__c)){
+           wareHouseSCStateCode=  PurchaseOrd.Shipping_Ware_House__r.State_Code__c;
+                
+            } 
+          
+             if(String.isNotEmpty(PurchaseOrd.Shipping_Ware_House__r.GSTIN_No__c)){
+          wareHouseSCGst=  PurchaseOrd.Shipping_Ware_House__r.GSTIN_No__c;
+         
+        }
             
+             if(String.isNotEmpty(PurchaseOrd.Shipping_Ware_House__r.State_Province__c)){
+          wareHouseSCState=  PurchaseOrd.Shipping_Ware_House__r.State_Province__c;
+         
+        }
+            
+          contName = PurchaseOrd.Shipping_Ware_House__r.Contact_Person__c;
+              contPhone = PurchaseOrd.Shipping_Ware_House__r.Contact_No__c;
+              contemail = PurchaseOrd.Shipping_Ware_House__r.E_Mail__c;            
+        }
+         
+          if(String.isNotEmpty(PurchaseOrd.Shipping_Customer__r.Name)){
+              if(String.isNotEmpty(PurchaseOrd.Shipping_Customer__r.shippingState)){
+              wareHouseSCState=  PurchaseOrd.Shipping_Customer__r.shippingState;
+              }
+                if(String.isNotEmpty(PurchaseOrd.Shipping_Customer__r.GSTIN_No__c)){
+           wareHouseSCGst=  PurchaseOrd.Shipping_Customer__r.GSTIN_No__c;
+                
+            }
+              if(String.isNotEmpty(PurchaseOrd.Shipping_Customer__r.Shipping_State_Code__c)){
+           wareHouseSCStateCode=  PurchaseOrd.Shipping_Customer__r.Shipping_State_Code__c;
+        }
+              list<contact> con=[select id, name, phone, email from contact where Accountid =: PurchaseOrd.Shipping_Customer__c And isPrimary__c=true limit 1];
+              if(con.size()>0){
+              contName = con[0].name;
+              contPhone = con[0].Phone;
+              contemail = con[0].Email;
+          }
+          }
+            //////////////////////////////
+         if(String.isNotEmpty(PurchaseOrd.Supplier__c)){
+                    objSupplier = [Select Id,Name, BillingCity,BillingCountry, BillingPostalCode,BillingState,BillingStreet,GSTIN_No__c ,Billing_State_Code__c,
+                                   (Select Id, Email, MobilePhone, Name from contacts ) 
+                                   from Account 
+                                   where Id =: PurchaseOrd.Supplier__c];
+                    if(objSupplier.contacts.size() > 0){
+                        objSupplierContact = objSupplier.contacts[0];
+                    }
+                }
+        
         if(PurchaseOrd.Shipping_Ware_House__c !=null){
             strShipToname = PurchaseOrd.Shipping_Ware_House__r.Name;
         }else{
             strShipToname = PurchaseOrd.Shipping_Customer__r.Name;
         }
         strWHBillingAddress = '';
-        if(PurchaseOrd.Bill_To_Formula__c !=null && PurchaseOrd.Bill_To_Formula__c !=''){
+        /*if(PurchaseOrd.Bill_To_Formula__c !=null && PurchaseOrd.Bill_To_Formula__c !=''){
             strWHBillingAddress = PurchaseOrd.Bill_To_Formula__c;
-        }
+        }*/
         if(PurchaseOrd.Billing_Street_formula__c !=null && PurchaseOrd.Billing_Street_formula__c !=''){
-            strWHBillingAddress = strWHBillingAddress+', '+PurchaseOrd.Billing_Street_formula__c;
+            strWHBillingAddress = PurchaseOrd.Billing_Street_formula__c;
         }
         if(PurchaseOrd.Billing_City_Formula__c !=null && PurchaseOrd.Billing_City_Formula__c !=''){
             strWHBillingAddress = strWHBillingAddress+', '+PurchaseOrd.Billing_City_Formula__c;
         }
-        if(PurchaseOrd.Billing_Zip_Postal_Code__c !=null){
-            strWHBillingAddress = strWHBillingAddress+', '+PurchaseOrd.Billing_Zip_Postal_Code__c;
-        }
+       
         if(PurchaseOrd.Billing_State_Formula__c !=null && PurchaseOrd.Billing_State_Formula__c !=''){
             strWHBillingAddress = strWHBillingAddress+', '+PurchaseOrd.Billing_State_Formula__c;
+        }
+         if(PurchaseOrd.Billing_Zip_Postal_Code_Formula__c !=null){
+            strWHBillingAddress = strWHBillingAddress+', '+PurchaseOrd.Billing_Zip_Postal_Code_Formula__c;
         }
         if(PurchaseOrd.Billing_Country_Formula__c !=null && PurchaseOrd.Billing_Country_Formula__c !=''){
             strWHBillingAddress = strWHBillingAddress+', '+PurchaseOrd.Billing_Country_Formula__c;
@@ -257,7 +324,7 @@ public class PurchaseOrderInvoice
         TotalAmountWithCharges = TotalAmountWithCharges+totalAmount;
         totalAmountaftertaxinWords = UtilityClass.NoToWord(TotalAmountWithCharges.intValue());
         if(PurchaseOrd.Currency__c != 'INR')
-       	 	totalAmountaftertaxinWords = totalAmountaftertaxinWords+' '+PurchaseOrd.Currency__c+' only';
+            totalAmountaftertaxinWords = totalAmountaftertaxinWords+' '+PurchaseOrd.Currency__c+' only';
         else
             totalAmountaftertaxinWords = 'Rupees '+totalAmountaftertaxinWords+' only';
         TotalAmountWithCharges.round();

@@ -591,7 +591,7 @@
                     <td><apex:outputText value="{!objSOI.objSOLI.HSN_Code__c}" /></td>
                     <td style="text-align:right"><apex:outputText value="{!objSOI.objSOLI.Quantity__c}" /></td>
                     <td style="text-align:right"><apex:outputText value="{!objSOI.objSOLI.Product_Part__r.UOM__c}" /></td>
-                    <td>
+                    <td style="text-align:right">
                         <!--<apex:outputText value="{!objSOI.objSOLI.Available_Quantity__c}" rendered="{!If((objSOI.objSOLI.Available_Quantity__c != null)&&(objSOI.objSOLI.Available_Quantity__c < objSOI.objSOLI.Quantity__c), true, false)}"/>
                         <apex:outputText value="Yes" rendered="{!If((objSOI.objSOLI.Available_Quantity__c != null) && (objSOI.objSOLI.Available_Quantity__c == objSOI.objSOLI.Quantity__c), true, false)}"/>
                     -->

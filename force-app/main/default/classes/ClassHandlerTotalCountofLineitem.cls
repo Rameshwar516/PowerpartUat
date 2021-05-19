@@ -5,7 +5,7 @@ public class ClassHandlerTotalCountofLineitem {
         map<id,opportunity__c> mopp=new map<id,opportunity__c>();
         list<opportunity__c> opp=new list<opportunity__c>();
         for(line_item__c li:lits ){
-            if(li.Opportunity__c!=null){
+            if(li.Opportunity__c!=null && li.Quote__c==null){
                 oppid.add(li.Opportunity__c);
             }
             system.debug('insert li.Opportunity__c'+li.Opportunity__c);

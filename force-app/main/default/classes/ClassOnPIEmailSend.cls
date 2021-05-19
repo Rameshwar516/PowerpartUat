@@ -23,7 +23,7 @@ public class ClassOnPIEmailSend {
                      wrap.islineItemAvailable=false;
                 }
                wrap.objquote=opp[0];
-                wrap.Subject ='Proforma Invoice';
+                wrap.subject ='Proforma Invoice';
                 if(wrap.objquote.Contact_Person__r.name!=null){
                   wrap.emailbody='Hello Mr.'+' '+wrap.objquote.Contact_Person__r.name +',';
                   wrap.emailbody= wrap.emailbody+' \n'+'\nPlease Find the attached Proforma Invoice.\n'+'Thank you.';

@@ -307,6 +307,9 @@
         <label>Check  thedebit note checkbox</label>
         <locationX>443</locationX>
         <locationY>1157</locationY>
+        <defaultConnector>
+            <targetReference>No_Quantity_Error</targetReference>
+        </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>debit_note_true</name>
@@ -630,7 +633,7 @@
         <allowPause>true</allowPause>
         <fields>
             <name>message</name>
-            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;font-size: 18px; color: rgb(231, 4, 4);&quot;&gt;Short Quantity is Zero for a delivery note.&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;color: rgb(231, 4, 4); font-size: 18px;&quot;&gt;There Is No Line Item for a delivery note.&lt;/b&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>

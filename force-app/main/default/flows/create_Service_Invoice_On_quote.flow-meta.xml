@@ -85,13 +85,6 @@
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>varSingleInvoiceLineItem.Description__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>iterating_quote_line_items.Description__c</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
             <assignToReference>varSingleInvoiceLineItem.Discount__c</assignToReference>
             <operator>Assign</operator>
             <value>
@@ -140,6 +133,13 @@
                 <elementReference>iterating_quote_line_items.Sales_Price__c</elementReference>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varSingleInvoiceLineItem.Description__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>iterating_quote_line_items.Description__c</elementReference>
+            </value>
+        </assignmentItems>
         <connector>
             <targetReference>adding_single_into_collection</targetReference>
         </connector>
@@ -186,13 +186,13 @@
     <formulas>
         <name>IGST_Percentage</name>
         <dataType>Number</dataType>
-        <expression>if({!get_quote_id.Customer_Party__r.Billing_State_Code__c}  == {!get_quote_id.Opportunity__r.Ware_House__r.State_Code__c}, {!iterating_quote_line_items.GST__c},0)*100</expression>
+        <expression>if({!get_quote_id.Customer_Party__r.Billing_State_Code__c}  != {!get_quote_id.Opportunity__r.Ware_House__r.State_Code__c}, {!iterating_quote_line_items.GST__c},0)*100</expression>
         <scale>2</scale>
     </formulas>
     <formulas>
         <name>SGST_CGST_Percentage</name>
         <dataType>Number</dataType>
-        <expression>if({!get_quote_id.Customer_Party__r.Billing_State_Code__c}  != {!get_quote_id.Opportunity__r.Ware_House__r.State_Code__c}, {!iterating_quote_line_items.GST__c}/2,0)*100</expression>
+        <expression>if({!get_quote_id.Customer_Party__r.Billing_State_Code__c}  == {!get_quote_id.Opportunity__r.Ware_House__r.State_Code__c}, {!iterating_quote_line_items.GST__c}/2,0)*100</expression>
         <scale>2</scale>
     </formulas>
     <interviewLabel>create Service Invoice On quote {!$Flow.CurrentDateTime}</interviewLabel>

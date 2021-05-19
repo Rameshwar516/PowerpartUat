@@ -154,7 +154,6 @@
         var lstnew =[];
         var protmpMainWrapper =  component.get('v.wrapMain.lstWrapp');
         var lineitemid = event.getSource().get("v.value");
-         console.log(lineitemid);
         var action = component.get('c.deleteRecord'); 
         var lineitem ;
         action.setParams({
@@ -163,12 +162,9 @@
         var proid;
         action.setCallback(this, function(res){
             if(res.getState() === "SUCCESS"){
-                console.log("Success");
                 for(var i=0;i<tmpMainWrapper.length;i++){   
-                    console.log(i+' - '+tmpMainWrapper[i].isLineItem);
                     if(tmpMainWrapper[i].isLineItem ==true  ){
                         if(lineitemid != tmpMainWrapper[i].objProdchild.Id){
-                            console.log(lineitemid+" --- "+tmpMainWrapper[i].objProdchild.Id);
                             lstnew.push(tmpMainWrapper[i]);  
                         } 
                         else{
@@ -182,13 +178,6 @@
                     }
                     
                 }
-                         
-           /* for(var i=0;i<protmpMainWrapper.length;i++){
-                    if(proid == protmpMainWrapper[i].objProdchild.Id){
-                        protmpMainWrapper[i].isSelected =false;
-                    }
-                }*/            
-                
                 component.set("v.wrapMain.lstWrappTwo",lstnew);
                 component.set("v.wrapMain.lstWrapp",protmpMainWrapper);
                 helper.refreshCharge(component,event,helper);

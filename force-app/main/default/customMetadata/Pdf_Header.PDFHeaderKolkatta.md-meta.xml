@@ -32,7 +32,7 @@
     </values>
     <values>
         <field>Email__c</field>
-        <value xsi:type="xsd:string">powerparts@powerparts.in</value>
+        <value xsi:type="xsd:string">skr@powerparts.in</value>
     </values>
     <values>
         <field>Gstin__c</field>

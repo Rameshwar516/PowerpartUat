@@ -7,9 +7,9 @@
     <lookupFilter>
         <active>true</active>
         <filterItems>
-            <field>Contact.Account.Type</field>
+            <field>Contact.AccountId</field>
             <operation>equals</operation>
-            <value>Supplier</value>
+            <valueField>$Source.Customer_Name_Account__c</valueField>
         </filterItems>
         <isOptional>false</isOptional>
     </lookupFilter>

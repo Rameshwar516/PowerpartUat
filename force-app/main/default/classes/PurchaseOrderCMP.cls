@@ -161,7 +161,7 @@ public without sharing class PurchaseOrderCMP {
             
             List<Purchase_Indent_Line_Item__c> lst = [Select Id, Name, QTY__c, Product_Part__c, Product_Part__r.Name, Product_Part__r.Part_Name__c,Product_Part__r.Usage__c, 
                                                       Product_Part__r.HSN_Code__c,Product_Part__r.UOM__c,Product_Part__r.UOI__c, Purchase_Indent__c, Purchase_Indent__r.Ware_House__c, 
-                                                      Purchase_Indent__r.Purchase_Indent_Number__c, Purchase_Indent__r.CreatedDate,Application__c, Remark__c
+                                                      Purchase_Indent__r.Purchase_Indent_Number__c,Expected_date__c, Purchase_Indent__r.CreatedDate,Application__c, Remark__c
                                                       From Purchase_Indent_Line_Item__c 
                                                       where Purchase_Indent__c =: recordId
                                                       AND Product_Part__c != null];
@@ -233,7 +233,7 @@ public without sharing class PurchaseOrderCMP {
             objMainWrap = (mainWrapper)Json.deserialize(strMainWrapper, mainWrapper.class);
             objMainWrap.success = true;
             if(objMainWrap.objPurchaseOrder != null){
-                objMainWrap.objPurchaseOrder.Shipping_Zip_Postal_Code__c=Integer.valueof(objMainWrap.objPurchaseOrder.Shipping_Zip_Postal_Code__c);
+                objMainWrap.objPurchaseOrder.Shipping_Zip_Postal_Code__c=string.valueof(objMainWrap.objPurchaseOrder.Shipping_Zip_Postal_Code__c);
                 objMainWrap.objPurchaseOrder.Billing_Zip_Postal_Code__c=Integer.valueof(objMainWrap.objPurchaseOrder.Billing_Zip_Postal_Code__c);
                 upsert objMainWrap.objPurchaseOrder;
                 
@@ -378,6 +378,14 @@ public without sharing class PurchaseOrderCMP {
         return lstfieldNames;
     }
     
+    @AuraEnabled
+    public static String addOrderItemWapper(){
+        OrderItemWapper oiw = new OrderItemWapper();
+        oiw.isEdit=true;
+        return JSON.serialize(oiw);
+    }
+    
+    
     public class mainWrapper{
         public List<OrderItemWapper> lstOIW;
         public List<option> againstPickList;
@@ -416,6 +424,8 @@ public without sharing class PurchaseOrderCMP {
             strErrorMessage = '';
         }
     }
+    
+    
     
     public class OrderItemWapper{
         public Part__c objPart;
@@ -482,7 +492,7 @@ public without sharing class PurchaseOrderCMP {
             DeliveryDate= null;
             application= '';
             Remarks= '';
-            isEdit = false;
+            isEdit = true;
             
             strPartErr ='';
             strDeliveryDateErr = '';

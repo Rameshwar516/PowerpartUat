@@ -220,10 +220,10 @@ public class MRNCmpControlerV2 {
                     objSMW.IntDutyRate = objMLI.Duty_Rates__c;
                     objSMW.IntSurRate = objMLI.Sur_Rate__c;   
                     objSMW.IntItemFreighGBP =objMLI.Item_Value_With_Freight_Surcharge__c;
-                    objSMW.IntItemvalueINR =objMLI.Total_Item_Value_In_INR_input__c;														
+                    objSMW.IntItemvalueINR =objMLI.Total_Item_Value_In_INR_input__c;                                                        
                     objSMW.IntAssessableValueINR = objMLI.Assessable_Value_Including_Insurance__c;
                     objSMW.IntCDutyAmountINR =objMLI.Custom_Duty_Amount__c;
-                    objSMW.IntTotalLandedAmountINR =0;	
+                    objSMW.IntTotalLandedAmountINR =0;  
                     objSMW.IntLandedCostUnitINR =0;
                     objSMW.IntTaxableValue =objMLI.PO_Taxable_Amount_input__c;
                     objSMW.IntGSTRate =objMLI.GST__c;
@@ -383,7 +383,7 @@ public class MRNCmpControlerV2 {
                     FreightInvoice =TotalAmountGBP+((TotalAmountGBP*(objmainWrap.objMRN.freight__c /objmainWrap.objMRN.Ex_Work_Value__c )*100)/100)+((TotalAmountGBP*(objmainWrap.objMRN.Surcharge__c /objmainWrap.objMRN.Ex_Work_Value__c )*100)/100);
                     ItemValueInINR = objmainWrap.objMRN.Exchange_Rate__c*FreightInvoice;
                     AssessableValueINR = ItemValueInINR+(ItemValueInINR * decimal.valueof(objmainWrap.objMRN.Insurance_of_BOE__c)/100);
-              		TaxableAmount=AssessableValueINR+objMRNLI.IntCDutyAmountINR;
+                    TaxableAmount=AssessableValueINR+objMRNLI.IntCDutyAmountINR;
                 }
                 else{
                     TotalAmountGBP=0;

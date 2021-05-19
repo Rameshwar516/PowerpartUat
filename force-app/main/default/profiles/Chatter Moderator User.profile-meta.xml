@@ -4473,11 +4473,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Purchase_Order__c.Customer_Name__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Purchase_Order__c.Delivery_Domestic__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -4493,7 +4488,7 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Purchase_Order__c.GSTIN__c</field>
+        <field>Purchase_Order__c.GST_No__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -4934,6 +4929,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Sales_Order_Dispatch_Delivery_Note__c.Bank__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Sales_Order_Dispatch_Delivery_Note__c.Billing_Address__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>

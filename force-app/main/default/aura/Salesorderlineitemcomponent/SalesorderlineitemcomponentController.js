@@ -565,7 +565,6 @@
     },
     
     Deletelineitem : function(component,event,helper){
-        console.log("Deletelineitem");
         helper.Deletelineitemhelper(component,event,helper);
     },
     
