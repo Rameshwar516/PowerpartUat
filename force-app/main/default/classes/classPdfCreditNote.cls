@@ -25,6 +25,7 @@ public class classPdfCreditNote {
      public Decimal totaltaxGstAMount{get;set;}
     
     public Decimal TotalFinalAmountAfterTaxRoundOff{get;set;}
+     public Decimal TotalFinalAmountAfterTaxRoundOff2{get;set;}
     public String totalAmountaftertaxinWords{get;set;}
     
       public string strBillingAddress{get;set;}
@@ -130,7 +131,7 @@ public class classPdfCreditNote {
            
             //Final Net AMount Round Off
             TotalFinalAmountAfterTaxRoundOff = TotalFinalAmountAfterTaxRoundOff + totaltaxableCHSGSTCGSTIGST;
-            TotalFinalAmountAfterTaxRoundOff.round();
+            TotalFinalAmountAfterTaxRoundOff2=TotalFinalAmountAfterTaxRoundOff.round();
             // Total Amount In Words 
             totalAmountaftertaxinWords = UtilityClass.NoToWord(TotalFinalAmountAfterTaxRoundOff.intValue());
                 totalAmountaftertaxinWords = totalAmountaftertaxinWords+' rupees only';

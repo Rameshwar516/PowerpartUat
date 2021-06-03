@@ -56,7 +56,7 @@ public class MrnPurchanseOrderExt {
             List<String> lstMrnField = UtilityClass.getAllFields('MRN__c');
             List<String> lstMrnItemField = UtilityClass.getAllFields('MRN_Line_Item__c');
             List<String> lstChargesField = UtilityClass.getAllFields('Charges__c');
-            String strMrnQuery = 'Select OEM_Customer__r.ShippingStreet,OEM_Customer__r.ShippingCity, OEM_Customer__r.ShippingState,Ware_House__r.Branch__c,Ware_House__r.City__c, OEM_Customer__r.ShippingPostalCode, OEM_Customer__r.ShippingCountry, Contact_Name__r.Name, OEM_Customer__r.Name, OEM_Customer__r.BillingStreet,OEM_Customer__r.BillingCity, OEM_Customer__r.BillingState, OEM_Customer__r.BillingPostalCode, OEM_Customer__r.BillingCountry,OEM_Customer__r.Billing_State_Code__c,OEM_Customer__r.Shipping_State_Code__c,' +String.Join(lstMrnField, ',')+ ' From MRN__c where Id =: strId';
+            String strMrnQuery = 'Select OEM_Customer__r.ShippingStreet,OEM_Customer__r.ShippingCity, OEM_Customer__r.ShippingState,Ware_House__r.Branch__c,Ware_House__r.City__c, OEM_Customer__r.ShippingPostalCode, OEM_Customer__r.ShippingCountry,Contact_Name__r.salutation ,Contact_Name__r.Name, OEM_Customer__r.Name, OEM_Customer__r.BillingStreet,OEM_Customer__r.BillingCity, OEM_Customer__r.BillingState, OEM_Customer__r.BillingPostalCode, OEM_Customer__r.BillingCountry,OEM_Customer__r.Billing_State_Code__c,OEM_Customer__r.Shipping_State_Code__c,' +String.Join(lstMrnField, ',')+ ' From MRN__c where Id =: strId';
             String strMrnItemQuery = 'Select Part_Number__r.Name,Part_Number__r.Specification__c,Part_Number__r.Part_Name__c,' +String.Join(lstMrnItemField, ',')+ ' From MRN_Line_Item__c where MRN__c =: strId';
             String strChargesQuery = 'Select Charges__r.Name,' +String.Join(lstChargesField, ',')+ ' From Charges__c where MRN__c =: strId';
             
@@ -215,7 +215,7 @@ public class MrnPurchanseOrderExt {
                         if(objMrn.MRN_Delivery_Type__c == 'Import'){
                             totalBookedAmount = totalBookedAmount+lstPurchaseOrder[0]?.Less_Insurance__c;
                             totalBookedAmount= totalBookedAmount?.setScale(2);
-                            totalBookAmount = totalBookedAmount;
+                            totalBookAmount = totalBookedAmount.round();
                         }
                     }            
                 System.debug(objMrn.MRN_Delivery_Type__c+' - check- '+totalBookAmount);

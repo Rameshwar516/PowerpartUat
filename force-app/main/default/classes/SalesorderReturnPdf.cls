@@ -20,7 +20,7 @@ public class SalesorderReturnPdf {
        
         lstSOR=[select id, Shipping_Account__c from Sales_Order_Return__c where id =:strId ];
         
-        conlst=[select id,name,email, Mobilephone from contact where Accountid =:lstSOR.Shipping_Account__c limit 1 ]; 
+        conlst=[select id,salutation,name,email, Mobilephone from contact where Accountid =:lstSOR.Shipping_Account__c limit 1 ]; 
         con=conlst[0];
         GrossTotal = 0;
         TCSAmount = 0;

@@ -2,7 +2,7 @@
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Landed_Price__c</fullName>
     <externalId>false</externalId>
-    <formula>MRN_Line_Item__r.Landed_Cost_Unit_Rate__c</formula>
+    <formula>if(ISblank(MRN_Line_Item__c), Landed_Amount_Historical__c ,MRN_Line_Item__r.Landed_Cost_Unit_Rate__c)</formula>
     <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
     <label>Landed Price</label>
     <precision>18</precision>

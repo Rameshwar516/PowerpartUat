@@ -85,11 +85,12 @@
                             <b style="font-size:13px;font-family: Arial;">{!pdfheader.Address_Header__c}</b><br/>
                             <div style="font-size:11px;font-family: Arial;">{!pdfheader.Address_Line1__c}<br/>
                             {!pdfheader.Address_Line_2__c}<br/>
-                            {!pdfheader.Gstin__c}<br/><br/>
+                            {!pdfheader.Gstin__c}<br/>
+                            {!pdfheader.Email__c}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{!pdfheader.Tel__c} <br/><br/>
+                            
                             {!pdfheader.IEC_No__c}&nbsp;&nbsp;&nbsp;{!pdfheader.PAN_No__c}<br/>
                             {!pdfheader.BANK__c}<br/>
                             {!pdfheader.Bank_A_C_No__c}&nbsp;&nbsp;&nbsp;{!pdfheader.IFC_RTGS_NEFT__c}<br/>
-                            {!pdfheader.Email__c}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{!pdfheader.Tel__c} 
                             </div>
                         </center>
                     </td>

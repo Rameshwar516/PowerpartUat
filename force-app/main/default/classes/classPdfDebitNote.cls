@@ -28,6 +28,8 @@ public class classPdfDebitNote {
     public Decimal OverAlltotalGstCharge{get;set;}
     public Decimal TotalFinalAmountAfterTax{get;set;}
     public Decimal TotalFinalAmountAfterTaxRoundOff{get;set;}
+     public Decimal TotalFinalAmountAfterTaxRoundOff2{get;set;}
+    
     public Decimal totaltaxableCHSGSTCGSTIGST{get;set;}
     public String totalAmountaftertaxinWords{get;set;}
     
@@ -151,7 +153,7 @@ public class classPdfDebitNote {
                 TotalFinalAmountAfterTaxRoundOff=TotalFinalAmountAfterTaxRoundOff+TotalFinalAmountAfterTax;
                 
                 
-                TotalFinalAmountAfterTaxRoundOff.round();
+                TotalFinalAmountAfterTaxRoundOff2=TotalFinalAmountAfterTaxRoundOff.round();
                 
                 totalAmountaftertaxinWords = UtilityClass.NoToWord(TotalFinalAmountAfterTaxRoundOff.intValue());
                 totalAmountaftertaxinWords = totalAmountaftertaxinWords+' rupees only';

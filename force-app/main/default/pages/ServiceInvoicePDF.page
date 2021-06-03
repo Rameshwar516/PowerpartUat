@@ -75,12 +75,17 @@
                         <center>
                             <b><apex:outputText value="POWERPARTS PRIVATE LIMITED" style="font-size:13px;font-family: Arial;" /></b><br/>
                             <b><apex:outputText value="Registered Office : " style="font-size:11px;font-family: Arial;" /></b>
-                            <apex:outputText value="N-122, Panchsheel Park, New Delhi - 100 017" style="font-size:11px;font-family: Arial;" /><br/>
+                            <apex:outputText value="N-122, Panchsheel Park, New Delhi - 100 017" style="font-size:11px;font-family: Arial;" />
                             <br/><b><apex:outputText value="PPL HEAD OFFICE (GURGAON)" style="font-size:13px;font-family: Arial;" /></b><br/>
                             <apex:outputText value="114, PACE CITY-I, SECTOR - 37," style="font-size:11px;font-family: Arial;" /><br/>
                             <apex:outputText value="GURGAON - 122001, HARYANA (INDIA)" style="font-size:11px;font-family: Arial;" /><br/>
-                            <apex:outputText value="IEC NO. 0598060456, PAN. AABCP9737D, GSTIN No. 06AABCP9737D1ZE" style="font-size:11px;font-family: Arial;" /><br/>
+                            <apex:outputText value=" GSTIN No. 06AABCP9737D1ZE" style="font-size:11px;font-family: Arial;" /><br/>
+                             <apex:outputText value="powerparts@powerparts.in" style="font-size:11px;font-family: Arial;" />&nbsp;&nbsp;&nbsp;
+                            <apex:outputText value="Tel. 0124-4036614,4019215" style="font-size:11px;font-family: Arial;" /><br/>
+                           
                             <br/>
+                            <apex:outputText value=" IEC NO. 0598060456, PAN. AABCP9737D" style="font-size:11px;font-family: Arial;" /><br/>
+                            
                             <apex:outputText value="Our Banker." style="font-size:11px;font-family: Arial;" />&nbsp;&nbsp;
                             <apex:outputText value="{!objBankDetail.Bank_Name__c}" style="font-size:11px;font-family: Arial;" />&nbsp;&nbsp;
                             <apex:outputText value="{!objBankDetail.Bank_Address__c}" style="font-size:11px;font-family: Arial;" /><br/>
@@ -89,9 +94,6 @@
                             <apex:outputText value="IFC/RTGS/NEFT." style="font-size:11px;font-family: Arial;" />&nbsp;&nbsp;
                             <apex:outputText value="{!objBankDetail.IFC_RTGS_NEFT__c}" style="font-size:11px;font-family: Arial;" />&nbsp;&nbsp;
                             <br/>
-                            
-                            <apex:outputText value="powerparts@powerparts.in" style="font-size:11px;font-family: Arial;" />&nbsp;&nbsp;&nbsp;
-                            <apex:outputText value="Tel. 0124-4036614,4019215" style="font-size:11px;font-family: Arial;" /><br/>
                             
                         </center>
                     </td>
@@ -609,7 +611,7 @@
                 </tr>
                 <tr>
                     <td colspan="5"><b><apex:outputText value="Total Amount After Tax " /></b></td>
-                    <td colspan="2"> <apex:outputText value="{!TotalAmount}" /></td>
+                    <td colspan="2"> <apex:outputText value="{!TotalAmount}.00" /></td>
                 </tr>
                 <tr>
                     <td colspan="8" rowspan="15" valign="top">

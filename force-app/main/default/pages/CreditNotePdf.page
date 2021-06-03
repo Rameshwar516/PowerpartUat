@@ -513,7 +513,7 @@
                   
                   <td colspan="4" rowspan="1" valign="top" > </td>
                   <td style="border:1;" colspan="5" rowspan="1" >R/Off</td>
-                  <td colspan="2" style="text-align:right"> <apex:outputText value="{!TotalFinalAmountAfterTaxRoundOff}"/></td>
+                  <td colspan="2" style="text-align:right"> <apex:outputText value="{!TotalFinalAmountAfterTaxRoundOff2}.00"/></td>
                 </tr>
                 <tr>
                     <td colspan="9" rowspan="3" valign="top">

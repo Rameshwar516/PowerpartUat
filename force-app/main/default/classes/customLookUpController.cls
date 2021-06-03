@@ -79,30 +79,37 @@ public with sharing class customLookUpController
                     SubMainWraip objSMW = new SubMainWraip();
                     objSMW.objDNLI = objSODN;
                     objSMW.IsEdit = false;
-                  
-                    System.debug('Product_Part__c - '+objSODN.Product_Part__c );
-                    System.debug('Warehouse - '+objSODN.Sales_Order_Dispatch_Delivery_Note__r.Sales_Order__r.Ware_House__c);
+                   
                     Integer IntQty =0;
-                    if(objSODN.Product_Part__c !=null && objSODN.Sales_Order_Dispatch_Delivery_Note__r.Sales_Order__r.Ware_House__c !=null){
-                       System.debug('Warehouse - '+objSODN.Sales_Order_Dispatch_Delivery_Note__r.Sales_Order__r.Ware_House__c);
-                          
-                        Stock__C stk = mapNoOfStock.get(objSODN.Product_Part__c+'-'+objSODN.Sales_Order_Dispatch_Delivery_Note__r.Sales_Order__r.Ware_House__c);
-                       // IntQty = Integer.ValueOf(stk.Total_Quantity__c);
-                        System.debug('stock landed - '+stk.Stock_Landed_Amount__r.isempty());
-                         if(!stk.Stock_Landed_Amount__r.isempty()){
-                            objSMW.objDNLI.Sales_Price__c = stk.Stock_Landed_Amount__r[0].Landed_Price__c;
-                            //objSMW.objDNLI.Total_Amount__c = objSMW.objDNLI.Sales_Price__c * objSMW.objDNLI.Quantity__c;
-                            //objSMW.objDNLI.Discount_Currency__c = objSMW.objDNLI.Total_Amount__c * objSMW.objDNLI.Discount__c/100;
-                            //objSMW.objDNLI.Taxable_Amount__c = objSMW.objDNLI.Total_Amount__c - objSMW.objDNLI.Discount__c;   
-                        }
-                       // objSMW.StockId =mapNoOfStock.get(objSODN.Product_Part__c+'-'+objSODN.Ware_House__c).Id; 
-                    }
+                    Decimal unitprice = 0;
                     
-                    system.debug('..IntQty..'+IntQty);
+                    if(objSODN.Product_Part__c !=null && objSODN.Sales_Order_Dispatch_Delivery_Note__r.Sales_Order__r.Ware_House__c !=null){
+                        stock__c stk = mapNoOfStock.get(objSODN.Product_Part__c+'-'+objSODN.Sales_Order_Dispatch_Delivery_Note__r.Sales_Order__r.Ware_House__c);
+                        IntQty = Integer.ValueOf(stk.Total_Quantity__c);
+                        System.debug(stk.Name);
+                        objSMW.StockId =stk.Id; 
+                        if(!stk.Stock_Landed_Amount__r.isEmpty())
+                            unitprice=stk.Stock_Landed_Amount__r[0].Landed_Price__c;
+                    }
                     if(IntQty !=null)
                         objSMW.StockTotalProduct =IntQty;
                     else
                         objSMW.StockTotalProduct =0;
+                    
+                   
+                    objSMW.DnUnitQty = objSODN.Quantity__c  ;
+                    objSMW.DnUnitPrice = unitprice ;
+                    objSMW.DnAmount =   objSODN.Quantity__c * objSMW.DnUnitPrice;
+                    objSMW.DnDiscountPer = objSODN.Discount__c ;
+                    objSMW.DnDiscountAmount = objSMW.DnAmount * objSODN.Discount__c ;
+                    objSMW.DnTaxableAmount = objSMW.DnAmount - objSMW.DnDiscountAmount   ;
+                    objSMW.DnCGSTRate = objSODN.CGST__c  ;
+                    objSMW.DnCGSTAmount = objSMW.DnTaxableAmount * objSMW.DnCGSTRate ;
+                    objSMW.DnSGSTRate = objSODN.SGST__c  ;
+                    objSMW.DnSGSTAmount = objSMW.DnTaxableAmount * objSMW.DnSGSTRate ;
+                    objSMW.DnIGSTRate = objSODN.IGST__c  ;
+                    objSMW.DnIGSTAmount = objSMW.DnTaxableAmount * objSMW.DnIGSTRate ;
+                    objSMW.DnNetAmount =  objSMW.DnTaxableAmount + objSMW.DnCGSTAmount + objSMW.DnSGSTAmount + objSMW.DnIGSTAmount;
                     
                     objmainWrap.lstSubMain.add(objSMW);
                 }
@@ -116,47 +123,6 @@ public with sharing class customLookUpController
         }
         return JSON.serialize(objmainWrap);
     }
-    
-    /*@AuraEnabled
-    public static string SearchPurchaseOrderLI(string strPurchaseOrderId, string objectName)
-    {
-        mainWrapper objmainWrap = new mainWrapper();
-        objmainWrap.lstSubMain = new List<SubMainWraip>();
-        objmainWrap.listPurchaseOrderLI = new List<SubMainWraip>();
-        try
-        {
-            string filter = '';
-            if(strPurchaseOrderId != null && strPurchaseOrderId !=''){
-                map<String , Schema.SObjectType> globalDescription = Schema.getGlobalDescribe();
-                Schema.sObjectType sObjType = globalDescription.get(objectName);
-                Schema.DescribeSObjectResult describeResult = sObjType.getDescribe();
-                List<string> leadfieldNames = new List<String>(describeResult.fields.getMap().keySet()); 
-                
-                string soql = 'select ' + string.join(leadfieldNames, ',') +',Purchase_Order__r.Name,Purchase_Order__r.PO_Date__c from ' + objectName ; 
-                system.debug('......'+soql);
-                if(strPurchaseOrderId != '')     
-                    soql += ' where Purchase_Order__c =: strPurchaseOrderId';
-                system.debug('====='+soql);
-                
-                
-                //soql += 'order by Name limit 10';
-                List<Purchase_Order_Line_Item__c> lstPOLI = Database.query(soql);
-                for(Purchase_Order_Line_Item__c objPOLI : lstPOLI){
-                    SubMainWraip objSMW = new SubMainWraip();
-                    objSMW.objPOLI = objPOLI;
-                    objSMW.IsEdit = false;
-                    objSMW.StockTotalProduct =5;
-                    objmainWrap.listPurchaseOrderLI.add(objSMW);
-                }
-            }
-        }catch(Exception e)
-        {
-            objMainWrap.isSuccess= false;
-            objMainWrap.strMessage = ExceptionMessage.getExceptionMsg(e);
-        }
-        return JSON.serialize(objmainWrap);
-    }
-    */
     
     public Class mainWrapper
     {
@@ -172,5 +138,19 @@ public with sharing class customLookUpController
         public boolean IsEdit;
         public Integer StockTotalProduct;
         public string StockId;
+         public decimal DnUnitQty;
+        public decimal DnUnitPrice;
+        public decimal DnAmount;
+        public decimal DnDiscountPer;
+        public decimal DnDiscountAmount;
+        public decimal DnTaxableAmount;
+        public decimal DnCGSTRate;
+        public decimal DnCGSTAmount;
+        public decimal DnSGSTRate;
+        public decimal DnSGSTAmount;
+        public decimal DnIGSTRate;
+        public decimal DnIGSTAmount;
+        public decimal DnNetAmount;
+        
     }
 }

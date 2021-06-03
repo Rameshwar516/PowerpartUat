@@ -387,6 +387,7 @@
                 </tr>
                 <tr>
                     <td style="border:none;"  valign="top" colspan="2">
+                        <apex:outputText value="{!objWHBillTo}" />
                         <apex:outputText value="{!objWHBillTo.Contact_Person__c}" />
                     </td>
                     <td style="border:none;"  valign="top" >

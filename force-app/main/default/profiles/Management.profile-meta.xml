@@ -1283,6 +1283,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>DC_Note__c.Invoice__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>DC_Note__c.LC_Date__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -5483,6 +5488,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Sales_Order_Return__c.Invoice__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Sales_Order_Return__c.LC_Date__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -6534,6 +6544,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Service_Request__c.showServiceReqCMP__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Stock_Landed_Amount__c.Landed_Amount_Historical__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

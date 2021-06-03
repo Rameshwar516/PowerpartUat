@@ -92,7 +92,7 @@ public class SaleOrderAcknowledgement {
             
             
             if(objSO.Shipping_Account__c!=null){
-        ShippingObjCon = [select id,name, phone,MobilePhone, email,isPrimary__c from contact where isPrimary__c= true AND Accountid =:objSO.Shipping_Account__c limit 1];
+        ShippingObjCon = [select id,name, salutation,phone,MobilePhone, email,isPrimary__c from contact where isPrimary__c= true AND Accountid =:objSO.Shipping_Account__c limit 1];
         if(ShippingObjCon.size()>0){
                 ShippingContact = ShippingObjCon[0];
             }
@@ -104,7 +104,7 @@ public class SaleOrderAcknowledgement {
             
             if(String.isNotEmpty(objSO.Customer_Name__c)){
                 String id = objSO.Customer_Name__c;
-                String strAccount = 'Select Id, Print_Name__c, Name,ShippingStreet,ShippingCity,ShippingState,ShippingPostalCode,ShippingCountry,BillingStreet,BillingCity,BillingState,BillingPostalCode,BillingCountry,GSTIN_No__c,Billing_State_Code__c,Shipping_State_Code__c,(Select Id, Name, Email, MobilePhone from contacts where isPrimary__c = true) from Account where Id = : id';
+                String strAccount = 'Select Id, Print_Name__c, Name,ShippingStreet,ShippingCity,ShippingState,ShippingPostalCode,ShippingCountry,BillingStreet,BillingCity,BillingState,BillingPostalCode,BillingCountry,GSTIN_No__c,Billing_State_Code__c,Shipping_State_Code__c,(Select Id, Name, Email,salutation, MobilePhone from contacts where isPrimary__c = true) from Account where Id = : id';
                 List<Account> lstAcc = Database.query(strAccount);
                 if(lstAcc.size() > 0){
                     objAcc = lstAcc[0];

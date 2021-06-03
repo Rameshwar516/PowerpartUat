@@ -108,7 +108,7 @@ public class PurchaseOrderInvoice
             //////////////////////////////
          if(String.isNotEmpty(PurchaseOrd.Supplier__c)){
                     objSupplier = [Select Id,Name, BillingCity,BillingCountry, BillingPostalCode,BillingState,BillingStreet,GSTIN_No__c ,Billing_State_Code__c,
-                                   (Select Id, Email, MobilePhone, Name from contacts ) 
+                                   (Select Id,salutation, Email, MobilePhone, Name from contacts ) 
                                    from Account 
                                    where Id =: PurchaseOrd.Supplier__c];
                     if(objSupplier.contacts.size() > 0){

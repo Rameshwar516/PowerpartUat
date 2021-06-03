@@ -1,5 +1,9 @@
 public class ClsAMCQuote {
     public list<Line_item__c> lineitem{get;set;}
+    
+     //public decimal roundvalue{get;set;}
+     //public decimal roundvalues{get;set;}
+    
     public ClsAMCQuote(ApexPages.StandardController controller) {
         id queryString = ApexPages.currentPage().getParameters().get('id');
         lineitem= new list<Line_item__c>();
@@ -10,6 +14,7 @@ public class ClsAMCQuote {
                Saleable_Stock__c,Sales_Order__c,CGST_Amount_Formula__c,IGST_Amount_Formula__c,SGST_Amount_Formula__c,
                Taxable_Amount_Formula__c,Sales_Price__c,Total_Amount_Formula__c,SGST__c,Specification__c,Total_Amount_GST__c,Discount_Amount__c, Product_Part__r.Name,Product_Part__r.Part_Name__c,Net_Amount__c from Line_Item__c where Quote__c=:queryString];
         
+       
     }
 
 }

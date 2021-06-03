@@ -83,11 +83,12 @@
                             <b style="font-size:13px;font-family: Arial;">{!pdfheader.Address_Header__c}</b><br/>
                             <div style="font-size:11px;font-family: Arial;">{!pdfheader.Address_Line1__c}<br/>
                             {!pdfheader.Address_Line_2__c}<br/>
-                            {!pdfheader.Gstin__c}<br/><br/>
+                            {!pdfheader.Gstin__c}<br/>
+                                {!pdfheader.Email__c}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{!pdfheader.Tel__c} <br/><br/>
+                            
                             {!pdfheader.IEC_No__c}&nbsp;&nbsp;&nbsp;{!pdfheader.PAN_No__c}<br/>
                             {!pdfheader.BANK__c}<br/>
                             {!pdfheader.Bank_A_C_No__c}&nbsp;&nbsp;&nbsp;{!pdfheader.IFC_RTGS_NEFT__c}<br/>
-                            {!pdfheader.Email__c}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{!pdfheader.Tel__c} 
                             </div>
                         </center>
                     </td>
@@ -422,6 +423,7 @@
                 </tr>
                 <tr>
                     <td style="border:none;"  valign="top" colspan="2">
+                        <apex:outputText value="{!objCon.salutation}"/> &nbsp;
                         <apex:outputText value="{!objCon.Name}" />
                     </td>
                     <td style="border:none;"  valign="top" >
@@ -432,6 +434,7 @@
                     </td>
                     
                      <td style="border:none;border-left: 2px solid black;"  valign="top" colspan="2">
+                         <apex:outputText value="{!ShippingContact.salutation}"/> &nbsp;
                         <apex:outputText value="{!ShippingContact.Name}" />
                     </td>
                     <td style="border:none;"  valign="top" >
@@ -801,7 +804,7 @@
                 </tr>
                 <tr>
                     <td colspan="5"><b><apex:outputText value="Total Amount After Tax " /></b></td>
-                    <td colspan="2" style="text-align:right"> <apex:outputText value="{!TotalAmount}" /></td>
+                    <td colspan="2" style="text-align:right"> <apex:outputText value="{!TotalAmount}.00" /></td>
                 </tr>
                 
                 <tr style="display: {!if(Sales_Order__c.Customer_Name__r.TCS_Charges_Enable__c, '', 'none')}">

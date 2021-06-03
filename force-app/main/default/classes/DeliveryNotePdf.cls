@@ -7,7 +7,7 @@ public class DeliveryNotePdf {
     public Pdf_Header__mdt pdfheader{get;set;}
     public Account objAcc {get;set;}
     public Contact objCon {get;set;}
-    
+     public Decimal roundtotalamt{get; set;}
     
     public Decimal GrossTotal{get; set;}
     public Decimal Charges{get; set;}
@@ -74,7 +74,7 @@ public class DeliveryNotePdf {
             objdlvrynot =DeliveryNoteList[0];
         }
         if(objdlvrynot.Shipping_Account__c!=null){
-            list<contact> conlist = [select id, name,mobilephone,email ,isPrimary__c from contact where isPrimary__c= true AND Accountid =:objdlvrynot.Shipping_Account__c limit 1];
+            list<contact> conlist = [select id, name,salutation,mobilephone,email ,isPrimary__c from contact where isPrimary__c= true AND Accountid =:objdlvrynot.Shipping_Account__c limit 1];
             
             if(!conlist.isempty())
                 ShippingObjCon = conlist[0];
@@ -82,7 +82,7 @@ public class DeliveryNotePdf {
         
         if(String.isNotEmpty(objdlvrynot.Customer_Party__c)){
                 String accid = objdlvrynot.Customer_Party__c;
-                String strAccount = 'Select Id, Print_Name__c, Name,ShippingStreet,ShippingCity,ShippingState,ShippingPostalCode,ShippingCountry,BillingStreet,BillingCity,BillingState,BillingPostalCode,BillingCountry,GSTIN_No__c,Billing_State_Code__c,Shipping_State_Code__c,(Select Id, Name, Email, MobilePhone from contacts where isPrimary__c = true) from Account where Id = : accid';
+                String strAccount = 'Select Id, Print_Name__c, Name,ShippingStreet,ShippingCity,ShippingState,ShippingPostalCode,ShippingCountry,BillingStreet,BillingCity,BillingState,BillingPostalCode,BillingCountry,GSTIN_No__c,Billing_State_Code__c,Shipping_State_Code__c,(Select Id,salutation, Name, Email, MobilePhone from contacts where isPrimary__c = true) from Account where Id = : accid';
                 List<Account> lstAcc = Database.query(strAccount);
                 if(lstAcc.size() > 0){
                     objAcc = lstAcc[0];
@@ -215,6 +215,7 @@ public class DeliveryNotePdf {
                 TotalCGST = TotalCGST+chr.CGST_Amount__c;
                 TotalSGST = TotalSGST+chr.SGST_Amount__c;
             }
+         roundtotalamt=FullTotalAmount.round();
 
         totalamount = Charges+GrossTotal;        
         
@@ -227,6 +228,8 @@ public class DeliveryNotePdf {
         }else{
             NetValue = totalamount+TCSAmount;
         }
+        
+        totalAmountWithTCS =NetValue.round();
         
         
         totalAmountinWords = UtilityClass.NoToWord(NetValue.intValue());

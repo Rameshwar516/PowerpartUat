@@ -311,6 +311,7 @@
                 
                 <tr>
                     <td style="border:none;"  valign="top" colspan="2">
+                        <apex:outputText value="{!objSupplierContact.salutation}"/>
                         <apex:outputText value="{!objSupplierContact.Name}" />
                     </td>
                     <td style="border:none;"  valign="top" >
@@ -484,6 +485,7 @@
                 </tr>
                 <tr>
                     <td style="border:none;"  valign="top" colspan="2">
+                        <!--<apex:outputText value="{!Purchase_Order__c.Ware_House__r.Contact_Person__r.salutation}" />-->
                         <apex:outputText value="{!Purchase_Order__c.Ware_House__r.Contact_Person__c}" />
                     </td>
                     <td style="border:none;"  valign="top" >

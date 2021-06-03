@@ -154,36 +154,36 @@
 		for(var i=0;i<tmpMainWrapper.length;i++)
         {
             if(rowIndex == i){
-				if(tmpMainWrapper[i].objDNLI != null && tmpMainWrapper[i].objDNLI.Sales_Price__c != null){
+				if(tmpMainWrapper[i].objDNLI != null && tmpMainWrapper[i].DnUnitPrice != null){
 					var BillQTY = event.getSource().get("v.value");
-					var Amount = BillQTY* tmpMainWrapper[i].objDNLI.Sales_Price__c;
-					if(tmpMainWrapper[i].objDNLI.Discount_Currency__c ==null || tmpMainWrapper[i].objDNLI.Discount_Currency__c == '')
-						tmpMainWrapper[i].objDNLI.Discount_Currency__c =0;
+					var Amount = BillQTY* tmpMainWrapper[i].DnUnitPrice;
+					if(tmpMainWrapper[i].DnDiscountAmount ==null || tmpMainWrapper[i].DnDiscountAmount == '')
+						tmpMainWrapper[i].DnDiscountAmount =0;
 					
-					if(tmpMainWrapper[i].objDNLI.Discount__c != null && tmpMainWrapper[i].objDNLI.Discount__c !='' && tmpMainWrapper[i].objDNLI.Discount__c != 0)
-						tmpMainWrapper[i].objDNLI.Discount_Currency__c = Amount*tmpMainWrapper[i].objDNLI.Discount__c/100;
+					if(tmpMainWrapper[i].DnDiscountPer != null && tmpMainWrapper[i].DnDiscountPer !='' && tmpMainWrapper[i].DnDiscountPer != 0)
+						tmpMainWrapper[i].DnDiscountAmount = Amount*tmpMainWrapper[i].DnDiscountPer/100;
 					
-					if(tmpMainWrapper[i].objDNLI.Discount_Currency__c != null && tmpMainWrapper[i].objDNLI.Discount_Currency__c != null !='' && tmpMainWrapper[i].objDNLI.Discount_Currency__c != 0)
-						tmpMainWrapper[i].objDNLI.Discount__c = tmpMainWrapper[i].objDNLI.Discount_Currency__c /Amount*100;
+					if(tmpMainWrapper[i].DnDiscountAmount != null && tmpMainWrapper[i].DnDiscountAmount != null !='' && tmpMainWrapper[i].DnDiscountAmount != 0)
+						tmpMainWrapper[i].DnDiscountPer = tmpMainWrapper[i].DnDiscountAmount /Amount*100;
 					
-					var IntDiscount = tmpMainWrapper[i].objDNLI.Discount_Currency__c;
+					var IntDiscount = tmpMainWrapper[i].DnDiscountAmount;
 					var TaxableAmount = Amount - IntDiscount;
-					tmpMainWrapper[i].objDNLI.Quantity__c = BillQTY;
-					tmpMainWrapper[i].objDNLI.Total_Amount__c = Amount;
-					tmpMainWrapper[i].objDNLI.Taxable_Amount__c = TaxableAmount;
+					
+					tmpMainWrapper[i].DnAmount = Amount;
+					tmpMainWrapper[i].DnTaxableAmount = TaxableAmount;
 					
 					
 					var IntCGST =0;
 					var IntSGST =0;
 					var IntIGST =0;
-					if(tmpMainWrapper[i].objDNLI.CGST__c !=null){
-						IntCGST = TaxableAmount * tmpMainWrapper[i].objDNLI.CGST__c /100;
-					}if(tmpMainWrapper[i].objDNLI.SGST__c !=null){
-						IntSGST = TaxableAmount * tmpMainWrapper[i].objDNLI.SGST__c /100;
-					}if(tmpMainWrapper[i].objDNLI.IGST__c !=null){
-						IntIGST = TaxableAmount * tmpMainWrapper[i].objDNLI.IGST__c /100;
+					if(tmpMainWrapper[i].DnCGSTRate !=null){
+						IntCGST = TaxableAmount * tmpMainWrapper[i].DnCGSTRate /100;
+					}if(tmpMainWrapper[i].DnSGSTRate !=null){
+						IntSGST = TaxableAmount * tmpMainWrapper[i].DnSGSTRate /100;
+					}if(tmpMainWrapper[i].DnIGSTRate !=null){
+						IntIGST = TaxableAmount * tmpMainWrapper[i].DnIGSTRate /100;
 					}
-					tmpMainWrapper[i].objDNLI.Gross_Amount__c = TaxableAmount+IntCGST+IntSGST+IntIGST;
+					tmpMainWrapper[i].DnNetAmount = TaxableAmount+IntCGST+IntSGST+IntIGST;
 					
 					//tmpMainWrapper[i].objDNLI.Discount__c = IntDiscount;
 					
@@ -204,36 +204,37 @@
 		for(var i=0;i<tmpMainWrapper.length;i++)
         {
             if(rowIndex == i){
-				if(tmpMainWrapper[i].objDNLI != null && tmpMainWrapper[i].objDNLI.Quantity__c != null){
+				if(tmpMainWrapper[i].objDNLI != null && tmpMainWrapper[i].DnUnitQty != null){
 					var BillQTY = event.getSource().get("v.value");
-					var Amount = BillQTY* tmpMainWrapper[i].objDNLI.Quantity__c;
-					if(tmpMainWrapper[i].objDNLI.Discount_Currency__c ==null || tmpMainWrapper[i].objDNLI.Discount_Currency__c == '')
-						tmpMainWrapper[i].objDNLI.Discount_Currency__c =0;
+					var Amount = BillQTY* tmpMainWrapper[i].DnUnitQty;
+					if(tmpMainWrapper[i].DnDiscountAmount ==null || tmpMainWrapper[i].DnDiscountAmount == '')
+						tmpMainWrapper[i].DnDiscountAmount =0;
 					
-					if(tmpMainWrapper[i].objDNLI.Discount__c != null && tmpMainWrapper[i].objDNLI.Discount__c !='' && tmpMainWrapper[i].objDNLI.Discount__c != 0)
-						tmpMainWrapper[i].objDNLI.Discount_Currency__c = Amount*tmpMainWrapper[i].objDNLI.Discount__c/100;
+					if(tmpMainWrapper[i].DnDiscountPer != null && tmpMainWrapper[i].DnDiscountPer !='' && tmpMainWrapper[i].DnDiscountPer != 0)
+						tmpMainWrapper[i].DnDiscountAmount = Amount*tmpMainWrapper[i].DnDiscountPer/100;
 					
-					if(tmpMainWrapper[i].objDNLI.Discount_Currency__c != null && tmpMainWrapper[i].objDNLI.Discount_Currency__c != null !='' && tmpMainWrapper[i].objDNLI.Discount_Currency__c != 0)
-						tmpMainWrapper[i].objDNLI.Discount__c = tmpMainWrapper[i].objDNLI.Discount_Currency__c /Amount*100;
+					if(tmpMainWrapper[i].DnDiscountAmount != null && tmpMainWrapper[i].DnDiscountAmount != null !='' && tmpMainWrapper[i].DnDiscountAmount != 0)
+						tmpMainWrapper[i].DnDiscountPer = tmpMainWrapper[i].DnDiscountAmount /Amount*100;
 					
-					var IntDiscount = tmpMainWrapper[i].objDNLI.Discount_Currency__c;
+					var IntDiscount = tmpMainWrapper[i].DnDiscountAmount;
 					var TaxableAmount = Amount - IntDiscount;
-					tmpMainWrapper[i].objDNLI.Sales_Price__c = BillQTY;
-					tmpMainWrapper[i].objDNLI.Total_Amount__c = Amount;
-					tmpMainWrapper[i].objDNLI.Taxable_Amount__c = TaxableAmount;
+					
+					tmpMainWrapper[i].DnAmount = Amount;
+					tmpMainWrapper[i].DnTaxableAmount = TaxableAmount;
 					
 					
 					var IntCGST =0;
 					var IntSGST =0;
 					var IntIGST =0;
-					if(tmpMainWrapper[i].objDNLI.CGST__c !=null){
-						IntCGST = TaxableAmount * tmpMainWrapper[i].objDNLI.CGST__c /100;
-					}if(tmpMainWrapper[i].objDNLI.SGST__c !=null){
-						IntSGST = TaxableAmount * tmpMainWrapper[i].objDNLI.SGST__c /100;
-					}if(tmpMainWrapper[i].objDNLI.IGST__c !=null){
-						IntIGST = TaxableAmount * tmpMainWrapper[i].objDNLI.IGST__c /100;
+					if(tmpMainWrapper[i].DnCGSTRate !=null){
+						IntCGST = TaxableAmount * tmpMainWrapper[i].DnCGSTRate /100;
+					}if(tmpMainWrapper[i].DnSGSTRate !=null){
+						IntSGST = TaxableAmount * tmpMainWrapper[i].DnSGSTRate /100;
+					}if(tmpMainWrapper[i].DnIGSTRate !=null){
+						IntIGST = TaxableAmount * tmpMainWrapper[i].DnIGSTRate /100;
 					}
-					tmpMainWrapper[i].objDNLI.Gross_Amount__c = TaxableAmount+IntCGST+IntSGST+IntIGST;
+					tmpMainWrapper[i].DnNetAmount = TaxableAmount+IntCGST+IntSGST+IntIGST;
+					
 					component.set("v.ObjDeliveryNoteLI.lstSubMain",tmpMainWrapper);
 					
                 } 
@@ -251,37 +252,36 @@
 		for(var i=0;i<tmpMainWrapper.length;i++)
         {
             if(rowIndex == i){
-				if(tmpMainWrapper[i].objDNLI != null && tmpMainWrapper[i].objDNLI.Quantity__c != null && tmpMainWrapper[i].objDNLI.Sales_Price__c != null){
+				if(tmpMainWrapper[i].objDNLI != null && tmpMainWrapper[i].DnUnitQty != null && tmpMainWrapper[i].DnUnitPrice != null){
 					var BillQTY = event.getSource().get("v.value");
 					
-					tmpMainWrapper[i].objDNLI.Discount_Currency__c = BillQTY;
-					var Amount = tmpMainWrapper[i].objDNLI.Total_Amount__c;
-					if(tmpMainWrapper[i].objDNLI.Discount_Currency__c ==null || tmpMainWrapper[i].objDNLI.Discount_Currency__c == '')
-						tmpMainWrapper[i].objDNLI.Discount_Currency__c =0;
+					var Amount = tmpMainWrapper[i].DnAmount;
+					if(tmpMainWrapper[i].DnDiscountAmount ==null || tmpMainWrapper[i].DnDiscountAmount == '')
+						tmpMainWrapper[i].DnDiscountAmount =0;
 					
-					if(tmpMainWrapper[i].objDNLI.Discount_Currency__c != null && tmpMainWrapper[i].objDNLI.Discount_Currency__c != null !='' && tmpMainWrapper[i].objDNLI.Discount_Currency__c != 0)
-						tmpMainWrapper[i].objDNLI.Discount__c = tmpMainWrapper[i].objDNLI.Discount_Currency__c /Amount*100;
+					if(tmpMainWrapper[i].DnDiscountAmount != null && tmpMainWrapper[i].DnDiscountAmount !='' && tmpMainWrapper[i].DnDiscountAmount != 0)
+						tmpMainWrapper[i].DnDiscountPer = (BillQTY/Amount)*100;
 					
-					if(tmpMainWrapper[i].objDNLI.Discount__c != null && tmpMainWrapper[i].objDNLI.Discount__c !='' && tmpMainWrapper[i].objDNLI.Discount__c != 0)
-						tmpMainWrapper[i].objDNLI.Discount_Currency__c = Amount*tmpMainWrapper[i].objDNLI.Discount__c/100;
 					
-					var IntDiscount = tmpMainWrapper[i].objDNLI.Discount_Currency__c;
+					
+					var IntDiscount = tmpMainWrapper[i].DnDiscountAmount;
 					var TaxableAmount = Amount - IntDiscount;
 					
-					tmpMainWrapper[i].objDNLI.Taxable_Amount__c = TaxableAmount;
+					tmpMainWrapper[i].DnTaxableAmount = TaxableAmount;
 					
 					
 					var IntCGST =0;
 					var IntSGST =0;
 					var IntIGST =0;
-					if(tmpMainWrapper[i].objDNLI.CGST__c !=null){
-						IntCGST = TaxableAmount * tmpMainWrapper[i].objDNLI.CGST__c /100;
-					}if(tmpMainWrapper[i].objDNLI.SGST__c !=null){
-						IntSGST = TaxableAmount * tmpMainWrapper[i].objDNLI.SGST__c /100;
-					}if(tmpMainWrapper[i].objDNLI.IGST__c !=null){
-						IntIGST = TaxableAmount * tmpMainWrapper[i].objDNLI.IGST__c /100;
+					if(tmpMainWrapper[i].DnCGSTRate !=null){
+						IntCGST = TaxableAmount * tmpMainWrapper[i].DnCGSTRate /100;
+					}if(tmpMainWrapper[i].DnSGSTRate !=null){
+						IntSGST = TaxableAmount * tmpMainWrapper[i].DnSGSTRate /100;
+					}if(tmpMainWrapper[i].DnIGSTRate !=null){
+						IntIGST = TaxableAmount * tmpMainWrapper[i].DnIGSTRate /100;
 					}
-					tmpMainWrapper[i].objDNLI.Gross_Amount__c = TaxableAmount+IntCGST+IntSGST+IntIGST;
+					tmpMainWrapper[i].DnNetAmount = TaxableAmount+IntCGST+IntSGST+IntIGST;
+                    
 					component.set("v.ObjDeliveryNoteLI.lstSubMain",tmpMainWrapper);
                 } 
 			}else{
@@ -299,41 +299,37 @@
         if(isdiscount==true){
 			if(rowIndex == 0){
 				var BillQTY = event.getSource().get("v.value");
-				tmpMainWrapper[0].objDNLI.Discount__c = BillQTY;
-				if(tmpMainWrapper[0].objDNLI.Discount__c != null && tmpMainWrapper[0].objDNLI.Discount__c != ''){
+				tmpMainWrapper[0].DnDiscountPer = BillQTY;
+				if(tmpMainWrapper[0].DnDiscountPer != null && tmpMainWrapper[0].DnDiscountPer != ''){
 					for(var i=0;i<tmpMainWrapper.length;i++)
 					{	
-						tmpMainWrapper[i].objDNLI.Discount__c = tmpMainWrapper[0].objDNLI.Discount__c;
-						var Amount = tmpMainWrapper[i].objDNLI.Total_Amount__c;
-						if(tmpMainWrapper[i].objDNLI.Discount_Currency__c ==null || tmpMainWrapper[i].objDNLI.Discount_Currency__c == '')
-							tmpMainWrapper[i].objDNLI.Discount_Currency__c =0;
+						tmpMainWrapper[i].DnDiscountPer = tmpMainWrapper[0].DnDiscountPer;
+						var Amount = tmpMainWrapper[i].DnAmount;
+						if(tmpMainWrapper[i].DnDiscountAmount ==null || tmpMainWrapper[i].DnDiscountAmount == '')
+							tmpMainWrapper[i].DnDiscountAmount =0;
 						
-						if(tmpMainWrapper[i].objDNLI.Discount__c != null && tmpMainWrapper[i].objDNLI.Discount__c !='' && tmpMainWrapper[i].objDNLI.Discount__c != 0)
-							tmpMainWrapper[i].objDNLI.Discount_Currency__c = Amount*tmpMainWrapper[i].objDNLI.Discount__c/100;
+						if(tmpMainWrapper[i].DnDiscountPer != null && tmpMainWrapper[i].DnDiscountPer !='' && tmpMainWrapper[i].DnDiscountPer != 0)
+							tmpMainWrapper[i].DnDiscountAmount = Amount*tmpMainWrapper[i].DnDiscountPer/100;
 						
-						if(tmpMainWrapper[i].objDNLI.Discount__c ==0){
-							tmpMainWrapper[i].objDNLI.Discount_Currency__c =0;
-						}else{
-							if(tmpMainWrapper[i].objDNLI.Discount_Currency__c != null && tmpMainWrapper[i].objDNLI.Discount_Currency__c != null !='' && tmpMainWrapper[i].objDNLI.Discount_Currency__c != 0)
-								tmpMainWrapper[i].objDNLI.Discount__c = tmpMainWrapper[i].objDNLI.Discount_Currency__c /Amount*100;
-						}
-						var IntDiscount = tmpMainWrapper[i].objDNLI.Discount_Currency__c;
+						
+						var IntDiscount = tmpMainWrapper[i].DnDiscountAmount;
 						var TaxableAmount = Amount - IntDiscount;
 						
-						tmpMainWrapper[i].objDNLI.Taxable_Amount__c = TaxableAmount;
 						
-						
-						var IntCGST =0;
-						var IntSGST =0;
-						var IntIGST =0;
-						if(tmpMainWrapper[i].objDNLI.CGST__c !=null){
-							IntCGST = TaxableAmount * tmpMainWrapper[i].objDNLI.CGST__c /100;
-						}if(tmpMainWrapper[i].objDNLI.SGST__c !=null){
-							IntSGST = TaxableAmount * tmpMainWrapper[i].objDNLI.SGST__c /100;
-						}if(tmpMainWrapper[i].objDNLI.IGST__c !=null){
-							IntIGST = TaxableAmount * tmpMainWrapper[i].objDNLI.IGST__c /100;
-						}
-						tmpMainWrapper[i].objDNLI.Gross_Amount__c = TaxableAmount+IntCGST+IntSGST+IntIGST;
+					tmpMainWrapper[i].DnTaxableAmount = TaxableAmount;
+					
+					
+					var IntCGST =0;
+					var IntSGST =0;
+					var IntIGST =0;
+					if(tmpMainWrapper[i].DnCGSTRate !=null){
+						IntCGST = TaxableAmount * tmpMainWrapper[i].DnCGSTRate /100;
+					}if(tmpMainWrapper[i].DnSGSTRate !=null){
+						IntSGST = TaxableAmount * tmpMainWrapper[i].DnSGSTRate /100;
+					}if(tmpMainWrapper[i].DnIGSTRate !=null){
+						IntIGST = TaxableAmount * tmpMainWrapper[i].DnIGSTRate /100;
+					}
+					tmpMainWrapper[i].DnNetAmount = TaxableAmount+IntCGST+IntSGST+IntIGST;
 						component.set("v.ObjDeliveryNoteLI.lstSubMain",tmpMainWrapper);
 					} 
 				}else{
@@ -359,23 +355,25 @@
 			for(var i=0;i<tmpMainWrapper.length;i++)
 			{
 				if(rowIndex == i){
-					if(tmpMainWrapper[i].objDNLI != null && tmpMainWrapper[i].objDNLI.Quantity__c != null && tmpMainWrapper[i].objDNLI.Sales_Price__c != null){
+					if(tmpMainWrapper[i].objDNLI != null && tmpMainWrapper[i].DnUnitQty != null && tmpMainWrapper[i].DnUnitPrice != null){
 						var BillQTY = event.getSource().get("v.value");
-						tmpMainWrapper[i].objDNLI.Discount__c = BillQTY;
-						var Amount = tmpMainWrapper[i].objDNLI.Total_Amount__c;
-						if(tmpMainWrapper[i].objDNLI.Discount_Currency__c ==null || tmpMainWrapper[i].objDNLI.Discount_Currency__c == '')
-							tmpMainWrapper[i].objDNLI.Discount_Currency__c =0;
+					
+						var Amount = tmpMainWrapper[i].DnAmount;
+                        
+						if(tmpMainWrapper[i].DnDiscountAmount ==null || tmpMainWrapper[i].DnDiscountAmount == '')
+							tmpMainWrapper[i].DnDiscountAmount =0;
 						
-						if(tmpMainWrapper[i].objDNLI.Discount__c != null && tmpMainWrapper[i].objDNLI.Discount__c !='' && tmpMainWrapper[i].objDNLI.Discount__c != 0)
-							tmpMainWrapper[i].objDNLI.Discount_Currency__c = Amount*tmpMainWrapper[i].objDNLI.Discount__c/100;
+						if(tmpMainWrapper[i].DnDiscountPer != null && tmpMainWrapper[i].DnDiscountPer !='' && tmpMainWrapper[i].DnDiscountPer != 0)
+							tmpMainWrapper[i].DnDiscountAmount = Amount*tmpMainWrapper[i].DnDiscountPer/100;
 						
-						if(tmpMainWrapper[i].objDNLI.Discount__c ==0){
-							tmpMainWrapper[i].objDNLI.Discount_Currency__c =0;
+						if(tmpMainWrapper[i].DnDiscountPer ==0){
+							tmpMainWrapper[i].DnDiscountAmount =0;
 						}else{
-							if(tmpMainWrapper[i].objDNLI.Discount_Currency__c != null && tmpMainWrapper[i].objDNLI.Discount_Currency__c != null !='' && tmpMainWrapper[i].objDNLI.Discount_Currency__c != 0)
-								tmpMainWrapper[i].objDNLI.Discount__c = tmpMainWrapper[i].objDNLI.Discount_Currency__c /Amount*100;
+							if(tmpMainWrapper[i].DnDiscountAmount != null && tmpMainWrapper[i].DnDiscountAmount  !='' && tmpMainWrapper[i].DnDiscountAmount != 0)
+								tmpMainWrapper[i].DnDiscountPer = tmpMainWrapper[i].DnDiscountAmount /Amount*100;
 						}
-						var IntDiscount = tmpMainWrapper[i].objDNLI.Discount_Currency__c;
+                        
+						var IntDiscount = tmpMainWrapper[i].DnDiscountAmount;
 						var TaxableAmount = Amount - IntDiscount;
 						
 						tmpMainWrapper[i].objDNLI.Taxable_Amount__c = TaxableAmount;
@@ -409,37 +407,41 @@
         var tmpMainWrapper = component.get("v.ObjDeliveryNoteLI.lstSubMain");
 		var isdiscount =  component.get('v.Isdiscount');
         if(isdiscount==true){
-			if(tmpMainWrapper[0].objDNLI.Discount__c != null && tmpMainWrapper[0].objDNLI.Discount__c != ''){
+			if(tmpMainWrapper[0].DnDiscountPer!= null && tmpMainWrapper[0].DnDiscountPer != ''){
 				for(var i=0;i<tmpMainWrapper.length;i++)
 				{	
-					tmpMainWrapper[i].objDNLI.Discount__c = tmpMainWrapper[0].objDNLI.Discount__c;
-					var Amount = tmpMainWrapper[i].objDNLI.Total_Amount__c;
-					if(tmpMainWrapper[i].objDNLI.Discount_Currency__c ==null || tmpMainWrapper[i].objDNLI.Discount_Currency__c == '')
-						tmpMainWrapper[i].objDNLI.Discount_Currency__c =0;
-					
-					if(tmpMainWrapper[i].objDNLI.Discount__c != null && tmpMainWrapper[i].objDNLI.Discount__c !='' && tmpMainWrapper[i].objDNLI.Discount__c != 0)
-						tmpMainWrapper[i].objDNLI.Discount_Currency__c = Amount*tmpMainWrapper[i].objDNLI.Discount__c/100;
-					
-					if(tmpMainWrapper[i].objDNLI.Discount_Currency__c != null && tmpMainWrapper[i].objDNLI.Discount_Currency__c != null !='' && tmpMainWrapper[i].objDNLI.Discount_Currency__c != 0)
-						tmpMainWrapper[i].objDNLI.Discount__c = tmpMainWrapper[i].objDNLI.Discount_Currency__c /Amount*100;
-					
-					var IntDiscount = tmpMainWrapper[i].objDNLI.Discount_Currency__c;
-					var TaxableAmount = Amount - IntDiscount;
-					
-					tmpMainWrapper[i].objDNLI.Taxable_Amount__c = TaxableAmount;
+					tmpMainWrapper[i].DnDiscountPer = tmpMainWrapper[0].DnDiscountPer;
+						var Amount = tmpMainWrapper[i].DnAmount;
+						if(tmpMainWrapper[i].DnDiscountAmount ==null || tmpMainWrapper[i].DnDiscountAmount == '')
+							tmpMainWrapper[i].DnDiscountAmount =0;
+						
+						if(tmpMainWrapper[i].DnDiscountPer != null && tmpMainWrapper[i].DnDiscountPer !='' && tmpMainWrapper[i].DnDiscountPer != 0)
+							tmpMainWrapper[i].DnDiscountAmount = Amount*tmpMainWrapper[i].DnDiscountPer/100;
+						
+						if(tmpMainWrapper[i].DnDiscountPer ==0){
+							tmpMainWrapper[i].DnDiscountAmount =0;
+						}else{
+							if(tmpMainWrapper[i].DnDiscountAmount != null && tmpMainWrapper[i].DnDiscountAmount != null !='' && tmpMainWrapper[i].DnDiscountAmount != 0)
+								tmpMainWrapper[i].DnDiscountPer = tmpMainWrapper[i].DnDiscountAmount /Amount*100;
+						}
+						var IntDiscount = tmpMainWrapper[i].DnDiscountAmount;
+						var TaxableAmount = Amount - IntDiscount;
+						
+						
+					tmpMainWrapper[i].DnTaxableAmount = TaxableAmount;
 					
 					
 					var IntCGST =0;
 					var IntSGST =0;
 					var IntIGST =0;
-					if(tmpMainWrapper[i].objDNLI.CGST__c !=null){
-						IntCGST = TaxableAmount * tmpMainWrapper[i].objDNLI.CGST__c /100;
-					}if(tmpMainWrapper[i].objDNLI.SGST__c !=null){
-						IntSGST = TaxableAmount * tmpMainWrapper[i].objDNLI.SGST__c /100;
-					}if(tmpMainWrapper[i].objDNLI.IGST__c !=null){
-						IntIGST = TaxableAmount * tmpMainWrapper[i].objDNLI.IGST__c /100;
+					if(tmpMainWrapper[i].DnCGSTRate !=null){
+						IntCGST = TaxableAmount * tmpMainWrapper[i].DnCGSTRate /100;
+					}if(tmpMainWrapper[i].DnSGSTRate !=null){
+						IntSGST = TaxableAmount * tmpMainWrapper[i].DnSGSTRate /100;
+					}if(tmpMainWrapper[i].DnIGSTRate !=null){
+						IntIGST = TaxableAmount * tmpMainWrapper[i].DnIGSTRate /100;
 					}
-					tmpMainWrapper[i].objDNLI.Gross_Amount__c = TaxableAmount+IntCGST+IntSGST+IntIGST;
+					tmpMainWrapper[i].DnNetAmount = TaxableAmount+IntCGST+IntSGST+IntIGST;
 					component.set("v.ObjDeliveryNoteLI.lstSubMain",tmpMainWrapper);
 				} 
 			}else{
@@ -459,22 +461,26 @@
 		var target = event.target;
         var rowIndex = event.getSource().get("v.name");
         var tmpMainWrapper = component.get("v.ObjDeliveryNoteLI.lstSubMain");
+        
 		for(var i=0;i<tmpMainWrapper.length;i++)
         {
+            var  TaxableAmount = tmpMainWrapper.DnTaxableAmount;
             if(rowIndex == i){
 				var IntGST = event.getSource().get("v.value");
 				var IntCGST =0;
 				var IntSGST =0;
 				var IntIGST =0;
-				if(IntCGST !=null){
-					tmpMainWrapper[i].objDNLI.CGST__c = IntGST;
-					IntCGST = tmpMainWrapper[i].objDNLI.Taxable_Amount__c * IntGST /100;
-				}if(tmpMainWrapper[i].objDNLI.SGST__c !=null){
-					IntSGST = tmpMainWrapper[i].objDNLI.Taxable_Amount__c * tmpMainWrapper[i].objDNLI.SGST__c /100;
-				}if(tmpMainWrapper[i].objDNLI.IGST__c !=null){
-					IntIGST = tmpMainWrapper[i].objDNLI.Taxable_Amount__c * tmpMainWrapper[i].objDNLI.IGST__c /100;
-				}
-				tmpMainWrapper[i].objDNLI.Gross_Amount__c = tmpMainWrapper[i].objDNLI.Taxable_Amount__c+IntCGST+IntSGST+IntIGST;
+				var TaxableAmount= tmpMainWrapper[i].DnTaxableAmount;
+                if(IntGST !=null){
+                    IntCGST = TaxableAmount * tmpMainWrapper[i].DnCGSTRate /100;
+                }if(tmpMainWrapper[i].DnSGSTRate !=null){
+                    IntSGST = TaxableAmount * tmpMainWrapper[i].DnSGSTRate /100;
+                }if(tmpMainWrapper[i].DnIGSTRate !=null){
+                    IntIGST = TaxableAmount * tmpMainWrapper[i].DnIGSTRate /100;
+                }
+                tmpMainWrapper[i].DnNetAmount = TaxableAmount+IntCGST+IntSGST+IntIGST;
+                
+                
 				component.set("v.ObjDeliveryNoteLI.lstSubMain",tmpMainWrapper);
 			}else{
 				component.set("v.ObjDeliveryNoteLI.lstSubMain",tmpMainWrapper);
@@ -495,16 +501,16 @@
 				var IntCGST =0;
 				var IntSGST =0;
 				var IntIGST =0;
-				if(tmpMainWrapper[i].objDNLI.CGST__c !=null){
-					IntCGST = tmpMainWrapper[i].objDNLI.Taxable_Amount__c * tmpMainWrapper[i].objDNLI.CGST__c /100;
-				}if(IntGST !=null){
-					tmpMainWrapper[i].objDNLI.SGST__c = IntGST;
-					IntSGST = tmpMainWrapper[i].objDNLI.Taxable_Amount__c * IntGST /100;
-				}if(tmpMainWrapper[i].objDNLI.IGST__c !=null){
-					IntIGST = tmpMainWrapper[i].objDNLI.Taxable_Amount__c * tmpMainWrapper[i].objDNLI.IGST__c /100;
-				}
-				tmpMainWrapper[i].objDNLI.Gross_Amount__c = tmpMainWrapper[i].objDNLI.Taxable_Amount__c+IntCGST+IntSGST+IntIGST;
-				component.set("v.ObjDeliveryNoteLI.lstSubMain",tmpMainWrapper);
+				var TaxableAmount= tmpMainWrapper[i].DnTaxableAmount;
+                if(tmpMainWrapper[i].DnCGSTRate !=null){
+                    IntCGST = TaxableAmount * tmpMainWrapper[i].DnCGSTRate /100;
+                }if(IntGST !=null){
+                    IntSGST = TaxableAmount * tmpMainWrapper[i].DnSGSTRate /100;
+                }if(tmpMainWrapper[i].DnIGSTRate !=null){
+                    IntIGST = TaxableAmount * tmpMainWrapper[i].DnIGSTRate /100;
+                }
+                tmpMainWrapper[i].DnNetAmount = TaxableAmount+IntCGST+IntSGST+IntIGST;
+                component.set("v.ObjDeliveryNoteLI.lstSubMain",tmpMainWrapper);
 			}else{
 				component.set("v.ObjDeliveryNoteLI.lstSubMain",tmpMainWrapper);
 			}
@@ -524,23 +530,24 @@
 				var IntCGST =0;
 				var IntSGST =0;
 				var IntIGST =0;
-				if(tmpMainWrapper[i].objDNLI.CGST__c !=null){
-					IntCGST = tmpMainWrapper[i].objDNLI.Taxable_Amount__c * tmpMainWrapper[i].objDNLI.CGST__c /100;
-				}if(tmpMainWrapper[i].objDNLI.SGST__c !=null){
-					IntSGST = tmpMainWrapper[i].objDNLI.Taxable_Amount__c * tmpMainWrapper[i].objDNLI.SGST__c /100;
-				}if(IntGST !=null){
-					tmpMainWrapper[i].objDNLI.IGST__c = IntGST;
-					IntIGST = tmpMainWrapper[i].objDNLI.Taxable_Amount__c * IntGST /100;
-				}
-				tmpMainWrapper[i].objDNLI.Gross_Amount__c = tmpMainWrapper[i].objDNLI.Taxable_Amount__c+IntCGST+IntSGST+IntIGST;
-				component.set("v.ObjDeliveryNoteLI.lstSubMain",tmpMainWrapper);
+				var TaxableAmount= tmpMainWrapper[i].DnTaxableAmount;
+                if(tmpMainWrapper[i].DnCGSTRate !=null){
+                    IntCGST = TaxableAmount * tmpMainWrapper[i].DnCGSTRate /100;
+                }if(tmpMainWrapper[i].DnSGSTRate !=null){
+                    IntSGST = TaxableAmount * tmpMainWrapper[i].DnSGSTRate /100;
+                }if(IntGST !=null){
+                    IntIGST = TaxableAmount * tmpMainWrapper[i].DnIGSTRate /100;
+                }
+                tmpMainWrapper[i].DnNetAmount = TaxableAmount+IntCGST+IntSGST+IntIGST;
+                 
+                
+                component.set("v.ObjDeliveryNoteLI.lstSubMain",tmpMainWrapper);
 			}else{
 				component.set("v.ObjDeliveryNoteLI.lstSubMain",tmpMainWrapper);
 			}
 		}
         component.set("v.ObjDeliveryNoteLI.lstSubMain",tmpMainWrapper);
 	},
-	
 	
 	PurchaseOrder: function (component, event) {
         //var isEnterKey = event.keyCode === 13;

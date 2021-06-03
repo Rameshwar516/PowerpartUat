@@ -67,6 +67,7 @@
             <div style="width:100%;margin-top:8%"> 
                 <div style="float:left; width:40%;">
                     <apex:image url="{!$Resource.PowerpartsLogo}" width="230" height="80"/><br/>
+                     <b><apex:outputText value="Powerparts Private Limited" style="font-size:20px;font-family: Arial;padding-left:4px" /></b><br/>
                     <b><apex:outputText value="Plot No. 114, Pace City1" style="font-size:20px;font-family: Arial;padding-left:4px" /></b><br/>
                     <apex:outputText value="Sector- 37, Gurgaon-122001" style="padding-left:4px;font-family: Arial; size: 12pt;"/><br/>
                     <apex:outputText value="Haryana, India" style="padding-left:4px;font-family: Arial; size: 12pt;"/><br/>
@@ -225,7 +226,7 @@
                             <b>{!li.GST_Amount__c }</b>
                         </td>
                         <td valign="top">
-                            <b> {!li.Total_Amount_GST__c }</b>
+                            <b> {!li.Total_Amount_GST__c }.00</b>
                         </td>
                     </tr> 
                 </apex:repeat>

@@ -70,7 +70,7 @@ public class PerformanceInvoice
              Date_of_Supply__c,Place_of_Supply__c,Shipping_Account__c,Shipping_City__c,Shipping_Country__c,Shipping_Zip_Postal_Code__c,Shipping_State_Province__c,Shipping_Street__c,Ware_House__c,Payment_Terms__c,Contact_Person__c,OEM_Customer__c,Office__c,Proforma_Invoice__c
              ,Ware_House__r.city__c,Ware_House__r.branch__c,LC_Date__c,LC_Term__c,Term_and_Condition__c,OEM_Customer__r.ShippingState,OwnerId  from Opportunity__c where id =:queryString limit 1];  
         if(opp.Shipping_Account__c!=null){
-        ShippingCon = [select id,name, phone,MobilePhone, email,isPrimary__c from contact where isPrimary__c= true AND Accountid =:opp.Shipping_Account__c limit 1];
+        ShippingCon = [select id,name,Salutation, phone,MobilePhone, email,isPrimary__c from contact where isPrimary__c= true AND Accountid =:opp.Shipping_Account__c limit 1];
         if(ShippingCon.size()>0){
                 ShippingContact = ShippingCon[0];
             }
@@ -112,7 +112,7 @@ public class PerformanceInvoice
         pdfheader =  Database.query(pdfHeaderQuery);
         
         
-        con = [select id,Name,Email,MobilePhone,Accountid from contact where id=:opp.Contact_Person__c limit 1];
+        con = [select id,Name,Salutation,Email,MobilePhone,Accountid from contact where id=:opp.Contact_Person__c limit 1];
         system.debug('contact'+con.id);
         
         Acc=[select id ,Print_Name__c,TCS_Charges_Enable__c,GSTIN_No__c,BillingCity,BillingCountry,BillingState,BillingStreet,BillingAddress,BillingPostalCode,ShippingCountry,
@@ -224,7 +224,7 @@ public class PerformanceInvoice
         
         //totalCgst=totalCgst.round();
         //totalSgst=totalSgst.round();
-      //totalIgst=totalIgst.round();
+      //totalIgst=totalIgst.round();             
       //  totalAmount=totalAmount.round();
        //totalAmountNotIncludedTax=totalAmountNotIncludedTax.round();
         

@@ -63,7 +63,7 @@ public class TaxCumServiceInvoicePDF {
             List<String> lstInvoiceField = UtilityClass.getAllFields('Invoice__c');
             List<String> lstInvoiceLineItemField = UtilityClass.getAllFields('Invoice_Line_Item__c');
             
-            String strInvoiceQuery = 'Select ' +String.Join(lstInvoiceField, ',')+ ',Shipping_Account__r.name,Shipping_Account__r.Shipping_State_Code__c,Shipping_Account__r.Shipping_GSTIN_No__c ,Customer_Name__r.Name,DC_No__r.Sales_Order__r.Ware_House__r.Branch__c,DC_No__r.Sales_Order__r.Ware_House__r.City__c, Contact_Person__r.Name, Contact_Person__r.Email, DC_No__r.Delivery_Note_Number__c From Invoice__c where Id =: strId';
+            String strInvoiceQuery = 'Select ' +String.Join(lstInvoiceField, ',')+ ',Shipping_Account__r.name,Shipping_Account__r.Shipping_State_Code__c,Shipping_Account__r.Shipping_GSTIN_No__c ,Customer_Name__r.Name,DC_No__r.Sales_Order__r.Ware_House__r.Branch__c,DC_No__r.Sales_Order__r.Ware_House__r.City__c, Contact_Person__r.Name, contact_person__r.salutation, Contact_Person__r.Email, DC_No__r.Delivery_Note_Number__c From Invoice__c where Id =: strId';
             String strInvoiceLineItemQuery = 'Select ' +String.Join(lstInvoiceLineItemField, ',')+ ',Part_Number__r.Name,Part_Number__r.Part_Name__c,Part_Number__r.UOM__c From Invoice_Line_Item__c where Invoice__c =: strId';            
             
             List<Invoice__c> lstInvoiceOrder =  Database.query(strInvoiceQuery);
@@ -73,7 +73,7 @@ public class TaxCumServiceInvoicePDF {
                 
                 list<Contact> listShippingObjCon = new list<Contact>();
                 if(objInvoice.Shipping_Account__c!=null ){
-              listShippingObjCon = [select id,name, mobilephone,email,isPrimary__c from contact where isPrimary__c=true AND Accountid =:objInvoice.Shipping_Account__c limit 1];
+              listShippingObjCon = [select id,name, salutation,mobilephone,email,isPrimary__c from contact where isPrimary__c=true AND Accountid =:objInvoice.Shipping_Account__c limit 1];
                     if(listShippingObjCon.size()>0){
                     ShippingObjCon = listShippingObjCon[0];
                     }

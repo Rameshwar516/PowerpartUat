@@ -74,7 +74,7 @@ public class ClassQuotePDf {
         
         system.debug('Quote'+Quotee.id);
         if(quotee.Shipping_Account__c!=null){
-        ShippingCon = [select id,name, phone,MobilePhone, email,isPrimary__c from contact where isPrimary__c= true AND Accountid =:quotee.Shipping_Account__c limit 1];
+        ShippingCon = [select id,name, salutation,phone,MobilePhone, email,isPrimary__c from contact where isPrimary__c= true AND Accountid =:quotee.Shipping_Account__c limit 1];
         if(ShippingCon.size()>0){
                 ShippingContact = ShippingCon[0];
             }
@@ -88,7 +88,7 @@ public class ClassQuotePDf {
         Apexpages.currentPage().getHeaders().put('content-disposition', 'inline; filename='+myGeneratedFilename);
         if(quotee.Contact_Name__c!=null){
             
-        con = [select id,Name,Email,Fax,HomePhone,MobilePhone,Title,Accountid  from contact where id=:quotee.Contact_Name__c limit 1];
+        con = [select id,Name,salutation,Email,Fax,HomePhone,MobilePhone,Title,Accountid  from contact where id=:quotee.Contact_Name__c limit 1];
         
             if(con.size()>0){
                 conBill = con[0];

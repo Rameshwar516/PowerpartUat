@@ -579,7 +579,7 @@
                                                                 </div>
                                                             </td>
                                                             <td class="slds-truncate"><div style="margin-top:12px">{!index+1}</div> </td>
-                                                            <td class="slds-truncate" title="{!obj.ObjMRNLI.Part_Number__r.Name}">
+                                                            <td class="slds-truncate" title="{!obj.objDNLI.Product_Part__r.Name}">
                                                                 <lightning:input id="partId" type="Text" value="{!obj.objDNLI.Product_Part__r.Name}" disabled="true"/>
                                                             </td>
                                                             <td class="slds-truncate" title="{!obj.objDNLI.Product_Part__r.Part_Name__c}">
@@ -589,38 +589,38 @@
                                                                 <lightning:input id="partName" type="Text" value="{!obj.objDNLI.Specification__c}" disabled="{!v.IsEdit}"/>
                                                             </td>
                                                             <td>
-                                                                <div  class="slds-truncate" title="{!obj.objDNLI.Quantity__c}">
-                                                                    <lightning:input name="{!index}" id="partId" type="number" onchange="{!c.CalculateQuantity}" value="{!obj.objDNLI.Quantity__c}" disabled="{!v.IsEdit}" default="0"/>
+                                                                <div  class="slds-truncate" title="{!obj.DnUnitQty}">
+                                                                    <lightning:input name="{!index}" id="partId" type="number" onchange="{!c.CalculateQuantity}" value="{!obj.DnUnitQty}" disabled="{!v.IsEdit}" default="0"/>
                                                                 </div>
                                                             </td>
                                                             <td class="slds-truncate cellwidth">
-                                                                <div  class="slds-truncate cellwidth" title="{!obj.objDNLI.Sales_Price__c}">
-                                                                    <lightning:input name="{!index}" id="partId" type="number" onchange="{!c.CalculateRate}"  value="{!obj.objDNLI.Sales_Price__c}" disabled="{!v.IsEdit}" default="0"/>
+                                                                <div  class="slds-truncate cellwidth" title="{!obj.DnUnitPrice}">
+                                                                    <lightning:input name="{!index}" id="partId" type="number" onchange="{!c.CalculateRate}"  value="{!obj.DnUnitPrice}" disabled="{!v.IsEdit}" default="0"/>
                                                                 </div>
                                                             </td>
-                                                            <td class="slds-truncate" title="{!obj.objDNLI.Total_Amount__c}">
-                                                                <lightning:input class="cellwidth" id="partId" type="number" value="{!obj.objDNLI.Total_Amount__c}" disabled="true" default="0"/>
+                                                            <td class="slds-truncate" title="{!obj.DnAmount}">
+                                                                <lightning:input class="cellwidth" id="partId" type="number" value="{!obj.DnAmount}" disabled="true" default="0"/>
                                                             </td>
-                                                            <td class="slds-truncate" title="{!obj.objDNLI.Discount__c}">
-                                                                <lightning:input name="{!index}" id="partId" type="number" onchange="{!c.CalculateDiscountRate}"  value="{!obj.objDNLI.Discount__c}" disabled="{!v.IsEdit}" default="0"/>
+                                                            <td class="slds-truncate" title="{!obj.DnDiscountPer}">
+                                                                <lightning:input name="{!index}" id="partId" type="number" onchange="{!c.CalculateDiscountRate}"  value="{!obj.DnDiscountPer}" disabled="{!v.IsEdit}" default="0"/>
                                                             </td>
-                                                            <td class="slds-truncate" title="{!obj.objDNLI.Discount_Currency__c}">
-                                                                <lightning:input class="cellwidth" name="{!index}" id="partId" type="number" onchange="{!c.CalculateDiscount}"  value="{!obj.objDNLI.Discount_Currency__c}" disabled="{!v.IsEdit}" default="0"/>
+                                                            <td class="slds-truncate" title="{!obj.DnDiscountAmount}">
+                                                                <lightning:input class="cellwidth" name="{!index}" id="partId" type="number" onchange="{!c.CalculateDiscount}"  value="{!obj.DnDiscountAmount}" disabled="{!v.IsEdit}" default="0"/>
                                                             </td>
-                                                            <td class="slds-truncate" title="{!obj.objDNLI.Taxable_Amount__c}">
-                                                                <lightning:input class="cellwidth" id="partId" type="number" value="{!obj.objDNLI.Taxable_Amount__c}" disabled="true" default="0"/>
+                                                            <td class="slds-truncate" title="{!obj.DnTaxableAmount}">
+                                                                <lightning:input class="cellwidth" id="partId" type="number" value="{!obj.DnTaxableAmount}" disabled="true" default="0"/>
                                                             </td>
-                                                            <td class="slds-truncate" title="{!obj.objDNLI.CGST__c}">
-                                                                <lightning:input name="{!index}" id="partId" type="number" onchange="{!c.CalculateSalesCGST}"  value="{!obj.objDNLI.CGST__c}" disabled="{!v.IsEdit}" default="0"/>
+                                                            <td class="slds-truncate" title="{!obj.DnCGSTRate}">
+                                                                <lightning:input name="{!index}" id="partId" type="number" onchange="{!c.CalculateSalesCGST}"  value="{!obj.DnCGSTRate}" disabled="{!v.IsEdit}" default="0"/>
                                                             </td>
-                                                            <td class="slds-truncate" title="{!obj.objDNLI.SGST__c}">
-                                                                <lightning:input name="{!index}" id="partId" type="number" onchange="{!c.CalculateSalesSGST}"  value="{!obj.objDNLI.SGST__c}" disabled="{!v.IsEdit}" default="0"/>
+                                                            <td class="slds-truncate" title="{!obj.DnSGSTRate}">
+                                                                <lightning:input name="{!index}" id="partId" type="number" onchange="{!c.CalculateSalesSGST}"  value="{!obj.DnSGSTRate}" disabled="{!v.IsEdit}" default="0"/>
                                                             </td>
-                                                            <td class="slds-truncate" title="{!obj.objDNLI.IGST__c}">
-                                                                <lightning:input name="{!index}" id="partId" type="number" onchange="{!c.CalculateSalesIGST}"  value="{!obj.objDNLI.IGST__c}" disabled="{!v.IsEdit}" default="0"/>
+                                                            <td class="slds-truncate" title="{!obj.DnIGSTRate}">
+                                                                <lightning:input name="{!index}" id="partId" type="number" onchange="{!c.CalculateSalesIGST}"  value="{!obj.DnIGSTRate}" disabled="{!v.IsEdit}" default="0"/>
                                                             </td>
-                                                            <td class="slds-truncate" title="{!obj.objDNLI.Gross_Amount__c}">
-                                                                <lightning:input class="cellwidth" id="partId" type="number" value="{!obj.objDNLI.Gross_Amount__c}" default="0" disabled="true" />
+                                                            <td class="slds-truncate" title="{!obj.DnNetAmount}">
+                                                                <lightning:input class="cellwidth" id="partId" type="number" value="{!obj.DnNetAmount}" default="0" disabled="true" />
                                                             </td>
                                                             <td class="slds-truncate" title="{!obj.objDNLI.Delivery_Date__c}">
                                                                 <lightning:input id="partId" type="Date" value="{!obj.objDNLI.Delivery_Date__c}" disabled="{!v.IsEdit}"/>

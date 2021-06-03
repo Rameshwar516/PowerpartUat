@@ -217,7 +217,7 @@
                                         <b>{!li.GST_Amount__c }</b>
                                     </td>
                                     <td valign="top">
-                                        <b> {!li.Total_Amount_GST__c }</b>
+                                        <b> {!li.Total_Amount_GST__c }.00</b>
                                     </td>
                                 </tr> 
                             </apex:repeat>

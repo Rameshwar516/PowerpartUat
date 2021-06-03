@@ -567,16 +567,18 @@ public class MRNCmpControlerV2 {
                         MRN_Line_Item__c objMRNLI = new MRN_Line_Item__c();
                         objMRNLI.MRN__c = objmainWrap.objMRN.Id;
                         objMRNLI.Part_Number__c = objDN.ObjDNLI.Product_Part__c;
-                        objMRNLI.Quantity__c = objDN.ObjDNLI.Quantity__c;
-                        objMRNLI.Sales_Price__c = objDN.ObjDNLI.Sales_Price__c;
+                        objMRNLI.Quantity__c = objDN.DnUnitQty;
+                        objMRNLI.Sales_Price__c = objDN.DnUnitPrice;
                         objMRNLI.Total_Amount_Input__c = objMRNLI.Quantity__c*objMRNLI.Sales_Price__c;
-                        if(objDN.ObjDNLI.CGST__c!=null)
-                            objMRNLI.CGST__c = objDN.ObjDNLI.CGST__c;
+                        objMRNLI.Discount__c = objDN.DnDiscountPer;
+                        if(objDN.DnCGSTRate!=null)
+                            objMRNLI.CGST__c = objDN.DnCGSTRate;
+                        if(objDN.DnSGSTRate!=null)
+                        objMRNLI.SGST__c = objDN.DnSGSTRate; 
+                        if(objDN.DnIGSTRate!=null)
+                        objMRNLI.IGST__c = objDN.DnIGSTRate;
+                        
                         objMRNLI.DOC_Number__c = objDN.strDocNo;
-                        if(objDN.ObjDNLI.SGST__c!=null)
-                        objMRNLI.SGST__c = objDN.ObjDNLI.SGST__c; 
-                        if(objDN.ObjDNLI.IGST__c!=null)
-                        objMRNLI.IGST__c = objDN.ObjDNLI.IGST__c;
                         objMRNLI.Remarks__c = objDN.ObjDNLI.Remark__c;
                         objMRNLI.Delivery_Note_Line_Item__c = objDN.ObjDNLI.Id;
                         objMRNLI.Discount__c = objDN.ObjDNLI.Discount__c;
@@ -1006,5 +1008,18 @@ public class MRNCmpControlerV2 {
         public decimal IntUNIT;
         public string strDocNo;
         public date docDate;
+          public decimal DnUnitQty;
+        public decimal DnUnitPrice;
+        public decimal DnAmount;
+        public decimal DnDiscountPer;
+        public decimal DnDiscountAmount;
+        public decimal DnTaxableAmount;
+        public decimal DnCGSTRate;
+        public decimal DnCGSTAmount;
+        public decimal DnSGSTRate;
+        public decimal DnSGSTAmount;
+        public decimal DnIGSTRate;
+        public decimal DnIGSTAmount;
+        public decimal DnNetAmount;
     }
 }
