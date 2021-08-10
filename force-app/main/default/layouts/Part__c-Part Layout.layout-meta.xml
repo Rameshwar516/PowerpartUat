@@ -30,6 +30,14 @@
                 <behavior>Required</behavior>
                 <field>GST__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Application__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Method__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
@@ -90,10 +98,6 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Product_Make__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Specification__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
@@ -174,6 +178,9 @@
     </relatedLists>
     <relatedLists>
         <fields>NAME</fields>
+        <fields>Landed_Amount_Historical__c</fields>
+        <fields>Ware_House__c</fields>
+        <fields>Landed_Price__c</fields>
         <relatedList>Stock_Landed_Amount__c.Product_Part__c</relatedList>
     </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>

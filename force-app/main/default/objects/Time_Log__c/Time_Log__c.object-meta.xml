@@ -158,6 +158,7 @@
     <enableSearch>true</enableSearch>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>ReadWrite</externalSharingModel>
     <label>Time Log</label>
     <nameField>
         <displayFormat>TL-{0000}</displayFormat>

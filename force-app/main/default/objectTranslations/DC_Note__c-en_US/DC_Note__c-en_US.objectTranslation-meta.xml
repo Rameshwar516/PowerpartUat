@@ -2,11 +2,11 @@
 <CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
     <caseValues>
         <plural>false</plural>
-        <value>Db/Cr Note</value>
+        <value>Dr/Cr Note</value>
     </caseValues>
     <caseValues>
         <plural>true</plural>
-        <value>Db/Cr Notes</value>
+        <value>Dr/Cr Notes</value>
     </caseValues>
     <layouts>
         <layout>Credit Note Layout</layout>

@@ -802,7 +802,7 @@
         <allowPause>false</allowPause>
         <fields>
             <name>AddLineItemMessage</name>
-            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;font-size: 16px; color: rgb(208, 22, 22);&quot;&gt;Please Add Line Items Related To this Quote       &lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;font-size: 18px; color: rgb(208, 22, 22);&quot;&gt;Please add Line Items related to this Quote.  &lt;/b&gt;&lt;b style=&quot;font-size: 16px; color: rgb(208, 22, 22);&quot;&gt;     &lt;/b&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
@@ -812,13 +812,13 @@
         <name>Error_Message</name>
         <label>Error Message</label>
         <locationX>50</locationX>
-        <locationY>806</locationY>
+        <locationY>807</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <fields>
             <name>close_Lost_message</name>
-            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;color: rgb(0, 0, 0); font-size: 16px;&quot;&gt;Your Opportunity Related to this Quote is Closed&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;color: rgb(218, 38, 38); font-size: 16px;&quot;&gt;Enquiry related to this Quote is Closed.&lt;/b&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
@@ -834,7 +834,7 @@
         <allowPause>true</allowPause>
         <fields>
             <name>DisplayMsg</name>
-            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;font-size: 18px; color: rgb(221, 16, 30);&quot;&gt;Please add Line Items To Quote&lt;/b&gt;&lt;span style=&quot;font-size: 18px;&quot;&gt;﻿&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;font-size: 18px; color: rgb(221, 16, 30);&quot;&gt;Please add Line Items to Quote.&lt;/b&gt;&lt;span style=&quot;font-size: 18px;&quot;&gt;﻿&lt;/span&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
@@ -844,13 +844,13 @@
         <name>Quote_Line_item</name>
         <label>Quote Line item</label>
         <locationX>582</locationX>
-        <locationY>1782</locationY>
+        <locationY>1783</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <fields>
             <name>QuoteLineItemErrorMsg</name>
-            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;color: rgb(218, 23, 23); font-size: 16px;&quot;&gt;Please Add Line Items to this Quote.&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;color: rgb(218, 23, 23); font-size: 16px;&quot;&gt;Please add Line Items to Quote.&lt;/b&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
@@ -859,14 +859,14 @@
     <screens>
         <name>Status_error</name>
         <label>Status error</label>
-        <locationX>1314</locationX>
-        <locationY>634</locationY>
+        <locationX>1313</locationX>
+        <locationY>635</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <fields>
             <name>Status_Message</name>
-            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;color: rgb(228, 9, 9); font-size: 16px;&quot;&gt;Please Update Quote Status to Approved in Order to Sync !&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;color: rgb(228, 9, 9); font-size: 16px;&quot;&gt;Please update Quote Status to Approved in Order to Sync.&lt;/b&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
@@ -876,13 +876,13 @@
         <name>Success_Update_Message</name>
         <label>Success Update Message</label>
         <locationX>314</locationX>
-        <locationY>5054</locationY>
+        <locationY>5052</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <fields>
             <name>MessageSuccessUpdated</name>
-            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;font-size: 18px; color: rgb(24, 192, 91);&quot;&gt;Quote Successfully Synced&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;color: rgb(24, 192, 91); font-size: 18px;&quot;&gt;Quote is s&lt;/span&gt;&lt;span style=&quot;color: rgb(24, 192, 91); font-size: 18px; background-color: rgb(255, 255, 255);&quot;&gt;ynced s&lt;/span&gt;&lt;span style=&quot;color: rgb(24, 192, 91); font-size: 18px;&quot;&gt;uccessfully. &lt;/span&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
@@ -891,8 +891,8 @@
     <screens>
         <name>Sync_Message</name>
         <label>Sync Message</label>
-        <locationX>611</locationX>
-        <locationY>842</locationY>
+        <locationX>612</locationX>
+        <locationY>841</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -901,7 +901,7 @@
         </connector>
         <fields>
             <name>DisplayMessageForSyncedQuoteonOpportunity</name>
-            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;font-size: 18px; color: rgb(53, 208, 109);&quot;&gt;Opportunity Related this Quote already synced With a Quote , Do You want to sync it A﻿gain?&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;color: rgb(173, 25, 7); font-size: 18px;&quot;&gt;﻿&lt;/b&gt;&lt;b style=&quot;color: rgb(231, 55, 28); font-size: 18px;&quot;&gt;﻿Enquiry related to this Quote is already synced with a Quote, Do You want to sync it A﻿gain?&lt;/b&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>

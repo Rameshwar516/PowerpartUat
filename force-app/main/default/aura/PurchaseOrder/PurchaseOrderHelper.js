@@ -131,9 +131,7 @@
         if(POIWrapper.length > 0 && component.get('v.isdeliverydate')){
            strDeliveryDate = POIWrapper[0].DeliveryDate; 
         }
-        
-        console.log('addrowhelper');
-        console.log(component.get("v.mainWrapper"));
+        component.set("v.mainWrapper.lstOIW", POIWrapper);
         var tmpLineItemWrap = {
             "objPart" : {"attributes":{"type":"Part__c"}},
             "strId" : '',

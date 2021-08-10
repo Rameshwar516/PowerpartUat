@@ -3,7 +3,7 @@
     <fullName>isTaxinvoice__c</fullName>
     <defaultValue>false</defaultValue>
     <externalId>false</externalId>
-    <label>isTaxinvoice</label>
+    <label>IsTax Invoice?</label>
     <trackHistory>false</trackHistory>
     <trackTrending>false</trackTrending>
     <type>Checkbox</type>

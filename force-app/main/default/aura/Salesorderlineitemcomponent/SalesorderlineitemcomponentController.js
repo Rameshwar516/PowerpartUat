@@ -1,10 +1,43 @@
 ({
     doinit : function(component, event, helper) {
+        console.log('on load run1');
         var id = component.get("v.recordId");
         component.set("v.isSpinner", true);
         helper.pageLoadClassMethod(component, event, id);
     },
     
+      freezechange:function(component, event, helper) {
+        console.log('run');
+        var tmpIndex = event.getSource().get("v.name");
+        var tmpWrapper = component.get("v.wrapMain.lstWrappTwo");
+        var mainwrap = component.get("v.wrapMain");
+        
+        for(var i=0;i<tmpWrapper.length;i++)
+        {
+            
+            var serial =i+1;
+            console.log('run1');
+            if(i == tmpIndex)
+            {console.log('run2');
+                var child = tmpWrapper[i].objProdchild;
+                if(child.Quantity__c >= child.Freeze_Qunatity__c && tmpWrapper[i].saleableamount >= child.Freeze_Qunatity__c){
+                    if(tmpWrapper[i].Freezeqty > child.Freeze_Qunatity__c && mainwrap.isUnfrezeUser !=true){
+                    }
+                    else{
+                        if(child.Deliverd_Quantity__c > child.Freeze_Qunatity__c){
+                        }
+                        else{                           
+                            
+                        }
+                    }  
+                }
+             else{
+                 
+             }
+                
+            }
+        }
+    },
     
     QuantityPriceChange:function(component, event, helper) {
         var tmpIndex = event.getSource().get("v.name");
@@ -16,7 +49,7 @@
                 var child = tmpWrapper[i].objProdchild;
                 if(event.getSource().get("v.id") == "quantity"){ 
                     tmpWrapper[i].totalAmount = event.getSource().get("v.value") * child.Unit_Price__c;
-                    tmpWrapper[i].DiscountAmount =  (child.Discount__c * tmpWrapper[i].totalAmount)/100;
+                    tmpWrapper[i].DiscountAmount =  ((child.Discount__c * tmpWrapper[i].totalAmount)/100).toFixed();
                     tmpWrapper[i].TotalAfterDiscount = tmpWrapper[i].totalAmount - tmpWrapper[i].DiscountAmount;
                     tmpWrapper[i].CGSTAmount= (child.CGST__c * tmpWrapper[i].TotalAfterDiscount)/100;
                     tmpWrapper[i].SGSTAmount= (child.SGST__c * tmpWrapper[i].TotalAfterDiscount)/100;
@@ -26,7 +59,7 @@
                 }
                 else{
                     tmpWrapper[i].totalAmount = event.getSource().get("v.value") * child.Quantity__c;
-                    tmpWrapper[i].DiscountAmount =  (child.Discount__c * tmpWrapper[i].totalAmount)/100;
+                    tmpWrapper[i].DiscountAmount =  ((child.Discount__c * tmpWrapper[i].totalAmount)/100).toFixed();
                     tmpWrapper[i].TotalAfterDiscount = tmpWrapper[i].totalAmount - tmpWrapper[i].DiscountAmount;
                     tmpWrapper[i].CGSTAmount= (child.CGST__c * tmpWrapper[i].TotalAfterDiscount)/100;
                     tmpWrapper[i].SGSTAmount= (child.SGST__c * tmpWrapper[i].TotalAfterDiscount)/100;
@@ -79,7 +112,7 @@
             {
                 var child = tmpWrapper[i].objProdchild;
                 if(event.getSource().get("v.id") == "discountpercent"){  
-                    tmpWrapper[i].DiscountAmount = (event.getSource().get("v.value") * tmpWrapper[i].totalAmount)/100;
+                    tmpWrapper[i].DiscountAmount = ((event.getSource().get("v.value") * tmpWrapper[i].totalAmount)/100).toFixed();
                     tmpWrapper[i].TotalAfterDiscount = tmpWrapper[i].totalAmount - tmpWrapper[i].DiscountAmount;
                     tmpWrapper[i].CGSTAmount= (child.CGST__c * tmpWrapper[i].TotalAfterDiscount)/100;
                     tmpWrapper[i].SGSTAmount= (child.SGST__c * tmpWrapper[i].TotalAfterDiscount)/100;
@@ -204,20 +237,17 @@
          
     },
     
-     removeselectedpart :function(component, event, helper) {
+    removeselectedpart :function(component, event, helper) {
         var index = event.getSource().get('v.value');
         var tmpMainWrapper = component.get("v.wrapMain.lstWrappTwo");
         var prodwrapper = '';
-        console.log(index);
+        
+        
         for(var i=0;i<tmpMainWrapper.length;i++){
-            console.log('for');
-            console.log(tmpMainWrapper[i].objProdchild.Product_Part__c);
             if(index == tmpMainWrapper[i].objProdchild.Product_Part__c){
-                console.log('run');
                 prodwrapper =  tmpMainWrapper[i];
             }
         }
-        console.log(prodwrapper);
         var objWrap = component.get("v.wrapMain");
         helper.RemoveRecordOnCheck(component, event, objWrap ,prodwrapper); 
     },
@@ -269,6 +299,17 @@
         var Istrue = false; 
         var Ischarges = false;
         
+            
+            if(tmpMainWrapper.length == 0 ){
+                var toastEvent = $A.get("e.force:showToast");
+                     toastEvent.setParams({
+                         "type":"error",
+                         "title": "Error!",
+                         "message": "Please add minimum one part."
+                     });
+                     toastEvent.fire(); 
+            }
+            else{
         for(var i=0;i<tmpMainWrapper.length;i++)
         {
             if(tmpMainWrapper[i].objProdchild.Quantity__c ==null ||
@@ -290,7 +331,10 @@
                tmpMainWrapper[i].objProdchild.SGST__c > 100 ||
                tmpMainWrapper[i].objProdchild.IGST__c == null ||
                tmpMainWrapper[i].objProdchild.IGST__c < 0 ||
-               tmpMainWrapper[i].objProdchild.IGST__c > 100
+               tmpMainWrapper[i].objProdchild.IGST__c > 100 ||
+               tmpMainWrapper[i].objProdchild.Freeze_Qunatity__c < 0 ||
+               tmpMainWrapper[i].objProdchild.Freeze_Qunatity__c == null 
+               
               ){
                 Istrue = true;
             }
@@ -328,11 +372,84 @@
         }
          if(!Istrue){
             if(!Ischarges){
-                
-                var id = component.get("v.recordId");
-                component.set('v.issave', true);
-                helper.SaveHelper(component, event, id);
-            }else{
+                 
+                 var errorUnfreezePermission = false;
+                 var errordeliverquantity = false;
+                 var errorfrezequantity = false;
+				console.log('run -- '+tmpMainWrapper.length);                 
+                 for(var i=0;i<tmpMainWrapper.length;i++)
+                 { 
+                     tmpMainWrapper[i].lineError= false;
+                     tmpMainWrapper[i].lineDone= false;
+                     
+                     console.log(i+'  --  '+tmpMainWrapper[i].lineError+'  ---  '+tmpMainWrapper[i].lineDone);
+                     var child = tmpMainWrapper[i].objProdchild;
+                     if(child.Quantity__c >= child.Freeze_Qunatity__c && tmpMainWrapper[i].saleableamount >= (child.Freeze_Qunatity__c-tmpMainWrapper[i].Freezeqty)){
+                         if(tmpMainWrapper[i].Freezeqty > child.Freeze_Qunatity__c && wrapMain.isUnfrezeUser !=true){
+                             errorUnfreezePermission =true;
+                             tmpMainWrapper[i].lineError= true
+                         }
+                         else{
+                             if(child.Deliverd_Quantity__c > child.Freeze_Qunatity__c){
+                                 errordeliverquantity=true;
+                                 tmpMainWrapper[i].lineError= true 
+                             }
+                             else{
+                                 tmpMainWrapper[i].lineDone=true;
+                             }
+                         }  
+                     }
+                     else{
+                         errorfrezequantity = true;
+                         tmpMainWrapper[i].lineError= true  
+                     }
+                 }
+                 console.log('runer 6');
+                 if(errorUnfreezePermission ==true){
+                     console.log('run1');
+                     component.set("v.islineError", true);
+                     component.set('v.wrapMain.lstWrappTwo', tmpMainWrapper);
+                     var toastEvent = $A.get("e.force:showToast");
+                     toastEvent.setParams({
+                         "type":"error",
+                         "title": "Error!",
+                         "message": "User does not has permission for unfreeze part."
+                     });
+                     toastEvent.fire();    
+                 }
+                 else if(errordeliverquantity==true){
+                     console.log('run2');
+                     component.set("v.islineError", true);
+                     component.set('v.wrapMain.lstWrappTwo', tmpMainWrapper);
+                     var toastEvent = $A.get("e.force:showToast");
+                     toastEvent.setParams({
+                         "type":"error",
+                         "title": "Error!",
+                         "message": "Some part is already delivered."
+                     });
+                     toastEvent.fire(); 
+                 }
+                     else if(errorfrezequantity == true){
+                         console.log('run3');
+                         component.set("v.islineError", true);
+                         component.set('v.wrapMain.lstWrappTwo', tmpMainWrapper);
+                         var toastEvent = $A.get("e.force:showToast");
+                         toastEvent.setParams({
+                             "type":"error",
+                             "title": "Error!",
+                             "message": "Request freeze Quantity not available in stock or Greater than Sales order Quantity."
+                         });
+                         toastEvent.fire(); 
+                         
+                     }
+                         else{
+                             var id = component.get("v.recordId");
+                             component.set('v.issave', true);
+                             helper.SaveHelper(component, event, id);
+                         }
+                 
+                 
+             }else{
                 var toastEvent = $A.get("e.force:showToast");
                 toastEvent.setParams({
                     "type":"error",
@@ -352,6 +469,7 @@
                 });
                 toastEvent.fire(); component.set("v.wrapMain.success", false);
         }
+            }
         }
     },
     onSelectChange : function(component, event, helper)
@@ -476,30 +594,47 @@
         }
         console.log('Run this point');
         var igstvalue = component.get('v.wrapMain.igstvalue');
+        var exportvalue = component.get('v.wrapMain.isExport');
         if(AlreadyAdded != 'true'){
             for(var i = 0; i < lstTaxDetails.length; i++) {
-                console.log(lstTaxDetails[i].strTaxId);
-                console.log(lstTaxDetails[i].TaxPercentage);
+               
                 if(StrSelectedTax === lstTaxDetails[i].strTaxId){
                     var NetAmountval=0;
-                if(igstvalue){
-                    NetAmountval =  (lstTaxDetails[i].IGST * ((TotalAmount*lstTaxDetails[i].TaxPercentage)/100))/100 +((TotalAmount*lstTaxDetails[i].TaxPercentage)/100);
+                    if(!exportvalue){
+                        if(igstvalue){
+                            NetAmountval =  (lstTaxDetails[i].IGST * ((TotalAmount*lstTaxDetails[i].TaxPercentage)/100))/100 +((TotalAmount*lstTaxDetails[i].TaxPercentage)/100);
+                        }
+                        else{
+                            NetAmountval = ((lstTaxDetails[i].CGST + lstTaxDetails[i].SGST)*((TotalAmount*lstTaxDetails[i].TaxPercentage)/100))/100 +((TotalAmount*lstTaxDetails[i].TaxPercentage)/100);
+                        }
+                        lstSelectedTax.push({
+                            strTaxId: lstTaxDetails[i].strTaxId,
+                            strTaxName: lstTaxDetails[i].strTaxName,
+                            TaxPercentage: lstTaxDetails[i].TaxPercentage,
+                            decTaxAmount: (TotalAmount*lstTaxDetails[i].TaxPercentage/100).toFixed(2),
+                            CGST: lstTaxDetails[i].CGST,
+                            SGST: lstTaxDetails[i].SGST,
+                            IGST: lstTaxDetails[i].IGST,
+                            NetAmount: NetAmountval.toFixed(2), 
+                            ischargeItem :false,
+                        });	 
+                    }
+                    else{
+                         NetAmountval =  ((TotalAmount*lstTaxDetails[i].TaxPercentage)/100);
+                        lstSelectedTax.push({
+                            strTaxId: lstTaxDetails[i].strTaxId,
+                            strTaxName: lstTaxDetails[i].strTaxName,
+                            TaxPercentage: lstTaxDetails[i].TaxPercentage,
+                            decTaxAmount: (TotalAmount*lstTaxDetails[i].TaxPercentage/100).toFixed(2),
+                            CGST: 0,
+                            SGST: 0,
+                            IGST: 0,
+                            NetAmount: NetAmountval.toFixed(2), 
+                            ischargeItem :false,
+                        });	 
+                    }
                 }
-                else{
-                    NetAmountval = ((lstTaxDetails[i].CGST + lstTaxDetails[i].SGST)*((TotalAmount*lstTaxDetails[i].TaxPercentage)/100))/100 +((TotalAmount*lstTaxDetails[i].TaxPercentage)/100);
-                }
-                    lstSelectedTax.push({
-                        strTaxId: lstTaxDetails[i].strTaxId,
-                        strTaxName: lstTaxDetails[i].strTaxName,
-                        TaxPercentage: lstTaxDetails[i].TaxPercentage,
-                        decTaxAmount: (TotalAmount*lstTaxDetails[i].TaxPercentage/100).toFixed(2),
-                        CGST: lstTaxDetails[i].CGST,
-                        SGST: lstTaxDetails[i].SGST,
-                        IGST: lstTaxDetails[i].IGST,
-                        NetAmount: NetAmountval.toFixed(2), 
-                        ischargeItem :false,
-                    });	 
-                }
+                
             }
         }else{
             var toastEvent = $A.get("e.force:showToast");
@@ -528,8 +663,6 @@
         var tmpDeletedId = [];
         var tmpMainWrapper = component.get("v.lstSelectedTax");
         var RecordIndexStr = event.getSource().get("v.value");
-        console.log(tmpMainWrapper[RecordIndexStr].ischargeItem);
-        
         if(tmpMainWrapper[RecordIndexStr].ischargeItem == true){
             var action = component.get('c.deltecharges');
             action.setParams({
@@ -570,7 +703,7 @@
     
 	CalculateCGST : function(component,event,helper){
 		var target = event.target;
-        var rowIndex = target.getAttribute("data-row-index");
+        var rowIndex = event.getSource().get("v.name");
         var tmpMainWrapper = component.get("v.lstSelectedTax");
 		//alert('.....tmpMainWrapper....'+tmpMainWrapper.length);
 		for(var i=0;i<tmpMainWrapper.length;i++)
@@ -578,9 +711,9 @@
             if(rowIndex == i){
 				if(tmpMainWrapper[i].CGST != null && tmpMainWrapper[i].CGST != null){
 					var NetAmounts = tmpMainWrapper[i].decTaxAmount;
-					var IntDiscountRate = parseInt(event.target.value);
-					tmpMainWrapper[i].CGST = IntDiscountRate;
-					NetAmounts = NetAmounts+ tmpMainWrapper[i].decTaxAmount * IntDiscountRate / 100;
+					var IntDiscountRate = event.getSource().get("v.value");
+					tmpMainWrapper[i].CGST = parseInt(IntDiscountRate);
+					NetAmounts = parseInt(NetAmounts)+ parseInt(tmpMainWrapper[i].decTaxAmount * IntDiscountRate / 100);
 					if(tmpMainWrapper[i].SGST !=null && tmpMainWrapper[i].SGST !='')
 						NetAmounts = NetAmounts+ tmpMainWrapper[i].decTaxAmount * tmpMainWrapper[i].SGST / 100;
 					
@@ -598,17 +731,17 @@
     },
 	
 	CalculateSGST : function(component,event,helper){
-		var target = event.target;
-        var rowIndex = target.getAttribute("data-row-index");
+		//var target = event.target;
+        var rowIndex = event.getSource().get("v.name");
         var tmpMainWrapper = component.get("v.lstSelectedTax");
 		for(var i=0;i<tmpMainWrapper.length;i++)
         {
             if(rowIndex == i){
 				if(tmpMainWrapper[i].SGST != null && tmpMainWrapper[i].SGST != null){
 					var NetAmounts = tmpMainWrapper[i].decTaxAmount;
-					var IntDiscountRate = parseInt(event.target.value);
-					tmpMainWrapper[i].SGST = IntDiscountRate;
-					NetAmounts = NetAmounts+ tmpMainWrapper[i].decTaxAmount * IntDiscountRate / 100;
+					var IntDiscountRate = event.getSource().get("v.value");
+					tmpMainWrapper[i].SGST = parseInt(IntDiscountRate);
+					NetAmounts = parseInt(NetAmounts)+ parseInt(tmpMainWrapper[i].decTaxAmount * IntDiscountRate / 100);
 					if(tmpMainWrapper[i].CGST !=null && tmpMainWrapper[i].CGST !='')
 						NetAmounts = NetAmounts+ tmpMainWrapper[i].decTaxAmount * tmpMainWrapper[i].CGST / 100;
 					
@@ -627,17 +760,17 @@
 	
 	
 	CalculateIGST : function(component,event,helper){
-		var target = event.target;
-        var rowIndex = target.getAttribute("data-row-index");
+		//var target = event.target;
+        var rowIndex = event.getSource().get("v.name");
         var tmpMainWrapper = component.get("v.lstSelectedTax");
 		for(var i=0;i<tmpMainWrapper.length;i++)
         {
             if(rowIndex == i){
 				if(tmpMainWrapper[i].IGST != null && tmpMainWrapper[i].IGST != null){
 					var NetAmounts = tmpMainWrapper[i].decTaxAmount;
-					var IntDiscountRate = parseInt(event.target.value);
-					tmpMainWrapper[i].IGST = IntDiscountRate;
-					NetAmounts = NetAmounts+ tmpMainWrapper[i].decTaxAmount * IntDiscountRate / 100;
+					var IntDiscountRate = event.getSource().get("v.value");
+					tmpMainWrapper[i].IGST = parseInt(IntDiscountRate);
+					NetAmounts = parseInt(NetAmounts)+ parseInt(tmpMainWrapper[i].decTaxAmount * IntDiscountRate / 100);
 					if(tmpMainWrapper[i].CGST !=null && tmpMainWrapper[i].CGST !='')
 						NetAmounts = NetAmounts+ tmpMainWrapper[i].decTaxAmount * tmpMainWrapper[i].CGST / 100;
 					
@@ -763,7 +896,15 @@
                 }
             }
         }
+        var lstTotalSelectedTax = component.get("v.lstSelectedTax");
         component.set("v.wrapMain.lstWrappTwo",tmpMainWrapper);
+        var TotalTaxAmount = 0;
+            for(var i = 0; i < lstTotalSelectedTax.length; i++) {
+                TotalTaxAmount =TotalTaxAmount+parseInt(lstTotalSelectedTax[i].decTaxAmount);
+            }
+            component.set('v.TotalTax', TotalTaxAmount);
+
+            helper.totalamount(component,event,helper);
     },
     
     ChargesPercentageOnOhange:function(component, event, helper) {

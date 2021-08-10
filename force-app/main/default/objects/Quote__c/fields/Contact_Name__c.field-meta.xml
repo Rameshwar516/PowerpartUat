@@ -4,8 +4,22 @@
     <deleteConstraint>Restrict</deleteConstraint>
     <externalId>false</externalId>
     <label>Contact Name</label>
+    <lookupFilter>
+        <active>true</active>
+        <filterItems>
+            <field>Contact.AccountId</field>
+            <operation>equals</operation>
+            <valueField>$Source.Customer_Party__c</valueField>
+        </filterItems>
+        <filterItems>
+            <field>Contact.isPrimary__c</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </filterItems>
+        <isOptional>false</isOptional>
+    </lookupFilter>
     <referenceTo>Contact</referenceTo>
-    <relationshipLabel>Quote</relationshipLabel>
+    <relationshipLabel>Quotes</relationshipLabel>
     <relationshipName>Quote</relationshipName>
     <required>true</required>
     <trackHistory>false</trackHistory>

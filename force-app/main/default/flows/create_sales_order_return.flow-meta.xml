@@ -3,8 +3,8 @@
     <assignments>
         <name>adding_sinle_var_into_collection</name>
         <label>adding sinle var into collection</label>
-        <locationX>1203</locationX>
-        <locationY>426</locationY>
+        <locationX>540</locationX>
+        <locationY>1046</locationY>
         <assignmentItems>
             <assignToReference>varCollectionSalesOrderReturnLintItem</assignToReference>
             <operator>Add</operator>
@@ -13,19 +13,19 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>iteration_of_mrn_line_item</targetReference>
+            <targetReference>itrate_mrn_linr_item</targetReference>
         </connector>
     </assignments>
     <assignments>
         <name>assign_sales_order_return_line_item_field_values</name>
         <label>assign sales order return line item field values</label>
-        <locationX>1283</locationX>
-        <locationY>208</locationY>
+        <locationX>803</locationX>
+        <locationY>914</locationY>
         <assignmentItems>
             <assignToReference>varSingleSalesOrderReturnLintItem.CGST__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>iteration_of_mrn_line_item.CGST__c</elementReference>
+                <elementReference>itrate_mrn_linr_item.Delivery_Note_Line_Item__r.CGST__c</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -39,84 +39,49 @@
             <assignToReference>varSingleSalesOrderReturnLintItem.SGST__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>iteration_of_mrn_line_item.SGST__c</elementReference>
+                <elementReference>itrate_mrn_linr_item.Delivery_Note_Line_Item__r.SGST__c</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
             <assignToReference>varSingleSalesOrderReturnLintItem.IGST__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>iteration_of_mrn_line_item.IGST__c</elementReference>
+                <elementReference>itrate_mrn_linr_item.Delivery_Note_Line_Item__r.IGST__c</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
             <assignToReference>varSingleSalesOrderReturnLintItem.Discount__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>iteration_of_mrn_line_item.Discount__c</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varSingleSalesOrderReturnLintItem.Net_Amount__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>iteration_of_mrn_line_item.Net_Amount__c</elementReference>
+                <elementReference>itrate_mrn_linr_item.Delivery_Note_Line_Item__r.Discount__c</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
             <assignToReference>varSingleSalesOrderReturnLintItem.Unit_Price__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>iteration_of_mrn_line_item.Sales_Price__c</elementReference>
+                <elementReference>itrate_mrn_linr_item.Delivery_Note_Line_Item__r.Sales_Price__c</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
             <assignToReference>varSingleSalesOrderReturnLintItem.Part_Number__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>iteration_of_mrn_line_item.Part_Number__c</elementReference>
+                <elementReference>itrate_mrn_linr_item.Part_Number__c</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
             <assignToReference>varSingleSalesOrderReturnLintItem.Quantity__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>iteration_of_mrn_line_item.Quantity__c</elementReference>
+                <elementReference>itrate_mrn_linr_item.Quantity__c</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>varSingleSalesOrderReturnLintItem.Usage__c</assignToReference>
+            <assignToReference>varSingleSalesOrderReturnLintItem.Stock__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>iteration_of_mrn_line_item.Usage__c</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varSingleSalesOrderReturnLintItem.Application__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>iteration_of_mrn_line_item.Application__c</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varSingleSalesOrderReturnLintItem.Delivery_Date__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>iteration_of_mrn_line_item.Delivery_Date__c</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varSingleSalesOrderReturnLintItem.Remark__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>iteration_of_mrn_line_item.Remarks__c</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varSingleSalesOrderReturnLintItem.UOM__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>iteration_of_mrn_line_item.UOM__c</elementReference>
+                <elementReference>itrate_mrn_linr_item.Stock__r.Id</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -124,10 +89,85 @@
         </connector>
     </assignments>
     <decisions>
+        <name>check_delivery_note</name>
+        <label>check delivery note</label>
+        <locationX>187</locationX>
+        <locationY>421</locationY>
+        <defaultConnector>
+            <targetReference>No_Delivery_Note</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>yes</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>get_delivery_note</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>get_delivery_note_line_item</targetReference>
+            </connector>
+            <label>yes</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>check_delivery_note_line_item</name>
+        <label>check delivery note line item</label>
+        <locationX>486</locationX>
+        <locationY>575</locationY>
+        <defaultConnector>
+            <targetReference>No_Delivery_Line_Item</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>yesExist</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>get_delivery_note_line_item</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>get_invoices</targetReference>
+            </connector>
+            <label>yes</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>check_mrn_line_items</name>
+        <label>check mrn line items</label>
+        <locationX>615</locationX>
+        <locationY>320</locationY>
+        <defaultConnector>
+            <targetReference>No_MRN_Line_Items</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>yesMrnLi</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>get_mrn_line_item</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>get_delivery_note</targetReference>
+            </connector>
+            <label>yesMrnLi</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>check_validity</name>
         <label>check validity</label>
-        <locationX>257</locationX>
-        <locationY>276</locationY>
+        <locationX>556</locationX>
+        <locationY>193</locationY>
         <defaultConnector>
             <targetReference>Update_Fields</targetReference>
         </defaultConnector>
@@ -155,19 +195,21 @@
             <label>valid</label>
         </rules>
     </decisions>
-    <formulas>
-        <name>ReturnQuantity</name>
-        <dataType>Number</dataType>
-        <expression>{!iteration_of_mrn_line_item.Received_QTY__c}-{!iteration_of_mrn_line_item.Accept_QTY__c}</expression>
-        <scale>0</scale>
-    </formulas>
     <interviewLabel>create sales order return {!$Flow.CurrentDateTime}</interviewLabel>
     <label>create sales order return</label>
     <loops>
-        <name>iteration_of_mrn_line_item</name>
-        <label>iteration of mrn line item</label>
-        <locationX>944</locationX>
-        <locationY>283</locationY>
+        <name>iteration_of_deliverynote_line_item</name>
+        <label>iteration of deliverynote line item</label>
+        <locationX>192</locationX>
+        <locationY>872</locationY>
+        <collectionReference>get_delivery_note_line_item</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+    </loops>
+    <loops>
+        <name>itrate_mrn_linr_item</name>
+        <label>itrate mrn linr item</label>
+        <locationX>354</locationX>
+        <locationY>724</locationY>
         <collectionReference>get_mrn_line_item</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -199,8 +241,8 @@
     <recordCreates>
         <name>create_sales_order_line_item</name>
         <label>create sales order line item</label>
-        <locationX>819</locationX>
-        <locationY>573</locationY>
+        <locationX>323</locationX>
+        <locationY>1023</locationY>
         <connector>
             <targetReference>Sales_order_Return_Created</targetReference>
         </connector>
@@ -209,11 +251,11 @@
     <recordCreates>
         <name>create_sales_order_return1</name>
         <label>create sales order return</label>
-        <locationX>680</locationX>
-        <locationY>353</locationY>
+        <locationX>849</locationX>
+        <locationY>672</locationY>
         <assignRecordIdToReference>salesOrderReturnId</assignRecordIdToReference>
         <connector>
-            <targetReference>iteration_of_mrn_line_item</targetReference>
+            <targetReference>itrate_mrn_linr_item</targetReference>
         </connector>
         <inputAssignments>
             <field>Bill_To_Customer_Name__c</field>
@@ -234,9 +276,9 @@
             </value>
         </inputAssignments>
         <inputAssignments>
-            <field>Dispatch_To_Customer_Name__c</field>
+            <field>Delivery_Note__c</field>
             <value>
-                <elementReference>get_MRN.Contact_Name__c</elementReference>
+                <elementReference>get_MRN.Delivery_Note__c</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -249,6 +291,12 @@
             <field>Docket_LR_No__c</field>
             <value>
                 <elementReference>get_MRN.Delivery_Note__r.Docket_LR_No__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Invoice__c</field>
+            <value>
+                <elementReference>get_invoices.Id</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -276,9 +324,9 @@
             </value>
         </inputAssignments>
         <inputAssignments>
-            <field>Payment_Term_Days__c</field>
+            <field>Payment_Term__c</field>
             <value>
-                <elementReference>get_MRN.Payment_Terms_Days_NumBer__c</elementReference>
+                <elementReference>get_MRN.Payment_Term__c</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -294,15 +342,9 @@
             </value>
         </inputAssignments>
         <inputAssignments>
-            <field>Remark__c</field>
-            <value>
-                <elementReference>get_MRN.Remark__c</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
             <field>Shipping_Account__c</field>
             <value>
-                <elementReference>get_MRN.Shipping_Account__r.Id</elementReference>
+                <elementReference>get_MRN.Shipping_Account__c</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -344,22 +386,76 @@
         <inputAssignments>
             <field>Transporter_Name__c</field>
             <value>
-                <elementReference>get_MRN.Transporter_Name__c</elementReference>
+                <elementReference>get_MRN.Delivery_Note__r.Transporter__c</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
             <field>Vehicle_No__c</field>
             <value>
-                <elementReference>get_MRN.Vehicle_No__c</elementReference>
+                <elementReference>get_MRN.Delivery_Note__r.Vehicle_No__c</elementReference>
             </value>
         </inputAssignments>
         <object>Sales_Order_Return__c</object>
     </recordCreates>
     <recordLookups>
+        <name>get_delivery_note</name>
+        <label>get delivery note</label>
+        <locationX>416</locationX>
+        <locationY>298</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>check_delivery_note</targetReference>
+        </connector>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>get_MRN.Delivery_Note__c</elementReference>
+            </value>
+        </filters>
+        <object>Sales_Order_Dispatch_Delivery_Note__c</object>
+    </recordLookups>
+    <recordLookups>
+        <name>get_delivery_note_line_item</name>
+        <label>get delivery note line item</label>
+        <locationX>493</locationX>
+        <locationY>409</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>check_delivery_note_line_item</targetReference>
+        </connector>
+        <filters>
+            <field>Sales_Order_Dispatch_Delivery_Note__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>get_delivery_note.Id</elementReference>
+            </value>
+        </filters>
+        <object>Delivery_Note_Line_Item__c</object>
+    </recordLookups>
+    <recordLookups>
+        <name>get_invoices</name>
+        <label>get invoices</label>
+        <locationX>706</locationX>
+        <locationY>514</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Create_Sales_Order_Return</targetReference>
+        </connector>
+        <filters>
+            <field>DC_No__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>get_delivery_note.Id</elementReference>
+            </value>
+        </filters>
+        <object>Invoice__c</object>
+    </recordLookups>
+    <recordLookups>
         <name>get_MRN</name>
         <label>get MRN</label>
-        <locationX>67</locationX>
-        <locationY>302</locationY>
+        <locationX>375</locationX>
+        <locationY>170</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>check_validity</targetReference>
@@ -376,11 +472,11 @@
     <recordLookups>
         <name>get_mrn_line_item</name>
         <label>get mrn  line item</label>
-        <locationX>281</locationX>
-        <locationY>510</locationY>
+        <locationX>873</locationX>
+        <locationY>211</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Create_Sales_Order_Return</targetReference>
+            <targetReference>check_mrn_line_items</targetReference>
         </connector>
         <filters>
             <field>MRN__c</field>
@@ -391,11 +487,26 @@
         </filters>
         <object>MRN_Line_Item__c</object>
     </recordLookups>
+    <recordLookups>
+        <name>term_and_condition</name>
+        <label>term and condition</label>
+        <locationX>1314</locationX>
+        <locationY>686</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <filters>
+            <field>Name</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>SOR</stringValue>
+            </value>
+        </filters>
+        <object>Term_and_Condition__c</object>
+    </recordLookups>
     <screens>
         <name>Create_Sales_Order_Return</name>
         <label>Create Sales Order Return</label>
-        <locationX>499</locationX>
-        <locationY>362</locationY>
+        <locationX>1104</locationX>
+        <locationY>600</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -430,6 +541,12 @@
                     <elementReference>get_MRN.Id</elementReference>
                 </value>
             </inputParameters>
+            <inputParameters>
+                <name>required</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -462,20 +579,104 @@
             </inputParameters>
             <isRequired>true</isRequired>
         </fields>
+        <fields>
+            <name>MRNDeliveryNote</name>
+            <extensionName>flowruntime:lookup</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>fieldApiName</name>
+                <value>
+                    <stringValue>Delivery_Note__c</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>label</name>
+                <value>
+                    <stringValue>Delivery Note</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>objectApiName</name>
+                <value>
+                    <stringValue>MRN__c</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>recordId</name>
+                <value>
+                    <elementReference>get_MRN.Delivery_Note__r.Id</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>required</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>No_Delivery_Line_Item</name>
+        <label>No Delivery Line Item</label>
+        <locationX>44</locationX>
+        <locationY>548</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>ErrrorMsg</name>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;font-size: 16px; color: rgb(195, 45, 45);&quot;&gt;Please add Line Items for Delivery Note&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>No_Delivery_Note</name>
+        <label>No Delivery Note</label>
+        <locationX>202</locationX>
+        <locationY>238</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>errorMsgs</name>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;color: rgb(205, 23, 23); font-size: 16px;&quot;&gt;Please add Delivery Note for MRN.&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>No_MRN_Line_Items</name>
+        <label>No MRN Line Items</label>
+        <locationX>979</locationX>
+        <locationY>414</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>NoMRNLi</name>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;color: rgb(216, 42, 42); font-size: 16px;&quot;&gt;No Line Items associated with MRN.&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
     </screens>
     <screens>
         <name>Sales_order_Return_Created</name>
         <label>Sales order Return Created</label>
-        <locationX>1012</locationX>
-        <locationY>594</locationY>
+        <locationX>451</locationX>
+        <locationY>1382</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <fields>
             <name>SuccesfulCreatedSlesOrderReturn</name>
-            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;font-size: 18px; color: rgb(15, 222, 39);&quot;&gt;Sales Order Return Successfully Created&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;font-size: 18px; color: rgb(15, 222, 39);&quot;&gt;Sales Order Return &lt;/b&gt;&lt;b style=&quot;font-size: 18px; color: rgb(15, 222, 39); background-color: rgb(255, 255, 255);&quot;&gt;created&lt;/b&gt;&lt;b style=&quot;font-size: 18px; color: rgb(15, 222, 39);&quot;&gt; successfully. &lt;/b&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
@@ -484,14 +685,14 @@
     <screens>
         <name>Update_Fields</name>
         <label>Update Fields</label>
-        <locationX>475</locationX>
-        <locationY>50</locationY>
+        <locationX>965</locationX>
+        <locationY>102</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <fields>
             <name>errrormessage</name>
-            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;font-size: 16px; color: rgb(234, 16, 16);&quot;&gt;Please Update Stage to Received and MRN Type to SalesReturn  In order to create sales order return&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;font-size: 16px; color: rgb(234, 16, 16);&quot;&gt;Please update stage to Received and MRN type to Sales Return to create sales order return.&lt;/b&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>

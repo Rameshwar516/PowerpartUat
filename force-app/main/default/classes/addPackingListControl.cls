@@ -12,10 +12,12 @@ public class addPackingListControl {
                                            Quantity__c,Width_Inches_CMS__c, Remark__c FROM Packing_List_Line_Item__c WHERE Packing_List__r.Delivery_Note__c =:recordid];
         set<id> prePartId = new set<id>();
         if(!prelist.isempty()) for(Packing_List_Line_Item__c pl:prelist) prePartId.add(pl.Part_No__c);
-        for(Delivery_Note_Line_Item__c objDNLI : [Select id, Product_Part__c,Product_Part__r.Name,Product_Part__r.Part_Name__c, Quantity__c,Sales_Order_Dispatch_Delivery_Note__c from Delivery_Note_Line_Item__c where Product_Part__c NOT IN: prePartId AND  Sales_Order_Dispatch_Delivery_Note__c =: RecordId])
+        for(Delivery_Note_Line_Item__c objDNLI : [Select id,Part_Serial__c, Product_Part__c,Product_Part__r.Name,Product_Part__r.Part_Name__c, Quantity__c,Sales_Order_Dispatch_Delivery_Note__c from Delivery_Note_Line_Item__c where Product_Part__c NOT IN: prePartId AND  Sales_Order_Dispatch_Delivery_Note__c =: RecordId])
         {
             innerWrp objIW = new innerWrp();
             objIW.objDNLI = objDNLI;
+            objIW.custmnum= objDNLI.Part_Serial__c;
+            
             objIW.isSelected= false;
             listIW.add(objIW);
         }
@@ -59,6 +61,8 @@ public class addPackingListControl {
                     objPLItems.Height_Inches_CMS__c = string.valueof(lstWrappNew[i].decHeight);
                     objPLItems.Gross_Weight_Kgs__c = string.valueof(lstWrappNew[i].decWeight);
                     objPLItems.Remark__c = lstWrappNew[i].strRemark;
+                    objPLItems.Customer_Part_No__c = lstWrappNew[i].custmnum;
+                    
                     objPLItems.Packing_List__c = objPackingList.Id;
                     lstDNLT.add(objPLItems);
                 }
@@ -99,6 +103,7 @@ public class addPackingListControl {
     {
         @AuraEnabled public Delivery_Note_Line_Item__c objDNLI; 
         @AuraEnabled public boolean isSelected;
+        @AuraEnabled public string custmnum;
         @AuraEnabled public string strBoxType;
         @AuraEnabled public string BOXNo;
         @AuraEnabled public decimal decLength; 

@@ -256,7 +256,7 @@
         <name>check_mrn_line_items_reject_quantity</name>
         <label>check mrn line items reject quantity</label>
         <locationX>731</locationX>
-        <locationY>701</locationY>
+        <locationY>700</locationY>
         <defaultConnector>
             <targetReference>loopMrnLineItems</targetReference>
         </defaultConnector>
@@ -305,7 +305,7 @@
     <decisions>
         <name>Check_thedebit_note_checkbox</name>
         <label>Check  thedebit note checkbox</label>
-        <locationX>443</locationX>
+        <locationX>444</locationX>
         <locationY>1157</locationY>
         <defaultConnector>
             <targetReference>No_Quantity_Error</targetReference>
@@ -333,7 +333,7 @@
         <name>loopMrnLineItems</name>
         <label>loopMrnLineItems</label>
         <locationX>314</locationX>
-        <locationY>690</locationY>
+        <locationY>689</locationY>
         <collectionReference>get_Mrn_Line_item</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -594,14 +594,14 @@
     <screens>
         <name>Fields_Requirement</name>
         <label>Fields Requirement</label>
-        <locationX>1032</locationX>
+        <locationX>1033</locationX>
         <locationY>232</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <fields>
             <name>displayErrorMessage</name>
-            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;color: rgb(222, 5, 5); font-size: 16px;&quot;&gt;Please Update Stage to Received and MRN Type to Purchase Order In Order to Create a Delivery Note&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;font-size: 16px; color: rgb(222, 5, 5);&quot;&gt;Please update Stage to Received and MRN Type to Purchase Order to create a Delivery Note.&lt;/b&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
@@ -617,7 +617,7 @@
         <allowPause>true</allowPause>
         <fields>
             <name>noItemMsg</name>
-            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;font-size: 18px; color: rgb(237, 45, 11);&quot;&gt;Please Add MRN Line Item/s&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;color: rgb(237, 45, 11); font-size: 18px;&quot;&gt;Please add MRN Line Items.&lt;/b&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
@@ -626,14 +626,14 @@
     <screens>
         <name>No_Quantity_Error</name>
         <label>No Quantity Error</label>
-        <locationX>735</locationX>
+        <locationX>737</locationX>
         <locationY>1151</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <fields>
             <name>message</name>
-            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;color: rgb(231, 4, 4); font-size: 18px;&quot;&gt;There Is No Line Item for a delivery note.&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;background-color: rgb(255, 255, 255); color: rgb(231, 52, 52); font-size: 18px;&quot;&gt;Delivery Note Can&apos;t be Created because Short/Excess Quantity is 0 in MRN&lt;/b&gt;&lt;b style=&quot;color: rgb(231, 4, 4); font-size: 18px;&quot;&gt; .&lt;/b&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
@@ -649,7 +649,7 @@
         <allowPause>false</allowPause>
         <fields>
             <name>SuccessMessageDcNote</name>
-            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;font-size: 18px; color: rgb(13, 198, 19);&quot;&gt;Delivery Note Successfully Created&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;color: rgb(13, 198, 19); font-size: 18px;&quot;&gt;Delivery Note &lt;/b&gt;&lt;b style=&quot;color: rgb(13, 198, 19); font-size: 18px; background-color: rgb(255, 255, 255);&quot;&gt;Created &lt;/b&gt;&lt;b style=&quot;color: rgb(13, 198, 19); font-size: 18px;&quot;&gt;Successfully.&lt;/b&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>

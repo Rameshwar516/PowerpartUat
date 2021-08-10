@@ -3,8 +3,8 @@
     <assignments>
         <name>adding_single_into_collection</name>
         <label>adding single into collection</label>
-        <locationX>138</locationX>
-        <locationY>1478</locationY>
+        <locationX>540</locationX>
+        <locationY>1526</locationY>
         <assignmentItems>
             <assignToReference>varCollectionInvoiceLineItem</assignToReference>
             <operator>Add</operator>
@@ -19,8 +19,8 @@
     <assignments>
         <name>assign_values_to_invoice_line_item_fields</name>
         <label>assign values to invoice line item fields</label>
-        <locationX>138</locationX>
-        <locationY>1358</locationY>
+        <locationX>540</locationX>
+        <locationY>1406</locationY>
         <assignmentItems>
             <assignToReference>varSingleInvoiceLineItem.CGST__c</assignToReference>
             <operator>Assign</operator>
@@ -78,13 +78,6 @@
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>varSingleInvoiceLineItem.Unit__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>iterating_quote_line_items.Unit__c</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
             <assignToReference>varSingleInvoiceLineItem.Discount__c</assignToReference>
             <operator>Assign</operator>
             <value>
@@ -137,7 +130,7 @@
             <assignToReference>varSingleInvoiceLineItem.Description__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>iterating_quote_line_items.Description__c</elementReference>
+                <elementReference>iterating_quote_line_items.Remark__c</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -147,8 +140,8 @@
     <decisions>
         <name>check_quote_line_item_ids</name>
         <label>check quote line item ids</label>
-        <locationX>182</locationX>
-        <locationY>398</locationY>
+        <locationX>584</locationX>
+        <locationY>446</locationY>
         <defaultConnector>
             <targetReference>No_Line_Items_Selected</targetReference>
         </defaultConnector>
@@ -178,7 +171,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>get_sales_order</targetReference>
+                <targetReference>get_record_type_of_invoice</targetReference>
             </connector>
             <label>quote recordtype in AMC  Service</label>
         </rules>
@@ -200,8 +193,8 @@
     <loops>
         <name>iterating_quote_line_items</name>
         <label>iterating quote line items</label>
-        <locationX>50</locationX>
-        <locationY>1238</locationY>
+        <locationX>452</locationX>
+        <locationY>1286</locationY>
         <collectionReference>get_quote_line_item</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -220,7 +213,7 @@
     <processMetadataValues>
         <name>CanvasMode</name>
         <value>
-            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
         </value>
     </processMetadataValues>
     <processMetadataValues>
@@ -233,8 +226,8 @@
     <recordCreates>
         <name>create_invoice_line_items</name>
         <label>create invoice line items</label>
-        <locationX>50</locationX>
-        <locationY>1694</locationY>
+        <locationX>452</locationX>
+        <locationY>1742</locationY>
         <connector>
             <targetReference>Invoice_Generated</targetReference>
         </connector>
@@ -243,8 +236,8 @@
     <recordCreates>
         <name>create_invoice_record</name>
         <label>create invoice record</label>
-        <locationX>50</locationX>
-        <locationY>1118</locationY>
+        <locationX>452</locationX>
+        <locationY>1166</locationY>
         <assignRecordIdToReference>invoiceId</assignRecordIdToReference>
         <connector>
             <targetReference>iterating_quote_line_items</targetReference>
@@ -274,12 +267,6 @@
             </value>
         </inputAssignments>
         <inputAssignments>
-            <field>DC_No__c</field>
-            <value>
-                <elementReference>get_delivery_note.Id</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
             <field>Date_Of_Supply__c</field>
             <value>
                 <elementReference>get_enquiryOpportunityId.Date_of_Supply__c</elementReference>
@@ -295,6 +282,24 @@
             <field>Invoice_Date__c</field>
             <value>
                 <elementReference>Invoice_Date</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>LC_Date__c</field>
+            <value>
+                <elementReference>get_quote_id.Opportunity__r.LC_Date__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>LC_Term__c</field>
+            <value>
+                <elementReference>get_quote_id.Opportunity__r.LC_Term__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>PO_Date__c</field>
+            <value>
+                <elementReference>get_quote_id.Opportunity__r.PO_Date__c</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -364,6 +369,12 @@
             </value>
         </inputAssignments>
         <inputAssignments>
+            <field>Status__c</field>
+            <value>
+                <stringValue>Draft</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>Transport_Mode__c</field>
             <value>
                 <elementReference>get_enquiryOpportunityId.Transportation_Mode__c</elementReference>
@@ -376,6 +387,12 @@
             </value>
         </inputAssignments>
         <inputAssignments>
+            <field>Type__c</field>
+            <value>
+                <elementReference>get_quote_id.RecordType_Picklist__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>Vehicle_Docket_No__c</field>
             <value>
                 <elementReference>get_enquiryOpportunityId.Vehicle_Docket_No__c</elementReference>
@@ -384,28 +401,10 @@
         <object>Invoice__c</object>
     </recordCreates>
     <recordLookups>
-        <name>get_delivery_note</name>
-        <label>get delivery note</label>
-        <locationX>50</locationX>
-        <locationY>638</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>get_record_type_of_invoice</targetReference>
-        </connector>
-        <filters>
-            <field>Sales_Order__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>get_sales_order.Id</elementReference>
-            </value>
-        </filters>
-        <object>Sales_Order_Dispatch_Delivery_Note__c</object>
-    </recordLookups>
-    <recordLookups>
         <name>get_enquiryOpportunityId</name>
         <label>get enquiryOpportunityId</label>
-        <locationX>50</locationX>
-        <locationY>878</locationY>
+        <locationX>452</locationX>
+        <locationY>926</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Generate_Service_Invoice</targetReference>
@@ -422,8 +421,8 @@
     <recordLookups>
         <name>get_quote_id</name>
         <label>get quote id</label>
-        <locationX>182</locationX>
-        <locationY>158</locationY>
+        <locationX>584</locationX>
+        <locationY>206</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>get_quote_line_item</targetReference>
@@ -440,8 +439,8 @@
     <recordLookups>
         <name>get_quote_line_item</name>
         <label>get quote line item</label>
-        <locationX>182</locationX>
-        <locationY>278</locationY>
+        <locationX>584</locationX>
+        <locationY>326</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>check_quote_line_item_ids</targetReference>
@@ -458,8 +457,8 @@
     <recordLookups>
         <name>get_record_type_of_invoice</name>
         <label>get record type of invoice</label>
-        <locationX>50</locationX>
-        <locationY>758</locationY>
+        <locationX>451</locationX>
+        <locationY>806</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>get_enquiryOpportunityId</targetReference>
@@ -480,29 +479,11 @@
         </filters>
         <object>RecordType</object>
     </recordLookups>
-    <recordLookups>
-        <name>get_sales_order</name>
-        <label>get sales order</label>
-        <locationX>50</locationX>
-        <locationY>518</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>get_delivery_note</targetReference>
-        </connector>
-        <filters>
-            <field>Opportunity__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>get_quote_id.Opportunity__c</elementReference>
-            </value>
-        </filters>
-        <object>Sales_Order__c</object>
-    </recordLookups>
     <screens>
         <name>Generate_Service_Invoice</name>
         <label>Generate Service Invoice</label>
-        <locationX>50</locationX>
-        <locationY>998</locationY>
+        <locationX>452</locationX>
+        <locationY>1046</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -630,14 +611,14 @@
     <screens>
         <name>Invoice_Generated</name>
         <label>Invoice Generated</label>
-        <locationX>50</locationX>
-        <locationY>1814</locationY>
+        <locationX>452</locationX>
+        <locationY>1862</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <fields>
             <name>SuccessMsg</name>
-            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;font-size: 16px; color: rgb(15, 182, 20);&quot;&gt;Invoice Generated Successfully&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;color: rgb(15, 182, 20); font-size: 16px;&quot;&gt;Invoice created Successfully.&lt;/b&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
@@ -646,14 +627,14 @@
     <screens>
         <name>No_Line_Items_Selected</name>
         <label>No Line Items Selected</label>
-        <locationX>314</locationX>
-        <locationY>518</locationY>
+        <locationX>716</locationX>
+        <locationY>566</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <fields>
             <name>displayMsg</name>
-            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;font-size: 18px; color: rgb(201, 5, 5);&quot;&gt;Please Add Line Items To Quotation&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;color: rgb(201, 5, 5); font-size: 18px;&quot;&gt;Please add Line Items to Quotation.&lt;/b&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>

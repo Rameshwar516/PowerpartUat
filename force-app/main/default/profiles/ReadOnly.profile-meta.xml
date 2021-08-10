@@ -206,7 +206,15 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>DeliveryNoteHelper</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>DeliveryNotePdf</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>DeliverylineitemTriggerHelper</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -323,6 +331,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>SalesOrderHelperTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>SalesOrderLineItemTriggerHelper</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -1579,6 +1591,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Delivery_Note_Line_Item__c.Sales_Order_Dispatch_Delivery_Note__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Delivery_Note_Line_Item__c.Sales_Order_Line_Item__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -3507,9 +3524,9 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Opportunity__c.isService__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -3812,9 +3829,9 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Part__c.Service_Price__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -4883,6 +4900,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Quote__c.Term_And_ConditionR__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Quote__c.Term_and_Condition__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -5203,6 +5225,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Sales_Order_Line_Item__c.Deliverd_Quantity__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Sales_Order_Line_Item__c.Description__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -5219,6 +5246,16 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Sales_Order_Line_Item__c.Expected_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Sales_Order_Line_Item__c.Freeze_Qunatity__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Sales_Order_Line_Item__c.Freeze_Stock__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -5282,6 +5319,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Sales_Order_Line_Item__c.Stock__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Sales_Order_Line_Item__c.Taxable_Amount__c</field>
         <readable>true</readable>
@@ -5304,6 +5346,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Sales_Order_Line_Item__c.Warehouse_City__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Sales_Order_Line_Item__c.warehouse__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -5417,6 +5464,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Sales_Order_Return_Line_Item__c.Unit__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Sales_Order_Return_Line_Item__c.Usage__c</field>
         <readable>true</readable>
@@ -5454,6 +5506,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Sales_Order_Return__c.Customer_Party__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Sales_Order_Return__c.Delivery_Note__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

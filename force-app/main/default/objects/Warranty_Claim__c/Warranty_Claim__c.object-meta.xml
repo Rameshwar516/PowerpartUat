@@ -157,6 +157,7 @@
     <enableSearch>true</enableSearch>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>ReadWrite</externalSharingModel>
     <label>Warranty Claim</label>
     <nameField>
         <displayFormat>CL-{0000}</displayFormat>

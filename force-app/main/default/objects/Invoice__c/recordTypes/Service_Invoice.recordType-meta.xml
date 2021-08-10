@@ -101,6 +101,10 @@
     <picklistValues>
         <picklist>Type__c</picklist>
         <values>
+            <fullName>AMC</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Export</fullName>
             <default>false</default>
         </values>

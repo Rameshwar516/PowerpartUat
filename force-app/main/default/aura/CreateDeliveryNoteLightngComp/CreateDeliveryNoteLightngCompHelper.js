@@ -80,16 +80,24 @@
         action.setCallback(this, function(res){
             var state=res.getState();
             if(state==="SUCCESS" && JSON.parse(res.getReturnValue()).success){
+                if(wrapper.isupdate){
+                    var SucessMessage = "Delivery Note updated successfully";
+                }
+                else{
+                    var SucessMessage = "Delivery Note created successfully";
+                }
+                
          var toastEvent = $A.get("e.force:showToast");
         toastEvent.setParams({
             title : 'Success',
-            message: 'Delivery Note created successfully',
+            message: SucessMessage,
             duration:' 5000',
             key: 'info_alt',
             type: 'success',
             mode: 'pester'
         });
         toastEvent.fire();
+                  
                $A.get("e.force:closeQuickAction").fire();
             }
             else{
@@ -103,6 +111,7 @@
             mode: 'pester'
         });
         toastEvent.fire();
+                  component.set("v.isSave",false);
             }
         });
         }
@@ -114,6 +123,7 @@
                 type: 'error',
             });
             toastEvent.fire();
+              component.set("v.isSave",false);
         }
         
         $A.enqueueAction(action);

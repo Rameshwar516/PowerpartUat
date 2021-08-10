@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <assignments>
+        <name>Assign_Sales_Officer</name>
+        <label>Assign Sales Officer</label>
+        <locationX>786</locationX>
+        <locationY>434</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.Indent_Sales_Officer_Lookup__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.Purchase_Order_Line_Item__r.Purchase_Indent_Line_Item__r.Purchase_Indent__r.Sales_Officer__c</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <decisions>
+        <name>Check_Purchase_Indent_Sales_Officer_Avability</name>
+        <label>Check Purchase Indent Sales Officer Avability</label>
+        <locationX>519</locationX>
+        <locationY>379</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Sales_Officer_Available</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Purchase_Order_Line_Item__r.Purchase_Indent_Line_Item__r.Purchase_Indent__r.Sales_Officer__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_Sales_Officer</targetReference>
+            </connector>
+            <label>Sales Officer Available</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Check_Purchase_Order_Type</name>
+        <label>Check Purchase Order Type</label>
+        <locationX>233</locationX>
+        <locationY>349</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Direct</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Purchase_Order_Line_Item__r.Purchase_Order__r.Against__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Direct</stringValue>
+                </rightValue>
+            </conditions>
+            <label>Direct</label>
+        </rules>
+        <rules>
+            <name>Purchase_Indent</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Purchase_Order_Line_Item__r.Purchase_Order__r.Against__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Purchase Indent</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Check_Purchase_Indent_Sales_Officer_Avability</targetReference>
+            </connector>
+            <label>Purchase Indent</label>
+        </rules>
+    </decisions>
+    <interviewLabel>Update sales officer Field on MRN line item {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Update sales officer Field on MRN line item</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <startElementReference>Check_Purchase_Order_Type</startElementReference>
+    <status>Active</status>
+</Flow>

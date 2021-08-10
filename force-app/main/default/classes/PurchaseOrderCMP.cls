@@ -120,7 +120,7 @@ public without sharing class PurchaseOrderCMP {
             }
             
             
-            List<Charges__c> chargeslist =[SELECT CGST__c,Charges__c,Charge_Percentage__c,Id,IGST__c,MRN__c,Name,Net_Amount__c,Purchase_Order__c,
+            List<Charges__c> chargeslist =[SELECT CGST__c,Charges__c,Charge_Amount__c,Charge_Percentage__c,Id,IGST__c,MRN__c,Name,Net_Amount__c,Purchase_Order__c,
                                            Quote__c,SGST__c,Total_Amount__c,Charges__r.name 
                                            FROM Charges__c 
                                            Where Purchase_Order__c =:strRecordID];
@@ -141,7 +141,7 @@ public without sharing class PurchaseOrderCMP {
                     objTD.SGST = ch.SGST__c;
                     objTD.IGST = ch.IGST__c;
                     objTD.objcharge = ch;
-                    objTD.decTaxAmount =  ch.Total_Amount__c;
+                    objTD.decTaxAmount =  ch.Charge_Amount__c;
                     objTD.NetAmount =  ch.Net_Amount__c;
                     objTD.ischargeItem = true;
                     objMainWrap.lstTaxDetails.add(objTD);
@@ -226,15 +226,17 @@ public without sharing class PurchaseOrderCMP {
     @AuraEnabled
     public static string SavePurchaseOrder(string strMainWrapper){
         mainWrapper objMainWrap = new mainWrapper();
-        
+        Decimal taxable_amount=0;
         List<Purchase_Order_Line_Item__c> lstPOLI = new List<Purchase_Order_Line_Item__c>();
         try{
             system.debug('strMainWrapper--'+strMainWrapper);
             objMainWrap = (mainWrapper)Json.deserialize(strMainWrapper, mainWrapper.class);
+            User usr = [Select Branch__c from user where id =:UserInfo.getUserId()];
             objMainWrap.success = true;
             if(objMainWrap.objPurchaseOrder != null){
                 objMainWrap.objPurchaseOrder.Shipping_Zip_Postal_Code__c=string.valueof(objMainWrap.objPurchaseOrder.Shipping_Zip_Postal_Code__c);
                 objMainWrap.objPurchaseOrder.Billing_Zip_Postal_Code__c=Integer.valueof(objMainWrap.objPurchaseOrder.Billing_Zip_Postal_Code__c);
+                objMainWrap.objPurchaseOrder.branch__c = usr.branch__c;
                 upsert objMainWrap.objPurchaseOrder;
                 
                 String strPurchaseOrderId =objMainWrap.objPurchaseOrder.Id;
@@ -242,12 +244,14 @@ public without sharing class PurchaseOrderCMP {
                 List<Purchase_Order_Line_Item__c> DeletePOLIList = new List<Purchase_Order_Line_Item__c>();
                 List<Purchase_Order_Line_Item__c> lstSavedPOLI =[Select Id, Name from Purchase_Order_Line_Item__c where Purchase_Order__c =: strPurchaseOrderId];
                 
+                    
                 for(OrderItemWapper objOIW : objMainWrap.lstOIW){
                     Purchase_Order_Line_Item__c obj = new Purchase_Order_Line_Item__c();
                     if(String.isNotBlank(objOIW.strId)){
                         obj.Id = objOIW.strId;
                         setIdPOLI.add(obj.Id);
                     }
+                    obj.branch__c = usr.branch__c;
                     obj.HSN_Code__c = objOIW.HSNCode;
                     obj.Purchase_Order__c = objMainWrap.objPurchaseOrder.Id;
                     obj.Product_Part__c = objOIW.objPart.Id;
@@ -261,7 +265,11 @@ public without sharing class PurchaseOrderCMP {
                         obj.Doc_Date__c = objOIW.DocDate.date();
                     obj.Quantity__c = objOIW.Quantity;
                     obj.Sales_Price__c = objOIW.Rate;
+                    decimal totalamount = obj.Quantity__c * obj.Sales_Price__c;
                     obj.Discount__c = objOIW.DiscRate;
+                    decimal DiscountAmount = (totalamount * obj.Discount__c)/100;
+                    decimal AfterDiscount  = totalamount - DiscountAmount;
+                    taxable_amount = taxable_amount + AfterDiscount;
                     obj.CGST__c = objOIW.CGSTRate;
                     obj.SGST__c = objOIW.SGSTRate;
                     obj.IGST__c = objOIW.IGSTRate;
@@ -308,11 +316,12 @@ public without sharing class PurchaseOrderCMP {
                         } 
                         objCharges.Charges__c = td.strTaxId;
                         objCharges.Charge_Percentage__c = td.TaxPercentage;
-                        objCharges.Total_Amount__c = td.TotalAmountAfterDisc;
+                        objCharges.Total_Amount__c = taxable_amount;
                         objCharges.IGST__c =td.IGST ;
                         objCharges.SGST__c =td.SGST ;
                         objCharges.CGST__c =td.CGST ;
                         objCharges.Purchase_Order__c = objMainWrap.objPurchaseOrder.Id;
+                        objCharges.Branch_Office__c= usr.branch__c;
                         lstCharge.add(objCharges);  
                     }
                     upsert lstCharge;

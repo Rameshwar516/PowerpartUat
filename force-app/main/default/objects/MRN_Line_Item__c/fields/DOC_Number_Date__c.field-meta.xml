@@ -2,8 +2,8 @@
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>DOC_Number_Date__c</fullName>
     <externalId>false</externalId>
-    <formula>DOC_Number__c + if( ISNULL( Purchase_Order_Line_Item__r.Purchase_Order__r.PO_Date__c ),  &apos;&apos;, &apos; &amp; &apos;+text( DAY(Purchase_Order_Line_Item__r.Purchase_Order__r.PO_Date__c )))+CASE(MONTH(Purchase_Order_Line_Item__r.Purchase_Order__r.PO_Date__c ), 1, &quot;January&quot;, 2, &quot;February&quot;, 3, &quot;March&quot;,  4, &quot;April&quot;,  5, &quot;May&quot;,  6, &quot;June&quot;, 7, &quot;July&quot;, 8, &quot;August&quot;, 9, &quot;September&quot;, 10, &quot;October&quot;, 11, &quot;November&quot;, 12, &quot;December&quot;, &quot;&quot;)+
-if( ISNULL(Purchase_Order_Line_Item__r.Purchase_Order__r.PO_Date__c ),  &apos;&apos;, &apos; &apos;+text( YEAR(Purchase_Order_Line_Item__r.Purchase_Order__r.PO_Date__c )))</formula>
+    <formula>DOC_Number__c + if( ISNULL( Purchase_Order_Line_Item__r.Purchase_Order__r.PO_Date__c ),  &apos;&apos;, &apos; / &apos;+text( DAY(Purchase_Order_Line_Item__r.Purchase_Order__r.PO_Date__c )))+CASE(MONTH(Purchase_Order_Line_Item__r.Purchase_Order__r.PO_Date__c ), 1, &quot;-January&quot;, 2, &quot;-February&quot;, 3, &quot;-March&quot;,  4, &quot;-April&quot;,  5, &quot;-May&quot;,  6, &quot;-June&quot;, 7, &quot;-July&quot;, 8, &quot;-August&quot;, 9, &quot;-September&quot;, 10, &quot;-October&quot;, 11, &quot;-November&quot;, 12, &quot;-December&quot;, &quot;&quot;)+
+if( ISNULL(Purchase_Order_Line_Item__r.Purchase_Order__r.PO_Date__c ),  &apos;&apos;, &apos;-&apos;+text( YEAR(Purchase_Order_Line_Item__r.Purchase_Order__r.PO_Date__c )))</formula>
     <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
     <label>DOC Number &amp; Date</label>
     <required>false</required>

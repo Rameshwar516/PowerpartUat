@@ -4,6 +4,7 @@ public class PurchaseIndentCtrl
     public contact con{get;set;}
     public Account Acc{get;set;}
     public list<Purchase_Indent_Line_Item__c> PILitem{get;set;}
+    public string sign{get;set;}
     
      public Pdf_Header__mdt pdfheader{get;set;}
     
@@ -19,13 +20,26 @@ public class PurchaseIndentCtrl
         pdfheader=new Pdf_Header__mdt();
         
         if(queryString !=null){
-            PurchaseInd=[select Id,Name,CreatedDate,Procurement__c,Department__c,Ware_House__r.Branch__c,Ware_House__r.City__c,Indent_Date__c,Indent_By__c,Indent_By__r.Name,Reference_No__c,Reference_Date__c,Purchase_Indent_Number__c,Terms_and_Conditions__c from Purchase_Indent__c where id =:queryString limit 1];  
-                 
+            PurchaseInd=[select Id,Name,OwnerId ,Reference_No_text__c, 
+                         CreatedDate,Procurement__c,Department__c,Ware_House__r.Branch__c,Ware_House__r.City__c,Indent_Date__c,Indent_By__c,Indent_By__r.Name,Reference_No__c,Reference_Date__c,Purchase_Indent_Number__c,Terms_and_Conditions__c from Purchase_Indent__c where id =:queryString limit 1];  
+          
+             
+            
+              user ur =[SELECT Id,Branch__c,User_Signature__c from user where id =:PurchaseInd.OwnerId];
+        if(!String.isBlank(ur.User_Signature__c))
+        sign = ur.User_Signature__c;
+        
+        if(String.isBlank(ur.User_Signature__c))
+        sign =System.Label.Default_User_Sign;
+        
+        system.debug(sign);
+            
+            if(PurchaseInd.Ware_House__r.Branch__c!=null){
            string branch = PurchaseInd.Ware_House__r.Branch__c ;
             List<String> pdfheaderField = UtilityClass.getAllFields('Pdf_Header__mdt');
             String pdfHeaderQuery = 'Select ' +String.Join(pdfheaderField, ',')+ ' From Pdf_Header__mdt WHERE Branch__c =:branch Order by Effected_Date__c ASC LIMIT 1';
             pdfheader =  Database.query(pdfHeaderQuery);
-            
+            }
             /*system.debug(PurchaseOrd.Id+'opp.....'+PurchaseOrd.Contact_Person__c);
             if(PurchaseOrd.Contact_Person__c !=null)
                 con = [select id,Name,Email,MobilePhone,Accountid from contact where id=:PurchaseOrd.Contact_Person__c limit 1];
@@ -39,7 +53,9 @@ public class PurchaseIndentCtrl
             
          
             String myGeneratedFileName = PurchaseInd.Purchase_Indent_Number__c+'.pdf';
-            Apexpages.currentPage().getHeaders().put('content-disposition', 'inline; filename='+myGeneratedFilename);
+           // Apexpages.currentPage().getHeaders().put('content-disposition', 'inline; filename='+myGeneratedFilename);
+         ApexPages.currentPage().getHeaders().put('content-disposition', 'filename=' +' Purchase Indent - '+PurchaseInd.Purchase_Indent_Number__c+'.PDF');
+                system.debug('strfileName '+' Purchase Indent - '+PurchaseInd.Purchase_Indent_Number__c);
         }
     }  
     

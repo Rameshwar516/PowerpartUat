@@ -4,15 +4,15 @@
     <protected>false</protected>
     <values>
         <field>Address_Header__c</field>
-        <value xsi:type="xsd:string">Kolkata Branch</value>
+        <value xsi:type="xsd:string">KOLKATA BRANCH</value>
     </values>
     <values>
         <field>Address_Line1__c</field>
-        <value xsi:type="xsd:string">Premises No.-51, Bankim Mukherjee Sarani,41 F,</value>
+        <value xsi:type="xsd:string">PREMISES NO.-51, BANKIM MUKHERJEE SARANI,41 F,</value>
     </values>
     <values>
         <field>Address_Line_2__c</field>
-        <value xsi:type="xsd:string">Block-C,2nd Floor,New Alipore,Kolkata–700053,INDIA.</value>
+        <value xsi:type="xsd:string">BLOCK-C,2ND FLOOR,NEW ALIPORE,KOLKATA–700053,INDIA.</value>
     </values>
     <values>
         <field>BANK__c</field>

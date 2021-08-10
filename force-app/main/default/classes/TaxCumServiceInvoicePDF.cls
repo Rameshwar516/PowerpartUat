@@ -9,7 +9,11 @@ public class TaxCumServiceInvoicePDF {
     public List<Invoice_Line_Item__c> lstILI {get;set;}
     public decimal subTotalTaxableAmount{get;set;}
     public decimal subTotalAmount{get;set;}
-    
+  public decimal TotalAmountwithoutround{get;set;}
+    public string sign{get;set;}
+    public string stamp{get;set;}
+
+
     public Pdf_Header__mdt pdfheader{get;set;}
     public list<Charges__c> lstCharges{get;set;}
     
@@ -50,6 +54,7 @@ public class TaxCumServiceInvoicePDF {
             subTotalQuatity =0 ;
             TotalAmount = 0;
             TotalAmountInWords ='';
+            TotalAmountwithoutround=0;
             TotalIGST = 0;
             TotalCGST = 0;
             TotalSGST = 0;
@@ -63,13 +68,41 @@ public class TaxCumServiceInvoicePDF {
             List<String> lstInvoiceField = UtilityClass.getAllFields('Invoice__c');
             List<String> lstInvoiceLineItemField = UtilityClass.getAllFields('Invoice_Line_Item__c');
             
-            String strInvoiceQuery = 'Select ' +String.Join(lstInvoiceField, ',')+ ',Shipping_Account__r.name,Shipping_Account__r.Shipping_State_Code__c,Shipping_Account__r.Shipping_GSTIN_No__c ,Customer_Name__r.Name,DC_No__r.Sales_Order__r.Ware_House__r.Branch__c,DC_No__r.Sales_Order__r.Ware_House__r.City__c, Contact_Person__r.Name, contact_person__r.salutation, Contact_Person__r.Email, DC_No__r.Delivery_Note_Number__c From Invoice__c where Id =: strId';
+            String strInvoiceQuery = 'Select ' +String.Join(lstInvoiceField, ',')+ ',Place_of_Supply__r.Branch__c,Shipping_Account__r.name,Shipping_Account__r.Shipping_State_Code__c,Shipping_Account__r.Shipping_GSTIN_No__c ,Customer_Name__r.Name,DC_No__r.Sales_Order__r.Ware_House__r.Branch__c,DC_No__r.Sales_Order__r.Ware_House__r.City__c, Contact_Person__r.Name, contact_person__r.salutation, Contact_Person__r.Email, DC_No__r.Delivery_Note_Number__c From Invoice__c where Id =: strId';
             String strInvoiceLineItemQuery = 'Select ' +String.Join(lstInvoiceLineItemField, ',')+ ',Part_Number__r.Name,Part_Number__r.Part_Name__c,Part_Number__r.UOM__c From Invoice_Line_Item__c where Invoice__c =: strId';            
             
             List<Invoice__c> lstInvoiceOrder =  Database.query(strInvoiceQuery);
             if(lstInvoiceOrder.size() > 0){
                 objInvoice = lstInvoiceOrder[0];
                 ShippingObjCon = new Contact();
+                
+                  String pageName = ApexPages.currentPage().getUrl();
+            system.debug(' pageName '+pageName);
+            
+              if(pageName.contains('Tax')  )
+            {              
+                ApexPages.currentPage().getHeaders().put('content-disposition', 'filename=' +' Tax Invoice - '+objInvoice.Invoice_Number__c+'.PDF');
+                system.debug('strfileName '+ 'Tax Invoice - '+objInvoice.Invoice_Number__c);       
+                
+            }else{
+                
+                 ApexPages.currentPage().getHeaders().put('content-disposition', 'filename=' +' Service Invoice - '+objInvoice.Invoice_Number__c+'.PDF');
+                system.debug('strfileName '+'Service Invoice - '+objInvoice.Invoice_Number__c);  
+            }
+                
+                 user ur =[SELECT Id,Branch__c,User_Signature__c from user where id =:objInvoice.OwnerId];
+        if(!String.isBlank(ur.User_Signature__c))
+        sign = ur.User_Signature__c;
+        
+        if(String.isBlank(ur.User_Signature__c))
+        sign =System.Label.Default_User_Sign;
+        
+        system.debug(sign);
+        System.debug('----'+ur.Branch__c);
+        if(ur.Branch__c == 'Kolkata')
+            stamp= System.Label.Kolkata_Stamp_Link;
+         if(ur.Branch__c == 'Gurugram')
+            stamp= System.Label.Gurugram_Stamp_Link;
                 
                 list<Contact> listShippingObjCon = new list<Contact>();
                 if(objInvoice.Shipping_Account__c!=null ){
@@ -78,10 +111,21 @@ public class TaxCumServiceInvoicePDF {
                     ShippingObjCon = listShippingObjCon[0];
                     }
                 }
+               Id recordTypeId = Schema.SObjectType.Invoice__c.getRecordTypeInfosByDeveloperName().get('Tax_Invoice').getRecordTypeId();
+                if(objInvoice.RecordTypeid == recordTypeId){
+                    
                 string branch = objInvoice.DC_No__r.Sales_Order__r.Ware_House__r.Branch__c ;
-            List<String> pdfheaderField = UtilityClass.getAllFields('Pdf_Header__mdt');
+                     List<String> pdfheaderField = UtilityClass.getAllFields('Pdf_Header__mdt');
             String pdfHeaderQuery = 'Select ' +String.Join(pdfheaderField, ',')+ ' From Pdf_Header__mdt WHERE Branch__c =:branch Order by Effected_Date__c ASC LIMIT 1';
             pdfheader =  Database.query(pdfHeaderQuery);
+                    }
+                else{
+                    string branch = objInvoice.Place_of_Supply__r.Branch__c ;
+                     List<String> pdfheaderField = UtilityClass.getAllFields('Pdf_Header__mdt');
+            String pdfHeaderQuery = 'Select ' +String.Join(pdfheaderField, ',')+ ' From Pdf_Header__mdt WHERE Branch__c =:branch Order by Effected_Date__c ASC LIMIT 1';
+            pdfheader =  Database.query(pdfHeaderQuery);
+                }
+           
             
                 /*if(String.isNotEmpty(objInvoice.Supplier__c)){
                     objSupplier = [Select Id,Name, BillingCity,BillingCountry, BillingPostalCode,BillingState,BillingStreet,GSTIN_No__c ,Billing_State_Code__c,
@@ -218,6 +262,7 @@ public class TaxCumServiceInvoicePDF {
                 
                     if(TotalAmount > 0){
                     RoundOffValue =TotalAmount;
+                        TotalAmountwithoutround= TotalAmountwithoutround+TotalAmount;
                     TotalAmount = TotalAmount.round();
                     RoundOffValue = RoundOffValue - TotalAmount;
                     TotalAmountInWords = 'Rupees '+UtilityClass.NoToWord(TotalAmount.intValue())+' only';

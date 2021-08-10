@@ -110,7 +110,7 @@
         <label>Account and Contact Information</label>
         <layoutColumns>
             <layoutItems>
-                <behavior>Edit</behavior>
+                <behavior>Required</behavior>
                 <field>Customer_Name__c</field>
             </layoutItems>
             <layoutItems>
@@ -118,13 +118,13 @@
                 <field>Contact_No__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
+                <behavior>Required</behavior>
                 <field>Shipping_Account__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
-                <behavior>Edit</behavior>
+                <behavior>Required</behavior>
                 <field>Contact_Person__c</field>
             </layoutItems>
             <layoutItems>
@@ -251,7 +251,7 @@
         <customLabel>true</customLabel>
         <detailHeading>true</detailHeading>
         <editHeading>true</editHeading>
-        <label>Term and Condition</label>
+        <label>Terms and Conditions</label>
         <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>

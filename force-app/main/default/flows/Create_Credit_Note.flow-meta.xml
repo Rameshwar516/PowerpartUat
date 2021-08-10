@@ -1,10 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <assignments>
+        <name>adding_list</name>
+        <label>adding list</label>
+        <locationX>655</locationX>
+        <locationY>1684</locationY>
+        <assignmentItems>
+            <assignToReference>varSingleCharge.Id</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue></stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varSingleCharge.Invoice__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue></stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varSingleCharge.DC_Note__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>creditNoteDcRecordID</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varSingleCharge.Total_Amount__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>invoiceTaxableAmount</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>adding_list_0</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>adding_list_0</name>
+        <label>adding list</label>
+        <locationX>484</locationX>
+        <locationY>1812</locationY>
+        <assignmentItems>
+            <assignToReference>varCollectioncharge</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>varSingleCharge</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>iteratecharges</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>adding_single_into_collection</name>
         <label>adding single into collection</label>
-        <locationX>754</locationX>
-        <locationY>1166</locationY>
+        <locationX>1173</locationX>
+        <locationY>1572</locationY>
         <assignmentItems>
             <assignToReference>varCollectionDeliveryNoteLineItem</assignToReference>
             <operator>Add</operator>
@@ -19,8 +72,8 @@
     <assignments>
         <name>adding_single_into_collection_variable</name>
         <label>adding single into collection variable</label>
-        <locationX>138</locationX>
-        <locationY>1286</locationY>
+        <locationX>456</locationX>
+        <locationY>1136</locationY>
         <assignmentItems>
             <assignToReference>varCollectionDcNoteLineItem</assignToReference>
             <operator>Add</operator>
@@ -33,10 +86,26 @@
         </connector>
     </assignments>
     <assignments>
+        <name>assign_values</name>
+        <label>assign values</label>
+        <locationX>470</locationX>
+        <locationY>1555</locationY>
+        <assignmentItems>
+            <assignToReference>varSingleCharge</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>iteratecharges</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>adding_list</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>Assign_values_to_dc_note_line_item</name>
         <label>Assign values to dc note line item</label>
-        <locationX>250</locationX>
-        <locationY>1114</locationY>
+        <locationX>589</locationX>
+        <locationY>1053</locationY>
         <assignmentItems>
             <assignToReference>varSingleDcNoteLineItem.Doc_No__c</assignToReference>
             <operator>Assign</operator>
@@ -114,6 +183,13 @@
                 <elementReference>Iterating_sales_order_line_items.Remark__c</elementReference>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>invoiceTaxableAmount</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Iterating_sales_order_line_items.Taxable_Amount__c</elementReference>
+            </value>
+        </assignmentItems>
         <connector>
             <targetReference>adding_single_into_collection_variable</targetReference>
         </connector>
@@ -121,8 +197,8 @@
     <assignments>
         <name>assign_values_to_delivery_note_fields</name>
         <label>assign values to delivery note fields</label>
-        <locationX>754</locationX>
-        <locationY>1046</locationY>
+        <locationX>1226</locationX>
+        <locationY>1295</locationY>
         <assignmentItems>
             <assignToReference>varSingleDeliveryNote.CGST__c</assignToReference>
             <operator>Assign</operator>
@@ -249,6 +325,66 @@
                 <elementReference>sorder_return_line_items_loop.Unit_Price__c</elementReference>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>StockRecord.Product_Out__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>StockQuantity</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>StockRecord.Id</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>sorder_return_line_items_loop.Stock__r.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Stock_Assign</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Not_Available_Stock_Lineitem_0</name>
+        <label>Not Available Stock Lineitem</label>
+        <locationX>1615</locationX>
+        <locationY>605</locationY>
+        <assignmentItems>
+            <assignToReference>LineItemName</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Stock_Check.Part_Number__r.Part_Name__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>LineItemName</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>   |  </stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>No_Stock</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Stock_Check</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Stock_Assign</name>
+        <label>Stock Assign</label>
+        <locationX>1226</locationX>
+        <locationY>1480</locationY>
+        <assignmentItems>
+            <assignToReference>StockList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>StockRecord</elementReference>
+            </value>
+        </assignmentItems>
         <connector>
             <targetReference>adding_single_into_collection</targetReference>
         </connector>
@@ -256,7 +392,7 @@
     <decisions>
         <name>check_field_values</name>
         <label>check field values</label>
-        <locationX>556</locationX>
+        <locationX>804</locationX>
         <locationY>326</locationY>
         <defaultConnector>
             <targetReference>Field_Needs_to_Update_Required</targetReference>
@@ -296,7 +432,7 @@
     <decisions>
         <name>check_line_items</name>
         <label>check line items</label>
-        <locationX>182</locationX>
+        <locationX>430</locationX>
         <locationY>566</locationY>
         <defaultConnector>
             <targetReference>No_Sales_order_Return_line_item</targetReference>
@@ -318,12 +454,82 @@
             <label>valid</label>
         </rules>
     </decisions>
+    <decisions>
+        <name>Check_Stock_Avability_0</name>
+        <label>Check Stock Avability</label>
+        <locationX>1294</locationX>
+        <locationY>552</locationY>
+        <defaultConnector>
+            <targetReference>Not_Available_Stock_Lineitem_0</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Available_0</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Stock_Check.Unbooked_Stock_Qunatity__c</leftValueReference>
+                <operator>GreaterThanOrEqualTo</operator>
+                <rightValue>
+                    <elementReference>Stock_Check.Quantity__c</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Stock_Check</targetReference>
+            </connector>
+            <label>Available</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Stock_Not_Available_for_Some_Item</name>
+        <label>Stock Not Available for Some Item</label>
+        <locationX>1623</locationX>
+        <locationY>982</locationY>
+        <defaultConnector>
+            <targetReference>create_delivery_note</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Not_availbale</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>No_Stock</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Delivery_Note_0</targetReference>
+            </connector>
+            <label>Not availbale</label>
+        </rules>
+    </decisions>
+    <formulas>
+        <name>StockQuantity</name>
+        <dataType>Number</dataType>
+        <expression>{!sorder_return_line_items_loop.Stock__r.Product_Out__c} + {!sorder_return_line_items_loop.Quantity__c}</expression>
+        <scale>0</scale>
+    </formulas>
     <interviewLabel>Create Credit Note {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>Create Credit Note</label>
+    <label>Create Credit Note/ Delivery note</label>
+    <loops>
+        <name>iteratecharges</name>
+        <label>iteratecharges</label>
+        <locationX>297</locationX>
+        <locationY>1680</locationY>
+        <collectionReference>get_charges</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>assign_values</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>create_charges</targetReference>
+        </noMoreValuesConnector>
+    </loops>
     <loops>
         <name>Iterating_sales_order_line_items</name>
         <label>Iterating  sales order line items</label>
-        <locationX>50</locationX>
+        <locationX>298</locationX>
         <locationY>1046</locationY>
         <collectionReference>get_sales_order_return_line_item</collectionReference>
         <iterationOrder>Asc</iterationOrder>
@@ -337,8 +543,8 @@
     <loops>
         <name>sorder_return_line_items_loop</name>
         <label>sorder return line items loop</label>
-        <locationX>666</locationX>
-        <locationY>926</locationY>
+        <locationX>914</locationX>
+        <locationY>1338</locationY>
         <collectionReference>on_get_sales_order_return_line_item2</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -346,6 +552,20 @@
         </nextValueConnector>
         <noMoreValuesConnector>
             <targetReference>create_delivery_note_line_items</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
+        <name>Stock_Check</name>
+        <label>Stock Check</label>
+        <locationX>1074</locationX>
+        <locationY>749</locationY>
+        <collectionReference>on_get_sales_order_return_line_item2</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Check_Stock_Avability_0</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Stock_Not_Available_for_Some_Item</targetReference>
         </noMoreValuesConnector>
     </loops>
     <processMetadataValues>
@@ -370,17 +590,27 @@
     <recordCreates>
         <name>craete_dc_note_line_item</name>
         <label>craete dc note line item</label>
-        <locationX>50</locationX>
-        <locationY>1502</locationY>
+        <locationX>298</locationX>
+        <locationY>1287</locationY>
         <connector>
-            <targetReference>Credit_Note</targetReference>
+            <targetReference>get_charges</targetReference>
         </connector>
         <inputReference>varCollectionDcNoteLineItem</inputReference>
     </recordCreates>
     <recordCreates>
+        <name>create_charges</name>
+        <label>create charges</label>
+        <locationX>285</locationX>
+        <locationY>1968</locationY>
+        <connector>
+            <targetReference>Credit_Note</targetReference>
+        </connector>
+        <inputReference>varCollectioncharge</inputReference>
+    </recordCreates>
+    <recordCreates>
         <name>create_credit_note</name>
         <label>create credit note</label>
-        <locationX>50</locationX>
+        <locationX>298</locationX>
         <locationY>926</locationY>
         <assignRecordIdToReference>creditNoteDcRecordID</assignRecordIdToReference>
         <connector>
@@ -420,6 +650,12 @@
             <field>Dispatch_To_Customer_Name__c</field>
             <value>
                 <elementReference>get_sales_order_return.Dispatch_To_Customer_Name__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Invoice__c</field>
+            <value>
+                <elementReference>get_sales_order_return.Invoice__c</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -547,16 +783,34 @@
     <recordCreates>
         <name>create_delivery_note</name>
         <label>create delivery note</label>
-        <locationX>666</locationX>
-        <locationY>806</locationY>
+        <locationX>914</locationX>
+        <locationY>1218</locationY>
         <assignRecordIdToReference>deliverynoteid</assignRecordIdToReference>
         <connector>
             <targetReference>sorder_return_line_items_loop</targetReference>
         </connector>
         <inputAssignments>
+            <field>Container_No__c</field>
+            <value>
+                <elementReference>get_sales_order_return.Container_No__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>Customer_Party__c</field>
             <value>
                 <elementReference>get_sales_order_return.Customer_Party__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Docket_LR_Date__c</field>
+            <value>
+                <elementReference>get_sales_order_return.Docket_LR_Date__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Docket_LR_No__c</field>
+            <value>
+                <elementReference>get_sales_order_return.Docket_LR_No__c</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -569,6 +823,12 @@
             <field>LC_Expected_date__c</field>
             <value>
                 <elementReference>get_sales_order_return.LC_Expected_Date__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>LC_Term__c</field>
+            <value>
+                <elementReference>get_sales_order_return.LC_Term__c</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -631,22 +891,46 @@
                 <elementReference>get_mrn.Transporter_Name__c</elementReference>
             </value>
         </inputAssignments>
+        <inputAssignments>
+            <field>Vehicle_No__c</field>
+            <value>
+                <elementReference>get_sales_order_return.Vehicle_No__c</elementReference>
+            </value>
+        </inputAssignments>
         <object>Sales_Order_Dispatch_Delivery_Note__c</object>
     </recordCreates>
     <recordCreates>
         <name>create_delivery_note_line_items</name>
         <label>create delivery note line items</label>
-        <locationX>666</locationX>
-        <locationY>1382</locationY>
+        <locationX>754</locationX>
+        <locationY>1480</locationY>
         <connector>
-            <targetReference>Delivery_Note</targetReference>
+            <targetReference>Update_Stock</targetReference>
         </connector>
         <inputReference>varCollectionDeliveryNoteLineItem</inputReference>
     </recordCreates>
     <recordLookups>
+        <name>get_charges</name>
+        <label>get charges</label>
+        <locationX>298</locationX>
+        <locationY>1472</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>iteratecharges</targetReference>
+        </connector>
+        <filters>
+            <field>Invoice__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>get_sales_order_return.Invoice__c</elementReference>
+            </value>
+        </filters>
+        <object>Charges__c</object>
+    </recordLookups>
+    <recordLookups>
         <name>get_mrn</name>
         <label>get mrn</label>
-        <locationX>666</locationX>
+        <locationX>914</locationX>
         <locationY>446</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -664,11 +948,11 @@
     <recordLookups>
         <name>get_mrn_line_item</name>
         <label>get mrn line item</label>
-        <locationX>666</locationX>
+        <locationX>914</locationX>
         <locationY>686</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>create_delivery_note</targetReference>
+            <targetReference>Stock_Check</targetReference>
         </connector>
         <filters>
             <field>MRN__c</field>
@@ -682,7 +966,7 @@
     <recordLookups>
         <name>get_record_type</name>
         <label>get record type</label>
-        <locationX>50</locationX>
+        <locationX>298</locationX>
         <locationY>686</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -707,7 +991,7 @@
     <recordLookups>
         <name>get_sales_order_return</name>
         <label>get sales order return</label>
-        <locationX>556</locationX>
+        <locationX>804</locationX>
         <locationY>206</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -725,7 +1009,7 @@
     <recordLookups>
         <name>get_sales_order_return_line_item</name>
         <label>get sales order return line item</label>
-        <locationX>182</locationX>
+        <locationX>430</locationX>
         <locationY>446</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -743,7 +1027,7 @@
     <recordLookups>
         <name>on_get_sales_order_return_line_item2</name>
         <label>on get sales order return line item2</label>
-        <locationX>666</locationX>
+        <locationX>914</locationX>
         <locationY>566</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -758,10 +1042,20 @@
         </filters>
         <object>Sales_Order_Return_Line_Item__c</object>
     </recordLookups>
+    <recordUpdates>
+        <name>Update_Stock</name>
+        <label>Update Stock</label>
+        <locationX>917</locationX>
+        <locationY>1472</locationY>
+        <connector>
+            <targetReference>Delivery_Note</targetReference>
+        </connector>
+        <inputReference>StockList</inputReference>
+    </recordUpdates>
     <screens>
         <name>Create_Credite_Note</name>
         <label>Create Credit Note</label>
-        <locationX>50</locationX>
+        <locationX>298</locationX>
         <locationY>806</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
@@ -835,8 +1129,8 @@
     <screens>
         <name>Credit_Note</name>
         <label>Credit Note</label>
-        <locationX>50</locationX>
-        <locationY>1722</locationY>
+        <locationX>286</locationX>
+        <locationY>2137</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -851,8 +1145,8 @@
     <screens>
         <name>Delivery_Note</name>
         <label>Delivery Note</label>
-        <locationX>678</locationX>
-        <locationY>1617</locationY>
+        <locationX>1001</locationX>
+        <locationY>1635</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -865,9 +1159,25 @@
         <showHeader>true</showHeader>
     </screens>
     <screens>
+        <name>Delivery_Note_0</name>
+        <label>Delivery Note</label>
+        <locationX>1637</locationX>
+        <locationY>1175</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>SuccessMessage_0_0</name>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;font-size: 18px; color: rgb(234, 6, 6);&quot;&gt;Stock Not Available for some Lineitem.&lt;/b&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;font-size: 18px; color: rgb(234, 6, 6);&quot;&gt;: {!LineItemName}&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
         <name>Field_Needs_to_Update_Required</name>
         <label>Field Needs to Update Required</label>
-        <locationX>930</locationX>
+        <locationX>1178</locationX>
         <locationY>446</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
@@ -883,14 +1193,14 @@
     <screens>
         <name>No_Sales_order_Return_line_item</name>
         <label>No Sales order Return line item</label>
-        <locationX>314</locationX>
-        <locationY>686</locationY>
+        <locationX>562</locationX>
+        <locationY>684</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <fields>
             <name>ErrrorMessage</name>
-            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;font-size: 16px; color: rgb(198, 5, 5);&quot;&gt;Please Add Sales Order Line Items to Create Credit Note&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;font-size: 16px; color: rgb(198, 5, 5);&quot;&gt;Please add Sales Order Line Items to Create Credit Note.&lt;/b&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
@@ -911,6 +1221,37 @@
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>invoiceTaxableAmount</name>
+        <dataType>Currency</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>2</scale>
+        <value>
+            <numberValue>0.0</numberValue>
+        </value>
+    </variables>
+    <variables>
+        <name>LineItemName</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue></stringValue>
+        </value>
+    </variables>
+    <variables>
+        <name>No_Stock</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
     </variables>
     <variables>
         <name>opportunityId</name>
@@ -935,6 +1276,30 @@
         <isOutput>false</isOutput>
     </variables>
     <variables>
+        <name>StockList</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Stock__c</objectType>
+    </variables>
+    <variables>
+        <name>StockRecord</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Stock__c</objectType>
+    </variables>
+    <variables>
+        <name>varCollectioncharge</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Charges__c</objectType>
+    </variables>
+    <variables>
         <name>varCollectionDcNoteLineItem</name>
         <dataType>SObject</dataType>
         <isCollection>true</isCollection>
@@ -949,6 +1314,14 @@
         <isInput>false</isInput>
         <isOutput>false</isOutput>
         <objectType>Delivery_Note_Line_Item__c</objectType>
+    </variables>
+    <variables>
+        <name>varSingleCharge</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Charges__c</objectType>
     </variables>
     <variables>
         <name>varSingleDcNoteLineItem</name>

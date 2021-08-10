@@ -34,7 +34,7 @@
             @bottom-center 
             {
             padding: 10px;
-            content: "Page " counter(page) " of " counter(pages);
+            content: "Registered Office : N-122, Panchsheel Park, New Delhi - 100 017";
             }
             }
             
@@ -60,42 +60,48 @@
             border-style: solid ;
             border-color: #000000;
             }
+            ol.d{
+            list-style-type: lower-alpha;
+            }
             
         </style> 
     </head>
     <apex:form >
         <div class="header">
-            <div style="width:100%;margin-top:8%"> 
-                <div style="float:left; width:40%;">
-                    <apex:image url="{!$Resource.PowerpartsLogo}" width="230" height="80"/><br/>
-                    <b><apex:outputText value="Powerparts Private Limited" style="font-size:20px;font-family: Arial;padding-left:4px" /></b><br/>
-                    <b><apex:outputText value="Plot No. 114, Pace City1" style="font-size:20px;font-family: Arial;padding-left:4px" /></b><br/>
-                    <apex:outputText value="Sector- 37, Gurgaon-122001" style="padding-left:4px;font-family: Arial; size: 12pt;"/><br/>
-                    <apex:outputText value="Haryana, India" style="padding-left:4px;font-family: Arial; size: 12pt;"/><br/>
-                    <apex:outputText value="Ph.  : +91 124 4036614/4019215" style="padding-left:4px;font-family: Arial; size: 12pt;"/><br/>
-                    <apex:outputText value="Email: " style="padding-left:4px;font-family: Arial; size: 12pt;"/><u style="color:blue;font-family: Arial; size: 12pt;">powerparts@powerparts.in</u><br/>
-                </div>
-                
-                <div style="float:left;margin-left:8%;text-align:center;">
-                    
-                </div>
-                <div style="float:right; width:30%;">
-                    <apex:image url="{!$Resource.PerkinsLogo}" width="180" height="160" style="margin-left:28%"/>
-                </div>
-            </div>
+            <table style="width:100%;border-collapse: collapse;"> 
+                <tr>
+                  
+                    <td style="border:none;padding:0px;" width="50%" valign="top">
+                        <apex:image url="{!$Resource.PowerpartsLogo}" width="210" height="60"/><br/>
+                        <b><apex:outputText value="Powerparts Private Limited" style="font-size:20px;font-family: Arial;padding-left:4px" /></b><br/>
+                         <div><b style="font-size:15px;font-family: Arial;">&nbsp;{!pdfheader.Address_Header__c}</b></div>
+                       <!-- <b><apex:outputText value="{!pdfheader.Address_Line1__c}" style="font-size:15px;font-family: Arial;font-size:20px;font-family: Arial;padding-left:4px" /></b><br/>-->
+                        <apex:outputText value="{!pdfheader.Address_Line_2__c}" style="font-size:15px;font-family: Arial;padding-left:4px;font-family: Arial; size: 14pt;"/><br/>
+                        <apex:outputText value="Haryana, India" style="font-size:15px;font-family: Arial;padding-left:4px;font-family: Arial; size: 14pt;"/><br/>
+                        <apex:outputText value="Ph.  : {!pdfheader.Tel__c}" style="font-size:15px;font-family: Arial;padding-left:4px;font-family: Arial; size: 14pt;"/><br/>
+                        <apex:outputText value="Email: " style="font-size:15px;font-family: Arial;padding-left:4px;font-family: Arial; size: 14pt;"/><u style="font-size:15px;font-family: Arial;color:blue;font-family: Arial; size: 14pt;">{!pdfheader.Email__c}</u><br/>
+                    </td>
+                    <td style="border:none;padding-left: 30px;" width="50%" valign="top" align="right">
+                        <Right>
+                            <apex:image url="{!$Resource.PerkinsLogo}" width="210" height="160" style="margin-top: -50px;margin-right: 70px;"/> 
+                        </Right>
+                    </td>
+                   
+                </tr>
+            </table>
         </div>
         <body>
             <div class="content">
                 
-                <div style="width:100%;"> 
+                <div style="width:100%; "> 
                     <div style="float:left; width:40%;">
-                       <b> Offer No. :</b> {!Quote__c.Quote_Number__c}
+                        <b> Offer No. :</b> {!Quote__c.Quote_Number__c}
                     </div>
                     <div style="float:left;margin-left:8%;text-align:center;">
                         
                     </div><br/>
                     <div style="float:right; width:30%;">
-                       <b> Date:</b>
+                        <b> Date:</b>
                         <apex:outputText value="{0, date, d'/'MM'/'y}">
                             <apex:param value="{!Quote__c.Date__c}"/>
                         </apex:outputText>
@@ -104,7 +110,7 @@
                 
                 <div style="width:100%;"> 
                     <div style="float:left; width:40%;">
-                       <b> Customer Name: </b>{!Quote__c.Customer_Party__r.Name}
+                        <b> Customer Name: </b>{!Quote__c.Customer_Party__r.Name}
                     </div>
                     <div style="float:left;margin-left:8%;text-align:center;">
                         
@@ -116,7 +122,7 @@
                 
                 <div style="width:100%;"> 
                     <div style="float:left; width:40%;">
-                       <b> Address: </b><apex:outputfield value="{!Quote__c.Billing_Address__c}"/>
+                        <b> Address: </b><apex:outputfield value="{!Quote__c.Billing_Address__c}"/>
                     </div>
                     <div style="float:left;margin-left:8%;text-align:center;">
                         
@@ -136,13 +142,13 @@
                         <b>Engine Serial No.:</b> {!Quote__c.Opportunity__r.Customer_Asset__r.Name}
                     </div>
                     <div style="float:left;width:20%;">
-                       <b> Make :</b> {!Quote__c.Opportunity__r.Customer_Asset__r.Engine_Make__c}
+                        <b> Make :</b> {!Quote__c.Opportunity__r.Customer_Asset__r.Engine_Make__c}
                     </div>
                     <div style="float:left;width:25%;">
-                       <b> Model:</b> {!Quote__c.Opportunity__r.Customer_Asset__r.Engine_Model__c}
+                        <b> Model:</b> {!Quote__c.Opportunity__r.Customer_Asset__r.Engine_Model__c}
                     </div>
                     <div style="float:left;width:25%;">
-                       <b> Rating:</b> {!Quote__c.Opportunity__r.Customer_Asset__r.Rating_KVA_KWM__c}
+                        <b> Rating:</b> {!Quote__c.Opportunity__r.Customer_Asset__r.Rating_KVA_KWM__c}
                     </div>
                 </div>
                 
@@ -150,10 +156,17 @@
                     <div style="float:left; width:100%;">&nbsp;
                     </div>
                 </div>  
+               <div class="slds-m-top_large">
+                    <div style="width:100%;">
+                        <div style="float:left; width:100%;">
+                    <b> Application:</b> {!Quote__c.Opportunity__r.Customer_Asset__r.Applications__c}
+                    </div>
+                    </div>
+                </div>
                 
                 <div class="slds-m-top_large">
                     <div style="width:100%;">
-                        <div style="float:left; width:40%;">
+                        <div style="float:left; width:40%;padding-top:5%">
                             <u><b> Subject Annual Maintenance Contract </b></u>: 
                         </div>
                     </div>
@@ -173,50 +186,50 @@
                         <table style="width:100%; border:1px solid black; border-collapse: collapse; margin-bottom:2%; margin-top:2%;">
                             
                             <tr >
-                                <td valign="top" >
+                                <td valign="top" width="5%">
                                     <b>Sl. No.</b>
                                 </td>
-                                <td valign="top" >
+                                <td valign="top" width="47%">
                                     <b>Description</b>
                                 </td>
-                                <td valign="top" colspan="2">
+                                <td valign="top"  width="6%">
                                     <b>Qty.</b>
                                 </td>
-                                <td valign="top">
+                                <td valign="top" width="12%">
                                     <b>Amount</b>
                                 </td>
-                                <td valign="top">
+                                <td valign="top" width="6%">
                                     <b>GST%</b>
                                 </td>
-                                <td valign="top">
+                                <td valign="top" width="12%">
                                     <b>GST Amount</b>
                                 </td>
-                                <td valign="top">
+                                <td valign="top" width="12%">
                                     <b>Total Amount</b>
                                 </td>
                             </tr> 
                             <apex:variable var="Index" value="{!0}"/>
                             <apex:repeat value="{!lineitem}" var="li">
                                 <tr >
-                                    <td valign="top" >
+                                    <td valign="top" width="5%">
                                         <apex:variable var="Index" value="{!Index + 1}" />  {!Index}
                                     </td>
-                                    <td valign="top" >
-                                        {!li.Description__c}
+                                    <td valign="top"  width="47%" >
+                                        {!li.Product_Part__r.Part_Name__c}
                                     </td>
-                                    <td valign="top" colspan="2">
+                                    <td valign="top"  width="6%">
                                         {!li.Quantity__c}
                                     </td>
-                                    <td valign="top">
+                                    <td valign="top" width="12%">
                                         {!li.Total_Amount_Formula__c }
                                     </td>
-                                    <td valign="top">
+                                    <td valign="top"  width="6%">
                                         <b>{!li.GST__c }</b>
                                     </td>
-                                    <td valign="top">
+                                    <td valign="top" width="12%">
                                         <b>{!li.GST_Amount__c }</b>
                                     </td>
-                                    <td valign="top">
+                                    <td valign="top" width="12%">
                                         <b> {!li.Total_Amount_GST__c }.00</b>
                                     </td>
                                 </tr> 
@@ -266,7 +279,7 @@
                         <u><b>Termination</b></u>: &nbsp; {!Quote__c.Termination__c} <br/> 
                     </div>
                 </div>
-                                <div style="width:100%;"> 
+                <div style="width:100%;"> 
                     <div style="float:left; width:100%;">&nbsp;
                     </div>
                 </div>  
@@ -282,7 +295,10 @@
                         Thanking You, <br/>
                         Yours Faithfully <br/>
                         For <b>POWERPARTS PRIVATE LIMITED </b>
-                        <br/><br/><br/>
+                        <br/><br/>
+                        <apex:image id="theImage" url="{!sign}" width="100" height="50" alt="User Siganture"/>
+                        
+                        <br/>
                         <b>Authorised Signatory</b>
                     </div>
                 </div> 

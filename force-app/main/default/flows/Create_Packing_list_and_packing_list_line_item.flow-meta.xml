@@ -42,6 +42,13 @@
                 <elementReference>packinglistId</elementReference>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varSinglePackingLineItem.Customer_Part_No__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>line_item_iteration.Part_Serial__c</elementReference>
+            </value>
+        </assignmentItems>
         <connector>
             <targetReference>adding_single_line_item_to_collection_list</targetReference>
         </connector>
@@ -223,7 +230,7 @@
         <allowPause>false</allowPause>
         <fields>
             <name>messagesForLineItem</name>
-            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;font-size: 18px; color: rgb(241, 17, 17);&quot;&gt;Please Add  Delivery Note Line Item&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;color: rgb(241, 17, 17); font-size: 18px;&quot;&gt;Please add Delivery Note Line Items.&lt;/b&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
@@ -233,13 +240,13 @@
         <name>Packing_List_Successfully_Created</name>
         <label>Packing List Successfully Created</label>
         <locationX>951</locationX>
-        <locationY>128</locationY>
+        <locationY>129</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <fields>
             <name>SuccessMessage</name>
-            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;color: rgb(12, 185, 38); font-size: 18px;&quot;&gt;&lt;span class=&quot;ql-cursor&quot;&gt;﻿&lt;/span&gt;Packing List Successfully Created&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;font-size: 18px; color: rgb(12, 185, 38);&quot;&gt;﻿Packing List c&lt;/b&gt;&lt;b style=&quot;font-size: 18px; color: rgb(12, 185, 38); background-color: rgb(255, 255, 255);&quot;&gt;reated s&lt;/b&gt;&lt;b style=&quot;font-size: 18px; color: rgb(12, 185, 38);&quot;&gt;uccessfully. &lt;/b&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>

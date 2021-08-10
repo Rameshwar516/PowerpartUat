@@ -54,6 +54,9 @@
                                         <div class="slds-truncate slds-cell-wrap" title="Product Name">Product Name</div>
                                     </th>
                                     <th class="" scope="col" style="width: 2rem; text-align:center;">
+                                        <div class="slds-truncate slds-cell-wrap" title="CPN">Customer Part<br/> Number</div>
+                                    </th>
+                                    <th class="" scope="col" style="width: 2rem; text-align:center;">
                                         <div class="slds-truncate slds-cell-wrap" title="Quantity">Quantity</div>
                                     </th>
 									<th class="" scope="col" style="width: 2.5rem; text-align:center;">
@@ -95,7 +98,8 @@
                                         <td class="dataCell" style="width: 8rem;" ><lightning:input type="checkbox" value="{!cusProd.isSelected}" checked="{!cusProd.isSelected}" onchange="{!c.checkJs}"/></td>
                                         <td class="dataCell" style="width: 8rem; text-align:center;"><a href="{! '/' + cusProd.objDNLI.Product_Part__c}"> {!cusProd.objDNLI.Product_Part__r.Name}</a></td>
                                         <td class="dataCell" style="width: 9rem; text-align:center;">{!cusProd.objDNLI.Product_Part__r.Part_Name__c}</td>
-                                        <td class="dataCell" style="width: 7rem; text-align:center;">{!cusProd.objDNLI.Quantity__c}</td>
+                                        <td class="dataCell" style="width: 8rem;" ><lightning:input  variant="label-hidden" type="string"   value="{!cusProd.custmnum}"/></td>
+										<td class="dataCell" style="width: 7rem; text-align:center;">{!cusProd.objDNLI.Quantity__c}</td>
 										<td class="dataCell" style="width: 8rem;" ><!--<lightning:input type="string" value="{!cusProd.strBoxType}"/>-->
 										<lightning:select value="{!cusProd.strBoxType}"  variant="label-hidden" class="label-hidden" >
 											<option value="">choose...</option>

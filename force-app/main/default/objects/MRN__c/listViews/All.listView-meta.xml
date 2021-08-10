@@ -3,6 +3,7 @@
     <fullName>All</fullName>
     <columns>NAME</columns>
     <columns>MRN_Type__c</columns>
+    <columns>CREATEDBY_USER</columns>
     <columns>MRN_Delivery_Type__c</columns>
     <columns>Contact_No__c</columns>
     <columns>Stage__c</columns>

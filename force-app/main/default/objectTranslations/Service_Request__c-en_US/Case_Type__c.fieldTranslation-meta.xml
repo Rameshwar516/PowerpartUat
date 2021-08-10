@@ -11,6 +11,10 @@
         <translation></translation>
     </picklistValues>
     <picklistValues>
+        <masterLabel>Campaign/PIP</masterLabel>
+        <translation></translation>
+    </picklistValues>
+    <picklistValues>
         <masterLabel>FOC</masterLabel>
         <translation></translation>
     </picklistValues>

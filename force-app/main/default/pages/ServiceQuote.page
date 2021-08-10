@@ -1,5 +1,5 @@
 <apex:page sidebar="false" standardController="Quote__c" applyBodyTag="false" extensions="ClsAMCQuote" renderAs="pdf">
-
+    
     <head>
         <style type="text/css">
             @page 
@@ -20,7 +20,7 @@
             {                
             padding: 5px; 
             padding-top:10px;
-            padding-bottom:5px;
+            padding-bottom:2px;
             position: running(header); 
             content: "Page " counter(page) " of " counter(pages);
             } 
@@ -37,13 +37,25 @@
             content: "Page " counter(page) " of " counter(pages);
             }
             }
-            
+            @page 
+            {
+            @bottom-center 
+            {
+            padding-top: 10px;
+            content: "Registered Office : N-122, Panchsheel Park, New Delhi - 100 017";
+            }
+            @bottom-right 
+            {
+            padding-top: 10px;
+            content: "Page " counter(page) " of " counter(pages);
+            }
+            }
             table 
             {
             border-spacing: 0px;
             font-size:12px;
             font-family: Arial;
-            -fs-table-paginate: paginate; 
+            -fs-table-paginate: paginate; 	
             }
             
             td {
@@ -59,200 +71,222 @@
             border-style: solid ;
             border-color: #000000;
             }
+            ol.d{
+            list-style-type: lower-alpha;
+            }
             
         </style> 
     </head>
     <apex:form >
         <div class="header">
-            <div style="width:100%;margin-top:8%"> 
+            <table style="width:100%;border-collapse: collapse;"> 
+                <tr>
+                  
+                    <td style="border:none;padding:0px;" width="50%" valign="top">
+                        <apex:image url="{!$Resource.PowerpartsLogo}" width="210" height="60"/><br/>
+                        <b><apex:outputText value="Powerparts Private Limited" style="font-size:20px;font-family: Arial;padding-left:4px" /></b><br/>
+                         <div><b style="font-size:15px;font-family: Arial;">&nbsp;{!pdfheader.Address_Header__c}</b></div>
+                       <!-- <b><apex:outputText value="{!pdfheader.Address_Line1__c}" style="font-size:15px;font-family: Arial;font-size:20px;font-family: Arial;padding-left:4px" /></b><br/>-->
+                        <apex:outputText value="{!pdfheader.Address_Line_2__c}" style="font-size:15px;font-family: Arial;padding-left:4px;font-family: Arial; size: 14pt;"/><br/>
+                        <apex:outputText value="Haryana, India" style="font-size:15px;font-family: Arial;padding-left:4px;font-family: Arial; size: 14pt;"/><br/>
+                        <apex:outputText value="Ph.  : {!pdfheader.Tel__c}" style="font-size:15px;font-family: Arial;padding-left:4px;font-family: Arial; size: 14pt;"/><br/>
+                        <apex:outputText value="Email: " style="font-size:15px;font-family: Arial;padding-left:4px;font-family: Arial; size: 14pt;"/><u style="font-size:15px;font-family: Arial;color:blue;font-family: Arial; size: 14pt;">{!pdfheader.Email__c}</u><br/>
+                    </td>
+                    <td style="border:none;padding-left: 30px;" width="50%" valign="top" align="right">
+                        <Right>
+                            <apex:image url="{!$Resource.PerkinsLogo}" width="210" height="160" style="margin-top: -50px;margin-right: 70px;"/> 
+                        </Right>
+                    </td>
+                   
+                </tr>
+            </table>
+        </div>
+        
+        <div class="content">
+            
+            <div style="width:100%;"> 
                 <div style="float:left; width:40%;">
-                    <apex:image url="{!$Resource.PowerpartsLogo}" width="230" height="80"/><br/>
-                     <b><apex:outputText value="Powerparts Private Limited" style="font-size:20px;font-family: Arial;padding-left:4px" /></b><br/>
-                    <b><apex:outputText value="Plot No. 114, Pace City1" style="font-size:20px;font-family: Arial;padding-left:4px" /></b><br/>
-                    <apex:outputText value="Sector- 37, Gurgaon-122001" style="padding-left:4px;font-family: Arial; size: 12pt;"/><br/>
-                    <apex:outputText value="Haryana, India" style="padding-left:4px;font-family: Arial; size: 12pt;"/><br/>
-                    <apex:outputText value="Ph.  : +91 124 4036614/4019215" style="padding-left:4px;font-family: Arial; size: 12pt;"/><br/>
-                    <apex:outputText value="Email: " style="padding-left:4px;font-family: Arial; size: 12pt;"/><u style="color:blue;font-family: Arial; size: 12pt;">powerparts@powerparts.in</u><br/>
+                    <b> Offer No.:</b> {!Quote__c.Quote_Number__c}
                 </div>
                 <div style="float:left;margin-left:8%;text-align:center;">
                     
                 </div>
                 <div style="float:right; width:30%;">
-                    <apex:image url="{!$Resource.PerkinsLogo}" width="180" height="160" style="margin-left:28%"/>
+                    <b>Ref. No.:</b>
+                    {!Quote__c.Opportunity__r.Reference_Number__c}
+                </div>
+            </div><br/>
+            <br/>
+            <div style="width:100%;"> 
+                <div style="float:left; width:40%;">
+                    <b>Date:</b> 
+                    <apex:outputText value="{0, date, d'/'MM'/'y}">
+                        <apex:param value="{!Quote__c.Date__c}"/>
+                    </apex:outputText>
+                </div>
+                <div style="float:left;margin-left:8%;text-align:center;">
+                    
+                </div>
+                <div style="float:right; width:30%;">
+                    <b>Ref. Date :</b>
+                    <apex:outputText value="{0, date, d'/'MM'/'y}">
+                        <apex:param value="{!Quote__c.Opportunity__r.Reference_Date__c}"/>
+                    </apex:outputText>
+                </div>
+            </div><br/>
+            <br/>
+            
+            <div style="width:100%;"> 
+                <div style="float:left; width:40%;">
+                    <b>Customer Name:</b> {!Quote__c.Customer_Party__r.Name}
+                </div>
+                <div style="float:left;margin-left:8%;text-align:center;">
+                    
+                </div>
+                <div style="float:right; width:30%;">
+                    
+                </div>                                       
+            </div><br/>
+            
+            <div style="width:100%;"> 
+                <div style="float:left; width:40%;">
+                    
+                    <b>Address : </b> <apex:outputfield value="{!Quote__c.Billing_Address__c}"/>
+                </div>
+                <div style="float:left;margin-left:8%;text-align:center;">
+                    
+                </div>
+                <div style="float:right; width:30%;">
+                    <b>  Site Address: </b><apex:outputfield value="{!Quote__c.Shipping_Address__c}"/>
                 </div>
             </div>
-        </div>
-        <body>
-            <div class="content">
-                
-                <div style="width:100%;"> 
-                    <div style="float:left; width:40%;">
-                       <b> Offer No.:</b> {!Quote__c.Quote_Number__c}
+            
+            <div style="width:100%;"> 
+                <div style="float:left; width:100%;">&nbsp;
+                </div>
+            </div>                                                                     
+            
+            <div style="width:100%;"> 
+                    <div style="float:left;width:30%;">
+                        <b>Engine Serial No.:</b> {!Quote__c.Opportunity__r.Customer_Asset__r.Name}
                     </div>
-                    <div style="float:left;margin-left:8%;text-align:center;">
-                        
+                    <div style="float:left;width:20%;">
+                        <b> Make :</b> {!Quote__c.Opportunity__r.Customer_Asset__r.Engine_Make__c}
                     </div>
-                    <div style="float:right; width:30%;">
-                        <b>Ref. No.:</b>
-                            {!Quote__c.Opportunity__r.Reference_Number__c}
+                    <div style="float:left;width:25%;">
+                        <b> Model:</b> {!Quote__c.Opportunity__r.Customer_Asset__r.Engine_Model__c}
                     </div>
-                </div><br/>
-                <br/>
-                <div style="width:100%;"> 
-                    <div style="float:left; width:40%;">
-                        <b>Date:</b> 
-                            <apex:outputText value="{0, date, d'/'MM'/'y}">
-                                <apex:param value="{!Quote__c.Date__c}"/>
-                            </apex:outputText>
-                    </div>
-                    <div style="float:left;margin-left:8%;text-align:center;">
-                        
-                    </div>
-                    <div style="float:right; width:30%;">
-                        <b>Ref. Date :</b>
-                            <apex:outputText value="{0, date, d'/'MM'/'y}">
-                                <apex:param value="{!Quote__c.Opportunity__r.Reference_Date__c}"/>
-                            </apex:outputText>
-                    </div>
-                </div><br/>
-                <br/>
-                
-                <div style="width:100%;"> 
-                    <div style="float:left; width:40%;">
-                        <b>Customer Name:</b> {!Quote__c.Customer_Party__r.Name}
-                    </div>
-                    <div style="float:left;margin-left:8%;text-align:center;">
-                        
-                    </div>
-                    <div style="float:right; width:30%;">
-                        
-                    </div>                                       
-                </div><br/>
-                
-                <div style="width:100%;"> 
-                    <div style="float:left; width:40%;">
-                        
-                       <b>Address : </b> <apex:outputfield value="{!Quote__c.Billing_Address__c}"/>
-                    </div>
-                    <div style="float:left;margin-left:8%;text-align:center;">
-                        
-                    </div>
-                    <div style="float:right; width:30%;">
-                      <b>  Site Address: </b><apex:outputfield value="{!Quote__c.Shipping_Address__c}"/>
+                    <div style="float:left;width:25%;">
+                        <b> Rating:</b> {!Quote__c.Opportunity__r.Customer_Asset__r.Rating_KVA_KWM__c}
                     </div>
                 </div>
                 
                 <div style="width:100%;"> 
-                    <div style="float:left; width:100%;">&nbsp;
-                    </div>
-                </div>                                                                     
-                    
-                <div style="width:100%;"> 
-                    <div style="float:left;width:40%;">
-                        <b>Engine Serial No. :</b>{!Quote__c.Opportunity__r.Customer_Asset__r.Name}
-                    </div>
-                     <div style="float:left;margin-left:8%;text-align:center;">
-                        
-                    </div>
-                    <div style="float:right;width:30%;">
-                     <b> Application:</b> {!Quote__c.Opportunity__r.Customer_Asset__r.Applications__c}
-                    </div>
-                </div>
-                 <div style="width:100%;"> 
                     <div style="float:left; width:100%;">&nbsp;
                     </div>
                 </div>  
-                 <div style="width:100%;"> 
-                    <div style="float:left;width:40%;">
-                       <b>Subject </b>: 
+               <div class="slds-m-top_large">
+                    <div style="width:100%;">
+                        <div style="float:left; width:100%;">
+                    <b> Application:</b> {!Quote__c.Opportunity__r.Customer_Asset__r.Applications__c}
                     </div>
-                    
-                </div>
-                
-                <div style="width:100%;"> 
-                    <div style="float:left;width:100%;margin-top:5px">
-                        &nbsp;<br/>
-                        Dear Sir, <br/><br/>
-                            We are pleased to offer for  engineering service charges.
                     </div>
                 </div>
                 
-                <div style="width:100%;"> 
+                <div class="slds-m-top_large">
+                    <div style="width:100%;">
+                        <div style="float:left; width:40%;padding-top:5%">
+                            <u><b> Subject </b></u>: 
+                        </div>
+                    </div>
+                </div>
+                
+            
+            <div style="width:100%;"> 
                 <div style="float:left;width:100%;margin-top:5px">
-                <table style="width:100%;border:1px solid black;border-collapse: collapse; margin-bottom:2%; margin-top:2%;">
-                
-                <tr >
-                    <td valign="top" >
-                        <b>Sl. No.</b>
-                    </td>
-                    <td valign="top" >
-                        <b>Description</b>
-                    </td>
-                    <td valign="top" colspan="2">
-                        <b>Qty.</b>
-                    </td>
-                    <td valign="top">
-                        <b>Amount</b>
-                    </td>
-                    <td valign="top">
-                        <b>GST%</b>
-                    </td>
-                     <td valign="top">
-                        <b>GST Amount</b>
-                    </td>
-                    <td valign="top">
-                        <b>Total Amount</b>
-                    </td>
-                </tr> 
-                <apex:variable var="Index" value="{!0}"/>
-                <apex:repeat value="{!lineitem}" var="li">
-                    <tr >
-                        <td valign="top" >
-                            <apex:variable var="Index" value="{!Index + 1}" />  {!Index}
-                        </td>
-                        <td valign="top" >
-                            {!li.Description__c}
-                        </td>
-                        <td valign="top" colspan="2">
-                            {!li.Quantity__c}
-                        </td>
-                        <td valign="top">
-                            {!li.Total_Amount_Formula__c }
-                        </td>
-                        <td valign="top">
-                            <b>{!li.GST__c }</b>
-                        </td>
-                         <td valign="top">
-                            <b>{!li.GST_Amount__c }</b>
-                        </td>
-                        <td valign="top">
-                            <b> {!li.Total_Amount_GST__c }.00</b>
-                        </td>
-                    </tr> 
-                </apex:repeat>
-            </table>
-            </div>
+                    &nbsp;<br/>
+                    Dear Sir, <br/><br/>
+                    We are pleased to offer for  engineering service charges.
+                </div>
             </div>
             
-               <div style="width:100%;"> 
-                    <div style="float:left;width:100%;">
-                        <u><b>Terms &amp; Conditions </b></u>: <br/><apex:outputfield value="{!Quote__c.Term_and_Condition__c}"/>
-                    </div>
+            <div style="width:100%;"> 
+                <div style="float:left;width:100%;margin-top:5px">
+                    <table style="width:100%;border:1px solid black;border-collapse: collapse; margin-bottom:2%; margin-top:2%;">
+                        <tr >
+                            <th valign="top" Style="width:5%">
+                                <b>Sl. No.</b>
+                            </th>
+                            <th valign="top" Style="width:47%">
+                                <b>Description</b>
+                            </th>
+                            <th valign="top" colspan="2" Style="width:6%">
+                                <b>Qty.</b>
+                            </th>
+                            <th valign="top" Style="width:12%">
+                                <b>Amount</b>
+                            </th>
+                            <th valign="top" Style="width:6%">
+                                <b>GST%</b>
+                            </th>
+                            <th valign="top" Style="width:12%">
+                                <b>GST Amount</b>
+                            </th>
+                            <th valign="top" Style="width:12%">
+                                <b>Total Amount</b>
+                            </th>
+                        </tr> 
+                        <apex:variable var="Index" value="{!0}"/>
+                        <apex:repeat value="{!lineitem}" var="li">
+                            <tr >
+                                <td valign="top" >
+                                    <apex:variable var="Index" value="{!Index + 1}" />  {!Index}
+                                </td>
+                                <td valign="top" >
+                                    {!li.Product_Part__r.Part_Name__c}
+                                </td>
+                                <td valign="top" colspan="2">
+                                    {!li.Quantity__c}
+                                </td>
+                                <td valign="top">
+                                    {!li.Total_Amount_Formula__c }
+                                </td>
+                                <td valign="top">
+                                    <b>{!li.GST__c }</b>
+                                </td>
+                                <td valign="top">
+                                    <b>{!li.GST_Amount__c }</b>
+                                </td>
+                                <td valign="top">
+                                    <b> {!li.Total_Amount_GST__c}</b>
+                                </td>
+                            </tr> 
+                        </apex:repeat>
+                    </table>
                 </div>
-                <div style="float:left;width:100%;margin-top: 25px;">
-                    Kindly Send the PO for Engineers Visit enable us to Proceed further
-                </div>
-                <div style="width:100%;"> 
-                    <div style="float:left;width:100%;">
-                        &nbsp;<br/><br/>
-                        Thanking You, <br/>
-                        Yours Faithfully <br/>
-                        For <b>POWERPARTS PRIVATE LIMITED </b>
-                        <br/><br/><br/>
-                        <b>Authorised Signatory</b>
-                    </div>
-                </div> 
             </div>
-        </body>
+            
+            <div style=" border: none;"> 
+                <div style="float:left;width:100%; border: none;">
+                    <u><b>Terms &amp; Conditions </b></u>: <br/><apex:outputtext value="{!Quote__c.Term_and_Condition_rich__c}" escape="false"/>
+                    
+                </div>
+            </div>
+            <div style="float:left;width:100%;margin-top: 25px;">
+                Kindly Send the PO for Engineers Visit enable us to Proceed further
+            </div>
+            <div style="width:100%;"> 
+                <div style="float:left;width:100%;">
+                    &nbsp;<br/><br/>
+                    Thanking You, <br/>
+                    Yours Faithfully <br/>
+                    For <b>POWERPARTS PRIVATE LIMITED </b>
+                    <br/><br/>
+                    <apex:image id="theImage1" url="{!sign}" width="100" height="50" alt="User Siganture"/><br/> <br/>
+                    <b>Authorised Signatory</b>
+                </div>
+            </div> 
+        </div>
+        
     </apex:form>
 </apex:page>

@@ -4,7 +4,7 @@
     <externalId>false</externalId>
     <formula>CGST__c *  Charge_Amount__c</formula>
     <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-    <label>CGST_Amount</label>
+    <label>CGST Amount</label>
     <precision>18</precision>
     <required>false</required>
     <scale>2</scale>

@@ -26,9 +26,8 @@
         <div class="slds-form-element__control">
             
             <div class="slds-input-has-icon slds-input-has-icon--right ">
-                <lightning:icon class="{! empty(v.selectedRecord.Id) ? 'slds-input__icon slds-show' : 'slds-hide' }" iconName="utility:search" size="x-small" alternativeText="search"/> 
                 <!-- This markup is for when an record is selected -->
-                <div aura:id="lookup-pill" class="{! empty(v.selectedRecord.Id) ? 'slds-pill-container slds-hide' : 'slds-pill-container slds-show'}">
+                <div aura:id="lookup-pill" class="{! empty(v.selectedRecord.Id) ? ' slds-hide' : ' slds-show'}" style="{! if(v.eventObject=='MRN','margin-top:16px !important','margin-top:1px !important')}">
                     <aura:if isTrue="{!v.objectAPIName == 'Purchase_Indent__c'}">
                         <lightning:pill aura:id="getlookval" title="{!v.selectedRecord.Purchase_Indent_Number__c}" class="pillSize" label="{!v.selectedRecord.Purchase_Indent_Number__c}" name="{!v.selectedRecord.Purchase_Indent_Number__c}" onremove="{!c.clear }" >
                             <aura:set attribute="media">

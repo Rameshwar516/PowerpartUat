@@ -26,6 +26,8 @@
     <tabs>Sales_Order__c</tabs>
     <tabs>DC_Note__c</tabs>
     <tabs>standard-report</tabs>
+    <tabs>Term_and_Condition__c</tabs>
+    <tabs>Sales_Order_Return__c</tabs>
     <uiType>Lightning</uiType>
     <utilityBar>PowerParts_Sales_Inventory_UtilityBar</utilityBar>
 </CustomApplication>

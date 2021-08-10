@@ -3,7 +3,7 @@
     <fullName>Ware_House__c</fullName>
     <deleteConstraint>SetNull</deleteConstraint>
     <externalId>false</externalId>
-    <label>Sales From</label>
+    <label>Sales/Service From</label>
     <referenceTo>Ware_House__c</referenceTo>
     <relationshipLabel>Enquiries</relationshipLabel>
     <relationshipName>Opportunities</relationshipName>

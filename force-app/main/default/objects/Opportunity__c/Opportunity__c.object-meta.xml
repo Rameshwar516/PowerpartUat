@@ -158,6 +158,7 @@
     <enableSearch>true</enableSearch>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>Private</externalSharingModel>
     <label>Enquiry</label>
     <nameField>
         <displayFormat>ENQ-{000000}</displayFormat>
@@ -168,12 +169,14 @@
     <pluralLabel>Enquiries</pluralLabel>
     <searchLayouts>
         <searchResultsAdditionalFields>Proforma_Invoice__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>OEM_Customer__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>PI_Type__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>Stage__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>CREATED_DATE</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>OEM_Customer__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>Opportunity_Close_Date__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>CREATED_DATE</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>OWNER.ALIAS</searchResultsAdditionalFields>
     </searchLayouts>
-    <sharingModel>ReadWrite</sharingModel>
+    <sharingModel>Private</sharingModel>
     <startsWith>Vowel</startsWith>
     <visibility>Public</visibility>
 </CustomObject>

@@ -462,8 +462,8 @@
     <recordLookups>
         <name>get_Mrn_Line_item</name>
         <label>get Mrn Line item</label>
-        <locationX>456</locationX>
-        <locationY>240</locationY>
+        <locationX>525</locationX>
+        <locationY>185</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>chk_mrn_line_item</targetReference>
@@ -523,7 +523,7 @@
     <screens>
         <name>Create_a_Debit_Note</name>
         <label>Create a Debit Note</label>
-        <locationX>860</locationX>
+        <locationX>861</locationX>
         <locationY>492</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
@@ -646,13 +646,13 @@
         <name>Fields_Requirement</name>
         <label>Fields Requirement</label>
         <locationX>50</locationX>
-        <locationY>670</locationY>
+        <locationY>666</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <fields>
             <name>displayErrorMessage</name>
-            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;font-size: 16px; color: rgb(222, 5, 5);&quot;&gt;Please Update Stage to Received and MRN Type to Purchase Order In Order to Create a Debit Note&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;font-size: 16px; color: rgb(222, 5, 5);&quot;&gt;Please update Stage to Received and MRN Type to Purchase Order to create Debit Note.&lt;/b&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
@@ -661,14 +661,14 @@
     <screens>
         <name>NO_Items</name>
         <label>NO Items</label>
-        <locationX>611</locationX>
-        <locationY>726</locationY>
+        <locationX>612</locationX>
+        <locationY>727</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <fields>
             <name>errormsg</name>
-            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;color: rgb(192, 27, 27); font-size: 18px;&quot;&gt;There is No Line Items for Debit Note&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;color: rgb(192, 27, 27); font-size: 18px;&quot;&gt;Debit Note Can&apos;t be Created because Short/Excess Quantity is 0 in MRN.&lt;/b&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
@@ -678,13 +678,13 @@
         <name>NO_MRN_Items</name>
         <label>NO MRN Items</label>
         <locationX>344</locationX>
-        <locationY>682</locationY>
+        <locationY>680</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <fields>
             <name>noItem</name>
-            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;font-size: 18px; color: rgb(237, 45, 11); background-color: rgb(255, 255, 255);&quot;&gt;Please Add MRN Line Item/s&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;font-size: 18px; color: rgb(237, 45, 11); background-color: rgb(255, 255, 255);&quot;&gt;Please add MRN Line Items.&lt;/b&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
@@ -700,7 +700,7 @@
         <allowPause>false</allowPause>
         <fields>
             <name>SuccessMessageDeliveryNote</name>
-            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;color: rgb(13, 198, 19); font-size: 18px;&quot;&gt;Debit Note Successfully Created&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;font-size: 18px; color: rgb(13, 198, 19);&quot;&gt;Debit Note c&lt;/b&gt;&lt;b style=&quot;font-size: 18px; color: rgb(13, 198, 19); background-color: rgb(255, 255, 255);&quot;&gt;reated s&lt;/b&gt;&lt;b style=&quot;font-size: 18px; color: rgb(13, 198, 19);&quot;&gt;uccessfully. &lt;/b&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>

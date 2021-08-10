@@ -64,12 +64,40 @@
         <template>unfiled$public/Service_Request_Generation_notification</template>
     </alerts>
     <fieldUpdates>
+        <fullName>Approved</fullName>
+        <field>Submit_Part_Approval__c</field>
+        <literalValue>Approved</literalValue>
+        <name>Approved</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>true</reevaluateOnChange>
+    </fieldUpdates>
+    <fieldUpdates>
         <fullName>Count_On_Hold_Hours</fullName>
         <field>On_Hold_Hours__c</field>
         <formula>if(ISNULL(On_Hold_Hours__c ), (NOW()-  DateTimeCalculation__c)*24*60,On_Hold_Hours__c +(NOW()-  DateTimeCalculation__c)*24*60)</formula>
         <name>Count On Hold Hours</name>
         <notifyAssignee>false</notifyAssignee>
         <operation>Formula</operation>
+        <protected>false</protected>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Draft</fullName>
+        <field>Submit_Part_Approval__c</field>
+        <literalValue>Draft</literalValue>
+        <name>Draft</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Reject</fullName>
+        <field>Submit_Part_Approval__c</field>
+        <literalValue>Reject</literalValue>
+        <name>Reject</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
         <protected>false</protected>
     </fieldUpdates>
     <fieldUpdates>

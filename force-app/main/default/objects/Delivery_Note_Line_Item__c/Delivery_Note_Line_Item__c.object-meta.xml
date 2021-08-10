@@ -152,6 +152,7 @@
     <enableSearch>false</enableSearch>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>Private</externalSharingModel>
     <label>Delivery Note Line Item</label>
     <nameField>
         <displayFormat>DNL-{0000}</displayFormat>
@@ -161,6 +162,6 @@
     </nameField>
     <pluralLabel>Delivery Note Line Items</pluralLabel>
     <searchLayouts></searchLayouts>
-    <sharingModel>ReadWrite</sharingModel>
+    <sharingModel>Private</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>

@@ -5,13 +5,16 @@ public class SaleOrderAcknowledgement {
     public Contact objCon {get;set;}
     public list<Contact> ShippingObjCon {get;set;}
     
+    public string sign{get;set;}
+    
     public contact ShippingContact{get;set;}
     
     public Account objShippingAcc {get;set;}
     public Contact objShippingCon {get;set;}
     
     public Pdf_Header__mdt pdfheader{get;set;}
-    
+    public decimal TotalAmountwithoutround{get; set;}
+    public string totalAmountWithTCSstring{get; set;}
     public List<wrapper> lstSOIW {get; set;}
     public decimal subTotalTaxableAmount{get;set;}
     public decimal subTotalAmount{get;set;}
@@ -74,6 +77,7 @@ public class SaleOrderAcknowledgement {
         TotalCGST = 0;
         TotalSGST = 0;
         TotalGST = 0;
+        TotalAmountwithoutround=0;
         objGSTCharge = new GSTCharges();
         
         if(String.isNotBlank(strId)){
@@ -90,6 +94,17 @@ public class SaleOrderAcknowledgement {
             if(lstSaleOrder.size() > 0)
                 objSO = lstSaleOrder[0];
             
+                  ApexPages.currentPage().getHeaders().put('content-disposition', 'filename=' +' Sales Order - '+objSO.Sales_Order_Acknowledge_Number__c+'.PDF');
+                system.debug('strfileName '+' Sales Order-'+objSO.Sales_Order_Acknowledge_Number__c);       
+            
+             user ur =[SELECT Id,Branch__c,User_Signature__c from user where id =:objSO.OwnerId];
+        if(!String.isBlank(ur.User_Signature__c))
+        sign = ur.User_Signature__c;
+        
+        if(String.isBlank(ur.User_Signature__c))
+        sign =System.Label.Default_User_Sign;
+        
+        system.debug(sign);
             
             if(objSO.Shipping_Account__c!=null){
         ShippingObjCon = [select id,name, salutation,phone,MobilePhone, email,isPrimary__c from contact where isPrimary__c= true AND Accountid =:objSO.Shipping_Account__c limit 1];
@@ -310,10 +325,8 @@ Billing State And Billing Code, Shipping State and Shipping Code
                 
                 TotalTaxableAmount = subTotalTaxableAmount + objGSTCharge.PackingCharges + objGSTCharge.FreightCharges;
                 TotalAmount = subTotalAmount + objGSTCharge.PackingChargeTotal + objGSTCharge.FreightTotal;
-                if(TotalAmount > 0){
-                    TotalAmount = TotalAmount.round();
-                    TotalAmountInWords = UtilityClass.NoToWord(TotalAmount.intValue());
-                }
+                
+                
                 
                 
                 
@@ -332,7 +345,8 @@ TotalGST = TotalIGST+ TotalCGST+ TotalSGST;*/
             strWareHouseCode = '';
             strWareHouseCity = '';
             list<Ware_House__c> lseWH = new list<Ware_House__c>();
-            if(objSO.Ware_House__c != null){
+            if(objSO.Ware_House__c != null)
+            {
                 lseWH = [Select Id, Name, City__c, State_Code__c,State_Province__c from Ware_House__c where Id =: objSO.Ware_House__c];
                 if(lseWH.size()>0 && lseWH[0] != null){
                     strWareHouseState = lseWH[0]?.State_Province__c;
@@ -356,33 +370,41 @@ TotalGST = TotalIGST+ TotalCGST+ TotalSGST;*/
                 TotalAmountWithCharges = TotalAmountWithCharges+objCharg.Net_Amount__c;
             }  
             system.debug('...'+totalAmountCgst+'..'+totalAmountSgst+'....'+totalAmountIgst);
-            TotalTaxableAmount = TotalTaxableAmount.round();
+            TotalTaxableAmount = TotalTaxableAmount;
             TotalIGST = (SubTotalIGST+TotalIGST+ totalAmountIgst);
             TotalCGST = (SubTotalCGST+totalAmountCgst+TotalCGST);
             TotalSGST = (SubTotalSGST+totalAmountSgst+TotalSGST);
             TotalGST = TotalIGST+ TotalCGST+ TotalSGST;
-            TotalAmount = (subTotalAmount+TotalAmountWithCharges).round();
-            
+            TotalAmount = (subTotalAmount+TotalAmountWithCharges);
+            TotalAmountwithoutround= TotalAmountwithoutround + TotalAmount;
+            TotalAmount=TotalAmount.round();
             decimal amountTCSPer = 0;
             amountTCS = 0;
-            if(objSO.Customer_Name__r.TCS_Charges_Enable__c){
-            amountTCS = (TotalAmount * decimal.valueof(system.label.TCS_Percentage)/100);
-            amountTCS = amountTCS.setScale(2);
-            //amountTCS = (TotalAmount-amountTCSPer).setScale(2);
-            
-            system.debug(amountTCS+'.....'+amountTCSPer+'....'+TotalAmount);
-            totalAmountWithTCS = 0;
-            totalAmountWithTCS = TotalAmount +amountTCS;
-            totalAmountWithTCS = totalAmountWithTCS.round();
-            
-            //totalAmountaftertaxinWords = UtilityClass.NoToWord(totalAmountWithTCS.intValue());
-            //totalAmountaftertaxinWords = totalAmountaftertaxinWords+' rupees only';
-            
-            if(totalAmountWithTCS > 0){
-                totalAmountWithTCS = totalAmountWithTCS.round();
-                TotalAmountInWords = 'Ruppes '+UtilityClass.NoToWord(totalAmountWithTCS.intValue())+' only';
+            if(TotalAmount > 0){
+                TotalAmount = TotalAmount;
+                TotalAmountInWords ='Rupees '+ UtilityClass.NoToWord(TotalAmount.intValue())+' only';
             }
+            if(objSO.Customer_Name__r.TCS_Charges_Enable__c)
+            {
+                amountTCS = (TotalAmount * decimal.valueof(system.label.TCS_Percentage)/100);
+                amountTCS = amountTCS.setScale(2);
+                //amountTCS = (TotalAmount-amountTCSPer).setScale(2);
+                
+                system.debug(amountTCS+'.....'+amountTCSPer+'....'+TotalAmount);
+                totalAmountWithTCS = 0;
+                totalAmountWithTCS = TotalAmount +amountTCS;
+                totalAmountWithTCS = totalAmountWithTCS.round();
+                
+                //totalAmountaftertaxinWords = UtilityClass.NoToWord(totalAmountWithTCS.intValue());
+                //totalAmountaftertaxinWords = totalAmountaftertaxinWords+' rupees only';
+                
+                if(totalAmountWithTCS > 0)
+                {
+                    totalAmountWithTCS = totalAmountWithTCS.round();
+                    totalAmountWithTCSstring =totalAmountWithTCS+'.00';
+                    TotalAmountInWords = 'Rupees '+UtilityClass.NoToWord(totalAmountWithTCS.intValue())+' only';
                 }
+            }
         }
     }
     

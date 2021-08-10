@@ -14,11 +14,15 @@
     <tabs>standard-Dashboard</tabs>
     <tabs>standard-home</tabs>
     <tabs>Sales_Order__c</tabs>
+    <tabs>Term_and_Condition__c</tabs>
     <uiType>Lightning</uiType>
     <utilityBar>LightningService_UtilityBar</utilityBar>
     <workspaceConfig>
         <mappings>
             <tab>Sales_Order__c</tab>
+        </mappings>
+        <mappings>
+            <tab>Term_and_Condition__c</tab>
         </mappings>
         <mappings>
             <tab>standard-Account</tab>

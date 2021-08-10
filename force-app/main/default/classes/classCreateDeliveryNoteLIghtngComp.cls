@@ -6,8 +6,9 @@ public class classCreateDeliveryNoteLIghtngComp {
     @AuraEnabled
     public static string onloadSalesOrder(string recordid){        
         wrap =new wrappermain();
+        boolean exportValue=false;
         List<String> salesorder = UtilityClass.getAllFields('Sales_Order__c');
-        String salesorderQuery = 'Select ' +String.Join(salesorder, ',')+ ',Ware_House__r.State_Code__c,Customer_Name__r.Billing_State_Code__c,Opportunity__r.Reference_Number__c,Opportunity__r.Reference_Date__c from Sales_Order__c where id=:recordid';
+        String salesorderQuery = 'Select ' +String.Join(salesorder, ',')+ ',Ware_House__r.State_Code__c,Customer_Name__r.Is_Export__c,Customer_Name__r.Billing_State_Code__c,Opportunity__r.Reference_Number__c,Opportunity__r.Reference_Date__c from Sales_Order__c where id=:recordid';
         list<Sales_Order__c> objSalesOrder =  Database.query(salesorderQuery);
         
         List<String> SOL = UtilityClass.getAllFields('Sales_Order_Line_Item__c');
@@ -15,17 +16,17 @@ public class classCreateDeliveryNoteLIghtngComp {
         list<Sales_Order_Line_Item__c> objsalesOrderLineItem =  Database.query(SOLQuery);
         
         List<String> dnorder = UtilityClass.getAllFields('Sales_Order_Dispatch_Delivery_Note__c');
-        String deliverynoteQuery = 'Select ' +String.Join(dnorder, ',')+ ',Sales_Order__r.Ware_House__r.State_Code__c,Customer_Party__r.Billing_State_Code__c from Sales_Order_Dispatch_Delivery_Note__c where id=:recordid';
+        String deliverynoteQuery = 'Select ' +String.Join(dnorder, ',')+ ',Sales_Order__r.Ware_House__r.State_Code__c,Customer_Party__r.Is_Export__c,Customer_Party__r.Billing_State_Code__c from Sales_Order_Dispatch_Delivery_Note__c where id=:recordid';
         list<Sales_Order_Dispatch_Delivery_Note__c>  deliverynote =  Database.query(deliverynoteQuery);
         
         List<String> DNL = UtilityClass.getAllFields('Delivery_Note_Line_Item__c');
-        String DNLQuery = 'Select ' +String.Join(DNL, ',')+ ', Product_Part__r.Part_Name__c, Product_Part__r.Name from Delivery_Note_Line_Item__c where Sales_Order_Dispatch_Delivery_Note__c =: recordid';
+        String DNLQuery = 'Select ' +String.Join(DNL, ',')+ ', Sales_Order_Line_Item__r.Freeze_Qunatity__c, Product_Part__r.Part_Name__c, Product_Part__r.Name,Sales_Order_Dispatch_Delivery_Note__r.mrn__c from Delivery_Note_Line_Item__c where Sales_Order_Dispatch_Delivery_Note__c =: recordid';
         list<Delivery_Note_Line_Item__c> deliverynoteLineItem =  Database.query(DNLQuery);
         
         wrap.recordid=recordid;
         string soid='';
         if(!deliverynote.isempty())
-        soid = deliverynote[0].Sales_Order__c;
+            soid = deliverynote[0].Sales_Order__c;
         String DSOLQuery = 'Select ' +String.Join(SOL, ',')+ ', Product_Part__r.Part_Name__c, Product_Part__r.Name from Sales_Order_Line_Item__c where Sales_Order__c=:soid ';
         list<Sales_Order_Line_Item__c> objDeliverysalesOrderLineItem =  Database.query(DSOLQuery);
         
@@ -43,21 +44,33 @@ public class classCreateDeliveryNoteLIghtngComp {
             else{
                 wrap.igstvalue=true;
             }
+            if(objSalesOrder[0].Customer_Name__r.Is_Export__c ){
+                wrap.isExport=true;
+            }
+            else{
+                wrap.isExport=false;
+            }
         }
-         if(!deliverynote.isempty()){
-             wrap.isupdate =true;
-             if(deliverynote[0].Sales_Order__r.Ware_House__r.State_Code__c == deliverynote[0].Customer_Party__r.Billing_State_Code__c){
-                 wrap.igstvalue=false;
-             }
-             else{
-                 wrap.igstvalue=true;
-             }
-         }
+        if(!deliverynote.isempty()){
+            wrap.isupdate =true;
+            if(deliverynote[0].Sales_Order__r.Ware_House__r.State_Code__c == deliverynote[0].Customer_Party__r.Billing_State_Code__c){
+                wrap.igstvalue=false;
+            }
+            else{
+                wrap.igstvalue=true;
+            }
+            if(deliverynote[0].Customer_Party__r.Is_Export__c ){
+                wrap.isExport=true;
+            }
+            else{
+                wrap.isExport=false;
+            }
+        }
         System.debug('wrap.isupdate=== '+wrap.isupdate);
-       
+        
         map<string,decimal>prodVsQty=new map<string,decimal>();
         list<Sales_Order_Dispatch_Delivery_Note__c> lstSalesOrder=[select id,Sales_order__c,(select id,Product_Part__c,quantity__c from Delivery_Note_Line_Items__r) from Sales_Order_Dispatch_Delivery_Note__c where Sales_order__c=:recordid];
-       
+        
         if(lstSalesOrder.size()>0){
             decimal qty=0;
             for(Sales_Order_Dispatch_Delivery_Note__c so:lstSalesOrder){
@@ -97,17 +110,19 @@ public class classCreateDeliveryNoteLIghtngComp {
                     }      
                 }
                 else{
-                        i=objsalli.Quantity__c;
-                        System.debug('4-- '+i);
-                    } 
+                    i=objsalli.Quantity__c;
+                    System.debug('4-- '+i);
+                } 
                 childwrp.productid = objsalli.Product_Part__c;
                 childwrp.productnumber= objsalli.Product_Part__r.name;
                 childwrp.productname = objsalli.Product_Part__r.Part_Name__c;
                 childwrp.quantity = objsalli.Quantity__c;
+                childwrp.serialnumer = objsalli.Part_Serial__c;
                 childwrp.hsncode = objsalli.HSN_Code__c;
+                childwrp.freezeQTY= integer.valueof(objsalli.Freeze_Qunatity__c);
                 System.debug('i--- '+integer.valueof(i));
                 childwrp.reMaininQTY = integer.valueof(i);
-                 System.debug('qty--- '+childwrp.reMaininQTY);
+                System.debug('qty--- '+childwrp.reMaininQTY);
                 childwrp.salesprice = objsalli.Unit_Price__c;
                 childwrp.totalprice = childwrp.salesprice*childwrp.reMaininQTY;
                 childwrp.discount = objsalli.Discount__c;
@@ -126,37 +141,46 @@ public class classCreateDeliveryNoteLIghtngComp {
             }          
         }
         else if(deliverynoteLineItem.size()>0){         
-                for(Delivery_Note_Line_Item__c objdnli : deliverynoteLineItem){
-                    decimal i=0;
-                    wrapchild childwrp = new wrapchild();
-                    childwrp.qty=objdnli.Quantity__c;
-                    childwrp.isSelected=false;
-                //    childwrp.soliChild=objdnli;
-                    childwrp.checkboxDisable=false; 
-                    childwrp.productid = objdnli.Product_Part__c;
-                    childwrp.productnumber= objdnli.Product_Part__r.name;
-                    childwrp.productname = objdnli.Product_Part__r.Part_Name__c;
+            for(Delivery_Note_Line_Item__c objdnli : deliverynoteLineItem){
+                decimal i=0;
+                wrapchild childwrp = new wrapchild();
+                childwrp.qty=objdnli.Quantity__c;
+                childwrp.isSelected=false;
+                if(objdnli.Sales_Order_Dispatch_Delivery_Note__r.mrn__c == null){
                     childwrp.quantity = DSOLMap.get(objdnli.Product_Part__c).Quantity__c;
-                    childwrp.hsncode = objdnli.HSN_Code__c;
-                    childwrp.reMaininQTY = integer.valueof(objdnli.Quantity__c);
-                    childwrp.salesprice = objdnli.Unit_Price__c;
-                    childwrp.totalprice = childwrp.salesprice*childwrp.reMaininQTY;
-                    childwrp.discount = objdnli.Discount__c;
-                    childwrp.discountamount = (childwrp.totalprice*childwrp.discount)/100;
-                    childwrp.totalamount = childwrp.totalprice - childwrp.discountamount;
-                    childwrp.cgst = objdnli.CGST__c;
-                    childwrp.cgstamount = (childwrp.totalamount*childwrp.cgst)/100;
-                    childwrp.sgst = objdnli.SGST__c ;
-                    childwrp.sgstamount = (childwrp.totalamount*childwrp.sgst)/100;
-                    childwrp.igst = objdnli.IGST__c;
-                    childwrp.igstamount = (childwrp.totalamount*childwrp.igst)/100;
-                    childwrp.nettotal = childwrp.totalamount+childwrp.igstamount+childwrp.sgstamount+childwrp.cgstamount;
-                    childwrp.deliverydate = objdnli.Delivery_Date__c ;
-                    childwrp.remark = objdnli.Remark__c ;
-                    childwrp.id = objdnli.id;
-                    lstwrpchild.add(childwrp);    
+                    childwrp.freezeQTY= integer.valueof(objdnli.Sales_Order_Line_Item__r.Freeze_Qunatity__c);
+                }  
+                else{
+                    wrap.isMrn = true;
+                    childwrp.quantity = 0;
+                    childwrp.freezeQTY= 0;
                 }
+                //    childwrp.soliChild=objdnli;
+                childwrp.checkboxDisable=false; 
+                childwrp.productid = objdnli.Product_Part__c;
+                childwrp.productnumber= objdnli.Product_Part__r.name;
+                childwrp.productname = objdnli.Product_Part__r.Part_Name__c; 
+                childwrp.hsncode = objdnli.HSN_Code__c; 
+                childwrp.serialnumer = objdnli.Part_Serial__c;
+                childwrp.salesprice = objdnli.Sales_Price__c;
+                childwrp.reMaininQTY = integer.valueof(objdnli.Quantity__c);
+                childwrp.totalprice = childwrp.salesprice*childwrp.reMaininQTY;
+                childwrp.discount = objdnli.Discount__c;
+                childwrp.discountamount = (childwrp.totalprice*childwrp.discount)/100;
+                childwrp.totalamount = childwrp.totalprice - childwrp.discountamount;
+                childwrp.cgst = objdnli.CGST__c;
+                childwrp.cgstamount = (childwrp.totalamount*childwrp.cgst)/100;
+                childwrp.sgst = objdnli.SGST__c ;
+                childwrp.sgstamount = (childwrp.totalamount*childwrp.sgst)/100;
+                childwrp.igst = objdnli.IGST__c;
+                childwrp.igstamount = (childwrp.totalamount*childwrp.igst)/100;
+                childwrp.nettotal = childwrp.totalamount+childwrp.igstamount+childwrp.sgstamount+childwrp.cgstamount;
+                childwrp.deliverydate = objdnli.Delivery_Date__c ;
+                childwrp.remark = objdnli.Remark__c ;
+                childwrp.id = objdnli.id;
+                lstwrpchild.add(childwrp);    
             }
+        }
         if(lstwrpchild.size()>0){
             wrap.wrapChildlst = lstwrpchild;
             wrap.success= true;
@@ -179,160 +203,163 @@ public class classCreateDeliveryNoteLIghtngComp {
             string sodid='';
             if(strMainWrapper !='' && strMainWrapper !=null){
                 wrap = (wrappermain)Json.deserialize(strMainWrapper, wrappermain.class);
-                 dcid = wrap.recordid;
+                dcid = wrap.recordid;
                 wrap.success= true;
                 System.debug('isupdate=== '+wrap.isupdate);
                 if(!wrap.isupdate){
-                if(wrap.wrapChildlst.size()>0 && wrap.objSales_Order != null){
-                    decimal qty=0;
-                    sodid = wrap.objSales_Order.Id;
-                    list<Sales_Order_Line_Item__c>lstOrderItem=[select id,Product_Part__c,sales_order__c,quantity__c from Sales_Order_Line_Item__c where sales_order__c=:wrap.objSales_Order.Id];
-                    if(lstOrderItem.size()>0){
-                        for(Sales_Order_Line_Item__c sOI:lstOrderItem){
-                            prodVsOrderItem.put(sOI.Product_Part__c,sOI);
+                    if(wrap.wrapChildlst.size()>0 && wrap.objSales_Order != null){
+                        decimal qty=0;
+                        sodid = wrap.objSales_Order.Id;
+                        list<Sales_Order_Line_Item__c>lstOrderItem=[select id,Product_Part__c,sales_order__c,quantity__c from Sales_Order_Line_Item__c where sales_order__c=:wrap.objSales_Order.Id];
+                        if(lstOrderItem.size()>0){
+                            for(Sales_Order_Line_Item__c sOI:lstOrderItem){
+                                prodVsOrderItem.put(sOI.Product_Part__c,sOI);
+                            }
                         }
-                    }
-                    list<Sales_Order_Dispatch_Delivery_Note__c>lstSalesOrder=[select id,Sales_order__c,(select id,Product_Part__c,quantity__c from Delivery_Note_Line_Items__r) from Sales_Order_Dispatch_Delivery_Note__c where Sales_order__c=:wrap.objSales_Order.Id];
-                    if(lstSalesOrder.size()>0){
-                        for(Sales_Order_Dispatch_Delivery_Note__c so:lstSalesOrder){
-                            if(so.Delivery_Note_Line_Items__r.size()>0)
-                                for(Delivery_Note_Line_Item__c delNotLinItem:so.Delivery_Note_Line_Items__r){
-                                    if(prodVsQty.containsKey(delNotLinItem.Product_Part__c)){
-                                        qty=prodVsQty.get(delNotLinItem.Product_Part__c);
-                                        prodVsQty.put(delNotLinItem.Product_Part__c,qty+delNotLinItem.Quantity__c);
-                                    }else{
-                                        prodVsQty.put(delNotLinItem.Product_Part__c,delNotLinItem.Quantity__c);
+                        list<Sales_Order_Dispatch_Delivery_Note__c>lstSalesOrder=[select id,Sales_order__c,(select id,Product_Part__c,quantity__c from Delivery_Note_Line_Items__r) from Sales_Order_Dispatch_Delivery_Note__c where Sales_order__c=:wrap.objSales_Order.Id];
+                        if(lstSalesOrder.size()>0){
+                            for(Sales_Order_Dispatch_Delivery_Note__c so:lstSalesOrder){
+                                if(so.Delivery_Note_Line_Items__r.size()>0)
+                                    for(Delivery_Note_Line_Item__c delNotLinItem:so.Delivery_Note_Line_Items__r){
+                                        if(prodVsQty.containsKey(delNotLinItem.Product_Part__c)){
+                                            qty=prodVsQty.get(delNotLinItem.Product_Part__c);
+                                            prodVsQty.put(delNotLinItem.Product_Part__c,qty+delNotLinItem.Quantity__c);
+                                        }else{
+                                            prodVsQty.put(delNotLinItem.Product_Part__c,delNotLinItem.Quantity__c);
+                                        }
                                     }
-                                }
+                            }
+                            
                         }
+                        if(wrap.objSales_Order.Ware_House__c != null){
+                            list<Stock__c>lstStock=[select id,Product_Part__c,Freeze_Quantity__c,Product_Out__c from Stock__c where Ware_House__c=:wrap.objSales_Order.Ware_House__c];
+                            if(lstStock.size()>0){
+                                for(Stock__c st:lstStock){
+                                    prodIdVsStock.put(st.Product_Part__c,st);
+                                }
+                            } 
+                        }
+                        Sales_Order_Dispatch_Delivery_Note__c sOD=new Sales_Order_Dispatch_Delivery_Note__c();
+                        system.debug('prodVsQty-----------'+prodVsQty+'-----'+prodVsOrderItem);                
+                        sOD.Sales_Order__c= wrap.objSales_Order.Id;
+                        sOD.Vehicle_No__c= wrap.objSales_Order.Vehicle_Docket_No_F_Opp__c;
+                        sOD.LC_Date__c= wrap.objSales_Order.LC_Date__c;
+                        sOD.LC_Term__c= wrap.objSales_Order.LC_Term__c;
+                        sOD.Customer_Party__c= wrap.objSales_Order.Customer_Name__c;
+                        sOD.Contact_Person_Name__c=wrap.objSales_Order.Contact_Person__c;
+                        sOD.Mode__c= wrap.objSales_Order.Mode_of_Transport__c;
+                        sOD.Remark__c= wrap.objSales_Order.Remark__c;
+                        sOD.Shipping_Account__c= wrap.objSales_Order.Shipping_Account__c;
+                        sOD.Shipping_City__c=wrap.objSales_Order.Shipping_City__c;
+                        sOD.Shipping_Country__c=wrap.objSales_Order.Shipping_Country__c;
+                        sOD.Shipping_State_Province__c=wrap.objSales_Order.Shipping_State_Province__c;
+                        sOD.Shipping_Street__c=wrap.objSales_Order.Shipping_Street__c;
+                        sOD.Shipping_Zip_Postal_Code__c=wrap.objSales_Order.Shipping_Zip_Postal_Code__c;
+                        sOD.Transporter__c= wrap.objSales_Order.Transporter_Name__c;
+                        sOD.Email_of_Contact__c= wrap.objSales_Order.Contact_Person__r.Email;
+                        sOD.Reference_No__c=wrap.objSales_Order.Opportunity__r.Reference_Number__c;
+                        sOD.Reference_Date__c=wrap.objSales_Order.Opportunity__r.Reference_Date__c;
+                        sOD.Date__c=system.today();
+                        sOD.Customer_PO_No__c= wrap.objSales_Order.Customer_PO_No__c;
+                        sOD.Payment_Term__c=wrap.objSales_Order.Payment_Terms__c;
+                        sOD.Type__c = wrap.objSales_Order.Type_SOA__c;
                         
-                    }
-                    if(wrap.objSales_Order.Ware_House__c != null){
-                        list<Stock__c>lstStock=[select id,Product_Part__c,Freeze_Quantity__c,Product_Out__c from Stock__c where Ware_House__c=:wrap.objSales_Order.Ware_House__c];
-                        if(lstStock.size()>0){
-                            for(Stock__c st:lstStock){
-                                prodIdVsStock.put(st.Product_Part__c,st);
+                        insert sOD;
+                        decimal taxableamount=0;
+                        list<Stock__c>lstStockUpdate=new list<Stock__c>();     
+                        boolean b=true;
+                        for(wrapchild wc:wrap.wrapChildlst){
+                            if(wc.isSelected){
+                                if(wc.soliChild.Product_Part__c != null && prodIdVsStock.containsKey(wc.soliChild.Product_Part__c)){
+                                    Stock__c s=new Stock__c();
+                                    s.Id=prodIdVsStock.get(wc.soliChild.Product_Part__c).Id;
+                                    s.Product_Out__c=prodIdVsStock.get(wc.soliChild.Product_Part__c).Product_Out__c+wc.reMaininQTY;
+                                    s.Freeze_Quantity__c=prodIdVsStock.get(wc.soliChild.Product_Part__c).Freeze_Quantity__c-wc.reMaininQTY;
+                                    lstStockUpdate.add(s);
+                                }
+                                Delivery_Note_Line_Item__c dLI =new Delivery_Note_Line_Item__c();
+                                dLI.Sales_Order_Dispatch_Delivery_Note__c=sOD.Id;
+                                dLI.Product_Part__c=wc.soliChild.Product_Part__c;
+                                dLi.List_Price__c=wc.soliChild.List_Price__c;
+                                dLi.Sales_Order_Line_Item__c=wc.soliChild.id;
+                                dLi.Discount__c=wc.discount;
+                                dLi.Sales_Price__c=wc.salesprice;
+                                dli.IGST__c=wc.igst;
+                                dli.CGST__c=wc.cgst;
+                                dli.SGST__c=wc.sgst;
+                                dli.Product_Part__c=wc.soliChild.Product_Part__c;
+                                dli.Unit_Price__c=wc.salesprice;
+                                dli.HSN_Code__c=wc.hsncode;
+                                dli.Remark__c = wc.remark;
+                                dli.Delivery_Date__c = wc.deliverydate;
+                                dli.Part_Serial__c = wc.serialnumer;
+                                taxableamount = taxableamount+ wc.totalamount;
+                                decimal oldQtyPlusLtestQty=0;
+                                if(prodVsQty.get(wc.soliChild.Product_Part__c) != null){
+                                    oldQtyPlusLtestQty=prodVsQty.get(wc.soliChild.Product_Part__c)+wc.reMaininQTY;
+                                }else{
+                                    oldQtyPlusLtestQty=wc.reMaininQTY;
+                                }
+                                if(prodVsQty.containsKey(wc.soliChild.Product_Part__c) && prodVsOrderItem.containsKey(wc.soliChild.Product_Part__c) && oldQtyPlusLtestQty > prodVsOrderItem.get(wc.soliChild.Product_Part__c).quantity__c){
+                                    b=false;
+                                }
+                                else if(oldQtyPlusLtestQty > prodVsOrderItem.get(wc.soliChild.Product_Part__c).quantity__c){
+                                    b=false;
+                                }
+                                else{
+                                    dLI.Quantity__c=wc.reMaininQTY;
+                                    lstDelNotItem.add(dLI);
+                                }
+                            }                           
+                        }  
+                        
+                        wrap =new wrappermain();
+                        List<String> chargesstr = UtilityClass.getAllFields('Charges__c');
+                        String chargesQuery = 'Select ' +String.Join(chargesstr, ',')+ ' from Charges__c where Sales_Order__c=:sodid';
+                        list<Charges__c> objcharges =  Database.query(chargesQuery);
+                        list<Charges__c> insertcharges = new list<Charges__c>();
+                        if(!objcharges.isempty())
+                            for(Charges__c chg:objcharges){
+                                Charges__c newchg = new Charges__c();
+                                newchg.Delivery_Note__c = sOD.Id;
+                                newchg.Total_Amount__c = taxableamount;
+                                newchg.Charge_Percentage__c = chg.Charge_Percentage__c;
+                                newchg.SGST__c = chg.SGST__c;
+                                newchg.CGST__c = chg.cGST__c;
+                                newchg.IGST__c = chg.IGST__c;
+                                newchg.Charges__c = chg.Charges__c;
+                                insertcharges.add(newchg);
                             }
-                        } 
-                    }
-                    Sales_Order_Dispatch_Delivery_Note__c sOD=new Sales_Order_Dispatch_Delivery_Note__c();
-                    system.debug('prodVsQty-----------'+prodVsQty+'-----'+prodVsOrderItem);                
-                    sOD.Sales_Order__c= wrap.objSales_Order.Id;
-                    sOD.Vehicle_No__c= wrap.objSales_Order.Vehicle_Docket_No_F_Opp__c;
-                    sOD.LC_Date__c= wrap.objSales_Order.LC_Date__c;
-                    sOD.LC_Term__c= wrap.objSales_Order.LC_Term__c;
-                    sOD.Customer_Party__c= wrap.objSales_Order.Customer_Name__c;
-                    sOD.Contact_Person_Name__c=wrap.objSales_Order.Contact_Person__c;
-                    sOD.Mode__c= wrap.objSales_Order.Mode_of_Transport__c;
-                    sOD.Remark__c= wrap.objSales_Order.Remark__c;
-                    sOD.Shipping_Account__c= wrap.objSales_Order.Shipping_Account__c;
-                    sOD.Shipping_City__c=wrap.objSales_Order.Shipping_City__c;
-                    sOD.Shipping_Country__c=wrap.objSales_Order.Shipping_Country__c;
-                    sOD.Shipping_State_Province__c=wrap.objSales_Order.Shipping_State_Province__c;
-                    sOD.Shipping_Street__c=wrap.objSales_Order.Shipping_Street__c;
-                    sOD.Shipping_Zip_Postal_Code__c=wrap.objSales_Order.Shipping_Zip_Postal_Code__c;
-                    sOD.Transporter__c= wrap.objSales_Order.Transporter_Name__c;
-                    sOD.Email_of_Contact__c= wrap.objSales_Order.Contact_Person__r.Email;
-                    sOD.Reference_No__c=wrap.objSales_Order.Opportunity__r.Reference_Number__c;
-                    sOD.Reference_Date__c=wrap.objSales_Order.Opportunity__r.Reference_Date__c;
-                    sOD.Date__c=system.today();
-                    sOD.Customer_PO_No__c= wrap.objSales_Order.Customer_PO_No__c;
-                    sOD.Payment_Term__c=wrap.objSales_Order.Payment_Terms__c;
-                    sOD.Type__c = wrap.objSales_Order.Type_SOA__c;
-                    insert sOD;
-                    decimal taxableamount=0;
-                    list<Stock__c>lstStockUpdate=new list<Stock__c>();     
-                    boolean b=true;
-                    for(wrapchild wc:wrap.wrapChildlst){
-                        if(wc.isSelected){
-                            if(wc.soliChild.Product_Part__c != null && prodIdVsStock.containsKey(wc.soliChild.Product_Part__c)){
-                                Stock__c s=new Stock__c();
-                                s.Id=prodIdVsStock.get(wc.soliChild.Product_Part__c).Id;
-                                s.Product_Out__c=prodIdVsStock.get(wc.soliChild.Product_Part__c).Product_Out__c+wc.reMaininQTY;
-                                s.Freeze_Quantity__c=prodIdVsStock.get(wc.soliChild.Product_Part__c).Freeze_Quantity__c-wc.reMaininQTY;
-                                lstStockUpdate.add(s);
-                            }
-                            Delivery_Note_Line_Item__c dLI =new Delivery_Note_Line_Item__c();
-                            dLI.Sales_Order_Dispatch_Delivery_Note__c=sOD.Id;
-                            dLI.Product_Part__c=wc.soliChild.Product_Part__c;
-                            dLi.List_Price__c=wc.soliChild.List_Price__c;
-                            dLi.Discount__c=wc.discount;
-                            dLi.Sales_Price__c=wc.salesprice;
-                            dli.IGST__c=wc.igst;
-                            dli.CGST__c=wc.cgst;
-                            dli.SGST__c=wc.sgst;
-                            dli.Product_Part__c=wc.soliChild.Product_Part__c;
-                            dli.Unit_Price__c=wc.salesprice;
-                            dli.HSN_Code__c=wc.hsncode;
-                            dli.Remark__c = wc.remark;
-                            dli.Delivery_Date__c = wc.deliverydate;
-                            taxableamount = taxableamount+ wc.totalamount;
-                            decimal oldQtyPlusLtestQty=0;
-                            if(prodVsQty.get(wc.soliChild.Product_Part__c) != null){
-                                oldQtyPlusLtestQty=prodVsQty.get(wc.soliChild.Product_Part__c)+wc.reMaininQTY;
-                            }else{
-                                oldQtyPlusLtestQty=wc.reMaininQTY;
-                            }
-                            if(prodVsQty.containsKey(wc.soliChild.Product_Part__c) && prodVsOrderItem.containsKey(wc.soliChild.Product_Part__c) && oldQtyPlusLtestQty > prodVsOrderItem.get(wc.soliChild.Product_Part__c).quantity__c){
-                                b=false;
-                            }
-                            else if(oldQtyPlusLtestQty > prodVsOrderItem.get(wc.soliChild.Product_Part__c).quantity__c){
-                                b=false;
+                        
+                        if(b==false){
+                            Database.RollBack(sp);  
+                            wrap.success = false;
+                            wrap.strErrorMessage = 'This part full quantity already send.';
+                        }else{
+                            if(lstDelNotItem.size()>0){
+                                Insert lstDelNotItem;
+                                if(lstStockUpdate.size()>0){
+                                    update lstStockUpdate;
+                                }
+                                if(!insertcharges.isempty())
+                                    insert insertcharges;
+                                system.debug('lstDelNotItem---'+lstDelNotItem);
+                                wrap.success = true;
                             }
                             else{
-                                dLI.Quantity__c=wc.reMaininQTY;
-                                lstDelNotItem.add(dLI);
-                            }
-                        }                           
-                    }  
-                    
-                    wrap =new wrappermain();
-                    List<String> chargesstr = UtilityClass.getAllFields('Charges__c');
-                    String chargesQuery = 'Select ' +String.Join(chargesstr, ',')+ ' from Charges__c where Sales_Order__c=:sodid';
-                    list<Charges__c> objcharges =  Database.query(chargesQuery);
-                    list<Charges__c> insertcharges = new list<Charges__c>();
-                    if(!objcharges.isempty())
-                        for(Charges__c chg:objcharges){
-                            Charges__c newchg = new Charges__c();
-                            newchg.Delivery_Note__c = sOD.Id;
-                            newchg.Total_Amount__c = taxableamount;
-                            newchg.Charge_Percentage__c = chg.Charge_Percentage__c;
-                            newchg.SGST__c = chg.SGST__c;
-                            newchg.CGST__c = chg.cGST__c;
-                            newchg.IGST__c = chg.IGST__c;
-                            newchg.Charges__c = chg.Charges__c;
-                            insertcharges.add(newchg);
-                        }
-                    
-                    if(b==false){
-                        Database.RollBack(sp);  
-                        wrap.success = false;
-                        wrap.strErrorMessage = 'This part full quantity already send.';
-                    }else{
-                        if(lstDelNotItem.size()>0){
-                            Insert lstDelNotItem;
-                            if(lstStockUpdate.size()>0){
-                                update lstStockUpdate;
-                            }
-                            if(!insertcharges.isempty())
-                               insert insertcharges;
-                            system.debug('lstDelNotItem---'+lstDelNotItem);
-                                                        wrap.success = true;
-                        }
-                        else{
-                            Database.RollBack(sp); 
-                            wrap.success = false;
-                        }   
-                    }                   
-                }
+                                Database.RollBack(sp); 
+                                wrap.success = false;
+                            }   
+                        }                   
                     }
+                }
                 else{
                     decimal taxableamount=0;
                     for(wrapchild wc:wrap.wrapChildlst){
                         if(wc.isSelected){
                             
                             Delivery_Note_Line_Item__c dLI =new Delivery_Note_Line_Item__c();
-
+                            
                             dLi.Discount__c=wc.discount;
                             dLi.Sales_Price__c=wc.salesprice;
                             dli.IGST__c=wc.igst;
@@ -342,6 +369,7 @@ public class classCreateDeliveryNoteLIghtngComp {
                             dli.HSN_Code__c=wc.hsncode;
                             dLI.Quantity__c=wc.reMaininQTY;
                             dli.id = wc.id;
+                            dli.Part_Serial__c = wc.serialnumer;
                             dli.Remark__c = wc.remark;
                             dli.Delivery_Date__c = wc.deliverydate;
                             taxableamount = taxableamount+ wc.totalamount;
@@ -368,7 +396,7 @@ public class classCreateDeliveryNoteLIghtngComp {
                     if(!lstDelNotItem.isempty()){
                         
                         wrap.success = true;
-                         Update lstDelNotItem;
+                        Update lstDelNotItem;
                         if(!upcharges.isempty())
                             update upcharges;
                         System.debug('update');
@@ -397,6 +425,8 @@ public class classCreateDeliveryNoteLIghtngComp {
         public string strSuccessMessage;
         public list<wrapchild> wrapChildlst{get;set;}
         public Sales_Order__c objSales_Order;
+        public Boolean isMrn{get;set;} 
+        public Boolean isExport{get;set;}
         
         
         public wrappermain(){
@@ -421,6 +451,7 @@ public class classCreateDeliveryNoteLIghtngComp {
         public string productname;
         public string Partserial;
         public string productid;
+        public string serialnumer;
         public string productnumber;
         public decimal quantity;
         public integer reMaininQTY; 
@@ -441,6 +472,7 @@ public class classCreateDeliveryNoteLIghtngComp {
         public date deliverydate;
         public String remark;
         public String id;
+        public integer freezeQTY;
         public wrapchild(){
             qty = 0;
             isSelected = true;

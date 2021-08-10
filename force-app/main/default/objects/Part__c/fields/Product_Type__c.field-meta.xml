@@ -12,13 +12,40 @@
         <valueSetDefinition>
             <sorted>false</sorted>
             <value>
+                <fullName>Consumables</fullName>
+                <default>false</default>
+                <label>Consumables</label>
+            </value>
+            <value>
+                <fullName>Finished Product</fullName>
+                <default>false</default>
+                <label>Finished Product</label>
+            </value>
+            <value>
+                <fullName>Fixed Assets</fullName>
+                <default>false</default>
+                <label>Fixed Assets</label>
+            </value>
+            <value>
+                <fullName>Packing Material</fullName>
+                <default>false</default>
+                <label>Packing Material</label>
+            </value>
+            <value>
+                <fullName>Services</fullName>
+                <default>false</default>
+                <label>Services</label>
+            </value>
+            <value>
                 <fullName>Main Product</fullName>
                 <default>false</default>
+                <isActive>false</isActive>
                 <label>Main Product</label>
             </value>
             <value>
                 <fullName>Part</fullName>
                 <default>false</default>
+                <isActive>false</isActive>
                 <label>Part</label>
             </value>
         </valueSetDefinition>

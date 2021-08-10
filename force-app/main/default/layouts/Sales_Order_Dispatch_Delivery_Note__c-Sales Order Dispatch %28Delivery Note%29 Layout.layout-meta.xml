@@ -93,15 +93,19 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>isTaxinvoice__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
                 <field>Contact_Person_Name__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Readonly</behavior>
                 <field>Billing_Address__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>DC_Record_Type__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Reverse_Charge__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
@@ -110,7 +114,7 @@
                 <field>Delivery_Note_Number__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Required</behavior>
+                <behavior>Edit</behavior>
                 <field>Sales_Order__c</field>
             </layoutItems>
             <layoutItems>
@@ -374,6 +378,8 @@
         <relatedList>RelatedHistoryList</relatedList>
     </relatedLists>
     <relatedLists>
+        <excludeButtons>MassChangeOwner</excludeButtons>
+        <excludeButtons>New</excludeButtons>
         <fields>NAME</fields>
         <fields>Product_Part__c</fields>
         <fields>Part_Name__c</fields>
@@ -415,6 +421,8 @@
         <relatedList>Packing_List__c.Delivery_Note__c</relatedList>
     </relatedLists>
     <relatedLists>
+        <excludeButtons>MassChangeOwner</excludeButtons>
+        <excludeButtons>New</excludeButtons>
         <fields>NAME</fields>
         <fields>MRN_No__c</fields>
         <fields>MRN_Type__c</fields>
@@ -422,6 +430,15 @@
         <fields>Remark__c</fields>
         <fields>MRN_Date__c</fields>
         <relatedList>MRN__c.Delivery_Note__c</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <excludeButtons>MassChangeOwner</excludeButtons>
+        <excludeButtons>New</excludeButtons>
+        <fields>NAME</fields>
+        <fields>Amount__c</fields>
+        <fields>Invoice__c</fields>
+        <fields>MRN__c</fields>
+        <relatedList>Sales_Order_Return__c.Delivery_Note__c</relatedList>
     </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>
     <showHighlightsPanel>false</showHighlightsPanel>

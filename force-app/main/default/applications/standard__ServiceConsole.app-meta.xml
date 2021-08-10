@@ -180,9 +180,13 @@
     <tabs>standard-Opportunity</tabs>
     <tabs>standard-Lead</tabs>
     <tabs>Sales_Order__c</tabs>
+    <tabs>Term_and_Condition__c</tabs>
     <workspaceConfig>
         <mappings>
             <tab>Sales_Order__c</tab>
+        </mappings>
+        <mappings>
+            <tab>Term_and_Condition__c</tab>
         </mappings>
         <mappings>
             <tab>standard-Account</tab>

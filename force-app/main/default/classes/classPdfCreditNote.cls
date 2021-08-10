@@ -4,6 +4,8 @@ public class classPdfCreditNote {
     
     public Account OEMdcNote{get;set;}
     
+     public Pdf_Header__mdt pdfheader{get;set;}
+    
     public  DC_Note__c dcNote{get;set;}
     public  list<DC_Note_Line_Item__c> dcNoteLi{get;set;}
     public  Date dte{get;set;}
@@ -24,6 +26,9 @@ public class classPdfCreditNote {
     public Decimal totaltaxableCHSGSTCGSTIGST{get;set;}
      public Decimal totaltaxGstAMount{get;set;}
     
+      public string sign{get;set;}
+    public string stamp{get;set;}
+    
     public Decimal TotalFinalAmountAfterTaxRoundOff{get;set;}
      public Decimal TotalFinalAmountAfterTaxRoundOff2{get;set;}
     public String totalAmountaftertaxinWords{get;set;}
@@ -40,7 +45,7 @@ public class classPdfCreditNote {
         dcNote=new DC_Note__c();
         dcNoteLi=new list<DC_Note_Line_Item__c>();
         sor=new Sales_Order_Return__c();
-        
+        pdfheader=new Pdf_Header__mdt();
         //  sorli=new Sales_Order_Return_Line_Item__c();
         
         
@@ -48,13 +53,38 @@ public class classPdfCreditNote {
         if(strId!=null){
             
             
-            dcNote=[select id,Bill_To_Customer_Name__r.Name,Billing_Address__c,Billing_GSTIN_No__c,Container_No__c,Customer_Party__c,
+            dcNote=[select id,Bill_To_Customer_Name__r.Name,OwnerId,Billing_Address__c,Billing_GSTIN_No__c,Container_No__c,Customer_Party__c,
                     Delivery_Term__c,Detail__c,Dispatch_Address__c,Dispatch_Date__c,Dispatch_No__c,ESN_No__c,Dispatch_To_Customer_Name__r.name,
-                    LC_Date__c,LC_Expected_Date__c,createdDate,LC_Term__c,MRN__c,Sales_Order_Return__c,Sales_Order_Return__r.Customer_Party__c,MRN__r.OEM_Customer__c,Payment_Method__c,Shipping_GSTIN_No__c,Name,
+                    LC_Date__c,LC_Expected_Date__c,createdDate,LC_Term__c,MRN__c,MRN__r.Ware_House__r.Branch__c,Sales_Order_Return__c,Sales_Order_Return__r.Customer_Party__c,MRN__r.OEM_Customer__c,Payment_Method__c,Shipping_GSTIN_No__c,Name,
                     Voucher_Date__c from DC_Note__c where id =:strId];
             
             DateTime dT = dcNote.createdDate;
             dte = date.newinstance(dT.year(), dT.month(), dT.day());
+            
+            
+            ApexPages.currentPage().getHeaders().put('content-disposition', 'filename=' +' Credit Note -'+dcNote.name+'.PDF');
+            
+            string branch = dcNote.MRN__r.Ware_House__r.Branch__c ;
+            List<String> pdfheaderField = UtilityClass.getAllFields('Pdf_Header__mdt');
+            String pdfHeaderQuery = 'Select ' +String.Join(pdfheaderField, ',')+ ' From Pdf_Header__mdt WHERE Branch__c =:branch Order by Effected_Date__c ASC LIMIT 1';
+            pdfheader =  Database.query(pdfHeaderQuery);
+            
+            
+            user ur =[SELECT Id,Branch__c,User_Signature__c from user where id =:dcNote.OwnerId];
+        if(!String.isBlank(ur.User_Signature__c))
+        sign = ur.User_Signature__c;
+        
+        if(String.isBlank(ur.User_Signature__c))
+        sign =System.Label.Default_User_Sign;
+        
+        system.debug(sign);
+        System.debug('----'+ur.Branch__c);
+        if(ur.Branch__c == 'Kolkata')
+            stamp= System.Label.Kolkata_Stamp_Link;
+         if(ur.Branch__c == 'Gurugram')
+            stamp= System.Label.Gurugram_Stamp_Link;
+        
+        
             
             
             dcNoteLi=[select id,Amount__c,CGST_Amount__c,Part_Number__r.HSN_Code__c,Part_Number__r.Name,CGST__c,Name,Discount_Currency__c,Discount__c,
@@ -89,12 +119,12 @@ public class classPdfCreditNote {
                 totalTaxLINEITEMCGSTSGSTIGST = totalTaxLINEITEMCGSTSGSTIGST + totalLiNeItemCgst + totalLiNeItemSgst + totalLiNeItemIgst;
                 
                 // RoundingOff All Amounts
-                totalLiNeItemCgst.round();
-                totalLiNeItemSgst.round();
-                totalLiNeItemIgst.round();
-                totalLiNeItemTaxableAMT.round();
-                totalLiNeItemNetAmt.round();
-                totalTaxLINEITEMCGSTSGSTIGST.round();
+                 //totalLiNeItemCgst.round();
+                //totalLiNeItemSgst.round();
+               // totalLiNeItemIgst.round();
+               // totalLiNeItemTaxableAMT.round();
+               // totalLiNeItemNetAmt.round();
+               // totalTaxLINEITEMCGSTSGSTIGST.round();
                 
             }
             totalTaxableValueIncludeChargeAmt1=0;
@@ -133,8 +163,8 @@ public class classPdfCreditNote {
             TotalFinalAmountAfterTaxRoundOff = TotalFinalAmountAfterTaxRoundOff + totaltaxableCHSGSTCGSTIGST;
             TotalFinalAmountAfterTaxRoundOff2=TotalFinalAmountAfterTaxRoundOff.round();
             // Total Amount In Words 
-            totalAmountaftertaxinWords = UtilityClass.NoToWord(TotalFinalAmountAfterTaxRoundOff.intValue());
-                totalAmountaftertaxinWords = totalAmountaftertaxinWords+' rupees only';
+            totalAmountaftertaxinWords = UtilityClass.NoToWord(TotalFinalAmountAfterTaxRoundOff2.intValue());
+                totalAmountaftertaxinWords = 'Rupees '+totalAmountaftertaxinWords+' only';
             
             sor=[select id,Bill_To_Customer_Name__c,Billing_Address__c,Billing_GSTIN_No__c,Container_No__c,Customer_Party__c,Dispatch_Address__c,
                  Dispatch_To_Customer_Name__c,MRN__c,Shipping_GSTIN_No__c,Name from Sales_Order_Return__c where id=:dcNote.Sales_Order_Return__c];

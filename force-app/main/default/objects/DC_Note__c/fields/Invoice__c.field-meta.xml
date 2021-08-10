@@ -5,7 +5,6 @@
     <externalId>false</externalId>
     <label>Invoice</label>
     <referenceTo>Invoice__c</referenceTo>
-    <relationshipLabel>Db/Cr Notes</relationshipLabel>
     <relationshipName>Db_Cr_Notes</relationshipName>
     <required>false</required>
     <trackHistory>false</trackHistory>

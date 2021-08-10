@@ -4,7 +4,7 @@
         <name>Add_new_Charges_to_Charges_list</name>
         <label>Add new Charges to Charges list</label>
         <locationX>534</locationX>
-        <locationY>2054</locationY>
+        <locationY>2510</locationY>
         <assignmentItems>
             <assignToReference>Clone_ChargesList</assignToReference>
             <operator>Add</operator>
@@ -20,7 +20,7 @@
         <name>assign_values_to_collection</name>
         <label>assign values to collection</label>
         <locationX>732</locationX>
-        <locationY>1238</locationY>
+        <locationY>1694</locationY>
         <assignmentItems>
             <assignToReference>varCollectionSalesOrderLineItem</assignToReference>
             <operator>Add</operator>
@@ -36,7 +36,7 @@
         <name>assign_values_to_salesline_item_field</name>
         <label>assign values to salesline item field</label>
         <locationX>732</locationX>
-        <locationY>1118</locationY>
+        <locationY>1574</locationY>
         <assignmentItems>
             <assignToReference>varSingleSalesOrderLineItem.Sales_Order__c</assignToReference>
             <operator>Assign</operator>
@@ -94,13 +94,6 @@
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>varSingleSalesOrderLineItem.Unit__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>iteration_of_line_items.Unit__c</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
             <assignToReference>varSingleSalesOrderLineItem.Quantity__c</assignToReference>
             <operator>Assign</operator>
             <value>
@@ -135,6 +128,20 @@
                 <elementReference>iteration_of_line_items.Delivery_Date__c</elementReference>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varSingleSalesOrderLineItem.Part_Serial__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>iteration_of_line_items.Part_Serial_No__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varSingleSalesOrderLineItem.Branch_Office__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Get_Opportunity.Owner:User.Branch__c</elementReference>
+            </value>
+        </assignmentItems>
         <connector>
             <targetReference>assign_values_to_collection</targetReference>
         </connector>
@@ -143,7 +150,7 @@
         <name>Clone_Charges</name>
         <label>Clone Charges</label>
         <locationX>534</locationX>
-        <locationY>1814</locationY>
+        <locationY>2270</locationY>
         <assignmentItems>
             <assignToReference>NewCharges</assignToReference>
             <operator>Assign</operator>
@@ -159,7 +166,7 @@
         <name>Field_Update_on_clone_Charges</name>
         <label>Field Update on clone Charges</label>
         <locationX>534</locationX>
-        <locationY>1934</locationY>
+        <locationY>2390</locationY>
         <assignmentItems>
             <assignToReference>NewCharges.Id</assignToReference>
             <operator>Assign</operator>
@@ -181,6 +188,13 @@
                 <elementReference>NewSalesOrder</elementReference>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>NewCharges.Branch_Office__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Get_Opportunity.Owner:User.Branch__c</elementReference>
+            </value>
+        </assignmentItems>
         <connector>
             <targetReference>Add_new_Charges_to_Charges_list</targetReference>
         </connector>
@@ -189,7 +203,7 @@
         <name>Check_Charges_List</name>
         <label>Check Charges List</label>
         <locationX>644</locationX>
-        <locationY>1574</locationY>
+        <locationY>2030</locationY>
         <defaultConnector>
             <targetReference>create_sales_order_line_item</targetReference>
         </defaultConnector>
@@ -214,7 +228,7 @@
         <name>Check_Clone_Charges_List</name>
         <label>Check Clone Charges List</label>
         <locationX>446</locationX>
-        <locationY>2270</locationY>
+        <locationY>2726</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Not_Null</name>
@@ -233,10 +247,35 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Check_sales_order_get_response</name>
+        <label>Check sales order get response</label>
+        <locationX>534</locationX>
+        <locationY>278</locationY>
+        <defaultConnector>
+            <targetReference>Get_Opportunity</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>SO_Record_Available</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Previous_sales_order</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Sales_Order_Available</targetReference>
+            </connector>
+            <label>SO Record Available</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>CheckConditionForLineItem</name>
         <label>CheckConditionForLineItem</label>
         <locationX>534</locationX>
-        <locationY>638</locationY>
+        <locationY>1094</locationY>
         <defaultConnector>
             <targetReference>Quote_Not_Synced</targetReference>
         </defaultConnector>
@@ -278,7 +317,7 @@
         <name>Create_Charges_For_Quote</name>
         <label>Create Charges For Quote</label>
         <locationX>446</locationX>
-        <locationY>1694</locationY>
+        <locationY>2150</locationY>
         <collectionReference>Get_Charges_List</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -292,7 +331,7 @@
         <name>iteration_of_line_items</name>
         <label>iteration of line items</label>
         <locationX>644</locationX>
-        <locationY>998</locationY>
+        <locationY>1454</locationY>
         <collectionReference>VarAllOpportunityLineItems</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -325,7 +364,7 @@
         <name>Create_Charges_Record</name>
         <label>Create Charges Record</label>
         <locationX>314</locationX>
-        <locationY>2390</locationY>
+        <locationY>2846</locationY>
         <connector>
             <targetReference>create_sales_order_line_item</targetReference>
         </connector>
@@ -335,11 +374,17 @@
         <name>Create_Sales_Order</name>
         <label>Create Sales Order</label>
         <locationX>644</locationX>
-        <locationY>878</locationY>
+        <locationY>1334</locationY>
         <assignRecordIdToReference>NewSalesOrder</assignRecordIdToReference>
         <connector>
             <targetReference>iteration_of_line_items</targetReference>
         </connector>
+        <inputAssignments>
+            <field>Branch_Office_Picklist__c</field>
+            <value>
+                <elementReference>Get_Opportunity.Owner:User.Branch__c</elementReference>
+            </value>
+        </inputAssignments>
         <inputAssignments>
             <field>Contact_Person__c</field>
             <value>
@@ -478,7 +523,7 @@
         <name>create_sales_order_line_item</name>
         <label>create sales order line item</label>
         <locationX>644</locationX>
-        <locationY>2702</locationY>
+        <locationY>3158</locationY>
         <connector>
             <targetReference>Created_Sales_Order</targetReference>
         </connector>
@@ -488,7 +533,7 @@
         <name>Get_Charges_List</name>
         <label>Get Charges List</label>
         <locationX>644</locationX>
-        <locationY>1454</locationY>
+        <locationY>1910</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Check_Charges_List</targetReference>
@@ -506,7 +551,7 @@
         <name>get_contact</name>
         <label>get contact</label>
         <locationX>534</locationX>
-        <locationY>398</locationY>
+        <locationY>854</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Get_Line_Item</targetReference>
@@ -524,7 +569,7 @@
         <name>Get_Line_Item</name>
         <label>Get Line Item</label>
         <locationX>534</locationX>
-        <locationY>518</locationY>
+        <locationY>974</locationY>
         <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>CheckConditionForLineItem</targetReference>
@@ -566,12 +611,13 @@
         <queriedFields>Taxable_Amount_Formula__c</queriedFields>
         <queriedFields>Total_Amount_Formula__c</queriedFields>
         <queriedFields>Part_Name__c</queriedFields>
+        <queriedFields>Part_Serial_No__c</queriedFields>
     </recordLookups>
     <recordLookups>
         <name>get_oem_customer</name>
         <label>get oem customer</label>
         <locationX>534</locationX>
-        <locationY>278</locationY>
+        <locationY>734</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>get_contact</targetReference>
@@ -589,7 +635,7 @@
         <name>Get_Opportunity</name>
         <label>Get Opportunity</label>
         <locationX>534</locationX>
-        <locationY>158</locationY>
+        <locationY>614</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>get_oem_customer</targetReference>
@@ -603,17 +649,42 @@
         </filters>
         <object>Opportunity__c</object>
     </recordLookups>
+    <recordLookups>
+        <name>Previous_sales_order</name>
+        <label>Previous sales order</label>
+        <locationX>534</locationX>
+        <locationY>158</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Check_sales_order_get_response</targetReference>
+        </connector>
+        <filters>
+            <field>Opportunity__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Status__c</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Not Approved</stringValue>
+            </value>
+        </filters>
+        <object>Sales_Order__c</object>
+    </recordLookups>
     <screens>
         <name>Created_Sales_Order</name>
         <label>Created Sales Order</label>
         <locationX>644</locationX>
-        <locationY>2822</locationY>
+        <locationY>3278</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <fields>
             <name>SuccessSalesOrderCreated</name>
-            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;color: rgb(19, 205, 44); font-size: 18px;&quot;&gt;Sales Order is Created Successfully&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;color: rgb(19, 205, 44); font-size: 18px;&quot;&gt;Sales Order created successfully.&lt;/b&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
@@ -623,7 +694,7 @@
         <name>Define_Sales_Order</name>
         <label>Define Sales Order</label>
         <locationX>644</locationX>
-        <locationY>758</locationY>
+        <locationY>1214</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -643,7 +714,7 @@
             <inputParameters>
                 <name>label</name>
                 <value>
-                    <stringValue>Opportunity</stringValue>
+                    <stringValue>Enquiry</stringValue>
                 </value>
             </inputParameters>
             <inputParameters>
@@ -745,13 +816,13 @@
         <name>Opportunity_Stage_is_Not_Closed_Won</name>
         <label>Opportunity Stage is Not Closed Won</label>
         <locationX>50</locationX>
-        <locationY>758</locationY>
+        <locationY>1214</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <fields>
             <name>SategErrorMessage</name>
-            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 18px; color: rgb(221, 16, 16);&quot;&gt;Please Update Opportunity To Closed Won To Create Sales Order&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;color: rgb(221, 16, 16); font-size: 18px;&quot;&gt;Please Update Stage to Closed Won to create Sales Order.&lt;/b&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
@@ -761,7 +832,7 @@
         <name>Quote_Not_Synced</name>
         <label>Quote Not Synced</label>
         <locationX>1018</locationX>
-        <locationY>758</locationY>
+        <locationY>1214</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -773,7 +844,26 @@
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
     </screens>
-    <startElementReference>Get_Opportunity</startElementReference>
+    <screens>
+        <name>Sales_Order_Available</name>
+        <label>Sales Order Available</label>
+        <locationX>402</locationX>
+        <locationY>398</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Get_Opportunity</targetReference>
+        </connector>
+        <fields>
+            <name>Message1</name>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;color: rgb(35, 218, 15); font-size: 14px;&quot;&gt;Sales Order already exists for this enquiry, Are you want to create a new Sales Order for this enquiry?&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <startElementReference>Previous_sales_order</startElementReference>
     <status>Active</status>
     <variables>
         <name>Clone_ChargesList</name>

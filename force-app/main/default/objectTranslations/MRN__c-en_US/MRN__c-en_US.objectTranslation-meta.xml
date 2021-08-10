@@ -67,6 +67,10 @@
         <name>Update_MRN_Items</name>
     </quickActions>
     <startsWith>Consonant</startsWith>
+    <validationRules>
+        <errorMessage></errorMessage>
+        <name>MRN_status_Received</name>
+    </validationRules>
     <webLinks>
         <label></label>
         <name>Generate_MRN</name>

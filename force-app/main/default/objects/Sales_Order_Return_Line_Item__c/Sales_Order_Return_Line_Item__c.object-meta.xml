@@ -152,6 +152,7 @@
     <enableSearch>true</enableSearch>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>ControlledByParent</externalSharingModel>
     <label>Sales Order Return Line Item</label>
     <nameField>
         <displayFormat>SORLI-{00000}</displayFormat>

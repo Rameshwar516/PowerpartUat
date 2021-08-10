@@ -158,14 +158,15 @@
     <enableSearch>true</enableSearch>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
-    <label>Db/Cr Note</label>
+    <externalSharingModel>Private</externalSharingModel>
+    <label>Dr/Cr Note</label>
     <nameField>
         <displayFormat>DC-{0000}</displayFormat>
         <label>Voucher No.</label>
         <trackHistory>false</trackHistory>
         <type>AutoNumber</type>
     </nameField>
-    <pluralLabel>Db/Cr Notes</pluralLabel>
+    <pluralLabel>Dr/Cr Notes</pluralLabel>
     <recordTypeTrackHistory>false</recordTypeTrackHistory>
     <searchLayouts>
         <searchResultsAdditionalFields>RECORDTYPE</searchResultsAdditionalFields>
@@ -175,6 +176,6 @@
         <searchResultsAdditionalFields>CREATED_DATE</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>OWNER.ALIAS</searchResultsAdditionalFields>
     </searchLayouts>
-    <sharingModel>ReadWrite</sharingModel>
+    <sharingModel>Private</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>

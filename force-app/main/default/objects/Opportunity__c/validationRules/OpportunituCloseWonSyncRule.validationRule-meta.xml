@@ -3,5 +3,5 @@
     <fullName>OpportunituCloseWonSyncRule</fullName>
     <active>true</active>
     <errorConditionFormula>AND( ISPICKVAL( Stage__c , &quot;Closed Won&quot;) , ISBLANK(Syncquote__c  ) )</errorConditionFormula>
-    <errorMessage>Quote Related To Opportunity is not  Synced</errorMessage>
+    <errorMessage>Quote Related To Enquiry is not  Synced</errorMessage>
 </ValidationRule>

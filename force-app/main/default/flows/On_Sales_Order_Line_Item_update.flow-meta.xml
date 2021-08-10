@@ -1,5 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <processMetadataValues>
+            <name>emailAlertSelection</name>
+            <value>
+                <stringValue>Email_So_Owner_for_Unfreeze_Stock</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>myRule_4_A1</name>
+        <label>Unfreeze Email</label>
+        <locationX>400</locationX>
+        <locationY>200</locationY>
+        <actionName>Sales_Order_Line_Item__c.Email_So_Owner_for_Unfreeze_Stock</actionName>
+        <actionType>emailAlert</actionType>
+        <inputParameters>
+            <name>SObjectRowId</name>
+            <value>
+                <elementReference>myVariable_current.Id</elementReference>
+            </value>
+        </inputParameters>
+    </actionCalls>
     <decisions>
         <name>isChangedDecision2_myRule_1_Discount_c</name>
         <label>isChangedDecision2_myRule_1_Discount_c</label>
@@ -43,6 +63,9 @@
         <label>myDecision</label>
         <locationX>50</locationX>
         <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>myDecision3</targetReference>
+        </defaultConnector>
         <defaultConnectorLabel>default</defaultConnectorLabel>
         <rules>
             <name>myRule_1</name>
@@ -146,7 +169,46 @@
             <label>Discount Update</label>
         </rules>
     </decisions>
-    <interviewLabel>On_Sales_Order_Line_Item_update-5_InterviewLabel</interviewLabel>
+    <decisions>
+        <processMetadataValues>
+            <name>index</name>
+            <value>
+                <numberValue>1.0</numberValue>
+            </value>
+        </processMetadataValues>
+        <name>myDecision3</name>
+        <label>myDecision3</label>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <defaultConnectorLabel>default</defaultConnectorLabel>
+        <rules>
+            <name>myRule_4</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>formula_myRule_4</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myRule_4_A1</targetReference>
+            </connector>
+            <label>On Unfreeze Email to Owner</label>
+        </rules>
+    </decisions>
+    <formulas>
+        <processMetadataValues>
+            <name>originalFormula</name>
+            <value>
+                <stringValue>[Sales_Order_Line_Item__c].Freeze_Qunatity__c &lt; PRIORVALUE([Sales_Order_Line_Item__c].Freeze_Qunatity__c ) </stringValue>
+            </value>
+        </processMetadataValues>
+        <name>formula_myRule_4</name>
+        <dataType>Boolean</dataType>
+        <expression>{!myVariable_current.Freeze_Qunatity__c} &lt; PRIORVALUE({!myVariable_current.Freeze_Qunatity__c} )</expression>
+    </formulas>
+    <interviewLabel>On_Sales_Order_Line_Item_update-2_InterviewLabel</interviewLabel>
     <label>On Sales Order Line Item update</label>
     <processMetadataValues>
         <name>ObjectType</name>
@@ -202,6 +264,9 @@
         <label>Update  line item Discount</label>
         <locationX>100</locationX>
         <locationY>200</locationY>
+        <connector>
+            <targetReference>myDecision3</targetReference>
+        </connector>
         <filters>
             <processMetadataValues>
                 <name>implicit</name>

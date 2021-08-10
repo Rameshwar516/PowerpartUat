@@ -39,11 +39,32 @@
         <value>Company name should not be blank on enquiry object.</value>
     </labels>
     <labels>
+        <fullName>Default_User_Sign</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Default User Sign</shortDescription>
+        <value>https://powerparts--partcrm--c.visualforce.com/resource/1618317607000/DefaultSign?</value>
+    </labels>
+    <labels>
         <fullName>Gurgaon_Ware_House</fullName>
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>Gurgaon Ware House</shortDescription>
         <value>a0w6D000000rVsYQAU</value>
+    </labels>
+    <labels>
+        <fullName>Gurugram_Stamp_Link</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Gurugram Stamp Link</shortDescription>
+        <value>https://powerparts--partcrm--c.visualforce.com/resource/1622751307000/GurugramStamp?</value>
+    </labels>
+    <labels>
+        <fullName>Kolkata_Stamp_Link</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Kolkata Stamp Link</shortDescription>
+        <value>https://powerparts--partcrm--c.visualforce.com/resource/1618317202000/KolkataStamp?</value>
     </labels>
     <labels>
         <fullName>Kolkata_Warehouse</fullName>

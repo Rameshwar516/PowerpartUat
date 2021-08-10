@@ -3,6 +3,10 @@
     <label></label>
     <name>Quote_Status__c</name>
     <picklistValues>
+        <masterLabel>Approval Pending</masterLabel>
+        <translation></translation>
+    </picklistValues>
+    <picklistValues>
         <masterLabel>Approved</masterLabel>
         <translation></translation>
     </picklistValues>

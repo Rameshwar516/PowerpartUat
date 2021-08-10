@@ -5,7 +5,7 @@
     <externalId>false</externalId>
     <label>Enquiry</label>
     <referenceTo>Opportunity__c</referenceTo>
-    <relationshipLabel>Quote</relationshipLabel>
+    <relationshipLabel>Quotes</relationshipLabel>
     <relationshipName>Quote</relationshipName>
     <required>true</required>
     <trackHistory>false</trackHistory>

@@ -25,7 +25,7 @@ public class clsUtility {
         
         List<Account> lstAccount = new List<Account>();
         for(Integer i=1; i <= numAcc; i++) {
-            Account obj = new Account(Name ='Test Account'+i, Type='OEM');
+            Account obj = new Account(Name ='Test Account'+i, Type='OEM',Print_Name__c='print name');
             lstAccount.add(obj);
         }
         insert lstAccount;
@@ -47,7 +47,7 @@ public class clsUtility {
         if(hasParent) {
             for(Account objAcc : lstAccount) {
                 integer i = 1;
-                Account obj = new Account(Name ='Test Child Account'+i, ParentId =objAcc.Id);
+                Account obj = new Account(Name ='Test Child Account'+i,Print_Name__c='print name', ParentId =objAcc.Id);
                 lstChildAccount.add(obj);
                 i++;
             }

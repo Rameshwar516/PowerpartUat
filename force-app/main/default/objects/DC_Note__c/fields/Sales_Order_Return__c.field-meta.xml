@@ -5,7 +5,6 @@
     <externalId>false</externalId>
     <label>Sales Order Return</label>
     <referenceTo>Sales_Order_Return__c</referenceTo>
-    <relationshipLabel>DC Notes</relationshipLabel>
     <relationshipName>DCNotes</relationshipName>
     <required>false</required>
     <trackHistory>false</trackHistory>

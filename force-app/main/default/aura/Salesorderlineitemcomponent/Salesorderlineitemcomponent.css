@@ -2,8 +2,14 @@
     width:75px !important;  
 }
 .THIS .cellwidth {
-    width:100px !important;
-    
+    width:100px !important;  
+}
+.THIS .cellwidthQty {
+    width:75px !important;  
+}
+
+.THIS .padding {
+    padding-left: 10px !important;  
 }
 .THIS .textcenter {
     text-align: center !important;
@@ -14,9 +20,6 @@
     font-size: 11px !important;  
 }
 
-.THIS .padding {
-    padding-left: 10px !important;  
-}
 
 .THIS .remark {
     width: 10rem !important;  

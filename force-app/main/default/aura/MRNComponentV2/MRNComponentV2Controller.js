@@ -33,20 +33,59 @@
     {
         var tmpMainWrapper = component.get("v.mainWrap.lstDeliveryNoteLIWrap");
         var iserror = false;
+        var isparterror = false;
+        var undefinedvar; 
+        console.log('update');
         for(var i=0;i<tmpMainWrapper.length;i++)
         {
-            if(tmpMainWrapper[i].IntAcceptQty<0)
+            if(tmpMainWrapper[i].objPart.Id == undefinedvar )
+                    {
+                        isparterror =true;
+                    }
+            if(
+                tmpMainWrapper[i].IntPOQty < 0 ||
+                tmpMainWrapper[i].IntBillQty <= 0 ||
+                tmpMainWrapper[i].IntReceiptQty <= 0 ||
+                tmpMainWrapper[i].IntAcceptQty < 0 ||
+                tmpMainWrapper[i].IntPriceGBP <= 0 
+            ) 
                 iserror = true;
         }
-        if(iserror){
-            var toastEvent = $A.get("e.force:showToast");
-            toastEvent.setParams({
-                "type":"error",
-                "title": "Error!",
-                "message": "Value should not be less than 0."
-            });
-            toastEvent.fire();
-        }
+       if(iserror && !isparterror){
+                    var toastEvent = $A.get("e.force:showToast");
+                    toastEvent.setParams({
+                        "type":"error",
+                        "title": "Error!",
+                        "message": "Value should not be 0 or less than 0."
+                    });
+                    toastEvent.fire();
+                }
+                else if(!iserror && isparterror){
+                    var toastEvent = $A.get("e.force:showToast");
+                    toastEvent.setParams({
+                        "type":"error",
+                        "title": "Error!",
+                        "message": "Part lookup cannot be blank."
+                    });
+                    toastEvent.fire();
+                }
+                    else if(iserror && isparterror){
+                        var toastEvent = $A.get("e.force:showToast");
+                        toastEvent.setParams({
+                            "type":"error",
+                            "title": "Error!",
+                            "message": "Value should not be 0 or less than 0."
+                        });
+                        toastEvent.fire();
+                        
+                        var toastEvent2 = $A.get("e.force:showToast");
+                        toastEvent2.setParams({
+                            "type":"error",
+                            "title": "Error!",
+                            "message": "Part lookup cannot be blank."
+                        });
+                        toastEvent2.fire();
+                    }
         else{
             
             helper.UpdateRecord(component, event);
@@ -799,6 +838,7 @@
 		//var target = event.target;
         var rowIndex = event.getSource().get("v.name");
         var tmpMainWrapper = component.get("v.mainWrap.lstDeliveryNoteLIWrap");
+        if(event.getSource().get("v.value") != 0 &&  event.getSource().get("v.value") != null ){
 		for(var i=0;i<tmpMainWrapper.length;i++)
         {
             if(rowIndex == i){
@@ -875,20 +915,30 @@
 				component.set("v.mainWrap.lstDeliveryNoteLIWrap",tmpMainWrapper);
 			}
 		}
-        component.set("v.mainWrap.lstDeliveryNoteLIWrap",tmpMainWrapper);
+            component.set("v.mainWrap.lstDeliveryNoteLIWrap",tmpMainWrapper);}
+        else{
+            var toastEvent = $A.get("e.force:showToast");
+            toastEvent.setParams({
+                "type":"error",
+                "title": "Error!",
+                "message": "Value should not be less than 1."
+            });
+            toastEvent.fire();  
+        }
     },
     
 	CalculateTotalPriceGBP : function(component,event,helper){
 		
         var rowIndex = event.getSource().get("v.name");
         var tmpMainWrapper = component.get("v.mainWrap.lstDeliveryNoteLIWrap");
+        if(event.getSource().get("v.value") != 0 &&  event.getSource().get("v.value") != null ){
 		for(var i=0;i<tmpMainWrapper.length;i++)
         {
             if(rowIndex == i){
-				if(tmpMainWrapper[i].IntBillQty !=null){
+				if(tmpMainWrapper[i].IntReceiptQty !=null){
 					var IntBillQty = event.getSource().get("v.value");
 					tmpMainWrapper[i].IntPriceGBP = IntBillQty;
-					tmpMainWrapper[i].IntTotalAmountGBP =  tmpMainWrapper[i].IntBillQty * IntBillQty;
+					tmpMainWrapper[i].IntTotalAmountGBP =  tmpMainWrapper[i].IntReceiptQty * IntBillQty;
 					var IntExWorkValue = component.get("v.mainWrap.objMRN.Ex_Work_Value__c");
 					var IntSurcharge = component.get("v.mainWrap.objMRN.Surcharge__c");
 					var IntFreight = component.get("v.mainWrap.objMRN.Freight__c");
@@ -946,6 +996,16 @@
 			}
 		}
         component.set("v.mainWrap.lstDeliveryNoteLIWrap",tmpMainWrapper);
+        }
+        else{
+            var toastEvent = $A.get("e.force:showToast");
+            toastEvent.setParams({
+                "type":"error",
+                "title": "Error!",
+                "message": "Value should not be less than 1."
+            });
+            toastEvent.fire();
+        }
     },
 	
 	
@@ -1214,88 +1274,94 @@
         component.set("v.mainWrap.lstDeliveryNoteLIWrap",tmpMainWrapper);
 	},
 	
-	selectTaxType: function(component,event,helper){
-        console.log('1');
+    selectTaxType: function(component,event,helper){
         var strType = component.get("v.strType");
-		var TotalAmount =0;
-		//alert('...'+strType);
-		if(strType =='Sales Return'){
-            console.log('2');
+        var StrRecordId = component.get("v.recordId");
+        console.log(strType);
+        var TotalAmount =0;
+        if(strType =='Sales Return'){
             var undefined;
-			var lstSalesReturn =lstSalesReturn = component.get("v.ObjDeliveryNoteLI.lstSubMain");
-			var lstOldSalesReturn =component.get("v.mainWrap.lstMRNLineItems");
-			console.log(lstOldSalesReturn+'-----'+lstSalesReturn+'--'+component.get("v.recordId"));
+            var lstSalesReturn =lstSalesReturn = component.get("v.ObjDeliveryNoteLI.lstSubMain");
+            var lstOldSalesReturn =component.get("v.mainWrap.lstMRNLineItems");
             if(component.get("v.recordId")==''){
-                
                 for(var i = 0; i < lstSalesReturn.length; i++) {
-                    console.log('for 2 for');
                     if(lstSalesReturn[i].objDNLI.Taxable_Amount__c !=null )
                         TotalAmount = TotalAmount+lstSalesReturn[i].objDNLI.Taxable_Amount__c;
                 }
             }
             else{
                 for(var i = 0; i < lstOldSalesReturn.length; i++) {
-                    console.log('for 2');	
                     if(lstOldSalesReturn[i].ObjMRNLI.Taxable_Amount_Formula__c !=null )
                         TotalAmount = TotalAmount+lstOldSalesReturn[i].ObjMRNLI.Taxable_Amount_Formula__c;
                 }
             }
-			component.set("v.decTotalAmount",TotalAmount);
-            console.log('3-- '+TotalAmount);
-		}
-		if(strType =='Purchase Order'){
-			var lstPurchaseOrder = component.get("v.mainWrap.lstDeliveryNoteLIWrap");
-			for(var i = 0; i < lstPurchaseOrder.length; i++) {
-				if(lstPurchaseOrder[i].IntTaxableValue !=null && lstPurchaseOrder[i].IntTaxableValue !='')
-					TotalAmount = TotalAmount+lstPurchaseOrder[i].IntTaxableValue;
-			}
-			component.set("v.decTotalAmount",TotalAmount);
-		}
-		var StrRecordId = component.get("v.recordId");
-		if(StrRecordId !=null && StrRecordId !='' && strType =='Purchase Order'){
-			var lstPurchaseOrder = component.get("v.mainWrap.lstMRNLineItems");
-			for(var i = 0; i < lstPurchaseOrder.length; i++) {
-				if(lstPurchaseOrder[i].decGrossAmount !=null && lstPurchaseOrder[i].decGrossAmount !='')
-					TotalAmount = (TotalAmount+lstPurchaseOrder[i].decGrossAmount).toFixed(2);
-			}
-			component.set("v.decTotalAmount",TotalAmount);
-		}
-        console.log('4');
-		var TotalAmount = component.get("v.decTotalAmount");
-		//alert('..TotalAmount...'+TotalAmount);
+            TotalAmount =(TotalAmount).toFixed(2);
+            component.set("v.decTotalAmount",TotalAmount);
+        }
+        
+        
+        if(strType =='Purchase Order' || strType =='Direct'){
+            console.log('PO Start');
+            var lstPurchaseOrder = component.get("v.mainWrap.lstDeliveryNoteLIWrap");
+            for(var i = 0; i < lstPurchaseOrder.length; i++) {
+                if(lstPurchaseOrder[i].IntTaxableValue !=null && lstPurchaseOrder[i].IntTaxableValue !='')
+                {
+                    TotalAmount = TotalAmount + lstPurchaseOrder[i].IntTaxableValue;
+                }
+            }
+            TotalAmount =(TotalAmount).toFixed(2);
+            component.set("v.decTotalAmount",TotalAmount);
+            console.log('PO End');
+        }
+        
+        if(StrRecordId !=null && StrRecordId !='' && ( strType =='Purchase Order' || strType =='Direct')){
+            console.log('StrRecordId Start');
+            var lstPurchaseOrder = component.get("v.mainWrap.lstMRNLineItems");
+            console.log('lstPurchaseOrder.length '+lstPurchaseOrder.length);
+            if(lstPurchaseOrder.length != 0 || lstPurchaseOrder.length != '' ){
+                 console.log('StrRecordId run');
+                for(var i = 0; i < lstPurchaseOrder.length; i++) {
+                    if(lstPurchaseOrder[i].IntTaxableValue !=null && lstPurchaseOrder[i].IntTaxableValue !='')
+                    {
+                        TotalAmount = TotalAmount + lstPurchaseOrder[i].IntTaxableValue;
+                    }
+                }
+                TotalAmount =(TotalAmount).toFixed(2);
+                component.set("v.decTotalAmount",TotalAmount);
+            }
+            console.log('StrRecordId End');
+        }
+        
+        var TotalAmount = component.get("v.decTotalAmount");
         var StrSelectedTax = component.get("v.strTaxType");
         var lstTaxDetails = component.get("v.mainWrap.lstTaxDetails");
-		var lstSelectedTax = component.get("v.lstSelectedTax");
-		var AlreadyAdded='';
-		for(var i = 0; i < lstSelectedTax.length; i++){
+        var lstSelectedTax = component.get("v.lstSelectedTax");
+        var AlreadyAdded='';
+        for(var i = 0; i < lstSelectedTax.length; i++){
             console.log('5');
-			if (StrSelectedTax === lstSelectedTax[i].strTaxId) {
-				AlreadyAdded='true';
+            if (StrSelectedTax === lstSelectedTax[i].strTaxId) {
+                AlreadyAdded='true';
                 break;
-			}
-		}
-		if(AlreadyAdded != 'true'){
-            console.log('6');
-			
-			for(var i = 0; i < lstTaxDetails.length; i++) {
-				
-				if(StrSelectedTax === lstTaxDetails[i].strTaxId){
-					//alert(StrSelectedTax+'...length......'+lstTaxDetails[i].strTaxId);
-					lstSelectedTax.push({
-						strTaxId: lstTaxDetails[i].strTaxId,
-						strTaxName: lstTaxDetails[i].strTaxName,
-						TaxPercentage: lstTaxDetails[i].TaxPercentage,
-						decTaxAmount: Number(TotalAmount)*lstTaxDetails[i].TaxPercentage/100,
-						GST: lstTaxDetails[i].GST,
-						CGST: lstTaxDetails[i].CGST,
-						SGST: lstTaxDetails[i].SGST,
-						IGST: lstTaxDetails[i].IGST,
-						NetAmount: Number(TotalAmount)*lstTaxDetails[i].TaxPercentage/100
-					});	 
-				}
-			}
-		}else{
-			var toastEvent = $A.get("e.force:showToast");
+            }
+        }
+        if(AlreadyAdded != 'true'){
+            for(var i = 0; i < lstTaxDetails.length; i++) {
+                if(StrSelectedTax === lstTaxDetails[i].strTaxId){
+                    lstSelectedTax.push({
+                        strTaxId: lstTaxDetails[i].strTaxId,
+                        strTaxName: lstTaxDetails[i].strTaxName,
+                        TaxPercentage: lstTaxDetails[i].TaxPercentage,
+                        decTaxAmount: (Number(TotalAmount)*lstTaxDetails[i].TaxPercentage/100).toFixed(2),
+                        GST: lstTaxDetails[i].GST,
+                        CGST: lstTaxDetails[i].CGST,
+                        SGST: lstTaxDetails[i].SGST,
+                        IGST: lstTaxDetails[i].IGST,
+                        NetAmount: (Number(TotalAmount)*lstTaxDetails[i].TaxPercentage/100).toFixed(2)
+                    });	 
+                }
+            }
+        }else{
+            var toastEvent = $A.get("e.force:showToast");
             toastEvent.setParams({
                 title : 'Error Message',
                 message:'Already added.',
@@ -1306,21 +1372,16 @@
                 mode: 'pester'
             });
             toastEvent.fire();
-		}
-        console.log('7');
+        }
         component.set('v.lstSelectedTax', lstSelectedTax);
-		var lstTotalSelectedTax = component.get("v.lstSelectedTax");
-		var TotalTaxAmount = 0;
-		for(var i = 0; i < lstTotalSelectedTax.length; i++) {
-            console.log('8');
-			TotalTaxAmount =(Number(TotalTaxAmount)+Number(lstTotalSelectedTax[i].decTaxAmount)).toFixed(2);
-		}
-        console.log('9');
-		component.set('v.TotalTax', TotalTaxAmount);
-	},
-    
-     
-    
+        var lstTotalSelectedTax = component.get("v.lstSelectedTax");
+        var TotalTaxAmount = 0;
+        for(var i = 0; i < lstTotalSelectedTax.length; i++) {
+            TotalTaxAmount =(Number(TotalTaxAmount)+Number(lstTotalSelectedTax[i].decTaxAmount)).toFixed(2);
+        }
+        component.set('v.TotalTax', TotalTaxAmount);
+    },
+  
 	CalculateAmount : function(component,event,helper){
 		var target = event.getSource();
         var rowIndex = event.getSource().get("v.name");
@@ -1348,8 +1409,8 @@
     },
     
 	CalculateGST : function(component,event,helper){
-		var target = event.target;
-        var rowIndex = target.getAttribute("data-row-index");
+		//var target = event.target;
+        var rowIndex =  event.getSource().get("v.name");
         var tmpMainWrapper = component.get("v.lstSelectedTax");
 		var strDeliveryType = component.get("v.mainWrap.objMRN.MRN_Delivery_Type__c");
         var totaltax =0;
@@ -1358,17 +1419,18 @@
             if(rowIndex == i){
 				if(tmpMainWrapper[i].decTaxAmount != null && tmpMainWrapper[i].decTaxAmount != null){
 					var NetAmounts = Number(tmpMainWrapper[i].decTaxAmount);
-					var IntDiscountRate = event.target.value;
+					var IntDiscountRate = event.getSource().get("v.value");;
 					tmpMainWrapper[i].GST = IntDiscountRate;
 					NetAmounts = NetAmounts+(tmpMainWrapper[i].decTaxAmount*IntDiscountRate / 100);
 					tmpMainWrapper[i].NetAmount = NetAmounts;
 				}						
 			}
-		    totaltax =totaltax+tmpMainWrapper[i].NetAmount;
+		    totaltax = totaltax+tmpMainWrapper[i].NetAmount;
 		}
         component.set("v.TotalTax",totaltax);
         component.set("v.lstSelectedTax",tmpMainWrapper);
     },
+    
 	CalculateCGST : function(component,event,helper){
 		console.log('run');
         var rowIndex = event.getSource().get("v.name");
@@ -1531,7 +1593,7 @@
             if(rowIndex == i){
 				if(tmpMainWrapper[i].ObjMRNLI != null && tmpMainWrapper[i].ObjMRNLI.Received_QTY__c != null){
 					var IntBillQty = event.getSource().get("v.value");
-					var Amount = IntBillQty * tmpMainWrapper[i].ObjMRNLI.Received_QTY__c;
+					var Amount = IntBillQty * tmpMainWrapper[i].ObjMRNLI.Quantity__c;
 					tmpMainWrapper[i].ObjMRNLI.Sales_Price__c = IntBillQty;
 					tmpMainWrapper[i].ObjMRNLI.Total_Amount__c = Amount;
 					if(tmpMainWrapper[i].ObjMRNLI.Discount_Amount__c ==null || tmpMainWrapper[i].ObjMRNLI.Discount_Amount__c == '')
@@ -1646,7 +1708,7 @@
 			{
 				if(rowIndex == i){
 					if(tmpMainWrapper[i].ObjMRNLI != null && tmpMainWrapper[i].ObjMRNLI.Received_QTY__c != null){
-						var IntBillQty = event.target.value;
+						var IntBillQty = event.getSource().get("v.value");
 						tmpMainWrapper[i].ObjMRNLI.Discount__c = IntBillQty;
 						//alert('..IntBillQty..'+IntBillQty);
 						var Amount = tmpMainWrapper[i].ObjMRNLI.Total_Amount__c;
@@ -1953,7 +2015,81 @@
             helper.CreateMRN(component, event);
         }
         else if((Type == 'Purchase Order' || Type == 'Direct') && (MRN_Delivery_Type__c != null && MRN_Delivery_Type__c != '') && Supplier != null && selected!= null ){
-            helper.CreateMRN(component, event);
+            var tmpMainWrapper = component.get("v.mainWrap.lstDeliveryNoteLIWrap");
+            var iserror = false;
+            var isparterror = false;
+            var undefinedvar;
+            
+            if(tmpMainWrapper.length !=0){
+                for(var i=0;i<tmpMainWrapper.length;i++)
+                {
+                    console.log(tmpMainWrapper[i].objPart);
+                   
+                    if(tmpMainWrapper[i].objPart.Id == undefinedvar )
+                    {
+                        isparterror =true;
+                    }
+                    
+                    if(
+                        tmpMainWrapper[i].IntPOQty < 0 ||
+                        tmpMainWrapper[i].IntBillQty <= 0 ||
+                        tmpMainWrapper[i].IntReceiptQty <= 0 ||
+                        tmpMainWrapper[i].IntAcceptQty < 0 ||
+                        tmpMainWrapper[i].IntPriceGBP <= 0 
+                    ) 
+                        iserror = true;
+                }
+                
+                if(iserror && !isparterror){
+                    var toastEvent = $A.get("e.force:showToast");
+                    toastEvent.setParams({
+                        "type":"error",
+                        "title": "Error!",
+                        "message": "Value should not be 0 or less than 0."
+                    });
+                    toastEvent.fire();
+                }
+                else if(!iserror && isparterror){
+                    var toastEvent = $A.get("e.force:showToast");
+                    toastEvent.setParams({
+                        "type":"error",
+                        "title": "Error!",
+                        "message": "Part lookup cannot be blank."
+                    });
+                    toastEvent.fire();
+                }
+                    else if(iserror && isparterror){
+                        var toastEvent = $A.get("e.force:showToast");
+                        toastEvent.setParams({
+                            "type":"error",
+                            "title": "Error!",
+                            "message": "Value should not be 0 or less than 0."
+                        });
+                        toastEvent.fire();
+                        
+                        var toastEvent2 = $A.get("e.force:showToast");
+                        toastEvent2.setParams({
+                            "type":"error",
+                            "title": "Error!",
+                            "message": "Part lookup cannot be blank."
+                        });
+                        toastEvent2.fire();
+                    }
+                        else{
+                            
+                            helper.CreateMRN(component, event);
+                        }
+            }
+            else{
+                var toastEvent = $A.get("e.force:showToast");
+                toastEvent.setParams({
+                    "type":"error",
+                    "title": "Error!",
+                    "message": "Please add atleast one part."
+                });
+                toastEvent.fire();
+                
+            }
         }
         else{
             var toastEvent = $A.get("e.force:showToast");
@@ -1993,5 +2129,23 @@
            // alert('1st');
             helper.addRowHelper(component, event);
         //}
+    },
+    
+     onChangeDeliveryJS : function(component, event, helper){
+        var checked = component.get('v.isdeliverydate');
+        var deliveryDate = event.getSource().get('v.value');
+        if(checked){
+            if(deliveryDate)
+            	helper.deliverydateactionCheckbox(component, event, deliveryDate);
+            else{
+                var toastEvent = $A.get("e.force:showToast");
+                toastEvent.setParams({
+                    "type":"info",
+                    "title": "info!",
+                    "message": "Please change any delivery date which you want to be the same for all."
+                });
+                toastEvent.fire();
+            }
+        }
     },
 })

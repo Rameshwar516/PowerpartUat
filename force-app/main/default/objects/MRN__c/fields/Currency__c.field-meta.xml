@@ -28,7 +28,7 @@
             </value>
             <value>
                 <fullName>INR</fullName>
-                <default>false</default>
+                <default>true</default>
                 <label>INR</label>
             </value>
             <value>

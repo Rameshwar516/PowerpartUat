@@ -158,14 +158,15 @@
     <enableSearch>true</enableSearch>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
-    <label>Db/Cr Note Line Item</label>
+    <externalSharingModel>ControlledByParent</externalSharingModel>
+    <label>Dr/Cr Note Line Item</label>
     <nameField>
         <displayFormat>DCLI-{00000}</displayFormat>
         <label>DC Note line Item Number</label>
         <trackHistory>false</trackHistory>
         <type>AutoNumber</type>
     </nameField>
-    <pluralLabel>Db/Cr Note Line Items</pluralLabel>
+    <pluralLabel>Dr/Cr Note Line Items</pluralLabel>
     <searchLayouts></searchLayouts>
     <sharingModel>ControlledByParent</sharingModel>
     <visibility>Public</visibility>

@@ -4,7 +4,6 @@
     <externalId>false</externalId>
     <label>Doc No.</label>
     <referenceTo>DC_Note__c</referenceTo>
-    <relationshipLabel>Db/Cr Note Line Items</relationshipLabel>
     <relationshipName>DCline_Items</relationshipName>
     <relationshipOrder>0</relationshipOrder>
     <reparentableMasterDetail>false</reparentableMasterDetail>

@@ -3,16 +3,20 @@
     <flexiPageRegions>
         <componentInstances>
             <componentInstanceProperties>
+                <name>actionNames</name>
+                <value>[&quot;Edit&quot;,&quot;Delete&quot;]</value>
+            </componentInstanceProperties>
+            <componentInstanceProperties>
                 <name>collapsed</name>
                 <value>false</value>
             </componentInstanceProperties>
             <componentInstanceProperties>
                 <name>enableActionsConfiguration</name>
-                <value>false</value>
+                <value>true</value>
             </componentInstanceProperties>
             <componentInstanceProperties>
                 <name>enableActionsInNative</name>
-                <value>false</value>
+                <value>true</value>
             </componentInstanceProperties>
             <componentInstanceProperties>
                 <name>hideChatterActions</name>

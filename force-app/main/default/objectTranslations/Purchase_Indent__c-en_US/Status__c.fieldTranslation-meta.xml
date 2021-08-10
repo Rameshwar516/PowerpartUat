@@ -11,6 +11,10 @@
         <translation></translation>
     </picklistValues>
     <picklistValues>
+        <masterLabel>Pending</masterLabel>
+        <translation></translation>
+    </picklistValues>
+    <picklistValues>
         <masterLabel>Rejected</masterLabel>
         <translation></translation>
     </picklistValues>

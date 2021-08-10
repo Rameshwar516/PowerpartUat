@@ -41,6 +41,11 @@
                 <default>false</default>
                 <label>FOC</label>
             </value>
+            <value>
+                <fullName>AMC</fullName>
+                <default>false</default>
+                <label>AMC</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>

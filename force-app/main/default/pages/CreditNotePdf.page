@@ -6,11 +6,11 @@
            >
     
     <head>
-        <style type="text/css">
+ <style type="text/css">
             @page 
             {  
-            size:12.94in 13.90in; 
-            margin-top: 180px;
+            size:11.7in 16in; 
+            margin-top: 5.00cm;
             page-break-after:always;
             @top-center 
             {                   
@@ -24,21 +24,26 @@
             div.header 
             {                
             padding: 5px; 
-            padding-top:50px;
+            padding-top:10px;
             padding-bottom:5px;
             position: running(header); 
             content: "Page " counter(page) " of " counter(pages);
             } 
             div.footer 
             {                
-            padding: 5px;               
+            //padding: 5px;               
             position: running(footer);    
             }
             @page 
             {
             @bottom-center 
             {
-            padding: 10px;
+            padding-top: 10px;
+            content: "Registered Office : N-122, Panchsheel Park, New Delhi - 100 017";
+            }
+            @bottom-right 
+            {
+            padding-top: 10px;
             content: "Page " counter(page) " of " counter(pages);
             }
             }
@@ -48,6 +53,7 @@
             border-spacing: 0px;
             font-size:12px;
             font-family: Arial;
+            -fs-table-paginate: paginate; 	
             }
             
             td {
@@ -67,7 +73,7 @@
             list-style-type: lower-alpha;
             }
             
-        </style> 
+        </style>
     </head>
     <apex:form >
         <div class="header">
@@ -79,18 +85,24 @@
                     </td>
                     <td style="border:none;padding:0px;" width="60%" valign="top">
                         <center>
-                            <b><apex:outputText value="POWERPARTS PRIVATE LIMITED" style="font-size:13px;font-family: Arial;" /></b><br/>
-                            <b><apex:outputText value="Registered Office : " style="font-size:11px;font-family: Arial;" /></b>
-                            <apex:outputText value="N-122, Panchsheel Park, New Delhi - 100 017" style="font-size:11px;font-family: Arial;" /><br/>
-                            <b><apex:outputText value="PPL HEAD OFFICE (GURGAON)" style="font-size:13px;font-family: Arial;" /></b><br/>
-                            <apex:outputText value="114, PACE CITY-I, SECTOR - 37," style="font-size:11px;font-family: Arial;" /><br/>
-                            <apex:outputText value="GURGAON - 122001, HARYANA (INDIA)" style="font-size:11px;font-family: Arial;" /><br/>
-                            <apex:outputText value="IEC NO. 0598060456, PAN. AABCP9737D, GSTIN No. 06AABCP9737D1ZE" style="font-size:11px;font-family: Arial;" /><br/>
-                            <br/>
-                            <apex:outputText value="powerparts@powerparts.in" style="font-size:11px;font-family: Arial;" />&nbsp;&nbsp;&nbsp;
-                            <apex:outputText value="Tel. 0124-4036614,4019215" style="font-size:11px;font-family: Arial;" /><br/>
-                            <br/>
-                           
+                            <b><apex:outputText value="POWERPARTS PRIVATE LIMITED" style="font-size:14px;font-family: Arial;" /></b><br/>
+                            <!--<b><apex:outputText value="Registered Office : " style="font-size:12px;font-family: Arial;" /></b>-->
+                           <!-- <apex:outputText value="N-122, Panchsheel Park, New Delhi - 100 017" style="font-size:12px;font-family: Arial;" /><br/>-->
+                            <div><b style="font-size:14px;font-family: Arial;">{!pdfheader.Address_Header__c}</b></div>
+                            
+                            <div style="font-size:12px;font-family: Arial;">
+                                <div>{!pdfheader.Address_Line1__c} &nbsp;  {!pdfheader.Address_Line_2__c}</div>
+                               
+                                <div>{!pdfheader.Gstin__c}&nbsp; {!pdfheader.IEC_No__c}&nbsp;&nbsp;&nbsp;{!pdfheader.PAN_No__c}</div>
+                                
+                                <div></div>
+                                <div>{!pdfheader.Email__c}</div>
+                                <div>
+                                    {!pdfheader.Tel__c}
+                                </div>
+                            
+                                
+                                </div>
                         </center>
                     </td>
                     <td style="border:none;padding:0px;" width="20%" valign="top">
@@ -99,7 +111,8 @@
                 </tr>
             </table>
         </div>
-         <table style="width:100%;border:2px solid black;">
+        <div class="content">
+         <table style="width:100%;border:1px solid black;">
              <tr >
                  <td>
              <center><b><apex:outputText value="CREDIT NOTE" style="font-size:15px;font-family: Arial;" /></b></center><br/>
@@ -107,8 +120,8 @@
                  </td>
              </tr>
              
-        </table>
-        <body>
+        </table>   
+       
             <table style="width:100%;border:2px solid black;">
                 <tr>
                     <td style="border:none;"  valign="top">
@@ -157,7 +170,7 @@
                         <center><apex:outputText value=":" /></center>
                     </td>
                     <td style="border:none;"  valign="top">
-                        <apex:outputText value="{!MrndcNote.E_Way_Bill_No__c}" /> 
+                        <apex:outputText value="{!DC_Note__c.Invoice__r.Invoice_Number__c}" /> 
                     </td>
                     <td style="border:none;"  valign="top">
                         
@@ -185,7 +198,7 @@
                     </td>
                     <td style="border:none;"  valign="top">
                         <apex:outputText value="{0, date, dd - MMM - yyyy}">
-                            <apex:param value="{!MrndcNote.E_Way_Bill_Date__c}" />
+                            <apex:param value="{!DC_Note__c.Invoice__r.Invoice_Date__c}" />
                         </apex:outputText>
                          
                     </td>
@@ -331,7 +344,7 @@
                     <th  width="5%" rowspan="2" style="text-align:center">
                         <apex:outputText value="Part No" />
                     </th>
-                    <th  width="5%" rowspan="2" style="text-align:center">
+                    <th  width="5%" rowspan="2" colspan="2"  style="text-align:center">
                         <apex:outputText value="Name Of Product / Service" />
                     </th>
                     <th  width="5%" rowspan="2" style="text-align:center">
@@ -356,7 +369,7 @@
 <apex:outputText value="Disc Amt" />
 </th>-->
                     
-                    <th  width="10%" rowspan="2" colspan="2" style="text-align:center">
+                    <th  width="5%" rowspan="2" colspan="1" style="text-align:center">
                         <apex:outputText value="Disc Amt" />
                     </th>
                     <th  width="5%" rowspan="2" colspan="2" style="text-align:center">
@@ -401,14 +414,14 @@
                     <tr>
                         <td style="text-align:right"><apex:variable var="count" value="{!count+1}" />{!count}</td>
                         <td><apex:outputText value="{!li.Part_Number__r.Name}" /></td>
-                        <td><apex:outputText value="{!li.Part_Name__c}" /></td>
+                        <td colspan="2"><apex:outputText value="{!li.Part_Name__c}" /></td>
                         <td><apex:outputText value="{!li.Part_Number__r.HSN_CODE__c}" /></td>
                         <td style="text-align:right"><apex:outputText value="{!li.Quantity__c}" /></td>
                         <td style="text-align:right"><apex:outputText value="{!li.Part_Number__r.UOM__c}" /></td>
                         <td style="text-align:right"><apex:outputText value="{!li.Unit_Price__c}" /></td>
                         <td style="text-align:right"><apex:outputText value="{!li.Total_Amount__c}" /></td>
                         <td style="text-align:right"><apex:outputText value="{!li.Discount__c}" /></td>
-                        <td  colspan="2" style="text-align:right"><apex:outputText value="{!li.Discount_Currency__c}" /></td>
+                        <td  colspan="1" style="text-align:right"><apex:outputText value="{!li.Discount_Currency__c}" /></td>
                         <td colspan="2" style="text-align:right"><apex:outputText value="{!li.Taxable_Amount__c }" /></td>
                         <td style="text-align:right"><apex:outputText value="{!li.CGST__c}" /></td>
                         <td style="text-align:right"><apex:outputText value="{!li.CGST_Amount__c}" /></td>
@@ -452,7 +465,7 @@
                 
                <apex:repeat value="{!lstCharges}" var="liCharge">
                     <tr>
-                        <td colspan="12"><apex:outputText value="{!liCharge.Charges__r.Name}" /></td>
+                        <td colspan="12"><center><apex:outputText value="{!liCharge.Charges__r.Name}" /></center></td>
                         <td style="text-align:right"><apex:outputText value="{!liCharge.Charge_Amount__c}" /></td>
                         <td style="text-align:right"><apex:outputText value="{!liCharge.CGST__c}" /></td>
                         <td style="text-align:right"><apex:outputText value="{!liCharge.CGST_Amount__c}" /></td>
@@ -487,6 +500,10 @@
                 <tr>
                     <td colspan="13" rowspan="5" valign="top">
                         <b><apex:outputText value="Remarks : "/></b> 
+                        <br/>
+                            <apex:outputField value="{!DC_Note__c.Remarks__c}"/>
+                        
+                        
                     </td>
                     <td colspan="5"><b><apex:outputText value="ADD CGST : " /></b></td>
                     <td colspan="2" style="text-align:right"> <apex:outputText value="{!totalCgstIncludeCharge}" /></td>
@@ -509,18 +526,20 @@
                 </tr>
                 
               <tr>
-                <td colspan="9" rowspan="1" valign="top"> </td>
-                  
-                  <td colspan="4" rowspan="1" valign="top" > </td>
+                <td colspan="13" rowspan="1" valign="top"> </td>
                   <td style="border:1;" colspan="5" rowspan="1" >R/Off</td>
                   <td colspan="2" style="text-align:right"> <apex:outputText value="{!TotalFinalAmountAfterTaxRoundOff2}.00"/></td>
                 </tr>
                 <tr>
                     <td colspan="9" rowspan="3" valign="top">
                         <b><apex:outputText value="Term & Conditions : "/></b> 
+                        <br/>
+                             <apex:outputField value="{!DC_Note__c.Term_and_Condition__c}" />
+                        
                         
                     </td>
                     <td colspan="4" rowspan="5" valign="bottom">
+                        <center><apex:image url="{!stamp}" width="90" height="90" alt="User Signature"/></center><br/><br/>
                         <center><apex:outputText value="(Common Seal) "/></center>
                     </td> 
                    
@@ -529,13 +548,16 @@
                     <td style="border:1;" colspan="8" rowspan="1" >
                         <apex:outputText value="Certified That The Particulars Above Are True And Correct "/><br/><br/>&nbsp;&nbsp;&nbsp;&nbsp;
                         <apex:outputText value="For "/>
-                        <b><apex:outputText value="PowerPart Private Limited "/></b><br/><br/> <br/> <br/> <br/>&nbsp;&nbsp;&nbsp;&nbsp;
+                        <b><apex:outputText value="PowerPart Private Limited "/></b><br/><br/> <br/> <br/>
+                        &nbsp;&nbsp;<apex:image id="theImage" url="{!sign}" width="100" height="50" alt="User Siganture"/><br/>&nbsp;
                         <b><apex:outputText value="Authorized Signatory "/></b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <b><apex:outputText value="[E&OE]" style="align:Bottom-right"/></b>
                     </td>
                 </tr>
             </table>
-             <center><b>This is a computer generated document signature is not required.</b></center>
-        </body>
+             
+         </div>
+         
+        
     </apex:form>
 </apex:page>

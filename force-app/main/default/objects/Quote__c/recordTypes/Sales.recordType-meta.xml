@@ -44,6 +44,10 @@
     <picklistValues>
         <picklist>Quote_Status__c</picklist>
         <values>
+            <fullName>Approval Pending</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Approved</fullName>
             <default>false</default>
         </values>

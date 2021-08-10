@@ -173,5 +173,35 @@
         component.set("v.TotalTax",totaltax);
         component.set("v.lstSelectedTax",tmpMainWrapper);
     },
+    deliverydateactionCheckbox : function(component, event, DeliveryDate) {
+        if(component.get("v.ObjDeliveryNoteLI.lstSubMain") != null){
+             var POIWrapper = component.get("v.ObjDeliveryNoteLI.lstSubMain");
+            var isdeliverydate =  component.get('v.isdeliverydate');
+            if(isdeliverydate == true){
+                if(POIWrapper.length >= 2){
+                   if(DeliveryDate){
+                        for(var i=0 ;i<POIWrapper.length;i++){
+                            POIWrapper[i].objDNLI.Delivery_Date__c = DeliveryDate;
+                        } 
+                    }
+                }
+            }
+            component.set("v.ObjDeliveryNoteLI.lstSubMain",POIWrapper);
+        }
+        else{
+            var POIWrapper = component.get("v.mainWrap.lstMRNLineItems"); 
+            var isdeliverydate =  component.get('v.isdeliverydate');
+            if(isdeliverydate == true){
+                if(POIWrapper.length >= 2){
+                     if(DeliveryDate){
+                        for(var i=0 ;i<POIWrapper.length;i++){
+                            POIWrapper[i].ObjMRNLI.Delivery_Date__c = DeliveryDate;
+                        } 
+                    }
+                }
+            }
+            component.set("v.mainWrap.lstMRNLineItems",POIWrapper);
+        }  
+    },
     
 })

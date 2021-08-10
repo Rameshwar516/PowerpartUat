@@ -8,7 +8,7 @@ public class UpsertPackingList {
         list<innerWrp> listIW = new list<innerWrp>();
         set<id> prePartId = new set<id>();
         Packing_List__c PLREC = [Select id,Delivery_Note__c FROM Packing_List__c where id =:RecordId ];
-        for(Packing_List_Line_Item__c objDNLI : [SELECT BOX_No__c,Box_Type__c,DC_Date__c,Gross_Weight_Kgs__c,Height_Inches_CMS__c,Packing_List__r.Delivery_Note__c,
+        for(Packing_List_Line_Item__c objDNLI : [SELECT BOX_No__c,Customer_Part_No__c,Box_Type__c,DC_Date__c,Gross_Weight_Kgs__c,Height_Inches_CMS__c,Packing_List__r.Delivery_Note__c,
                                                  Id,Length_Inches_CMS__c,Name,Packing_List__c,Part_Name__c,Part_No__c,Part_No__r.name,Part_No__r.Part_Name__c,
                                                  Quantity__c,Width_Inches_CMS__c,Remark__c FROM Packing_List_Line_Item__c WHERE  Packing_List__c =: RecordId])
         {
@@ -27,6 +27,7 @@ public class UpsertPackingList {
             objIW.quantity = Integer.valueof(objDNLI.Quantity__c);
             objIW.isSelected= true;
             objIW.strRemark = objDNLI.Remark__c;
+            objIW.custmnum = objDNLI.Customer_Part_No__c;
             listIW.add(objIW);
         }
         /*
@@ -48,7 +49,6 @@ public class UpsertPackingList {
             }
         */
         objWR.inrWrap = listIW;
-        system.debug('....objWR...'+objWR);
         return json.serialize(objWR);
     }
     
@@ -60,14 +60,12 @@ public class UpsertPackingList {
         //Packing_List__c objPackingList = new Packing_List__c();
         //objPackingList.Delivery_Note__c = recordId;
         //insert objPackingList;
-        
-        System.debug('add Record method called');
+
         list<Packing_List_Line_Item__c> lstDNLT = new list<Packing_List_Line_Item__c>();
         WrappMain objwrap = (WrappMain)Json.deserialize(strWrap, WrappMain.class);
         try
         {
             List<innerWrp> lstWrappNew = objwrap.inrWrap;
-            System.debug('lstWrappNewSz---- '+lstWrappNew);
             for( integer i = 0 ; i<lstWrappNew.size();  i++)
             {
                 if(lstWrappNew[i].isSelected)
@@ -83,6 +81,7 @@ public class UpsertPackingList {
                      objPLItems.Gross_Weight_Kgs__c = string.valueof(lstWrappNew[i].decWeight);
                      objPLItems.Packing_List__c = recordId;
                      objPLItems.Remark__c = lstWrappNew[i].strRemark;
+                    objPLItems.Customer_Part_No__c = lstWrappNew[i].custmnum;
                      if(!string.isBlank(lstWrappNew[i].recId)) objPLItems.id=lstWrappNew[i].recId;
                      lstDNLT.add(objPLItems);
                 }
@@ -96,7 +95,6 @@ public class UpsertPackingList {
             objwrap.success = false;
             objwrap.strMessage = e.getMessage();
         }
-        system.debug('..........'+json.serialize(objwrap));
         return json.serialize(objwrap); 
     }   
     
@@ -125,6 +123,7 @@ public class UpsertPackingList {
         @AuraEnabled public string partnum;
         @AuraEnabled public string partid;
         @AuraEnabled public string strRemark;
+        @AuraEnabled public string custmnum;
     }
 
 }

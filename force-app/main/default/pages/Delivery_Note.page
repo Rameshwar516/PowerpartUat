@@ -3,9 +3,9 @@
     <head>
         <style type="text/css">
             @page 
-            {
-            size:12.94in 13.90in;
-            margin-top: 180px;
+            {  
+             size:11.7in 14.5in; 
+            margin-top: 5.00cm;
             page-break-after:always;
             @top-center 
             {                   
@@ -19,21 +19,26 @@
             div.header 
             {                
             padding: 5px; 
-            padding-top:50px;
+            padding-top:10px;
             padding-bottom:5px;
             position: running(header); 
             content: "Page " counter(page) " of " counter(pages);
             } 
             div.footer 
             {                
-            padding: 5px;               
+            //padding: 5px;               
             position: running(footer);    
             }
             @page 
             {
             @bottom-center 
             {
-            padding: 10px;
+            padding-top: 10px;
+            content: "Registered Office : N-122, Panchsheel Park, New Delhi - 100 017";
+            }
+            @bottom-right 
+            {
+            padding-top: 10px;
             content: "Page " counter(page) " of " counter(pages);
             }
             }
@@ -43,7 +48,7 @@
             border-spacing: 0px;
             font-size:12px;
             font-family: Arial;
-             -fs-table-paginate: paginate; 	
+            -fs-table-paginate: paginate; 	
             }
             
             td {
@@ -68,60 +73,57 @@
     <apex:form >
         <apex:pageBlock rendered="{!if(Sales_Order_Dispatch_Delivery_Note__c.Without_Pricing__c == true || Sales_Order_Dispatch_Delivery_Note__c.With_Bin_Number__c == true ,true,false)}">
                     
-        <div class="header">
-            
-            <table style="width:100%;border-collapse: collapse;">
-                <tr>
-                    <td style="border:none;padding:0px;" width="20%" valign="top">
-                        <left>
-                            <apex:image url="{!$Resource.PowerpartsLogo}" width="210" height="60"/> 
-                        </left>
-                    </td>
-                    <td style="border:none;padding:0px;" width="60%" valign="top">
-                        <center>
-                            <b><apex:outputText value="POWERPARTS PRIVATE LIMITED" style="font-size:14px;font-family: Arial;" /></b><br/>
-                            <b><apex:outputText value="Registered Office : " style="font-size:12px;font-family: Arial;" /></b>
-                            <apex:outputText value="N-122, Panchsheel Park, New Delhi - 100 017" style="font-size:12px;font-family: Arial;" /><br/>
-                            <b style="font-size:14px;font-family: Arial;">{!pdfheader.Address_Header__c}</b><br/>
-                            <div style="font-size:12px;font-family: Arial;">{!pdfheader.Address_Line1__c}<br/>
-                                {!pdfheader.Address_Line_2__c}<br/>
-                                {!pdfheader.Gstin__c}<br/>
-                                {!pdfheader.Email__c}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{!pdfheader.Tel__c} <br/>
-                            
-                                {!pdfheader.IEC_No__c}&nbsp;&nbsp;&nbsp;{!pdfheader.PAN_No__c}<br/>
-                                {!pdfheader.BANK__c}<br/>
-                                {!pdfheader.Bank_A_C_No__c}&nbsp;&nbsp;&nbsp;{!pdfheader.IFC_RTGS_NEFT__c}<br/>
+            <div class="header">
+                <table style="width:100%;border-collapse: collapse;">
+                    <tr>
+                        <td style="border:none;padding:0px;" width="20%" valign="top">
+                            <left>
+                                <apex:image url="{!$Resource.PowerpartsLogo}" width="210" height="60"/> 
+                            </left>
+                        </td>
+                        <td style="border:none;padding:0px;" width="60%" valign="top">
+                            <center>
+                                <b><apex:outputText value="POWERPARTS PRIVATE LIMITED" style="font-size:14px;font-family: Arial;" /></b><br/>
+                                <!--<b><apex:outputText value="Registered Office : " style="font-size:12px;font-family: Arial;" /></b>
+<apex:outputText value="N-122, Panchsheel Park, New Delhi - 100 017" style="font-size:12px;font-family: Arial;" /><br/>-->
+                                <b style="font-size:14px;font-family: Arial;">{!pdfheader.Address_Header__c}</b><br/>
+                                <div style="font-size:12px;font-family: Arial;">{!pdfheader.Address_Line1__c}<br/>
+                                    {!pdfheader.Address_Line_2__c}<br/>
+                                    {!pdfheader.Gstin__c}<br/>
+                                    {!pdfheader.Email__c}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{!pdfheader.Tel__c} <br/><br/>
+                                    
+                                    {!pdfheader.IEC_No__c}&nbsp;&nbsp;&nbsp;{!pdfheader.PAN_No__c}<br/>
+                                    {!pdfheader.BANK__c}<br/>
+                                    {!pdfheader.Bank_A_C_No__c}&nbsp;&nbsp;&nbsp;{!pdfheader.IFC_RTGS_NEFT__c}<br/>
                                 </div>
-                        </center>
-                    </td>
-                    <td style="border:none;padding:0px;" width="60%" valign="top">
-                        <Right>
-                            <apex:image url="{!$Resource.PerkinsLogo}" width="210" height="160"/> 
-                        </Right>
-                    </td>
-                </tr>
-            </table>
-            
-        </div>
-        <body>
-            
-            <table style="width:100%; border:1px solid black; ">
-                <tr></tr>
-                <tr>
-                    <td style="width: 75%; text-align: ;border:none;text-align: right;  padding-right: 250px;"><b style="font-size: 20px">Delivery Note</b>
-                        <p style="text-align: left;">
-                            (To be issued by supplier other than insurer, a banking company, a financial institution, a non-banking
-                            financialy company or transporter)(See Rule 8 of Invoice rules)
-                        </p>
-                    </td>
-                    <td style="width: 25%; text-align: left;border:none">
-                        <table style=" width: 100%;">
-                            <tr>
-                                <td style="width: 10%; border-right:1px solid black; border-left:1px solid black; border-Bottom:1px solid black; "><apex:outputField value="{!Sales_Order_Dispatch_Delivery_Note__c.Original_for_Receipient__c}"/></td>
-                                <td style="width: 90%; text-align: left;border:none">Original for Receipient</td>
-                            </tr>
-                            <tr>
-                                <td style="width: 10%; border-right:1px solid black; border-left:1px solid black; border-Bottom:1px solid black; "><apex:outputField value="{!Sales_Order_Dispatch_Delivery_Note__c.Duplicate_for_supplier_Transporter__c}"/></td>
+                            </center>
+                        </td>
+                        <td style="border:none;padding:0px;" width="60%" valign="top">
+                            <Right>
+                                <apex:image url="{!$Resource.PerkinsLogo}" width="210" height="160" style="margin-top: -40px;"/> 
+                            </Right>
+                        </td>
+                    </tr>
+                </table> 
+            </div>
+            <div class="content">
+                <table style="width:100%; border:1px solid black; ">
+                    <tr></tr>
+                    <tr>
+                        <td style="width: 75%; text-align: ;border:none;text-align: right;  padding-right: 250px;"><b style="font-size: 20px">Delivery Note</b>
+                            <p style="text-align: left;">
+                                (To be issued by supplier other than insurer, a banking company, a financial institution, a non-banking
+                                financialy company or transporter)(See Rule 8 of Invoice rules)
+                            </p>
+                        </td>
+                        <td style="width: 25%; text-align: left;border:none">
+                            <table style=" width: 100%;">
+                                <tr>
+                                    <td style="width: 10%; border-right:1px solid black; border-left:1px solid black; border-Bottom:1px solid black; "><apex:outputField value="{!Sales_Order_Dispatch_Delivery_Note__c.Original_for_Receipient__c}"/></td>
+                                    <td style="width: 90%; text-align: left;border:none">Original for Receipient</td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 10%; border-right:1px solid black; border-left:1px solid black; border-Bottom:1px solid black; "><apex:outputField value="{!Sales_Order_Dispatch_Delivery_Note__c.Duplicate_for_supplier_Transporter__c}"/></td>
                                 <td style="width: 90%; text-align: left;border:none">Duplicate for supplier/Transporter</td>
                             </tr>
                             <tr>
@@ -133,7 +135,7 @@
                 </tr>
                 
             </table>
-            <table style="width:100%;border:2px solid black;">
+            <table style="width:100%;border:1px solid black;">
                 <tr>
                     <td style="border:none;"  valign="top">
                         <b><apex:outputText value="DC No." /></b> 
@@ -695,7 +697,7 @@
                         
                         <apex:repeat value="{!lstCharges}" var="chr" rendered="{!If(lstCharges !=null ,true,false)}" >
                             <tr >
-                                <td style="width:62%;"><apex:outputText value="{!chr.Charges__r.name}" /></td>
+                                <td style="width:62%;"><center><apex:outputText value="{!chr.Charges__r.name}" /></center></td>
                                 <td style="width:38%; text-align:right"><apex:outputText value="{!chr.Net_Amount__c}" /></td>
                             </tr>
                         </apex:repeat>
@@ -724,22 +726,23 @@
                     </table>
                 </apex:pageBlock>
             </table>
-            <table width="100%" style="border-collapse: collapse;">
-                <tr>
-                    <td  style="text-align:left;border-bottom:black; border-right:black; width:50%; " height="50">For <b>Powerparts Private Limited</b></td> 
-                    <td  style="text-align:right;border-bottom:black; border-left:black; width:50%; " height="50">Received Above Goods</td>
+            <table width="100%" style="border-collapse: none;">
+                <tr style="border-bottom:none;  ">
+                    <td  style="text-align:left;border-bottom:none; border-right:black; width:50%; " height="50">For <b>Powerparts Private Limited</b></td>
+                    <td  style="text-align:right;border-bottom:none; border-left:black; width:50%; " height="50">Received Above Goods</td>
                 </tr>
-                <tr style="line-height:20px">
-                    <td  style="text-align:left;width:100%; border-top:none;  border-bottom:none;" colspan="2" height="10"></td> 
+                <tr style="line-height:20px; border-top:none;border-left:none;">
+                    <td  style="text-align:left;border-right:none;border-top:none;border-bottom:none; width:50%; " height="50">
+                        <apex:image id="theImage4" url="{!sign}" width="100" height="50" alt="User Siganture"/>
+                    </td>
+                    <td  style="text-align:right;border-top:none;border-left:none;border-bottom:none; width:50%; " height="50"></td>
                 </tr>
                 <tr>
-                    <td  style="text-align:left;border-top:black;  border-right:black; width:50%;" height="50">Authorised Singnatory</td> 
-                    <td  style="text-align:right;border-top:black;  border-left:black; width:50%; " height="50">Authorised Singnatory</td>
+                    <td  style="text-align:left;border-top:black;border-right:none; width:50%;" height="50">Authorised Singnatory</td> 
+                    <td  style="text-align:right;border-top:black;border-left:none; width:50%; " height="50">Authorised Singnatory</td>
                 </tr>
             </table>
-            
-            <center><b>This is a computer generated document signature is not required.</b></center>
-            </body>
+            </div>
         </apex:pageBlock>
         
         <!-------------------------------------------------------------------------------------------------------------------------------------------------------->
@@ -747,47 +750,43 @@
         <!-------------------------------------------------------------------------------------------------------------------------------------------------------->
         
         <apex:pageBlock rendered="{!if(Sales_Order_Dispatch_Delivery_Note__c.Without_Pricing__c != true && Sales_Order_Dispatch_Delivery_Note__c.With_Bin_Number__c != true ,true,false)}">
-        <div class="header">
-            
-          <table style="width:100%;border-collapse: collapse;">
+            <div class="header">
+                <table style="width:100%;border-collapse: collapse;">
+                    <tr>
+                        <td style="border:none;padding:0px;" width="20%" valign="top">
+                            <left>
+                                <apex:image url="{!$Resource.PowerpartsLogo}" width="210" height="60" style="margin-top: 40px;"/> 
+                            </left>
+                        </td>
+                        <td style="border:none;padding:0px;" width="60%" valign="top">
+                            <center>
+                                <b><apex:outputText value="POWERPARTS PRIVATE LIMITED" style="font-size:14px;font-family: Arial;" /></b><br/>
+                                <!--<b><apex:outputText value="Registered Office : " style="font-size:12px;font-family: Arial;" /></b>
+<apex:outputText value="N-122, Panchsheel Park, New Delhi - 100 017" style="font-size:12px;font-family: Arial;" /><br/>-->
+                                <b style="font-size:14px;font-family: Arial;">{!pdfheader.Address_Header__c}</b><br/>
+                                <div style="font-size:12px;font-family: Arial;">{!pdfheader.Address_Line1__c}<br/>
+                                    {!pdfheader.Address_Line_2__c}<br/>
+                                    {!pdfheader.Gstin__c}<br/>
+                                    {!pdfheader.Email__c}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{!pdfheader.Tel__c} <br/><br/>
+                                    
+                                    {!pdfheader.IEC_No__c}&nbsp;&nbsp;&nbsp;{!pdfheader.PAN_No__c}<br/>
+                                    {!pdfheader.BANK__c}<br/>
+                                    {!pdfheader.Bank_A_C_No__c}&nbsp;&nbsp;&nbsp;{!pdfheader.IFC_RTGS_NEFT__c}<br/>
+                                </div>
+                            </center>
+                        </td>
+                        <td style="border:none;padding:0px;" width="60%" valign="top">
+                            <Right>
+                                <apex:image url="{!$Resource.PerkinsLogo}" width="210" height="160" style="margin-top: -20px;"/> 
+                            </Right>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        <div class="content">
+            <table style="width:100%; border:2px solid black;">
                 <tr>
-                    <td style="border:none;padding:0px;" width="20%" valign="top">
-                        <left>
-                            <apex:image url="{!$Resource.PerformaLeftSidelogo}" width="210" height="60"/> 
-                        </left>
-                    </td>
-                    <td style="border:none;padding:0px;" width="60%" valign="top">
-                        <center>
-                            <b><apex:outputText value="POWERPARTS PRIVATE LIMITED" style="font-size:13px;font-family: Arial;" /></b><br/>
-                            <b><apex:outputText value="Registered Office : " style="font-size:11px;font-family: Arial;" /></b>
-                            <apex:outputText value="N-122, Panchsheel Park, New Delhi - 100 017" style="font-size:11px;font-family: Arial;" /><br/>
-                           
-                            <b style="font-size:13px;font-family: Arial;">{!pdfheader.Address_Header__c}</b><br/>
-                            <div style="font-size:11px;font-family: Arial;">{!pdfheader.Address_Line1__c}<br/>
-                            {!pdfheader.Address_Line_2__c}<br/>
-                            {!pdfheader.Gstin__c}<br/>
-                            {!pdfheader.Email__c}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{!pdfheader.Tel__c} <br/><br/>
-                                
-                            
-                            {!pdfheader.IEC_No__c}&nbsp;&nbsp;&nbsp;{!pdfheader.PAN_No__c}<br/>
-                            {!pdfheader.BANK__c}<br/>
-                            {!pdfheader.Bank_A_C_No__c}&nbsp;&nbsp;&nbsp;{!pdfheader.IFC_RTGS_NEFT__c}<br/>
-                            </div>
-                        </center>
-                    </td>
-                    <td style="border:none;padding:0px;" width="60%" valign="top">
-                        <Right>
-                            <apex:image url="{!$Resource.PerformaRightSidelogo}" width="210" height="60"/> 
-                        </Right>
-                    </td>
-                </tr>
-            </table>
-        </div>
-        <body>
-            
-            <table style="width:100%;border:2px solid black;">
-                <tr>
-                    <td colspan="8" style="font-size:18px"><center><b>Delivery Note</b></center></td></tr>
+                    <td colspan="10" style="font-size:18px"><center><b>Delivery Note</b></center></td></tr>
                  <tr>
                     <td style="border:none;" width="15%" valign="top">
                         <b><apex:outputText value="DC No." /></b> 
@@ -1031,7 +1030,7 @@
                     <td style="border:none;border-top: 2px solid black;"  valign="top" colspan="4">
                         <b><apex:outputText value="Invoiced To :" /></b>
                     </td>
-                    <td style="border:none;border-left: 2px solid black;border-top: 2px solid black;"  valign="top" colspan="4">
+                    <td style="border:none;border-left: 2px solid black;border-top: 2px solid black;"  valign="top" colspan="6">
                         <b><apex:outputText value="Shipped To :" /></b>
                     </td>
                 </tr>
@@ -1052,7 +1051,7 @@
                     <td style="border:none;border-top: 2px solid black;"  valign="top" >
                         <b><apex:outputText value=":" /></b>
                     </td>
-                    <td style="border:none;border-top: 2px solid black;"  valign="top" colspan="2">
+                    <td style="border:none;border-top: 2px solid black;"  valign="top" colspan="4">
                         <apex:outputText value="{!Sales_Order_Dispatch_Delivery_Note__c.Shipping_Account__r.Print_Name__c}" />
                     </td>
                 </tr>
@@ -1180,13 +1179,13 @@
                         <apex:outputText value="{!Sales_Order_Dispatch_Delivery_Note__c.Shipping_State_Province__c}" />
                         
                     </td>
-                    <td style="border:none;border-top: 2px solid black;border-left: 2px solid black;"  valign="top">
+                    <td style="border:none;border-top: 2px solid black;border-left: 2px solid black;" colspan="2"  valign="top">
                          <b><apex:outputText value="State Code :" /></b> 
                          <apex:outputText value="{!Sales_Order_Dispatch_Delivery_Note__c.Shipping_Account__r.Shipping_State_Code__c}" />
                     </td> 
                 </tr>
                 <tr>
-                    <td style="border:none;border-top: 2px solid black;" colspan="8"> 
+                    <td style="border:none;border-top: 2px solid black;" colspan="10"> 
                         <apex:outputText value="We acknowledge with thanks your order and have the pleasure of submitting our order confirmation." /><br/>
                         <apex:outputText value="If any of the information conflicts with your requirement, please advise by return. " />
                     </td>
@@ -1206,6 +1205,9 @@
                     </th>
                     <th  width="5%" rowspan="2" style="text-align:center">
                         <apex:outputText value="HSN/ SAC" />
+                    </th>
+                    <th  width="5%" rowspan="2" style="text-align:center">
+                        <apex:outputText value="Part Serial" />
                     </th>
                     <th  width="5%" rowspan="2" style="text-align:center">
                         <apex:outputText value="Qty" />
@@ -1275,6 +1277,7 @@
                     <td><apex:outputText value="{!dli.objDLI.Product_Part__r.name}" /></td>
                     <td colspan="3"><apex:outputText value="{!dli.objDLI.Product_Part__r.Part_Name__c}" /></td>
                     <td><apex:outputText value="{!dli.objDLI.HSN_Code__c}" /></td>
+                    <td><apex:outputText value="{!dli.objDLI.Part_Serial__c}" /></td>
                     <td style="text-align:right"><apex:outputText value="{!dli.objDLI.Quantity__c}" /></td>
                     <td style="text-align:right"><apex:outputText value="{!dli.objDLI.Product_Part__r.UOM__c}" /></td>
                    <!-- <td style="text-align:right"><apex:outputText value="not mapped" /></td>
@@ -1295,7 +1298,7 @@
                 </apex:repeat>
                 
                 <tr style="background-color:#d3d4d5;">
-                    <td colspan="12"><center><apex:outputText value="Sub Total" /></center></td>
+                    <td colspan="13"><center><apex:outputText value="Sub Total" /></center></td>
                     <td style="text-align:right"><apex:outputText value="{!subTotalTaxableAmount}" /></td>
                     <td></td>
                     <td style="text-align:right"><apex:outputText value="{!SubTotalCGST}" /></td>
@@ -1309,7 +1312,7 @@
               
                 <apex:repeat value="{!lstCharges}" var="liCharge">
                     <tr>
-                        <td colspan="12"><apex:outputText value="{!liCharge.Charges__r.Name}" /></td>
+                        <td colspan="13"><center><apex:outputText value="{!liCharge.Charges__r.Name}" /></center></td>
                         <td style="text-align:right"><apex:outputText value="{!liCharge.Charge_Amount__c}" /></td>
                         <td style="text-align:right"><apex:outputText value="{!liCharge.CGST__c}" /></td>
                         <td style="text-align:right"><apex:outputText value="{!liCharge.CGST_Amount__c}" /></td>
@@ -1322,7 +1325,7 @@
                 </apex:repeat>
                                 
                 <tr style="background-color:#d3d4d5;">
-                    <td colspan="12"><center><apex:outputText value="Total" /></center></td>
+                    <td colspan="13"><center><apex:outputText value="Total" /></center></td>
                     <td style="text-align:right"><apex:outputText value="{!TotalTaxableAmount}" /></td>
                     <td></td>
                     <td style="text-align:right"><apex:outputText value="{!TotalCGST}" /></td>
@@ -1333,7 +1336,7 @@
                     <td style="text-align:right"><apex:outputText value="{!FullTotalAmount}" /></td>
                 </tr>
                 <tr>
-                    <td colspan="13">
+                    <td colspan="14">
                         <apex:outputText value="Amount in Words : " /> 
                         <apex:outputText value="{!TotalAmountInWords}" />
                     </td>
@@ -1341,7 +1344,7 @@
                     <td colspan="2" style="text-align:right"> <apex:outputText value="{!TotalTaxableAmount}" /></td>
                 </tr>
                 <tr>
-                    <td colspan="13" rowspan="7" valign="top">
+                    <td colspan="14" rowspan="7" valign="top">
                         <div style="margin-top:5px">
                             <apex:outputText value="Remarks : " /> 
                             <apex:outputText value="{!Sales_Order_Dispatch_Delivery_Note__c.Remark__c}" /><br/><br/>
@@ -1468,34 +1471,32 @@
                 </tr>
                 <tr style="display: {!if(Sales_Order_Dispatch_Delivery_Note__c.Customer_Party__r.TCS_Charges_Enable__c, '', 'none')}">
                     <td colspan="5"><b><apex:outputText value="Grand Total " /></b></td>
-                    <td colspan="2" style="text-align:right"> <apex:outputText value="{!totalAmountWithTCS}" /></td>
+                    <td colspan="2" style="text-align:right"> <apex:outputText value="{!totalAmountWithTCSstring}" /></td>
+                </tr>
+                
+            </table>
+            
+            
+            
+            
+            <table width="100%" style="border-collapse: none;">
+                <tr style="border-bottom:none;  ">
+                    <td  style="text-align:left;border-bottom:none; border-right:black; width:50%; " height="50">For <b>Powerparts Private Limited</b></td>
+                    <td  style="text-align:right;border-bottom:none; border-left:black; width:50%; " height="50">Received Above Goods</td>
+                </tr>
+                <tr style="line-height:20px; border-top:none;border-left:none;">
+                    <td  style="text-align:left;border-right:none;border-top:none;border-bottom:none; width:50%; " height="50">
+                        <apex:image id="theImage4" url="{!sign}" width="100" height="50" alt="User Siganture"/>
+                    </td>
+                    <td  style="text-align:right;border-top:none;border-left:none;border-bottom:none; width:50%; " height="50"></td>
                 </tr>
                 <tr>
-                    <td colspan="20" align="right">
-                        <apex:outputText value="For " /><b><apex:outputText value="Powerparts Private Limited " /></b>
-                        <br/><br/><br/> 
-                        <apex:outputText value="Authorised Signatory" />
-                    </td>
+                    <td  style="text-align:left;border-top:black;border-right:none; width:50%;" height="50">Authorised Singnatory</td> 
+                    <td  style="text-align:right;border-top:black;border-left:none; width:50%; " height="50">Authorised Singnatory</td>
                 </tr>
             </table>
             
-            <table style="width:100%;border:2px solid black;border-collapse: collapse;page-break-before:always; margin-top: 2%;">
-               <!-- <tr>
-                    <td>
-                        <center><b>TERMS &amp; CONDITIONS</b></center><br/>
-                        <apex:outputText value="not mapped"/>
-                    </td>
-                </tr>-->
-                <tr>
-                    <td align="right">
-                        <apex:outputText value="For " /><b><apex:outputText value="Powerparts Private Limited " /></b>
-                        <br/><br/><br/> 
-                        <apex:outputText value="Authorised Signatory" />
-                    </td>
-                </tr>
-            </table>
-            <center><b>This is a computer generated document signature is not required.</b></center>
-        </body>
+ </div>
         </apex:pageBlock>
     </apex:form>
 </apex:page>

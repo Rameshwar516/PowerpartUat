@@ -15,6 +15,7 @@ public class PurchaseOrderInvoice
     public Account objSupplier {get;set;}
     public list<Purchase_Order_Line_Item__c> POLitem{get;set;}
     
+     public Pdf_Header__mdt pdfheader{get;set;}
     public string strBillingAddress{get;set;}
     public string strWHBillingAddress{get;set;}
     public string strShippingAddress{get;set;}
@@ -29,13 +30,21 @@ public class PurchaseOrderInvoice
     public string strWareHouseCode{get;set;}
     public string strWareHouseCity{get;set;}
     
+    public decimal TotalAmountWithChargeswithoutround{get;set;}
+    
     public list<Charges__c> lstCharges{get;set;}
+    
     public decimal TotalAmountWithCharges{get;set;}
     public decimal TotalGSTCharges{get;set;}
     //////////////////////////////
     public string wareHouseSCStateCode{get;set;}
        public string wareHouseSCState{get;set;}
       public string contName{get;set;}
+    public string contsalutation{get;set;}
+    
+      public string sign{get;set;}
+    public string stamp{get;set;}
+  
       public string contPhone{get;set;}
       public string contemail{get;set;}
      public string wareHouseSCGst{get;set;}
@@ -50,6 +59,7 @@ public class PurchaseOrderInvoice
     {
         lstCharges= new list<Charges__c>();
         POLitem=new list<Purchase_Order_Line_Item__c>();
+         pdfheader=new Pdf_Header__mdt();
         PurchaseOrd=new Purchase_Order__c();
         con=new contact();
         Acc=new Account();
@@ -57,7 +67,7 @@ public class PurchaseOrderInvoice
         List<String> lstPurchaseOrderField = UtilityClass.getAllFields('Purchase_Order__c');
         List<String> lstPurchaseOrderItemField = UtilityClass.getAllFields('Purchase_Order_Line_Item__c');
         
-        String strPurchaseOrderQuery = 'Select ' +String.Join(lstPurchaseOrderField, ',')+ ' ,Shipping_Ware_House__r.GSTIN_No__c,Shipping_Customer__r.GSTIN_No__c,Shipping_Ware_House__r.Contact_No__c,Shipping_Ware_House__r.E_Mail__c,Shipping_Ware_House__r.Contact_Person__c,Shipping_Ware_House__r.State_Province__c,Shipping_Customer__r.shippingState,Shipping_Ware_House__r.State_Code__c,Shipping_Ware_House__r.Name ,Shipping_Customer__r.Name , Shipping_Customer__r.Shipping_State_Code__c From Purchase_Order__c where Id =: queryString';
+        String strPurchaseOrderQuery = 'Select ' +String.Join(lstPurchaseOrderField, ',')+ ' ,Ware_House__r.Branch__c ,Shipping_Ware_House__r.GSTIN_No__c,Shipping_Customer__r.GSTIN_No__c,Shipping_Ware_House__r.Contact_No__c,Shipping_Ware_House__r.E_Mail__c,Shipping_Ware_House__r.Contact_Person__c,Shipping_Ware_House__r.State_Province__c,Shipping_Customer__r.shippingState,Shipping_Ware_House__r.State_Code__c,Shipping_Ware_House__r.Name ,Shipping_Customer__r.Name , Shipping_Customer__r.Shipping_State_Code__c From Purchase_Order__c where Id =: queryString';
         String strPurchaseOrderItemQuery = 'Select ' +String.Join(lstPurchaseOrderItemField, ',')+ '  From Purchase_Order_Line_Item__c where Purchase_Order__c =: queryString';
         
         
@@ -66,6 +76,28 @@ public class PurchaseOrderInvoice
         if(!lstPurchaseOrder.isEmpty())
         PurchaseOrd=lstPurchaseOrder[0];  
             /////////////////////////////
+            
+            
+            string branch = PurchaseOrd.Ware_House__r.Branch__c ;
+            List<String> pdfheaderField = UtilityClass.getAllFields('Pdf_Header__mdt');
+            String pdfHeaderQuery = 'Select ' +String.Join(pdfheaderField, ',')+ ' From Pdf_Header__mdt WHERE Branch__c =:branch Order by Effected_Date__c ASC LIMIT 1';
+            pdfheader =  Database.query(pdfHeaderQuery);
+        
+         user ur =[SELECT Id,Branch__c,User_Signature__c from user where id =:PurchaseOrd.OwnerId];
+        if(!String.isBlank(ur.User_Signature__c))
+        sign = ur.User_Signature__c;
+        
+        if(String.isBlank(ur.User_Signature__c))
+        sign =System.Label.Default_User_Sign;
+        
+        system.debug(sign);
+        System.debug('----'+ur.Branch__c);
+        if(ur.Branch__c == 'Kolkata')
+            stamp= System.Label.Kolkata_Stamp_Link;
+         if(ur.Branch__c == 'Gurugram')
+            stamp= System.Label.Gurugram_Stamp_Link;
+       
+        
         if(String.isNotEmpty(PurchaseOrd.Shipping_Ware_House__r.Name)){
             if(String.isNotEmpty(PurchaseOrd.Shipping_Ware_House__r.State_Code__c)){
            wareHouseSCStateCode=  PurchaseOrd.Shipping_Ware_House__r.State_Code__c;
@@ -98,17 +130,18 @@ public class PurchaseOrderInvoice
               if(String.isNotEmpty(PurchaseOrd.Shipping_Customer__r.Shipping_State_Code__c)){
            wareHouseSCStateCode=  PurchaseOrd.Shipping_Customer__r.Shipping_State_Code__c;
         }
-              list<contact> con=[select id, name, phone, email from contact where Accountid =: PurchaseOrd.Shipping_Customer__c And isPrimary__c=true limit 1];
+              list<contact> con=[select id, salutation,name, phone, email from contact where Accountid =: PurchaseOrd.Shipping_Customer__c And isPrimary__c=true limit 1];
               if(con.size()>0){
               contName = con[0].name;
               contPhone = con[0].Phone;
               contemail = con[0].Email;
+                   contsalutation = con[0].salutation;
           }
           }
             //////////////////////////////
          if(String.isNotEmpty(PurchaseOrd.Supplier__c)){
                     objSupplier = [Select Id,Name, BillingCity,BillingCountry, BillingPostalCode,BillingState,BillingStreet,GSTIN_No__c ,Billing_State_Code__c,
-                                   (Select Id,salutation, Email, MobilePhone, Name from contacts ) 
+                                   (Select Id,salutation, Email, MobilePhone, Name,isPrimary__c from contacts where isPrimary__c=true ) 
                                    from Account 
                                    where Id =: PurchaseOrd.Supplier__c];
                     if(objSupplier.contacts.size() > 0){
@@ -117,7 +150,7 @@ public class PurchaseOrderInvoice
                 }
         
         if(PurchaseOrd.Shipping_Ware_House__c !=null){
-            strShipToname = PurchaseOrd.Shipping_Ware_House__r.Name;
+            strShipToname = PurchaseOrd.Shipping_Ware_House__r.Branch_Name__c;
         }else{
             strShipToname = PurchaseOrd.Shipping_Customer__r.Name;
         }
@@ -267,14 +300,14 @@ public class PurchaseOrderInvoice
              system.debug('totalIgst'+totalIgst);
         }
         
-        totalCgst.round();
-        totalSgst.round();
-        totalIgst.round();
-        totalAmount.round();
-        totalAmountNotIncludedTax.round();
+      //  totalCgst;
+      //  totalSgst;
+      //  totalIgst;
+      //  totalAmount;
+      //  totalAmountNotIncludedTax.round();
         
        totalTax= totalIgst+totalSgst+totalCgst;
-       totalTax.round();
+       //totalTax.round();
        
         /*if(totalAmount> 0){
             totalAmount= totalAmount.round();
@@ -299,40 +332,45 @@ public class PurchaseOrderInvoice
         totalAmountSgst = 0;
         totalAmountIgst = 0;
         totalAmountSumNotIncludedTax = 0;
-        lstCharges = [Select Id, name,Charges__c,Charges__r.Name,CGST__c,IGST__c,SGST__c,Total_Amount__c,Quote__c,Opportunity__c,Net_Amount__c,Charge_Amount__c,CGST_Amount__c,SGST_Amount__c,IGST_Amount__c from Charges__c where Opportunity__c =: PurchaseOrd.Id];   
+        lstCharges = [Select Id, name,Charges__c,Charges__r.Name,CGST__c,IGST__c,SGST__c,Total_Amount__c,Quote__c,Opportunity__c,Net_Amount__c,Charge_Amount__c,CGST_Amount__c,SGST_Amount__c,IGST_Amount__c from Charges__c where Purchase_Order__c =: PurchaseOrd.Id];   
         
         for(Charges__c objCharg : lstCharges)
         {
             TotalAmountWithCharges = TotalAmountWithCharges+objCharg.Net_Amount__c;
             TotalGSTCharges = TotalGSTCharges+ objCharg?.CGST_Amount__c+objCharg?.SGST_Amount__c+objCharg?.IGST_Amount__c;
-            totalAmountCgst = objCharg?.CGST_Amount__c;
-            totalAmountSgst = objCharg?.SGST_Amount__c;
-            totalAmountIgst = objCharg?.IGST_Amount__c;
+            totalAmountCgst = totalAmountCgst+objCharg?.CGST_Amount__c;
+            totalAmountSgst = totalAmountSgst+objCharg?.SGST_Amount__c;
+            totalAmountIgst = totalAmountIgst+objCharg?.IGST_Amount__c;
             totalAmountSumNotIncludedTax = totalAmountSumNotIncludedTax+objCharg?.Charge_Amount__c;
         }
         totalAmountCgst = totalAmountCgst+totalCgst;
-        totalAmountCgst.round();
+        //totalAmountCgst.round();
         totalAmountSgst = totalAmountSgst+totalSgst;
-        totalAmountSgst.round();
+       // totalAmountSgst.round();
         totalAmountIgst = totalAmountIgst+totalIgst;
-        totalAmountIgst.round();
+       // totalAmountIgst.round();
         TotalGSTCharges = totalAmountCgst+totalAmountSgst+totalAmountIgst;
-        TotalGSTCharges.round();
+       // TotalGSTCharges.round();
         
-        totalAmountSumNotIncludedTax.round();
+        //totalAmountSumNotIncludedTax.round();
         
         TotalAmountWithCharges = TotalAmountWithCharges+totalAmount;
+         TotalAmountWithChargeswithoutround=TotalAmountWithCharges;
+        TotalAmountWithCharges=TotalAmountWithCharges.round();
         totalAmountaftertaxinWords = UtilityClass.NoToWord(TotalAmountWithCharges.intValue());
         if(PurchaseOrd.Currency__c != 'INR')
             totalAmountaftertaxinWords = totalAmountaftertaxinWords+' '+PurchaseOrd.Currency__c+' only';
         else
             totalAmountaftertaxinWords = 'Rupees '+totalAmountaftertaxinWords+' only';
-        TotalAmountWithCharges.round();
+       // TotalAmountWithCharges=TotalAmountWithCharges.round();
         totalAmountSumNotIncludedTax = totalAmountSumNotIncludedTax+totalAmountNotIncludedTax;
         totalAmountSumNotIncludedTax.round();
         
         String myGeneratedFileName = PurchaseOrd.Purchase_Order_Number__c+'.pdf';
-        Apexpages.currentPage().getHeaders().put('content-disposition', 'inline; filename='+myGeneratedFilename);
+       // Apexpages.currentPage().getHeaders().put('content-disposition', 'inline; filename='+myGeneratedFilename);
+        ApexPages.currentPage().getHeaders().put('content-disposition', 'filename=' +' Purchase Order-'+PurchaseOrd.Purchase_Order_Number__c+'.PDF');
+                system.debug('strfileName '+' Purchase Order-'+PurchaseOrd.Purchase_Order_Number__c);
+            
     }  
     
 }

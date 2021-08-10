@@ -128,7 +128,7 @@
                    
               component.set('v.wrapMain', JSON.parse(res.getReturnValue()));
                 this.refreshCharge(component,event,helper);
-                component.set("v.IsselectProduct",true);
+                component.set("v.IsselectProduct", false);
                
             }else if(res.getState() === "ERROR") {
                 var errors = res.getError();
@@ -139,10 +139,13 @@
                 } else {
 					component.set("v.wrapMain.strMessage","Unknown error");
                 }
+                component.set("v.IsselectProduct", false);
             }else if (!JSON.parse(res.getReturnValue()).success) {
 				component.set("v.wrapMain.strMessage",JSON.parse(res.getReturnValue()).errorMessage);
+                component.set("v.IsselectProduct", false);
             }
         });
+         component.set("v.IsselectProduct", false);
             $A.enqueueAction(action);
     },
     

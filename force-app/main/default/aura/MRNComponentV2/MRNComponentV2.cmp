@@ -29,6 +29,8 @@
     <aura:attribute name="IsEdit" type="Boolean" default="false"/>
     <aura:attribute name="customduty" type="string" default="10" />
     <aura:attribute name="currentObject" type="String" default="MRN"/>
+    <aura:attribute name="isdeliverydate" type="boolean" default="false" />
+
     
     <aura:html tag="style">
         .cuf-content {
@@ -130,7 +132,7 @@
                                                     <label class="slds-float_left"> Delivery Type</label>
                                                 </div>
                                                 <div class="slds-col slds-size_6-of-12" style="margin-top: -3%;">
-                                                    <lightning:select name="Delivery_Type" label="" required="true"  value="{!v.mainWrap.objMRN.MRN_Delivery_Type__c}" disabled="{!if(empty(v.recordId),false,true)}">
+                                                    <lightning:select name="Delivery_Type" variant="label-hidden"  value="{!v.mainWrap.objMRN.MRN_Delivery_Type__c}" disabled="{!if(empty(v.recordId),false,true)}">
                                                         <option value="">--None--</option>
                                                         <aura:iteration items="{!v.mainWrap.lstDeliveryType}" var="DT">
                                                             <option value="{!DT}">{!DT}</option>
@@ -285,7 +287,7 @@
                                                 <label class="slds-float_left"> Supplier :</label>
                                             </div>
                                             <div class="slds-col slds-size_6-of-12" style="margin-top: -2%;"> 
-                                                <c:CustomLookUpForPI selectedRecord="{!v.Supplier}" objectAPIName="Account" mainwrap="{!v.mainWrap}" IconName="standard:user" />    
+                                                <c:CustomLookUpForPI selectedRecord="{!v.Supplier}" eventObject="{!v.currentObject}" objectAPIName="Account" mainwrap="{!v.mainWrap}" IconName="standard:user" />    
                                             </div>
                                             
                                             <div class="slds-col slds-size_1-of-12">
@@ -372,72 +374,76 @@
                             </aura:if>
                         </aura:if>
                         <aura:if isTrue="{!v.strType =='Sales Return'}">
-                            <div class="slds-table--header-fixed_container" >
-                                
+                            
+                            <div class="slds-box" style="width:100%">
                                 <aura:if isTrue="{!not(empty(v.recordId))}">
-                                    <div class="slds-scrollable" style="width:100%; width: 68rem;">
-                                        <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+                                    <div class="slds-scrollable_x " style="height:100%;width:100%">
+                                    <div class="slds-table--header-fixed_container" style="height:250px;width:170%">
+                                    <div class="slds-scrollable_y" style="height:100%;">
+                                        <table class="slds-table slds-table_bordered slds-table--header-fixed" >
                                             <thead>
                                                 <tr class="slds-text-title_caps">
                                                     <!--header checkbox for select all-->
-                                                    <th scope="col" >
-                                                        <div class="slds-truncate" title="ACTION">ACTION</div>
+                                                    <th scope="col" style="width:1%">
+                                                        <div class="slds-truncate" title="ACTION"></div>
                                                     </th>
-                                                    <th scope="col">
-                                                        <div class="slds-truncate" title="SR.N.">SR.N.</div>
+                                                    <th scope="col" style="width:2%">
+                                                        <div class="slds-truncate" title="SR.N." >SR.N.</div>
                                                     </th>
-                                                    <th scope="col">
-                                                        <div class="slds-truncate" title="Part No.">Part No.</div>
+                                                    <th scope="col"  style="padding-left:1%; width:6%">
+                                                        <div class="slds-truncate" title="Part No." >Part No.</div>
                                                     </th>
-                                                    <th scope="col">
+                                                    <th scope="col"  style="padding-left:1%; width:6%">
                                                         <div class="slds-truncate" title="Part Name">Part Name</div>
                                                     </th>
-                                                    <th scope="col">
+                                                   <!-- <th scope="col"  style="padding-left:1%; width:6%">
                                                         <div class="slds-truncate" title="Doc No.">Specification</div>
+                                                    </th>-->
+                                                    <th scope="col"  style="padding-left:1%; width:4%">
+                                                        <div class="slds-truncate" title="Quantity">Qty</div>
                                                     </th>
-                                                    <th scope="col">
-                                                        <div class="slds-truncate" title="Doc. Date">Quantity</div>
-                                                    </th>
-                                                    <th scope="col">
+                                                    <th scope="col"  style="padding-left:1%; width:6%">
                                                         <div class="slds-truncate" title="Rate">Rate</div>
                                                     </th>
-                                                    <th scope="col">
+                                                    <th scope="col"  style="padding-left:1%; width:6%">
                                                         <div class="slds-truncate" title="Amount">Amount</div>
                                                     </th>
-                                                    <th scope="col">
+                                                    <th scope="col"  style="padding-left:.3%; width:4%">
                                                         <div class="slds-truncate" title="Disc. Rate" tittle="{!c.discountactionCheckbox}">Disc. Rate
                                                             <lightning:input type="checkbox" label="Same" name="input2" checked="{!v.Isdiscount}" onchange="{!c.discountactionCheckbox}"/>
                                                         </div>
                                                     </th>
-                                                    <th scope="col">
-                                                        <div class="slds-truncate" title="Disc. Amount">Disc. Amount</div>
+                                                    <th scope="col"  style="padding-left:1%; width:6%">
+                                                        <div class="slds-truncate" title="Disc. Amount">Disc.<br/> Amount</div>
                                                     </th>
-                                                    <th scope="col">
-                                                        <div class="slds-truncate" title="Gross Amount">Gross Amount</div>
+                                                    <th scope="col"  style="padding-left:1%; width:6%">
+                                                        <div class="slds-truncate" title="Gross Amount">Gross<br/> Amount</div>
                                                     </th>
-                                                    <th scope="col">
+                                                    <th scope="col"  style="padding-left:1%; width:4%">
                                                         <div class="slds-truncate" title="CGST%">CGST%</div>
                                                     </th>
-                                                    <th scope="col">
-                                                        <div class="slds-truncate" title="SGST%">SGST%</div>
+                                                    <th scope="col"  style="padding-left:1%; width:4%">
+                                                        <div class="slds-truncate"  title="SGST%">SGST%</div>
                                                     </th>
-                                                    <th scope="col">
-                                                        <div class="slds-truncate" title="GST%">IGST%</div>
+                                                    <th scope="col"  style="padding-left:1%; width:4%">
+                                                        <div class="slds-truncate"  title="IGST%">IGST%</div>
                                                     </th>
-                                                    <th scope="col">
-                                                        <div class="slds-truncate" title="Net Amount">Net Amount</div>
+                                                    <th scope="col"  style="padding-left:1%; width:6%">
+                                                        <div class="slds-truncate" title="Net Amount">Net<br/> Amount</div>
                                                     </th>
-                                                    <th scope="col">
-                                                        <div class="slds-truncate" title="Delivery Date">Delivery Date</div>
+                                                    <th scope="col"  style="padding-left:.5%; width:6%">
+                                                        <div class="slds-truncate" title="Delivery Date">Delivery Date
+                                                         <lightning:input type="checkbox" label="Same Date" name="input1" checked="{!v.isdeliverydate}" onchange="{!c.onChangeDeliveryJS}"/>
+                                                        </div>
                                                     </th>
-                                                    <th scope="col">
-                                                        <div class="slds-truncate" title="Application">Application</div>
+                                                    <th scope="col"  style="padding-left:.5%;width:6%">
+                                                        <div class="slds-truncate" title="Application" >Application</div>
                                                     </th>
-                                                    <th scope="col">
+                                                    <th scope="col"  style="padding-left:1%; width:4%">
                                                         <div class="slds-truncate" title="Usage">Usage</div>
                                                     </th>
-                                                    <th scope="col">
-                                                        <div class="slds-truncate" title="Remarks">Remarks</div>
+                                                    <th scope="col"  style="padding-left:1%; width:12%">
+                                                        <div class="slds-truncate"  title="Remarks">Remarks</div>
                                                     </th>
                                                     
                                                 </tr>
@@ -450,31 +456,31 @@
                                                         </td>
                                                         <td class="slds-truncate"><div style="margin-top:12px">{!index+1}</div> </td>
                                                         <td class="slds-truncate" title="{!obj.ObjMRNLI.Part_Number__r.Name}">
-                                                            <lightning:input class="cellwidth" id="partId" type="Text" value="{!obj.ObjMRNLI.Part_Number__r.Name}" disabled="true" />
+                                                            <lightning:input  id="partId" type="Text" value="{!obj.ObjMRNLI.Part_Number__r.Name}" disabled="true" />
                                                         </td>
-                                                        <td class="slds-truncate" title="{!obj.ObjMRNLI.Part_Number__r.Part_Name__c}">
+                                                        <td class="slds-truncate" title="{!obj.ObjMRNLI.Part_Number__r.Part_Name__c}" >
                                                             <lightning:input id="partName" type="Text" value="{!obj.ObjMRNLI.Part_Number__r.Part_Name__c}" disabled="true" />
                                                         </td>
-                                                        <td class="slds-truncate" title="{!obj.ObjMRNLI.Specification__c}">
-                                                            <lightning:input id="partName" type="Text" value="{!obj.ObjMRNLI.Specification__c}" disabled="true" />
-                                                        </td>
-                                                        <td class="slds-truncate" title="{!obj.ObjMRNLI.Quantity__c}">
+                                                       <!--  <td class="slds-truncate" title="{!obj.ObjMRNLI.Specification__c}">
+                                                            <lightning:input id="partName" type="Text" value="{!obj.ObjMRNLI.Part_Number__r.Specification__c}" disabled="true" />
+                                                        </td>-->
+                                                        <td class="slds-truncate"  title="{!obj.ObjMRNLI.Quantity__c}">
                                                             <lightning:input name="{!index}" id="partName" onchange="{!c.CalculateMRNQty}" type="number" default="0" min="0" value="{!obj.ObjMRNLI.Quantity__c}" disabled="{!v.IsEdit}" />
                                                         </td>
                                                         <td  class="slds-truncate" title="{!obj.ObjMRNLI.Sales_Price__c}">     
-                                                            <lightning:input class="cellwidth" name="{!index}" id="partName" onchange="{!c.CalculateMRNRate}" type="number" default="0" min="0" value="{!obj.ObjMRNLI.Sales_Price__c}" disabled="{!v.IsEdit}" />
+                                                            <lightning:input class="" name="{!index}" id="partName" onchange="{!c.CalculateMRNRate}" type="number" default="0" min="0" value="{!obj.ObjMRNLI.Sales_Price__c}" disabled="{!v.IsEdit}" />
                                                         </td>
                                                         <td class="slds-truncate" title="{!obj.ObjMRNLI.Total_Amount__c}">
-                                                            <lightning:input class="cellwidth" id="partId" type="number" value="{!obj.ObjMRNLI.Total_Amount__c}" default="0" disabled="true"/>
+                                                            <lightning:input class="" id="partId" type="number" value="{!obj.ObjMRNLI.Total_Amount__c}" default="0" disabled="true"/>
                                                         </td>
-                                                        <td class="slds-truncate" title="{!obj.ObjMRNLI.Discount__c}">
+                                                        <td class="slds-truncate"  title="{!obj.ObjMRNLI.Discount__c}">
                                                             <lightning:input name="{!index}" id="partName" onchange="{!c.CalculateMRNDisRate}" type="number" default="0" min="0" value="{!obj.ObjMRNLI.Discount__c}" disabled="{!v.IsEdit}" />
                                                         </td>
                                                         <td class="slds-truncate" title="{!obj.ObjMRNLI.Discount_Amount__c}">
-                                                            <lightning:input class="cellwidth" name="{!index}" id="partName" onchange="{!c.CalculateMRNDisAmount}" type="number" default="0" min="0" value="{!obj.ObjMRNLI.Discount_Amount__c}" disabled="{!v.IsEdit}" />
+                                                            <lightning:input class="" name="{!index}" id="partName" onchange="{!c.CalculateMRNDisAmount}" type="number" default="0" min="0" value="{!obj.ObjMRNLI.Discount_Amount__c}" disabled="{!v.IsEdit}" />
                                                         </td>
                                                         <td class="slds-truncate" title="{!obj.ObjMRNLI.Taxable_Amount_Formula__c}">
-                                                            <lightning:input class="cellwidth" id="partId" type="number" value="{!obj.ObjMRNLI.Taxable_Amount_Formula__c}" disabled="true" default="0"/>
+                                                            <lightning:input class="" id="partId" type="number" value="{!obj.ObjMRNLI.Taxable_Amount_Formula__c}" disabled="true" default="0"/>
                                                         </td>
                                                         <td class="slds-truncate" title="{!obj.ObjMRNLI.CGST__c}">
                                                             <lightning:input name="{!index}" id="partName" onchange="{!c.CalculateMRNCGST}" type="number" default="0" min="0" value="{!obj.ObjMRNLI.CGST__c}" disabled="{!v.IsEdit}" />
@@ -482,240 +488,264 @@
                                                         <td class="slds-truncate" title="{!obj.ObjMRNLI.SGST__c}">
                                                             <lightning:input name="{!index}" id="partName" onchange="{!c.CalculateMRNSGST}" type="number" default="0" min="0" value="{!obj.ObjMRNLI.SGST__c}" disabled="{!v.IsEdit}" />
                                                         </td>
-                                                        <td class="slds-truncate" title="{!obj.ObjMRNLI.IGST__c}">
+                                                        <td class="slds-truncate"  title="{!obj.ObjMRNLI.IGST__c}">
                                                             <lightning:input name="{!index}" id="partName" onchange="{!c.CalculateMRNIGST}" type="number" default="0" min="0" value="{!obj.ObjMRNLI.IGST__c}" disabled="{!v.IsEdit}" />
                                                         </td>
                                                         <td class="slds-truncate" title="{!obj.ObjMRNLI.Net_Amount_Formula__c}">
-                                                            <lightning:input class="cellwidth" id="partId" type="number" default="0" value="{!obj.ObjMRNLI.Net_Amount_Formula__c}" disabled="true" />
+                                                            <lightning:input class="" id="partId" type="number" default="0" value="{!obj.ObjMRNLI.Net_Amount_Formula__c}" disabled="true" />
                                                         </td>
                                                         <td class="slds-truncate" title="{!obj.ObjMRNLI.Delivery_Date__c}">
-                                                            <lightning:input id="partId" type="Date" value="{!obj.ObjMRNLI.Delivery_Date__c}" disabled="{!v.IsEdit}" default="0"/>
+                                                            <lightning:input id="partId" type="Date" value="{!obj.ObjMRNLI.Delivery_Date__c}"  onchange="{!c.onChangeDeliveryJS}"  disabled="{!v.IsEdit}" default="0"/>
                                                         </td>
                                                         <td class="slds-truncate" title="{!obj.ObjMRNLI.Application__c}">
-                                                            <lightning:input id="partId" type="Text" value="{!obj.ObjMRNLI.Application__c}" disabled="{!v.IsEdit}" default="0"/>
+                                                            <lightning:select name="Application" label="" value="{!obj.ObjMRNLI.Application__c}" >
+                                                                <option value="">-- None --</option>
+                                                                <option text="Industrial" value="Industrial" />
+                                                                <option text="Ep" value="Ep" />
+                                                                <option text="Both" value="Both" />
+                                                            </lightning:select>
+                                                         <!--   <lightning:input id="partId" type="Text" value="{!obj.ObjMRNLI.Application__c}" disabled="{!v.IsEdit}" default="0"/>-->
                                                         </td>
                                                         <td class="slds-truncate" title="{!obj.ObjMRNLI.Usage__c}">
                                                             <lightning:input id="partId" type="Text" value="{!obj.ObjMRNLI.Usage__c}" disabled="{!v.IsEdit}" default="0"/>
                                                         </td>
-                                                        <td class="slds-truncate" title="{!obj.ObjMRNLI.Remarks__c}">
-                                                            <lightning:input id="partId" type="Text" value="{!obj.ObjMRNLI.Remarks__c}" disabled="{!v.IsEdit}"/>
+                                                        <td class="slds-truncate" title="{!obj.ObjMRNLI.Remarks__c}" >
+                                                            <lightning:textarea value="{!obj.ObjMRNLI.Remarks__c}" disabled="{!v.IsEdit}"/> 
                                                         </td>
                                                     </tr>
                                                 </aura:iteration>
                                             </tbody>
                                         </table>
+                                        </div>
+                                        </div>
                                     </div>
                                     <aura:set attribute="else">
-                                        <div class="slds-scrollable" style="width:100%; ">
-                                            <table class="slds-table slds-table_bordered slds-table_cell-buffer">
-                                                <thead>
-                                                    <tr class="slds-text-title_caps">
-                                                        <!--header checkbox for select all-->
-                                                        <th scope="col">
-                                                            <div class="slds-truncate" title="ACTION">ACTION</div>
-                                                        </th>
-                                                        <th scope="col">
-                                                            <div class="slds-truncate" title="SR.N.">SR.N.</div>
-                                                        </th>
-                                                        <th scope="col">
-                                                            <div class="slds-truncate" title="Part No.">Part No.</div>
-                                                        </th>
-                                                        <th scope="col">
-                                                            <div class="slds-truncate" title="Part Name">Part Name</div>
-                                                        </th>
-                                                        <th scope="col">
-                                                            <div class="slds-truncate" title="Doc No.">Specification</div>
-                                                        </th>
-                                                        <th scope="col">
-                                                            <div class="slds-truncate" title="Doc. Date">Received <br/>MRN Qty</div>
-                                                        </th>
-                                                        <th scope="col">
-                                                            <div class="slds-truncate" title="Rate">Rate</div>
-                                                        </th>
-                                                        <th scope="col">
-                                                            <div class="slds-truncate" title="Amount">Amount</div>
-                                                        </th>
-                                                        <th scope="col">
-                                                            <div class="slds-truncate" title="Disc. Rate">Disc. Rate <lightning:input type="checkbox" label="Same" name="input2" checked="{!v.Isdiscount}" onchange="{!c.Checkboxdiscountaction}"/></div>
-                                                        </th>
-                                                        <th scope="col">
-                                                            <div class="slds-truncate" title="Disc. Amount">Disc. Amount</div>
-                                                        </th>
-                                                        <th scope="col">
-                                                            <div class="slds-truncate" title="Gross Amount">Gross Amount</div>
-                                                        </th>
-                                                        <th scope="col">
-                                                            <div class="slds-truncate" title="CGST%">CGST%</div>
-                                                        </th>
-                                                        <th scope="col">
-                                                            <div class="slds-truncate" title="SGST%">SGST%</div>
-                                                        </th>
-                                                        <th scope="col">
-                                                            <div class="slds-truncate" title="GST%">IGST%</div>
-                                                        </th>
-                                                        <th scope="col">
-                                                            <div class="slds-truncate" title="Net Amount">Net Amount</div>
-                                                        </th>
-                                                        <th scope="col">
-                                                            <div class="slds-truncate" title="Delivery Date">Delivery Date</div>
-                                                        </th>
-                                                        <th scope="col">
-                                                            <div class="slds-truncate" title="Application">Application</div>
-                                                        </th>
-                                                        <th scope="col">
-                                                            <div class="slds-truncate" title="Usage">Usage</div>
-                                                        </th>
-                                                        <th scope="col">
-                                                            <div class="slds-truncate" title="Remarks">Remarks</div>
-                                                        </th>  
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <aura:iteration items="{!v.ObjDeliveryNoteLI.lstSubMain}" var="obj" indexVar="index">
-                                                        <tr>
-                                                            <td class="slds-truncate"> 
-                                                                <div style="margin-top:12px">
-                                                                    <lightning:buttonIcon value="{!index}" alternativeText="Delete" variant="border-filled"  iconName="utility:delete"  onclick="{!c.DeleteSalesOrderLIRecord}" class="AlignCenter"/>
-                                                                </div>
-                                                            </td>
-                                                            <td class="slds-truncate"><div style="margin-top:12px">{!index+1}</div> </td>
-                                                            <td class="slds-truncate" title="{!obj.objDNLI.Product_Part__r.Name}">
-                                                                <lightning:input id="partId" type="Text" value="{!obj.objDNLI.Product_Part__r.Name}" disabled="true"/>
-                                                            </td>
-                                                            <td class="slds-truncate" title="{!obj.objDNLI.Product_Part__r.Part_Name__c}">
-                                                                <lightning:input id="partName" type="Text" value="{!obj.objDNLI.Product_Part__r.Part_Name__c}"  disabled="true"/>
-                                                            </td>
-                                                            <td class="slds-truncate" title="{!obj.objDNLI.Specification__c}">
-                                                                <lightning:input id="partName" type="Text" value="{!obj.objDNLI.Specification__c}" disabled="{!v.IsEdit}"/>
-                                                            </td>
-                                                            <td>
-                                                                <div  class="slds-truncate" title="{!obj.DnUnitQty}">
-                                                                    <lightning:input name="{!index}" id="partId" type="number" onchange="{!c.CalculateQuantity}" value="{!obj.DnUnitQty}" disabled="{!v.IsEdit}" default="0"/>
-                                                                </div>
-                                                            </td>
-                                                            <td class="slds-truncate cellwidth">
-                                                                <div  class="slds-truncate cellwidth" title="{!obj.DnUnitPrice}">
-                                                                    <lightning:input name="{!index}" id="partId" type="number" onchange="{!c.CalculateRate}"  value="{!obj.DnUnitPrice}" disabled="{!v.IsEdit}" default="0"/>
-                                                                </div>
-                                                            </td>
-                                                            <td class="slds-truncate" title="{!obj.DnAmount}">
-                                                                <lightning:input class="cellwidth" id="partId" type="number" value="{!obj.DnAmount}" disabled="true" default="0"/>
-                                                            </td>
-                                                            <td class="slds-truncate" title="{!obj.DnDiscountPer}">
-                                                                <lightning:input name="{!index}" id="partId" type="number" onchange="{!c.CalculateDiscountRate}"  value="{!obj.DnDiscountPer}" disabled="{!v.IsEdit}" default="0"/>
-                                                            </td>
-                                                            <td class="slds-truncate" title="{!obj.DnDiscountAmount}">
-                                                                <lightning:input class="cellwidth" name="{!index}" id="partId" type="number" onchange="{!c.CalculateDiscount}"  value="{!obj.DnDiscountAmount}" disabled="{!v.IsEdit}" default="0"/>
-                                                            </td>
-                                                            <td class="slds-truncate" title="{!obj.DnTaxableAmount}">
-                                                                <lightning:input class="cellwidth" id="partId" type="number" value="{!obj.DnTaxableAmount}" disabled="true" default="0"/>
-                                                            </td>
-                                                            <td class="slds-truncate" title="{!obj.DnCGSTRate}">
-                                                                <lightning:input name="{!index}" id="partId" type="number" onchange="{!c.CalculateSalesCGST}"  value="{!obj.DnCGSTRate}" disabled="{!v.IsEdit}" default="0"/>
-                                                            </td>
-                                                            <td class="slds-truncate" title="{!obj.DnSGSTRate}">
-                                                                <lightning:input name="{!index}" id="partId" type="number" onchange="{!c.CalculateSalesSGST}"  value="{!obj.DnSGSTRate}" disabled="{!v.IsEdit}" default="0"/>
-                                                            </td>
-                                                            <td class="slds-truncate" title="{!obj.DnIGSTRate}">
-                                                                <lightning:input name="{!index}" id="partId" type="number" onchange="{!c.CalculateSalesIGST}"  value="{!obj.DnIGSTRate}" disabled="{!v.IsEdit}" default="0"/>
-                                                            </td>
-                                                            <td class="slds-truncate" title="{!obj.DnNetAmount}">
-                                                                <lightning:input class="cellwidth" id="partId" type="number" value="{!obj.DnNetAmount}" default="0" disabled="true" />
-                                                            </td>
-                                                            <td class="slds-truncate" title="{!obj.objDNLI.Delivery_Date__c}">
-                                                                <lightning:input id="partId" type="Date" value="{!obj.objDNLI.Delivery_Date__c}" disabled="{!v.IsEdit}"/>
-                                                            </td>
-                                                            <td class="slds-truncate" title="{!obj.objDNLI.Application__c}">
-                                                                <lightning:input id="partId" type="Text" value="{!obj.objDNLI.Application__c}" disabled="{!v.IsEdit}"/>
-                                                            </td>
-                                                            <td class="slds-truncate" title="{!obj.objDNLI.Usage__c}">
-                                                                <lightning:input id="partId" type="Text" value="{!obj.objDNLI.Usage__c}" disabled="{!v.IsEdit}"/>
-                                                            </td>
-                                                            <td class="slds-truncate" title="{!obj.objDNLI.Remark__c}">
-                                                                <lightning:input id="partId" type="Text" value="{!obj.objDNLI.Remark__c}" disabled="{!v.IsEdit}"/>
-                                                            </td>
-                                                        </tr>
-                                                    </aura:iteration>
-                                                </tbody>
-                                            </table>
+                                        <div class="slds-scrollable_x " style="height:100%;width:100%">
+                                            <div class="slds-table--header-fixed_container" style="height:250px;width:170%">
+                                                <div class="slds-scrollable_y" style="height:100%;">
+                                                    <table class="slds-table slds-table_bordered slds-table--header-fixed" >
+                                                        <thead>
+                                                <tr class="slds-text-title_caps">
+                                                    <!--header checkbox for select all-->
+                                                    <th scope="col" style="width:1%">
+                                                        <div class="slds-truncate" title="ACTION"></div>
+                                                    </th>
+                                                    <th scope="col" style="width:2%">
+                                                        <div class="slds-truncate" title="SR.N." >SR.N.</div>
+                                                    </th>
+                                                    <th scope="col"  style="padding-left:1%; width:6%">
+                                                        <div class="slds-truncate" title="Part No." >Part No.</div>
+                                                    </th>
+                                                    <th scope="col"  style="padding-left:1%; width:6%">
+                                                        <div class="slds-truncate" title="Part Name">Part Name</div>
+                                                    </th>
+                                                    <!-- <th scope="col"  style="padding-left:1%; width:6%">
+                                                        <div class="slds-truncate" title="Doc No.">Specification</div>
+                                                    </th>-->
+                                                    <th scope="col"  style="padding-left:1%; width:4%">
+                                                        <div class="slds-truncate" title="Quantity">Qty</div>
+                                                    </th>
+                                                    <th scope="col"  style="padding-left:1%; width:6%">
+                                                        <div class="slds-truncate" title="Rate">Rate</div>
+                                                    </th>
+                                                    <th scope="col"  style="padding-left:1%; width:6%">
+                                                        <div class="slds-truncate" title="Amount">Amount</div>
+                                                    </th>
+                                                    <th scope="col"  style="padding-left:.3%; width:4%">
+                                                        <div class="slds-truncate" title="Disc. Rate" tittle="{!c.discountactionCheckbox}">Disc. Rate
+                                                            <lightning:input type="checkbox" label="Same" name="input2" checked="{!v.Isdiscount}" onchange="{!c.discountactionCheckbox}"/>
+                                                        </div>
+                                                    </th>
+                                                    <th scope="col"  style="padding-left:1%; width:6%">
+                                                        <div class="slds-truncate" title="Disc. Amount">Disc.<br/> Amount</div>
+                                                    </th>
+                                                    <th scope="col"  style="padding-left:1%; width:6%">
+                                                        <div class="slds-truncate" title="Gross Amount">Gross<br/> Amount</div>
+                                                    </th>
+                                                    <th scope="col"  style="padding-left:1%; width:4%">
+                                                        <div class="slds-truncate" title="CGST%">CGST%</div>
+                                                    </th>
+                                                    <th scope="col"  style="padding-left:1%; width:4%">
+                                                        <div class="slds-truncate"  title="SGST%">SGST%</div>
+                                                    </th>
+                                                    <th scope="col"  style="padding-left:1%; width:4%">
+                                                        <div class="slds-truncate"  title="IGST%">IGST%</div>
+                                                    </th>
+                                                    <th scope="col"  style="padding-left:1%; width:6%">
+                                                        <div class="slds-truncate" title="Net Amount">Net<br/> Amount</div>
+                                                    </th>
+                                                    <th scope="col"  style="padding-left:.5%; width:6%">
+                                                        <div class="slds-truncate" title="Delivery Date">Delivery Date
+                                                         <lightning:input type="checkbox" label="Same Date" name="input1" checked="{!v.isdeliverydate}" onchange="{!c.onChangeDeliveryJS}"/>
+                                                        </div>
+                                                    </th>
+                                                    <th scope="col"  style="padding-left:.5%;width:6%">
+                                                        <div class="slds-truncate" title="Application" >Application</div>
+                                                    </th>
+                                                    <th scope="col"  style="padding-left:1%; width:4%">
+                                                        <div class="slds-truncate" title="Usage">Usage</div>
+                                                    </th>
+                                                    <th scope="col"  style="padding-left:1%; width:12%">
+                                                        <div class="slds-truncate"  title="Remarks">Remarks</div>
+                                                    </th>
+                                                    
+                                                </tr>
+                                            </thead>
+                                                        <tbody>
+                                                            <aura:iteration items="{!v.ObjDeliveryNoteLI.lstSubMain}" var="obj" indexVar="index">
+                                                                <tr>
+                                                                    <td class="slds-truncate"> 
+                                                                        <div style="margin-top:12px">
+                                                                            <lightning:buttonIcon value="{!index}" alternativeText="Delete" variant="border-filled"  iconName="utility:delete"  onclick="{!c.DeleteSalesOrderLIRecord}" class="AlignCenter"/>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td class="slds-truncate"><div style="margin-top:12px">{!index+1}</div> </td>
+                                                                    <td class="slds-truncate" title="{!obj.objDNLI.Product_Part__r.Name}">
+                                                                        <lightning:input id="partId" type="Text" value="{!obj.objDNLI.Product_Part__r.Name}" disabled="true"/>
+                                                                    </td>
+                                                                    <td class="slds-truncate" title="{!obj.objDNLI.Product_Part__r.Part_Name__c}">
+                                                                        <lightning:input id="partName" type="Text" value="{!obj.objDNLI.Product_Part__r.Part_Name__c}"  disabled="true"/>
+                                                                    </td>
+                                                                   <!--  <td class="slds-truncate" title="{!obj.objDNLI.Product_Part__r.Specification__c}">
+                                                                        <lightning:input id="partName" type="Text" value="{!obj.objDNLI.Product_Part__r.Specification__c}" disabled="true"/>
+                                                                    </td>-->
+                                                                    <td >
+                                                                        <div  class="slds-truncate" title="{!obj.DnUnitQty}" >
+                                                                            <lightning:input name="{!index}" id="partId" type="number" onchange="{!c.CalculateQuantity}" value="{!obj.DnUnitQty}" disabled="{!v.IsEdit}" default="0"/>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td class="slds-truncate ">
+                                                                        <div  class="slds-truncate " title="{!obj.DnUnitPrice}">
+                                                                            <lightning:input name="{!index}" id="partId" type="number" onchange="{!c.CalculateRate}"  value="{!obj.DnUnitPrice}" disabled="{!v.IsEdit}" default="0"/>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td class="slds-truncate" title="{!obj.DnAmount}">
+                                                                        <lightning:input class="" id="partId" type="number" value="{!obj.DnAmount}" disabled="true" default="0"/>
+                                                                    </td>
+                                                                    <td class="slds-truncate" title="{!obj.DnDiscountPer}">
+                                                                        <lightning:input name="{!index}" id="partId" type="number" onchange="{!c.CalculateDiscountRate}"  value="{!obj.DnDiscountPer}" disabled="{!v.IsEdit}" default="0"/>
+                                                                    </td>
+                                                                    <td class="slds-truncate" title="{!obj.DnDiscountAmount}">
+                                                                        <lightning:input class="" name="{!index}" id="partId" type="number" onchange="{!c.CalculateDiscount}"  value="{!obj.DnDiscountAmount}" disabled="{!v.IsEdit}" default="0"/>
+                                                                    </td>
+                                                                    <td class="slds-truncate" title="{!obj.DnTaxableAmount}">
+                                                                        <lightning:input class="" id="partId" type="number" value="{!obj.DnTaxableAmount}" disabled="true" default="0"/>
+                                                                    </td>
+                                                                    <td class="slds-truncate"  title="{!obj.DnCGSTRate}">
+                                                                        <lightning:input name="{!index}" id="partId" type="number" onchange="{!c.CalculateSalesCGST}"  value="{!obj.DnCGSTRate}" disabled="{!v.IsEdit}" default="0"/>
+                                                                    </td>
+                                                                    <td class="slds-truncate"  title="{!obj.DnSGSTRate}">
+                                                                        <lightning:input name="{!index}" id="partId" type="number" onchange="{!c.CalculateSalesSGST}"  value="{!obj.DnSGSTRate}" disabled="{!v.IsEdit}" default="0"/>
+                                                                    </td>
+                                                                    <td class="slds-truncate" title="{!obj.DnIGSTRate}">
+                                                                        <lightning:input name="{!index}" id="partId" type="number" onchange="{!c.CalculateSalesIGST}"  value="{!obj.DnIGSTRate}" disabled="{!v.IsEdit}" default="0"/>
+                                                                    </td>
+                                                                    <td class="slds-truncate" title="{!obj.DnNetAmount}">
+                                                                        <lightning:input class="" id="partId" type="number" value="{!obj.DnNetAmount}" default="0" disabled="true" />
+                                                                    </td>
+                                                                    <td class="slds-truncate" title="{!obj.objDNLI.Delivery_Date__c}">
+                                                                        <lightning:input id="partId" type="Date" value="{!obj.objDNLI.Delivery_Date__c}"  onchange="{!c.onChangeDeliveryJS}" disabled="{!v.IsEdit}"/>
+                                                                    </td>
+                                                                    <td class="slds-truncate" title="{!obj.objDNLI.Application__c}">
+                                                                        <lightning:select name="Application" label="" value="{!obj.objDNLI.Application__c}" >
+                                                                            <option value="">-- None --</option>
+                                                                            <option text="Industrial" value="Industrial" />
+                                                                            <option text="Ep" value="Ep" />
+                                                                            <option text="Both" value="Both" />
+                                                                        </lightning:select>
+                                                                      <!--  <lightning:input id="partId" type="Text" value="{!obj.objDNLI.Application__c}" disabled="{!v.IsEdit}"/>-->
+                                                                    </td>
+                                                                    <td class="slds-truncate" title="{!obj.objDNLI.Usage__c}">
+                                                                        <lightning:input id="partId" type="Text" value="{!obj.objDNLI.Usage__c}" disabled="{!v.IsEdit}"/>
+                                                                    </td>
+                                                                    <td class="slds-truncate" title="{!obj.objDNLI.Remark__c}" >
+                                                                        <lightning:textarea value="{!obj.objDNLI.Remark__c}" disabled="{!v.IsEdit}"/> 
+                                                                    </td>
+                                                                </tr>
+                                                            </aura:iteration>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
                                         </div>
                                     </aura:set>
                                 </aura:if>
                             </div>
+                            
                         </aura:if>
                         
                         <!--  Direct and Purchase order -->
                         
                         <aura:if isTrue="{!or(v.strType =='Purchase Order', v.strType =='Direct')}">
-                            <div class="slds-box" style="width:100%">
+                            <div class="slds-box" style="width:100%; margin-top: 1%;">
                                 <div class="slds-scrollable_x " style="height:100%;width:100%">
-                                    <div class="slds-table--header-fixed_container" style="height:250px;width:270%">
+                                    <div class="slds-table--header-fixed_container" style="{! if(v.mainWrap.objMRN.MRN_Delivery_Type__c =='Import' ,'height:250px;width:350%','height:250px;width:270%')}">
                                         <div class="slds-scrollable_y" style="height:100%;">
                                             <table class="slds-table slds-table_bordered slds-table--header-fixed" >
                                                 <thead>  
                                                     <tr class="slds-text-title_caps">
-                                                        <th scope="col" rowspan="2">
-                                                            <div class="slds-truncate" title="ACTION" style="text-align: center; width:6rem">ACTION</div>
+                                                        <th scope="col" rowspan="2" style="text-align: center; width:1%">
+                                                            <div class="slds-truncate" title="ACTION" >ACTION</div>
                                                         </th>
-                                                        <th scope="col" rowspan="2">
-                                                            <div class="slds-truncate" title="SR.N." style="text-align: center;">SR.N.</div>
+                                                        <th scope="col" rowspan="2" style="text-align: center; width: 1%;">
+                                                            <div class="slds-truncate" title="SR.N." >SR.N.</div>
                                                         </th>
                                                         <aura:if isTrue="{!v.strType =='Purchase Order'}" >
-                                                            <th scope="col" rowspan="2" style="text-align: center;">
+                                                            <th scope="col" rowspan="2" style="text-align: center; width: 3%;">
                                                                 <div class="slds-truncate" title="SDoc.No." >Doc.No.</div>
                                                             </th>
-                                                            <th scope="col" rowspan="2" style="text-align: center;">
+                                                            <th scope="col" rowspan="2" style="text-align: center; width: 2%;">
                                                                 <div class="slds-truncate" title="SR.N." >PO Date</div>
                                                             </th>
                                                         </aura:if>
-                                                        <th scope="col" rowspan="2">
-                                                            <div class="slds-truncate" title="Part No." style="text-align: center;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Part No.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                                                        <th scope="col" rowspan="2" style="text-align: center; width: 2.5%;">
+                                                            <div class="slds-truncate" title="Part No." >Part No.</div>
                                                         </th>
-                                                        <th scope="col" rowspan="2">
-                                                            <div class="slds-truncate" title="Part Name" style="text-align: center;">Description	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                                                        <th scope="col" rowspan="2" style="text-align: center; width: 5%;">
+                                                            <div class="slds-truncate" title="Part Name" >Description</div>
                                                         </th>
-                                                        <th scope="col" rowspan="2">
-                                                            <div class="slds-truncate" title="HSN/SAC" style="text-align: center;">HSN/SAC</div>
+                                                        <th scope="col" rowspan="2" style="text-align: center; width: 2%;">
+                                                            <div class="slds-truncate" title="HSN/SAC" >HSN/SAC</div>
                                                         </th>
-                                                        <th scope="col" rowspan="2" style="text-align: center;">
+                                                        <th scope="col" rowspan="2" style="text-align: center; width: 2%;">
                                                             <aura:if isTrue="{!v.mainWrap.objMRN.MRN_Delivery_Type__c =='Import'}">
-                                                                <div class="slds-truncate" title="Bin No.">Bin No.</div>
+                                                                <div class="slds-truncate" title="Bin No.">Bin<br/>No.</div>
                                                                 <aura:set attribute="else">
                                                                     <div class="slds-truncate" title="Bin No.">Rack</div>
                                                                 </aura:set>
                                                             </aura:if>
                                                         </th>
-                                                        <th scope="col" rowspan="2" style="text-align: center;">
-                                                            <div class="slds-truncate" title="PO Qty">PO Qty.</div>
+                                                        <th scope="col" rowspan="2" style="text-align: center;  width: 1.5%;">
+                                                            <div class="slds-truncate" title="PO Qty">PO<br/>Qty.</div>
                                                         </th>
-                                                        <th scope="col" rowspan="2" style="text-align: center;">
-                                                            <div class="slds-truncate" title="Bill Qty">Bill Qty.</div>
+                                                        <th scope="col" rowspan="2" style="text-align: center; width: 1.5%;">
+                                                            <div class="slds-truncate" title="Bill Qty">Bill<br/>Qty.</div>
                                                         </th>
-                                                        <th scope="col" rowspan="2" style="text-align: center;">
-                                                            <div class="slds-truncate" title="Receipt Qty">Recd. Qty.</div>
+                                                        <th scope="col" rowspan="2" style="text-align: center; width: 1.5%;">
+                                                            <div class="slds-truncate" title="Receipt Qty">Recd.<br/>Qty.</div>
                                                         </th>
-                                                        <th scope="col" rowspan="2" style="text-align: center;">
+                                                        <th scope="col" rowspan="2" style="text-align: center; width: 1.5%;">
                                                             <aura:if isTrue="{!v.mainWrap.objMRN.MRN_Delivery_Type__c =='Import'}">
-                                                                <div class="slds-truncate" title="Accept Qty">Short/ <br/> Excess Qty.</div>
+                                                                <div class="slds-truncate" title="Accept Qty">Short/ <br/>Excess Qty.</div>
                                                                 <aura:set attribute="else">
-                                                                    <div class="slds-truncate" title="Short Qty.">Short Qty.</div>
+                                                                    <div class="slds-truncate" title="Short Qty.">Short<br/>Qty.</div>
                                                                 </aura:set>
                                                             </aura:if>
                                                         </th>
                                                         <aura:if isTrue="{!v.mainWrap.objMRN.MRN_Delivery_Type__c =='Import'}">
-                                                            <th scope="col" rowspan="2" style="text-align: center;">
+                                                            <th scope="col" rowspan="2" style="text-align: center; width: 2%;">
                                                                 <div class="slds-truncate" title="UoM">UoM</div>
                                                             </th>
-                                                            <th scope="col" rowspan="2" style="text-align: center;">
+                                                            <th scope="col" rowspan="2" style="text-align: center; width: 2%;">
                                                                 <div class="slds-truncate" title="UOI">UOI</div>
                                                             </th>
                                                             <aura:set attribute="else">
-                                                                <th scope="col" rowspan="2" style="text-align: center;">
+                                                                <th scope="col" rowspan="2" style="text-align: center; width: 2%;">
                                                                     <div class="slds-truncate" title="Unit">Unit</div>
                                                                 </th>	
                                                             </aura:set>
                                                         </aura:if>
-                                                        <th scope="col" rowspan="2" style="text-align: center;">
+                                                        <th scope="col" rowspan="2" style="text-align: center; width: 2.5%;">
                                                             <div class="slds-truncate" title="Item Price/Unit (GBP)"> Item Price/ <br/>Unit   <aura:if isTrue="{!v.mainWrap.objMRN.MRN_Delivery_Type__c =='Import'}">
                                                                 ({!v.mainWrap.objMRN.Currency__c})
                                                                 <aura:set attribute="else">
@@ -724,7 +754,7 @@
                                                                 </aura:if>
                                                             </div>
                                                         </th>	
-                                                        <th scope="col" rowspan="2" style="text-align: center;">
+                                                        <th scope="col" rowspan="2" style="text-align: center; width: 2.5%;">
                                                             <div class="slds-truncate" title="Item Price/Unit (GBP)">Total Item <br/>Amount <aura:if isTrue="{!v.mainWrap.objMRN.MRN_Delivery_Type__c =='Import'}">
                                                                 ({!v.mainWrap.objMRN.Currency__c})
                                                                 <aura:set attribute="else">
@@ -733,40 +763,40 @@
                                                                 </aura:if></div>
                                                         </th>
                                                         <aura:if isTrue="{!v.mainWrap.objMRN.MRN_Delivery_Type__c =='Import'}">										
-                                                            <th scope="col" rowspan="2">
-                                                                <div class="slds-truncate" title="Item Price/Unit (GBP)" style="text-align: center;">Item Value <br/>With Freigh &#38; <br/>Surchargeb({!v.mainWrap.objMRN.Currency__c}) </div>
+                                                            <th scope="col" rowspan="2" style="text-align: center; width: 3%;">
+                                                                <div class="slds-truncate" title="Item Price/Unit (GBP)" style="text-align: center;">Item Value <br/>With Freight &#38; <br/>Surcharge ({!v.mainWrap.objMRN.Currency__c}) </div>
                                                             </th>	
-                                                            <th scope="col" rowspan="2">
+                                                            <th scope="col" rowspan="2" style="text-align: center; width: 3%;">
                                                                 <div class="slds-truncate" title="Item Price/Unit (GBP)" style="text-align: center;">Total Item<br/> Value In<br/> (INR)</div>
                                                             </th>	
-                                                            <th scope="col" rowspan="2">
+                                                            <th scope="col" rowspan="2" style="text-align: center; width: 3%;">
                                                                 <div class="slds-truncate" title="Item Price/Unit (GBP)" style="text-align: center;">Assessable<br/> Value (INR) <br/>(Including <br/>Insurance)</div>
                                                             </th>	
-                                                            <th scope="col" colspan="3" style="text-align: center;">
+                                                            <th scope="col" colspan="3" style="text-align: center; width: 3%;">
                                                                 <div class="slds-truncate" title="Custom Duty">Custom Duty</div>
                                                             </th>	
                                                         </aura:if>
-                                                        <th scope="col" rowspan="2" style="text-align: center;">
+                                                        <th scope="col" rowspan="2" style="text-align: center; width: 2.5%;">
                                                             <div class="slds-truncate" title="Item Price/Unit (GBP)">Taxable Value</div>
                                                         </th>
                                                         <aura:if isTrue="{!v.mainWrap.objMRN.MRN_Delivery_Type__c =='Import'}">	
-                                                            <th scope="col" colspan="2" style="text-align: center;">
+                                                            <th scope="col" colspan="2" style="text-align: center; width: 3%;">
                                                                 <div class="slds-truncate" title="GST">GST </div>
                                                             </th>	
                                                             <aura:set attribute="else">
-                                                                <th scope="col" colspan="2" style="text-align: center;">
+                                                                <th scope="col" colspan="2" style="text-align: center; width: 3%;">
                                                                     <div class="slds-truncate" title="GST">CGST </div>
                                                                 </th>
-                                                                <th scope="col" colspan="2" style="text-align: center;">
+                                                                <th scope="col" colspan="2" style="text-align: center; width: 3%;">
                                                                     <div class="slds-truncate" title="GST">SGST </div>
                                                                 </th>
-                                                                <th scope="col" colspan="2" style="text-align: center;">
+                                                                <th scope="col" colspan="2" style="text-align: center; width: 3%;">
                                                                     <div class="slds-truncate" title="GST">IGST </div>
                                                                 </th>
                                                                 
                                                             </aura:set>
                                                         </aura:if>
-                                                        <th scope="col" rowspan="2" style="text-align: center;">
+                                                        <th scope="col" rowspan="2" style="text-align: center; width: 2.5%;">
                                                             <aura:if isTrue="{!v.mainWrap.objMRN.MRN_Delivery_Type__c =='Import'}">	
                                                                 <div class="slds-truncate" title="Amount">Total <br/>for Books <br/>(After less <br/>1.125% Insurance <br/>Cost)</div>
                                                                 <aura:set attribute="else">
@@ -778,34 +808,34 @@
                                                     <tr>
                                                         
                                                         <aura:if isTrue="{!v.mainWrap.objMRN.MRN_Delivery_Type__c =='Import'}">	
-                                                            <th scope="col" style="text-align: center; width: 5rem;" >
+                                                            <th scope="col" style="text-align: center; width: 1%;">
                                                                 <div class="slds-truncate" title="Item Price/Unit (GBP)">Duty<br/> Rate</div>
                                                             </th>	
-                                                            <th scope="col" style="text-align: center; width: 5rem;" >
+                                                            <th scope="col" style="text-align: center; width: 1%;" >
                                                                 <div class="slds-truncate" title="Item Price/Unit (GBP)">Sur. <br/>Rate</div>
                                                             </th>	
-                                                            <th scope="col" style="text-align: center; width: 7rem;" >
+                                                            <th scope="col" style="text-align: center; width: 2.5%;" >
                                                                 <div class="slds-truncate" title="Item Price/Unit (GBP)">Amount <br/>(INR)</div>
                                                             </th>
                                                         </aura:if>	
                                                         
-                                                        <th scope="col" style="text-align: center; width: 5rem;" >
+                                                        <th scope="col" style="text-align: center; width: 1%;" >
                                                             <div class="slds-truncate" title="Rate">Rate</div>
                                                         </th>	
-                                                        <th scope="col" style="text-align: center;">
+                                                        <th scope="col" style="text-align: center; width: 2%;">
                                                             <div class="slds-truncate" title="Amount">Amount</div>
                                                         </th>
                                                         <aura:if isTrue="{!v.mainWrap.objMRN.MRN_Delivery_Type__c =='Domestic' || v.mainWrap.objMRN.MRN_Delivery_Type__c =='' || v.mainWrap.objMRN.MRN_Delivery_Type__c == null}">	
-                                                            <th scope="col" style="width: 5rem; text-align: center;" >
+                                                            <th scope="col" style="text-align: center; width: 1%;" >
                                                                 <div class="slds-truncate" title="Rate">Rate</div>
                                                             </th>	
-                                                            <th scope="col" style="text-align: center;">
+                                                            <th scope="col" style="text-align: center; width: 2%;">
                                                                 <div class="slds-truncate" title="Amount">Amount</div>
                                                             </th>
-                                                            <th scope="col" style="width: 5rem; text-align: center;" >
+                                                            <th scope="col" style="text-align: center; width: 1%;" >
                                                                 <div class="slds-truncate" title="Rate">Rate</div>
                                                             </th>	
-                                                            <th scope="col" style="text-align: center;">
+                                                            <th scope="col" style="text-align: center; width: 2%;">
                                                                 <div class="slds-truncate" title="Amount">Amount</div>
                                                             </th>
                                                         </aura:if>											
@@ -828,7 +858,7 @@
                                                                         <lightning:buttonIcon value="{!index}" alternativeText="Delete" variant="border-filled"  iconName="utility:delete" class="AlignCenter" onclick="{!c.DeleteRecord}"/> 
                                                                     </div>
                                                                 </td>
-                                                                <td class="slds-truncate"><div style="margin-top:12px">{!index+1}</div> </td>
+                                                                <td class="slds-truncate"><div style="text-align: center; margin-top:12px">{!index+1}</div> </td>
                                                                 <aura:if isTrue="{!v.strType =='Purchase Order'}">
                                                                     
                                                                     <td class="slds-truncate">
@@ -844,8 +874,8 @@
                                                                         <aura:if isTrue="{!obj.IsEdit}">
                                                                             <lightning:input id="partId" type="string" value="{!obj.objPart.Name}" disabled="true"/>
                                                                             <aura:set attribute="else">
-                                                                                <c:CustomLookUpForPI selectedRecord="{!obj.objPart}" eventObject="{!v.currentObject}" objectAPIName="Part__c" mainwrap="{!v.mainWrap}" IconName="standard:all" /> 
-                                                                            </aura:set>
+                                                                                <div ><c:CustomLookUpForPI selectedRecord="{!obj.objPart}" eventObject="{!v.currentObject}" objectAPIName="Part__c" mainwrap="{!v.mainWrap}" IconName="standard:all" /> 
+                                                                            </div></aura:set>
                                                                         </aura:if>
                                                                         <aura:set attribute="else">
                                                                             <lightning:input id="partId" type="string" value="{!obj.strPartNumber}" disabled="true"/>
@@ -1199,7 +1229,7 @@
                                                             <tr>
                                                                 <td class="slds-truncate">{!obj.strTaxName} </td>
                                                                 <td class="slds-truncate">
-                                                                    <lightning:input id="partId" name="{!index}" type="number" value="{!obj.decTaxAmount}" onchange="{!c.CalculateAmount}"  format="#,##0,000.00" /></td>
+                                                                    <lightning:input id="partId" name="{!index}" type="number" value="{!obj.decTaxAmount}" onchange="{!c.CalculateAmount}"   step="0.01" /></td>
                                                                 <aura:if isTrue="{!v.mainWrap.objMRN.MRN_Delivery_Type__c =='Import'}">
                                                                     <td class="slds-truncate">
                                                                       <lightning:input id="partId" name="{!index}" onchange="{!c.CalculateGST}" type="number" value="{!obj.GST}" step="0.01"/>
@@ -1241,7 +1271,7 @@
                                                                     <div class="slds-truncate" title="Tax Amount">Tax Amount</div>
                                                                 </th>
                                                                 <th scope="col">
-                                                                    <div class="slds-truncate" title="CGST%">CGST%</div>
+                                                                    <div class="slds-truncate"  title="CGST%">CGST%</div>
                                                                 </th>
                                                                 <th scope="col">
                                                                     <div class="slds-truncate" title="SGST%">SGST%</div>

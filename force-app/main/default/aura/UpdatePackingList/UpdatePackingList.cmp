@@ -16,7 +16,7 @@
     <aura:attribute name="isErrorRow" type="boolean" default="false"/>
     <aura:attribute name="isSelectAll" type="boolean" default="true"/>
     <aura:html tag="style">
-        .cuf-content {
+         .cuf-content {
         padding: 0 0rem !important;
         }
         .slds-p-around--medium {
@@ -36,7 +36,7 @@
         </h2>
     </div>
             <Div>
-                <div class="slds-table--header-fixed_container" style="height:250px;  overflow-x:auto">
+               <div class="slds-table--header-fixed_container" style="height:250px;  overflow-x:auto">
                     <div class="slds-scrollable_y" style="height:100%;width:130%">
                         <table class="slds-table slds-table--bordered slds-table_striped slds-table--cell-buffer slds-max-medium-table--stacked-horizontal slds-table--header-fixed" style="table-layout:fixed">
                             <thead>
@@ -49,6 +49,10 @@
                                     </th>
                                     <th class="" scope="col" style="width: 2rem; text-align:center;">
                                         <div class="slds-truncate slds-cell-wrap" title="Product Name">Product Name</div>
+                                    </th>
+                                    
+                                    <th class="" scope="col" style="width: 2rem; text-align:center;">
+                                        <div class="slds-truncate slds-cell-wrap" title="CPN">Customer Part<br/> Number</div>
                                     </th>
                                     <th class="" scope="col" style="width: 2rem; text-align:center;">
                                         <div class="slds-truncate slds-cell-wrap" title="Quantity">Quantity</div>
@@ -89,6 +93,7 @@
                                         <td class="dataCell" style="width: 8rem; " ><lightning:input type="checkbox" value="{!cusProd.isSelected}" checked="{!cusProd.isSelected}" onchange="{!c.checkJs}"/></td>
                                         <td class="dataCell" style="width: 8rem; text-align:center;"><a href="{! '/' + cusProd.partid}"> {!cusProd.partnum}</a></td>
                                         <td class="dataCell" style="width: 9rem; text-align:center;">{!cusProd.partname}</td>
+                                        <td class="dataCell" style="width: 8rem;" ><lightning:input  variant="label-hidden" type="string"   value="{!cusProd.custmnum}"/></td>
                                         <td class="dataCell" style="width: 7rem; text-align:center;">{!cusProd.quantity}</td>
 										<td class="dataCell" style="width: 8rem; text-align:center;" ><!--<lightning:input type="string" value="{!cusProd.strBoxType}"/>-->
 										<lightning:select value="{!cusProd.strBoxType}"  variant="label-hidden" class="label-hidden" >

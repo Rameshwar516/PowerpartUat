@@ -82,6 +82,8 @@
     <tabs>standard-Dashboard</tabs>
     <tabs>AMC__c</tabs>
     <tabs>Sales_Order__c</tabs>
+    <tabs>Term_and_Condition__c</tabs>
+    <tabs>Sales_Order_Return__c</tabs>
     <uiType>Lightning</uiType>
     <utilityBar>PowerParts_UtilityBar1</utilityBar>
 </CustomApplication>

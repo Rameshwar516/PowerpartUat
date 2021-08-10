@@ -17,12 +17,18 @@
                 <label>Draft</label>
             </value>
             <value>
+                <fullName>Approval Pending</fullName>
+                <default>false</default>
+                <label>Approval Pending</label>
+            </value>
+            <value>
                 <fullName>Approved</fullName>
                 <default>false</default>
                 <label>Approved</label>
             </value>
             <value>
                 <fullName>Rejected</fullName>
+                <color>#FF0000</color>
                 <default>false</default>
                 <label>Rejected</label>
             </value>

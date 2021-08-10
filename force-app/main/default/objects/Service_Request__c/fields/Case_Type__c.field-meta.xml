@@ -18,14 +18,14 @@
                 <label>AMC</label>
             </value>
             <value>
-                <fullName>WAR</fullName>
+                <fullName>Application SignOff</fullName>
                 <default>false</default>
-                <label>WAR</label>
+                <label>Application SignOff</label>
             </value>
             <value>
-                <fullName>PAID</fullName>
+                <fullName>Campaign/PIP</fullName>
                 <default>false</default>
-                <label>PAID</label>
+                <label>Campaign/PIP</label>
             </value>
             <value>
                 <fullName>FOC</fullName>
@@ -33,9 +33,14 @@
                 <label>FOC</label>
             </value>
             <value>
-                <fullName>Application SignOff</fullName>
+                <fullName>PAID</fullName>
                 <default>false</default>
-                <label>Application SignOff</label>
+                <label>PAID</label>
+            </value>
+            <value>
+                <fullName>WAR</fullName>
+                <default>false</default>
+                <label>WAR</label>
             </value>
         </valueSetDefinition>
     </valueSet>

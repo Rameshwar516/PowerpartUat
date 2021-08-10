@@ -154,9 +154,7 @@ public class MRNCmpControlerV2 {
         }
         if(strRecordId !=null && strRecordId !=''){
             objWrap.lstDeliveryNoteLIWrap = new List<DeliveryNoteLIWrapper>();
-            
-            
-            map<String , Schema.SObjectType> globalDescriptionMRN = Schema.getGlobalDescribe();
+             map<String , Schema.SObjectType> globalDescriptionMRN = Schema.getGlobalDescribe();
             Schema.sObjectType sObjTypeMRN = globalDescriptionMRN.get('MRN__c');
             Schema.DescribeSObjectResult describeResultMRN = sObjTypeMRN.getDescribe();
             List<string> leadfieldNamesMRN = new List<String>(describeResultMRN.fields.getMap().keySet()); 
@@ -216,7 +214,12 @@ public class MRNCmpControlerV2 {
                     decimal FreightInvoice =0;
                     objSMW.IntNetAmount = objMLI.Net_Amount_Formula__c; 
                     objSMW.IntPriceGBP = objMLI.Item_Price_Unit__c;
-                    objSMW.IntTotalAmountGBP =objMLI.Total_Amount_GBP__c;
+                    if(objWrap.objMRN.MRN_Delivery_Type__c == 'Import'){
+                       objSMW.IntTotalAmountGBP =objMLI.Total_Amount_Input__c;
+                    }
+                    else{
+                        objSMW.IntTotalAmountGBP =objMLI.Total_Item_Value_In_INR_input__c; 
+                    }
                     objSMW.IntDutyRate = objMLI.Duty_Rates__c;
                     objSMW.IntSurRate = objMLI.Sur_Rate__c;   
                     objSMW.IntItemFreighGBP =objMLI.Item_Value_With_Freight_Surcharge__c;
@@ -374,7 +377,7 @@ public class MRNCmpControlerV2 {
                 objMRNLItems.Received_QTY__c = objMRNLI.IntReceiptQty;
                 objMRNLItems.UOM__c = objMRNLI.strUOM;
                 objMRNLItems.UOI__c = objMRNLI.strUOI;
-                objMRNLItems.Item_Price_Unit__c = objMRNLI.IntPriceGBP;
+                objMRNLItems.Item_Price_Unit__c = (objMRNLI.IntPriceGBP).setScale(2);
                 
                 
                
@@ -449,24 +452,39 @@ public class MRNCmpControlerV2 {
             }
             objCharges.GST__c = objWrap.GST;
             if(Label.clgCharges ==objWrap.strTaxId)
-                clgCharges =objWrap.decTaxAmount;
+                clgCharges =(objWrap.decTaxAmount).setscale(2);
             if(Label.dcChargeId ==objWrap.strTaxId)
-                dcCharges =objWrap.decTaxAmount;
-            objCharges.IGST__c = objWrap.IGST;
-            objCharges.SGST__c = objWrap.SGST;
-            objCharges.CGST__c = objWrap.CGST;
+                dcCharges =(objWrap.decTaxAmount).setscale(2);
+            objCharges.IGST__c = (objWrap.IGST);
+            objCharges.SGST__c = (objWrap.SGST);
+            objCharges.CGST__c = (objWrap.CGST);
             objCharges.Total_Amount__c = objWrap.decTaxAmount; //IntTotalAmount;
-            if(objmainWrap.objMRN.MRN_Delivery_Type__c=='Domestic'){
+            if(objmainWrap.objMRN.MRN_Delivery_Type__c=='Domestic' || objmainWrap.objMRN.MRN_Delivery_Type__c=='Import'){
                     objCharges.Charge_Percentage__c=100;
                 }
-            totalcharges =totalcharges+(objCharges.Total_Amount__c/SubtotalItemAmount);
+            else{
+                system.debug('TaxPercentage '+objWrap.TaxPercentage);
+                if(objWrap.TaxPercentage != null && objWrap.TaxPercentage != 0  )
+                objCharges.Charge_Percentage__c= objWrap.TaxPercentage;
+                else
+                objCharges.Charge_Percentage__c = 100;
+            }
+            System.debug((objWrap.decTaxAmount).setscale(2)+'---------'+SubtotalItemAmount.setscale(2));
+            if(objCharges.Total_Amount__c !=0 && SubtotalItemAmount !=0 && objmainWrap.objMRN.MRN_Type__c == 'Purchase Order')
+            totalcharges = (totalcharges+(objCharges.Total_Amount__c/SubtotalItemAmount)).setscale(2);
+            
+            if(objCharges.Total_Amount__c !=0 && SubtotalItemAmount !=0 && objmainWrap.objMRN.MRN_Type__c == 'Direct')
+            totalcharges = (totalcharges+(objCharges.Total_Amount__c/(SubtotalItemAmount*objmainWrap.objMRN.Exchange_Rate__c))).setscale(2);
+            
+            
+            System.debug(totalcharges);
             lstCharge.add(objCharges);
             System.debug('lstCharge--------- '+lstCharge.size());
             system.debug(objWrap.strTaxName+'...strTaxName....'+objWrap.TaxPercentage);
         }
         
         //update MRN
-        if(clgCharges !=null && SubtotalItemAmount !=null && objmainWrap.objMRN.Exchange_Rate__c !=null){
+        if(clgCharges !=null && SubtotalItemAmount !=null && objmainWrap.objMRN.Exchange_Rate__c !=null && clgCharges !=0 && SubtotalItemAmount !=0 && objmainWrap.objMRN.Exchange_Rate__c !=0){
             objmainWrap.objMRN.clgCharges__c=((clgCharges/ objmainWrap.objMRN.Exchange_Rate__c)/SubtotalItemAmount)*100;
             objmainWrap.objMRN.dcCharges__c=((dcCharges/ objmainWrap.objMRN.Exchange_Rate__c)/SubtotalItemAmount)*100;
                 }
@@ -644,8 +662,8 @@ public class MRNCmpControlerV2 {
                         objMRNLI.Received_QTY__c =objDN.IntReceiptQty;
                         objMRNLI.PO_QTY__c = objDN.IntPOQty;
                         objMRNLI.Accept_QTY__c = objDN.IntAcceptQty;
-                        objMRNLI.Item_Price_Unit__c = objDN.IntPriceGBP;
-                        TotalAmountGBP =  objMRNLI.Bill_QTY__c * objMRNLI.Item_Price_Unit__c;
+                        objMRNLI.Item_Price_Unit__c = (objDN.IntPriceGBP).setScale(2);
+                        TotalAmountGBP =  objMRNLI.Received_QTY__c * objMRNLI.Item_Price_Unit__c;
                         
                         if(objmainWrap.objMRN.MRN_Delivery_Type__c=='Import'){
                             FreightInvoice =TotalAmountGBP+((TotalAmountGBP*(objmainWrap.objMRN.Freight__c/objmainWrap.objMRN.Ex_Work_Value__c )*100 )/100)+((TotalAmountGBP*(objmainWrap.objMRN.Surcharge__c /objmainWrap.objMRN.Ex_Work_Value__c )*100)/100);
@@ -656,9 +674,9 @@ public class MRNCmpControlerV2 {
                         else{
                             TotalAmountGBP=0;
                             FreightInvoice =0;
-                            ItemValueInINR =  objMRNLI.Bill_QTY__c * objMRNLI.Item_Price_Unit__c;
+                            ItemValueInINR =  objMRNLI.Received_QTY__c * objMRNLI.Item_Price_Unit__c;
                             AssessableValueINR = 0;
-                            TaxableAmount=objMRNLI.Bill_QTY__c * objMRNLI.Item_Price_Unit__c;
+                            TaxableAmount=objMRNLI.Received_QTY__c * objMRNLI.Item_Price_Unit__c;
                         }
                         objMRNLI.Total_Amount_Input__c =TotalAmountGBP;
                         objMRNLI.Item_Value_With_Freight_Surcharge__c=FreightInvoice;
@@ -700,31 +718,40 @@ public class MRNCmpControlerV2 {
                 Charges__c objCharges = new Charges__c();
                 objCharges.MRN__c = objmainWrap.objMRN.Id;
                 objCharges.Charges__c = objWrap.strTaxId;
-                objCharges.GST__c = objWrap.GST;
-                objCharges.IGST__c = objWrap.IGST;
-                objCharges.SGST__c = objWrap.SGST;
-                objCharges.CGST__c = objWrap.CGST;
+                objCharges.GST__c = (objWrap.GST).setscale(2);
+                objCharges.IGST__c = (objWrap.IGST).setscale(2);
+                objCharges.SGST__c = (objWrap.SGST).setscale(2);
+                objCharges.CGST__c = (objWrap.CGST).setscale(2);
                 if(objmainWrap.objMRN.MRN_Delivery_Type__c=='Domestic'){
                     objCharges.Charge_Percentage__c=100;
                 }
-                if(Label.clgCharges ==objWrap.strTaxId)
-                    clgCharges =objWrap.decTaxAmount;
-                if(Label.dcChargeId ==objWrap.strTaxId)
-                    dcCharges =objWrap.decTaxAmount;
-                objCharges.Total_Amount__c = objWrap.decTaxAmount; //IntTotalAmount;
+            else{
+                objCharges.Charge_Percentage__c=(objWrap.TaxPercentage).setscale(2);
+            }
                 
-                totalCharges=totalCharges+(objCharges.Total_Amount__c/SubtotalItemAmount);
+                if(Label.clgCharges ==objWrap.strTaxId)
+                    clgCharges =(objWrap.decTaxAmount).setscale(2);
+                if(Label.dcChargeId ==objWrap.strTaxId)
+                    dcCharges =(objWrap.decTaxAmount).setscale(2);
+                System.debug((objWrap.decTaxAmount).setscale(2)+'---------'+SubtotalItemAmount.setscale(2));
+                objCharges.Total_Amount__c = (objWrap.decTaxAmount).setscale(2); //IntTotalAmount;
+                
+                totalCharges=(totalCharges+(objCharges.Total_Amount__c/SubtotalItemAmount.setscale(2))).setscale(2);
                 lstCharge.add(objCharges);
             }
             if(clgCharges !=null && SubtotalItemAmount !=null && objmainWrap.objMRN.Exchange_Rate__c !=null){
-            objmainWrap.objMRN.clgCharges__c=((clgCharges/ objmainWrap.objMRN.Exchange_Rate__c)/SubtotalItemAmount)*100;
-            objmainWrap.objMRN.dcCharges__c=((dcCharges/ objmainWrap.objMRN.Exchange_Rate__c)/SubtotalItemAmount)*100;
+                /*
+                 objmainWrap.objMRN.clgCharges__c=(((clgCharges/ objmainWrap.objMRN.Exchange_Rate__c)/SubtotalItemAmount)*100).setscale(2);
+            objmainWrap.objMRN.dcCharges__c=(((dcCharges/ objmainWrap.objMRN.Exchange_Rate__c)/SubtotalItemAmount)*100).setscale(2); 
+                 * */
+            objmainWrap.objMRN.clgCharges__c=(((clgCharges/ objmainWrap.objMRN.Exchange_Rate__c)/SubtotalItemAmount)*100);
+            objmainWrap.objMRN.dcCharges__c=(((dcCharges/ objmainWrap.objMRN.Exchange_Rate__c)/SubtotalItemAmount)*100);
                 }
             else{
                 objmainWrap.objMRN.clgCharges__c=0;
             objmainWrap.objMRN.dcCharges__c=0;
             }
-            
+            System.debug(totalCharges);
             objmainWrap.objMRN.Total_Charges_Percentage__c = totalCharges*100;
             objmainWrap.objMRN.Subtotal_Item_Freight_GBP__c = IntItemFreighGBP;
             objmainWrap.objMRN.Subtotal_Custom_Duty_Amount_INR__c = IntCDutyAmountINR;
@@ -814,7 +841,7 @@ public class MRNCmpControlerV2 {
                 
                 system.debug('lstPOLI......'+lstPOLI.size());
                 map<string,Stock__c> mapNoOfStock = new map<string,Stock__c>();//where Ware_House__c =: strWareHouseId
-                for(Stock__c objStock : [Select Id,Name,Ware_House__c,Ware_House__r.City__c,Product_Part__c,Quantity__c,Total_Quantity__c from Stock__c where Ware_House__c =: strWareHouseId]){
+                for(Stock__c objStock : [Select Id,Bin_Number__c,Name,Ware_House__c,Ware_House__r.City__c,Product_Part__c,Quantity__c,Total_Quantity__c from Stock__c where Ware_House__c =: strWareHouseId]){
                     mapNoOfStock.put(objStock.Product_Part__c+'-'+objStock.Ware_House__c,objStock);
                 }
                 //soql += 'order by Name limit 10';
@@ -847,7 +874,8 @@ public class MRNCmpControlerV2 {
                     objSMW.IntPOQty=integer.valueof(objPOLI.Quantity__c);
                     objSMW.IntBillQty = integer.valueof(objPOLI.Quantity__c);
                     objSMW.IntReceiptQty = integer.valueof(objPOLI.Quantity__c);
-                    objSMW.IntBinQty = objPOLI.Product_Part__r.BinNumber__c;
+                    if(mapNoOfStock.containskey(objPOLI.Product_Part__c+'-'+strWareHouseId) && mapNoOfStock.get(objPOLI.Product_Part__c+'-'+strWareHouseId).Bin_Number__c !=null)
+                    objSMW.IntBinQty = mapNoOfStock.get(objPOLI.Product_Part__c+'-'+strWareHouseId).Bin_Number__c;
                     objSMW.IntAcceptQty =objSMW.IntBillQty-objSMW.IntReceiptQty;
                     objSMW.IntShortQty =0;
                     objSMW.strUOM = 'NOS';

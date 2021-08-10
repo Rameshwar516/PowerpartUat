@@ -3,11 +3,23 @@
     <label></label>
     <name>Product_Type__c</name>
     <picklistValues>
-        <masterLabel>Main Product</masterLabel>
+        <masterLabel>Consumables</masterLabel>
         <translation></translation>
     </picklistValues>
     <picklistValues>
-        <masterLabel>Part</masterLabel>
+        <masterLabel>Finished Product</masterLabel>
+        <translation></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Fixed Assets</masterLabel>
+        <translation></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Packing Material</masterLabel>
+        <translation></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Services</masterLabel>
         <translation></translation>
     </picklistValues>
 </CustomFieldTranslation>

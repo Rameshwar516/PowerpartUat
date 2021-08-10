@@ -8,6 +8,10 @@ public class SalesorderReturnPdf {
     public Decimal TCSAmount{get; set;}
     public Decimal NetValue{get; set;}
     public Decimal Quantity{get; set;}
+     public Decimal totalIGST{get; set;}
+     public Decimal totalCgst{get; set;}
+     public Decimal totalsgst{get; set;}
+     public Decimal overallGst{get; set;}
     public string totalAmountinWords{get; set;}
     
     
@@ -18,10 +22,22 @@ public class SalesorderReturnPdf {
         String pdfHeaderQuery = 'Select ' +String.Join(pdfheaderField, ',')+ ' From Pdf_Header__mdt Order by Effected_Date__c ASC LIMIT 1';
         pdfheader =  Database.query(pdfHeaderQuery);
        
-        lstSOR=[select id, Shipping_Account__c from Sales_Order_Return__c where id =:strId ];
+        lstSOR=[select id,name, Shipping_Account__c from Sales_Order_Return__c where id =:strId ];
         
-        conlst=[select id,salutation,name,email, Mobilephone from contact where Accountid =:lstSOR.Shipping_Account__c limit 1 ]; 
-        con=conlst[0];
+           ApexPages.currentPage().getHeaders().put('content-disposition', 'filename=' +' Sales Order Return -'+lstSOR.name+'.PDF');
+                system.debug('strfileName '+' Sales Order Return -'+lstSOR.name);  
+        
+        if(lstSOR.Shipping_Account__c!=null){
+        conlst=[select id,salutation,name,email, Mobilephone from contact where Accountid =:lstSOR.Shipping_Account__c  AND isPrimary__c=true limit 1 ]; 
+            if(conlst.size()>0){
+        con = conlst[0];
+            }
+        }
+        totalCgst=0;
+            totalIGST=0;
+            totalsgst=0;
+            overallGst=0;
+            
         GrossTotal = 0;
         TCSAmount = 0;
         NetValue = 0;
@@ -35,13 +51,18 @@ public class SalesorderReturnPdf {
         if(!lstSORlineitem.isempty())
             for(Sales_Order_Return_Line_Item__c dli :lstSORlineitem){
                 GrossTotal = GrossTotal + dli.Net_Amount__c;
+                totalIGST = totalIGST + dli.IGST_Amount__c;
+                totalCgst = totalCgst + dli.CGST_Amount__c;
+                totalsgst = totalsgst + dli.SGST_Amount__c;
             }
         totalamount = GrossTotal;
-
-        NetValue = totalamount;
+        
+        overallGst = overallGst + totalIGST + totalCgst + totalsgst;
+        
+        NetValue = totalamount.round();
         
         totalAmountinWords = UtilityClass.NoToWord(NetValue.intValue());
-        totalAmountinWords = 'Ruppes '+totalAmountinWords+' only';
+        totalAmountinWords = 'Rupees '+totalAmountinWords+' only';
     }
     
 }

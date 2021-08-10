@@ -4,6 +4,15 @@
     <deleteConstraint>SetNull</deleteConstraint>
     <externalId>false</externalId>
     <label>Enquiry</label>
+    <lookupFilter>
+        <active>false</active>
+        <filterItems>
+            <field>Opportunity__c.Contact_Person__r.AccountId</field>
+            <operation>equals</operation>
+            <valueField>$Source.Customer_Name__c</valueField>
+        </filterItems>
+        <isOptional>false</isOptional>
+    </lookupFilter>
     <referenceTo>Opportunity__c</referenceTo>
     <relationshipLabel>Sales Orders</relationshipLabel>
     <relationshipName>Sales_Orders</relationshipName>

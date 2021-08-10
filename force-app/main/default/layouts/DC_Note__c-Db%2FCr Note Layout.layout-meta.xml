@@ -35,6 +35,10 @@
                 <behavior>Edit</behavior>
                 <field>Shipping_Street__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Remarks__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>

@@ -103,6 +103,10 @@
                 <behavior>Edit</behavior>
                 <field>Shipping_Street__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Remarks__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
@@ -239,7 +243,12 @@
         <relatedList>RelatedHistoryList</relatedList>
     </relatedLists>
     <relatedLists>
+        <excludeButtons>New</excludeButtons>
         <fields>NAME</fields>
+        <fields>Part_Number__c</fields>
+        <fields>Quantity__c</fields>
+        <fields>Unit_Price__c</fields>
+        <fields>Amount__c</fields>
         <relatedList>DC_Note_Line_Item__c.Doc_No__c</relatedList>
     </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>

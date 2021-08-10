@@ -86,6 +86,10 @@
     </relatedLists>
     <relatedLists>
         <fields>NAME</fields>
+        <fields>CGST_Amount__c</fields>
+        <fields>IGST_Amount__c</fields>
+        <fields>SGST_Amount__c</fields>
+        <fields>Total_Amount__c</fields>
         <relatedList>Charges__c.Charges__c</relatedList>
     </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>
@@ -94,7 +98,7 @@
     <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
     <showSubmitAndAttachButton>false</showSubmitAndAttachButton>
     <summaryLayout>
-        <masterLabel>00h1s000000OgEE</masterLabel>
+        <masterLabel>00h6D000001HLwZ</masterLabel>
         <sizeX>4</sizeX>
         <sizeY>0</sizeY>
         <summaryLayoutStyle>Default</summaryLayoutStyle>

@@ -10,6 +10,10 @@ public class classPdfDebitNote {
     public List<DC_Note_Line_Item__c> dcNoteLi{get;set;}
     
     public Date dte{get;set;}
+   
+    public string sign{get;set;}
+    public string stamp{get;set;}
+    
     
     public decimal totalLiIgst{get;set;}
     public decimal totalLisgst{get;set;}
@@ -28,7 +32,7 @@ public class classPdfDebitNote {
     public Decimal OverAlltotalGstCharge{get;set;}
     public Decimal TotalFinalAmountAfterTax{get;set;}
     public Decimal TotalFinalAmountAfterTaxRoundOff{get;set;}
-     public Decimal TotalFinalAmountAfterTaxRoundOff2{get;set;}
+    public Decimal TotalFinalAmountAfterTaxRoundOff2{get;set;}
     
     public Decimal totaltaxableCHSGSTCGSTIGST{get;set;}
     public String totalAmountaftertaxinWords{get;set;}
@@ -50,9 +54,24 @@ public class classPdfDebitNote {
         {
             
             dcNote=[select id,Bill_To_Customer_Name__r.Name,Billing_Address__c,Billing_GSTIN_No__c,Container_No__c,Customer_Party__c,
-                    Delivery_Term__c,Detail__c,Dispatch_Address__c,Dispatch_Date__c,Dispatch_No__c,ESN_No__c,Dispatch_To_Customer_Name__r.name,
+                    Delivery_Term__c,Detail__c,OwnerId,Dispatch_Address__c,Dispatch_Date__c,Dispatch_No__c,ESN_No__c,Dispatch_To_Customer_Name__r.name,
                     LC_Date__c,LC_Expected_Date__c,createdDate,LC_Term__c,MRN__c,MRN__r.Ware_House__r.Branch__c,MRN__r.Ware_House__r.City__c,MRN__r.OEM_Customer__r.ShippingState,Payment_Method__c,Shipping_GSTIN_No__c,Name,Voucher_Date__c from
                     DC_Note__c where id =:strId];
+            ApexPages.currentPage().getHeaders().put('content-disposition', 'filename=' +' Debit Note -'+dcNote.name+'.PDF');
+             user ur =[SELECT Id,Branch__c,User_Signature__c from user where id =:dcNote.OwnerId];
+        if(!String.isBlank(ur.User_Signature__c))
+        sign = ur.User_Signature__c;
+        
+        if(String.isBlank(ur.User_Signature__c))
+        sign =System.Label.Default_User_Sign;
+        
+        system.debug(sign);
+        System.debug('----'+ur.Branch__c);
+       if(ur.Branch__c == 'Kolkata')
+            stamp= System.Label.Kolkata_Stamp_Link;
+         if(ur.Branch__c == 'Gurugram')
+            stamp= System.Label.Gurugram_Stamp_Link;
+        
             
             string branch = dcNote.MRN__r.Ware_House__r.Branch__c ;
             List<String> pdfheaderField = UtilityClass.getAllFields('Pdf_Header__mdt');
@@ -96,13 +115,13 @@ public class classPdfDebitNote {
                     
                 }
                 
-                totalLiCgst.round();
-                totalLiSgst.round();
-                totalLiIgst.round();
-                totalLiNetAmt.round();
-                totalLiTaxableAMT.round();
+                //totalLiCgst.round();
+                //totalLiSgst.round();
+                //totalLiIgst.round();
+                //totalLiNetAmt.round();
+                //totalLiTaxableAMT.round();
                 totalTax= totalLiCgst+totalLiSgst+totalLiIgst;
-                totalTax.round();
+                //totalTax.round();
                 
                 totalTaxableValueIncludeChargeAmt1=0;
                 totalCgstIncludeCharge=0;  
@@ -129,13 +148,13 @@ public class classPdfDebitNote {
                     }
                 }
                 totalCgstIncludeCharge = totalCgstIncludeCharge+totalLiCgst;
-                totalCgstIncludeCharge.round();
+               // totalCgstIncludeCharge.round();
                 
                 totalSgstIncludeCharge = totalSgstIncludeCharge+totalLiSgst;
-                totalSgstIncludeCharge.round();
+              //  totalSgstIncludeCharge.round();
                 
                 totalIgstIncludeCharge = totalIgstIncludeCharge+totalLiIgst;
-                totalIgstIncludeCharge.round();
+              //  totalIgstIncludeCharge.round();
                 
                 OverAlltotalGstCharge = 0;
                 
@@ -155,8 +174,8 @@ public class classPdfDebitNote {
                 
                 TotalFinalAmountAfterTaxRoundOff2=TotalFinalAmountAfterTaxRoundOff.round();
                 
-                totalAmountaftertaxinWords = UtilityClass.NoToWord(TotalFinalAmountAfterTaxRoundOff.intValue());
-                totalAmountaftertaxinWords = totalAmountaftertaxinWords+' rupees only';
+                totalAmountaftertaxinWords = UtilityClass.NoToWord(TotalFinalAmountAfterTaxRoundOff2.intValue());
+                totalAmountaftertaxinWords = 'Rupees '+totalAmountaftertaxinWords+' only';
                 
                 MrndcNote=[select id,OEM_Customer__c ,Contact_Name__c , E_Way_Bill_Date__c,E_Way_Bill_No__c from MRN__c where id=:dcNote.MRN__c];
                 
@@ -235,6 +254,6 @@ Billing State And Billing Code, Shipping State and Shipping Code
                     
                 }
             }
-            }
         }
     }
+}

@@ -101,14 +101,17 @@ public with sharing class customLookUpController
                     objSMW.DnUnitPrice = unitprice ;
                     objSMW.DnAmount =   objSODN.Quantity__c * objSMW.DnUnitPrice;
                     objSMW.DnDiscountPer = objSODN.Discount__c ;
-                    objSMW.DnDiscountAmount = objSMW.DnAmount * objSODN.Discount__c ;
+                    objSMW.DnDiscountAmount = objSMW.DnAmount * (objSODN.Discount__c/100) ;
                     objSMW.DnTaxableAmount = objSMW.DnAmount - objSMW.DnDiscountAmount   ;
-                    objSMW.DnCGSTRate = objSODN.CGST__c  ;
-                    objSMW.DnCGSTAmount = objSMW.DnTaxableAmount * objSMW.DnCGSTRate ;
-                    objSMW.DnSGSTRate = objSODN.SGST__c  ;
-                    objSMW.DnSGSTAmount = objSMW.DnTaxableAmount * objSMW.DnSGSTRate ;
-                    objSMW.DnIGSTRate = objSODN.IGST__c  ;
-                    objSMW.DnIGSTAmount = objSMW.DnTaxableAmount * objSMW.DnIGSTRate ;
+                    //objSMW.DnCGSTRate = objSODN.CGST__c  ;
+                    objSMW.DnCGSTRate = 0 ;
+                    objSMW.DnCGSTAmount = (objSMW.DnTaxableAmount/100) * objSMW.DnCGSTRate ;
+                    //objSMW.DnSGSTRate = objSODN.SGST__c  ;
+                    objSMW.DnSGSTRate = 0  ;
+                    objSMW.DnSGSTAmount = (objSMW.DnTaxableAmount/100) * objSMW.DnSGSTRate ;
+                    //objSMW.DnIGSTRate = objSODN.IGST__c  ;
+                    objSMW.DnIGSTRate = 0  ;
+                    objSMW.DnIGSTAmount = (objSMW.DnTaxableAmount/100) * objSMW.DnIGSTRate ;
                     objSMW.DnNetAmount =  objSMW.DnTaxableAmount + objSMW.DnCGSTAmount + objSMW.DnSGSTAmount + objSMW.DnIGSTAmount;
                     
                     objmainWrap.lstSubMain.add(objSMW);

@@ -40,6 +40,7 @@ public class PerformanceInvoice
     
     public list<Charges__c> lstCharges{get;set;}
     public decimal TotalAmountWithCharges{get;set;}
+    public decimal TotalAmountWithChargeswithoutround{get;set;}
     public decimal TotalGSTCharges{get;set;}
     
     public decimal totalAmountCgst{get;set;}
@@ -75,12 +76,6 @@ public class PerformanceInvoice
                 ShippingContact = ShippingCon[0];
             }
         }
-        system.debug('opp'+opp.id);
-        system.debug('opp.ShippingStreet'+ opp.Shipping_Street__c);
-        system.debug('opp.Shipping_Zip_Postal_Code__c'+ opp.Shipping_Zip_Postal_Code__c);
-        system.debug('opp.Shipping_State_Province__c'+ opp.Shipping_State_Province__c);
-        system.debug('opp.Shipping_City__c'+ opp.Shipping_City__c);
-        system.debug('opp.Shipping_Country__c'+ opp.Shipping_Country__c);
         
         if(opp.LC_Date__c !=null){
            lcDate= opp.LC_Date__c;
@@ -94,14 +89,14 @@ public class PerformanceInvoice
         sign = ur.User_Signature__c;
         
         if(String.isBlank(ur.User_Signature__c))
-        sign ='https://powerparts--partcrm--c.visualforce.com/resource/1618317607000/DefaultSign?';
+        sign =System.Label.Default_User_Sign;
         
         system.debug(sign);
         System.debug('----'+ur.Branch__c);
         if(ur.Branch__c == 'Kolkata')
-            stamp='https://powerparts--partcrm--c.visualforce.com/resource/1618317202000/KolkataStamp?';
+            stamp= System.Label.Kolkata_Stamp_Link;
          if(ur.Branch__c == 'Gurugram')
-            stamp='https://powerparts--partcrm--c.visualforce.com/resource/1618317202000/KolkataStamp?';
+            stamp= System.Label.Gurugram_Stamp_Link;
         
         
         
@@ -111,10 +106,12 @@ public class PerformanceInvoice
         String pdfHeaderQuery = 'Select ' +String.Join(pdfheaderField, ',')+ ' From Pdf_Header__mdt WHERE Branch__c =:branch Order by Effected_Date__c ASC LIMIT 1';
         pdfheader =  Database.query(pdfHeaderQuery);
         
-        
-        con = [select id,Name,Salutation,Email,MobilePhone,Accountid from contact where id=:opp.Contact_Person__c limit 1];
+        if(opp.Contact_Person__c!=null){
+            
+        con = [select id,Name,Salutation,Email,MobilePhone,isPrimary__c,Accountid from contact where isPrimary__c= true AND  id=:opp.Contact_Person__c   limit 1];
         system.debug('contact'+con.id);
-        
+            
+        }
         Acc=[select id ,Print_Name__c,TCS_Charges_Enable__c,GSTIN_No__c,BillingCity,BillingCountry,BillingState,BillingStreet,BillingAddress,BillingPostalCode,ShippingCountry,
              ShippingCity,ShippingPostalCode,ShippingStreet,ShippingState,ShippingAddress, name,Billing_State_Code__c,Shipping_State_Code__c from Account where id =:opp.OEM_Customer__c];
         system.debug('Account'+Acc.id);
@@ -189,9 +186,9 @@ public class PerformanceInvoice
         
         Litem=[select Application__c,Amount_Formula__c,CGST__c,Delivery_Date__c,Description__c,
                Discount__c,DiscountN__c,Expected_date__c,HSN_Code__c,IGST__c,Name,List_Price__c,Opportunity__c,
-               Product_Part__c,Product_Part__r.uom__c,Product_Part__r.HSN_Code__c,Part_Name__c,Unit__c,Quantity__c,Quote__c,Remark__c,
+               Product_Part__c,Product_Part__r.uom__c,Product_Part__r.HSN_Code__c,Part_Name__c,Quantity__c,Quote__c,Remark__c,
                Saleable_Stock__c,Sales_Order__c,CGST_Amount_Formula__c,IGST_Amount_Formula__c,SGST_Amount_Formula__c,
-               Taxable_Amount_Formula__c,Sales_Price__c,Total_Amount_Formula__c,SGST__c,Specification__c,Discount_Amount__c, Product_Part__r.Name,Product_Part__r.Part_Name__c,Net_Amount__c from Line_Item__c where Opportunity__c=:opp.id];
+               Taxable_Amount_Formula__c,Sales_Price__c,Total_Amount_Formula__c,SGST__c,Part_Serial_No__c,Discount_Amount__c, Product_Part__r.Name,Product_Part__r.Part_Name__c,Net_Amount__c from Line_Item__c where Opportunity__c=:opp.id];
         
          totalCgst=0;
          totalSgst=0;
@@ -247,7 +244,7 @@ public class PerformanceInvoice
                 strWareHouseCity = lseWH[0]?.City__c;
             }
         }
-         
+         TotalAmountWithChargeswithoutround=0;
         TotalAmountWithCharges = 0;
         TotalGSTCharges = 0;
         totalAmountCgst =0;
@@ -276,7 +273,8 @@ public class PerformanceInvoice
         
         //totalAmountSumNotIncludedTax=totalAmountSumNotIncludedTax.round();
         
-        TotalAmountWithCharges = (TotalAmountWithCharges+totalAmount).round();
+        TotalAmountWithChargeswithoutround =TotalAmountWithChargeswithoutround+ TotalAmountWithCharges+totalAmount;
+        TotalAmountWithCharges = TotalAmountWithChargeswithoutround.round();
         totalAmountaftertaxinWords = UtilityClass.NoToWord(TotalAmountWithCharges.intValue());
         totalAmountaftertaxinWords = 'Rupees '+totalAmountaftertaxinWords+' only';
         //TotalAmountWithCharges=TotalAmountWithCharges.round();
@@ -300,7 +298,8 @@ public class PerformanceInvoice
         totalAmountaftertaxinWords = 'Rupees '+totalAmountaftertaxinWords+' only';
         }
         String myGeneratedFileName = opp.Proforma_Invoice__c+'.pdf';
-        Apexpages.currentPage().getHeaders().put('content-disposition', 'inline; filename='+myGeneratedFilename);
+        //Apexpages.currentPage().getHeaders().put('content-disposition', 'inline; filename='+myGeneratedFilename);
+          ApexPages.currentPage().getHeaders().put('content-disposition', 'filename=' +' Proforma Invoice - '+myGeneratedFilename+'.PDF');
     }  
     
     public void updatePIDate()

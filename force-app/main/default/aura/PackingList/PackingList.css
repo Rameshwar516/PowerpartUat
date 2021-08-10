@@ -1,3 +1,7 @@
 .THIS .label-hidden > label {
     display: none;
 }
+.THIS .slds-modal__container {
+      max-width: 84rem !important;
+    width: 85% !important;
+}

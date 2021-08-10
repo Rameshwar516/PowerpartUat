@@ -160,6 +160,7 @@
     <enableSearch>true</enableSearch>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>Private</externalSharingModel>
     <label>Purchase Indent</label>
     <nameField>
         <displayFormat>PIN-{000000}</displayFormat>
@@ -174,6 +175,6 @@
         <searchResultsAdditionalFields>Sales_Officer__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>Indent_Date__c</searchResultsAdditionalFields>
     </searchLayouts>
-    <sharingModel>ReadWrite</sharingModel>
+    <sharingModel>Private</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>

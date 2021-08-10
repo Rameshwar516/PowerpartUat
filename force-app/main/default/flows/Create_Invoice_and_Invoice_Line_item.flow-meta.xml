@@ -3,8 +3,8 @@
     <assignments>
         <name>adding_in_collection_variable</name>
         <label>adding in collection variable</label>
-        <locationX>490</locationX>
-        <locationY>1358</locationY>
+        <locationX>782</locationX>
+        <locationY>1406</locationY>
         <assignmentItems>
             <assignToReference>varCollectionInvoiceLineItem</assignToReference>
             <operator>Add</operator>
@@ -19,8 +19,8 @@
     <assignments>
         <name>adding_into_collection_variable</name>
         <label>adding into collection variable</label>
-        <locationX>490</locationX>
-        <locationY>2054</locationY>
+        <locationX>782</locationX>
+        <locationY>2102</locationY>
         <assignmentItems>
             <assignToReference>varChargesCollection</assignToReference>
             <operator>Add</operator>
@@ -35,8 +35,8 @@
     <assignments>
         <name>assign_charges_to_invoice</name>
         <label>assign charges to invoice</label>
-        <locationX>490</locationX>
-        <locationY>1814</locationY>
+        <locationX>782</locationX>
+        <locationY>1862</locationY>
         <assignmentItems>
             <assignToReference>varSingleChargeRecord</assignToReference>
             <operator>Assign</operator>
@@ -51,8 +51,8 @@
     <assignments>
         <name>assign_values</name>
         <label>assign values</label>
-        <locationX>490</locationX>
-        <locationY>1238</locationY>
+        <locationX>782</locationX>
+        <locationY>1286</locationY>
         <assignmentItems>
             <assignToReference>VarSingleInvoiceLineItem.Part_Number__c</assignToReference>
             <operator>Assign</operator>
@@ -116,6 +116,13 @@
                 <elementReference>iterate_delivery_note_line_items.HSN_Code__c</elementReference>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>VarSingleInvoiceLineItem.Customer_Part_Num__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>iterate_delivery_note_line_items.Part_Serial__c</elementReference>
+            </value>
+        </assignmentItems>
         <connector>
             <targetReference>adding_in_collection_variable</targetReference>
         </connector>
@@ -123,8 +130,8 @@
     <assignments>
         <name>assignment_of_charges_fields</name>
         <label>assignment of charges fields</label>
-        <locationX>490</locationX>
-        <locationY>1934</locationY>
+        <locationX>782</locationX>
+        <locationY>1982</locationY>
         <assignmentItems>
             <assignToReference>varSingleChargeRecord.Invoice__c</assignToReference>
             <operator>Assign</operator>
@@ -163,8 +170,8 @@
     <decisions>
         <name>Check</name>
         <label>Check</label>
-        <locationX>292</locationX>
-        <locationY>278</locationY>
+        <locationX>559</locationX>
+        <locationY>386</locationY>
         <defaultConnector>
             <targetReference>get_delivery_note</targetReference>
         </defaultConnector>
@@ -188,8 +195,8 @@
     <decisions>
         <name>Check_Delivery_note_Line_Items</name>
         <label>Check Delivery note Line Items</label>
-        <locationX>534</locationX>
-        <locationY>758</locationY>
+        <locationX>826</locationX>
+        <locationY>806</locationY>
         <defaultConnector>
             <targetReference>NO_Line_Items_Added</targetReference>
         </defaultConnector>
@@ -215,8 +222,8 @@
     <loops>
         <name>iterate_charges</name>
         <label>iterate charges</label>
-        <locationX>402</locationX>
-        <locationY>1694</locationY>
+        <locationX>694</locationX>
+        <locationY>1742</locationY>
         <collectionReference>get_charges</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -229,8 +236,8 @@
     <loops>
         <name>iterate_delivery_note_line_items</name>
         <label>iterate delivery note line items</label>
-        <locationX>402</locationX>
-        <locationY>1118</locationY>
+        <locationX>694</locationX>
+        <locationY>1166</locationY>
         <collectionReference>get_delivery_note_line_item</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -249,7 +256,7 @@
     <processMetadataValues>
         <name>CanvasMode</name>
         <value>
-            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
         </value>
     </processMetadataValues>
     <processMetadataValues>
@@ -262,8 +269,8 @@
     <recordCreates>
         <name>create_charges_record</name>
         <label>create charges record</label>
-        <locationX>402</locationX>
-        <locationY>2270</locationY>
+        <locationX>694</locationX>
+        <locationY>2318</locationY>
         <connector>
             <targetReference>Record_Created</targetReference>
         </connector>
@@ -272,8 +279,8 @@
     <recordCreates>
         <name>Create_Invoice</name>
         <label>Create Invoice</label>
-        <locationX>402</locationX>
-        <locationY>998</locationY>
+        <locationX>694</locationX>
+        <locationY>1046</locationY>
         <assignRecordIdToReference>InvoiceId</assignRecordIdToReference>
         <connector>
             <targetReference>iterate_delivery_note_line_items</targetReference>
@@ -401,7 +408,7 @@
         <inputAssignments>
             <field>Reverse_Charge__c</field>
             <value>
-                <elementReference>get_delivery_note.Sales_Order__r.Opportunity__r.Reverse_Charges__c</elementReference>
+                <elementReference>get_delivery_note.Reverse_Charge__c</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -475,8 +482,8 @@
     <recordCreates>
         <name>create_invoivce_line_items_record</name>
         <label>create invoivce line items record</label>
-        <locationX>402</locationX>
-        <locationY>1574</locationY>
+        <locationX>694</locationX>
+        <locationY>1622</locationY>
         <connector>
             <targetReference>iterate_charges</targetReference>
         </connector>
@@ -485,8 +492,8 @@
     <recordLookups>
         <name>get_charges</name>
         <label>get charges</label>
-        <locationX>534</locationX>
-        <locationY>638</locationY>
+        <locationX>826</locationX>
+        <locationY>686</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Check_Delivery_note_Line_Items</targetReference>
@@ -503,8 +510,8 @@
     <recordLookups>
         <name>get_delivery_note</name>
         <label>get delivery note</label>
-        <locationX>534</locationX>
-        <locationY>398</locationY>
+        <locationX>826</locationX>
+        <locationY>446</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>get_delivery_note_line_item</targetReference>
@@ -521,8 +528,8 @@
     <recordLookups>
         <name>get_delivery_note_line_item</name>
         <label>get delivery note line item</label>
-        <locationX>534</locationX>
-        <locationY>518</locationY>
+        <locationX>826</locationX>
+        <locationY>566</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>get_charges</targetReference>
@@ -539,8 +546,8 @@
     <recordLookups>
         <name>get_record_type</name>
         <label>get record type</label>
-        <locationX>402</locationX>
-        <locationY>878</locationY>
+        <locationX>694</locationX>
+        <locationY>926</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Create_Invoice</targetReference>
@@ -564,8 +571,8 @@
     <recordLookups>
         <name>Pre_Invoice</name>
         <label>Pre Invoice</label>
-        <locationX>292</locationX>
-        <locationY>158</locationY>
+        <locationX>584</locationX>
+        <locationY>206</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Check</targetReference>
@@ -577,19 +584,26 @@
                 <elementReference>recordId</elementReference>
             </value>
         </filters>
+        <filters>
+            <field>Status__c</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Cancelled</stringValue>
+            </value>
+        </filters>
         <object>Invoice__c</object>
     </recordLookups>
     <screens>
         <name>Invoice_available</name>
         <label>Invoice available</label>
-        <locationX>50</locationX>
-        <locationY>398</locationY>
+        <locationX>277</locationX>
+        <locationY>492</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <fields>
             <name>Message</name>
-            <fieldText>&lt;p&gt;&lt;span style=&quot;font-size: 16px; color: rgb(255, 0, 0);&quot;&gt;Invoice already exists for this delivery note.&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;color: rgb(255, 0, 0); font-size: 16px;&quot;&gt;Invoice already exists for this Delivery Note.&lt;/b&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
@@ -598,14 +612,14 @@
     <screens>
         <name>NO_Line_Items_Added</name>
         <label>NO Line Items Added</label>
-        <locationX>666</locationX>
-        <locationY>878</locationY>
+        <locationX>958</locationX>
+        <locationY>926</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <fields>
             <name>ErrorsMsg</name>
-            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 18px; color: rgb(240, 4, 4);&quot;&gt;Please Add Delivery Note Line Item/s In Order to Generate Invoice&lt;span class=&quot;ql-cursor&quot;&gt;﻿&lt;/span&gt;&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;color: rgb(240, 4, 4); font-size: 18px;&quot;&gt;Please add Delivery Note Line Items to create Invoice﻿.&lt;/b&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
@@ -614,14 +628,14 @@
     <screens>
         <name>Record_Created</name>
         <label>Record Created</label>
-        <locationX>402</locationX>
-        <locationY>2390</locationY>
+        <locationX>694</locationX>
+        <locationY>2438</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <fields>
             <name>SuccessMessageRecordCreated</name>
-            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;color: rgb(36, 201, 10); font-size: 18px;&quot;&gt;Invoice is Created Succesfully &lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;color: rgb(36, 201, 10); font-size: 18px;&quot;&gt;Invoice created successfully.&lt;/b&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
@@ -631,6 +645,13 @@
     <status>Active</status>
     <variables>
         <name>InvoiceId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>invoiceStatus</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>

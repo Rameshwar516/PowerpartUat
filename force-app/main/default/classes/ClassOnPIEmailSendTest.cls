@@ -9,7 +9,7 @@ public class ClassOnPIEmailSendTest {
         wHouse.Name = 'Kolkata Warehouse';
         insert wHouse;
         
-        List<Account> accId = [Select id, Name from Account where Name = 'Test Account1'];
+        List<Account> accId = [Select id, Name ,Print_Name__c from Account where Name = 'Test Account1'];
         System.debug('accId-- '+accId[0].Id);
         
         // insert Contact

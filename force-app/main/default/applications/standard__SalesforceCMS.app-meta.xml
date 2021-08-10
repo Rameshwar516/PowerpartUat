@@ -11,10 +11,14 @@
     <tabs>standard-CmsWorkspaces</tabs>
     <tabs>standard-CmsExperiences</tabs>
     <tabs>Sales_Order__c</tabs>
+    <tabs>Term_and_Condition__c</tabs>
     <uiType>Lightning</uiType>
     <workspaceConfig>
         <mappings>
             <tab>Sales_Order__c</tab>
+        </mappings>
+        <mappings>
+            <tab>Term_and_Condition__c</tab>
         </mappings>
         <mappings>
             <tab>standard-CmsAuthorHome</tab>

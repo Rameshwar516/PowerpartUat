@@ -152,6 +152,7 @@
     <enableSearch>false</enableSearch>
     <enableSharing>false</enableSharing>
     <enableStreamingApi>false</enableStreamingApi>
+    <externalSharingModel>Private</externalSharingModel>
     <label>Powerparts Service Request Team</label>
     <nameField>
         <displayFormat>Team-{0000}</displayFormat>
@@ -161,6 +162,6 @@
     </nameField>
     <pluralLabel>Powerparts Service Request Team</pluralLabel>
     <searchLayouts></searchLayouts>
-    <sharingModel>ReadWrite</sharingModel>
+    <sharingModel>Private</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>

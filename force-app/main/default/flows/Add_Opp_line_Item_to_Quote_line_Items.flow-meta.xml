@@ -87,13 +87,6 @@
                     <booleanValue>false</booleanValue>
                 </rightValue>
             </conditions>
-            <conditions>
-                <leftValueReference>get_quote_record_type.Id</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <elementReference>get_quote.RecordTypeId</elementReference>
-                </rightValue>
-            </conditions>
             <connector>
                 <targetReference>Collect_all_line_Items</targetReference>
             </connector>

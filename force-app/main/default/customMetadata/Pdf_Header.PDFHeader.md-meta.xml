@@ -4,7 +4,7 @@
     <protected>false</protected>
     <values>
         <field>Address_Header__c</field>
-        <value xsi:type="xsd:string">PPL HEAD OFFICE</value>
+        <value xsi:type="xsd:string">HEAD OFFICE</value>
     </values>
     <values>
         <field>Address_Line1__c</field>
@@ -12,7 +12,7 @@
     </values>
     <values>
         <field>Address_Line_2__c</field>
-        <value xsi:type="xsd:string">GURGAON - 122001, HARYANA (INDIA)</value>
+        <value xsi:type="xsd:string">GURUGRAM- 122001, HARYANA (INDIA)</value>
     </values>
     <values>
         <field>BANK__c</field>
@@ -24,7 +24,7 @@
     </values>
     <values>
         <field>Branch__c</field>
-        <value xsi:nil="true"/>
+        <value xsi:type="xsd:string">Gurugram</value>
     </values>
     <values>
         <field>Effected_Date__c</field>

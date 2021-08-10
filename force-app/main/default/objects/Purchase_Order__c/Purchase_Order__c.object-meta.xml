@@ -160,6 +160,7 @@
     <enableSearch>true</enableSearch>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>Private</externalSharingModel>
     <label>Purchase Order</label>
     <nameField>
         <displayFormat>PON-{000000}</displayFormat>
@@ -175,6 +176,6 @@
         <searchResultsAdditionalFields>Supplier__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>Ware_House__c</searchResultsAdditionalFields>
     </searchLayouts>
-    <sharingModel>ReadWrite</sharingModel>
+    <sharingModel>Private</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>

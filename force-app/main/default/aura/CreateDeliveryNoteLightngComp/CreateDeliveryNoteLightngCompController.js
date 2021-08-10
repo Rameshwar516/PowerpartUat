@@ -4,67 +4,80 @@
         helper.Onloadmethod(component, event, getrecId);
 	},
     createDeliveryNote: function(component, event, helper) {
-        console.log(component.get('v.isSave'));
         if(component.get('v.isSave')==false){
             component.set("v.isSave",true);
-            console.log('run');
-        var Childlst = component.get('v.wrapMains.wrapChildlst');
-        var selected = false;
-        var QuantyError = false;
-        var Alldone = false;
-        for(var i=0;i<Childlst.length;i++)
-        {
-            console.log(Childlst[i].isSelected);
-            if(Childlst[i].isSelected == true ){
-                selected = true;
-                if(Childlst[i].reMaininQTY > Childlst[i].quantity ){
-                    QuantyError = true; 
+            var Childlst = component.get('v.wrapMains.wrapChildlst');
+            var selected = false;
+            var QuantyError = false;
+            var freezeError = false;
+            var Alldone = false;
+            for(var i=0;i<Childlst.length;i++)
+            {
+                if(Childlst[i].isSelected == true ){
+                    selected = true;
+                  /*  if(Childlst[i].reMaininQTY > Childlst[i].quantity ){
+                        QuantyError = true; 
+                    }*/
+                }
+                if(Childlst[i].isSelected == true ){
+                    selected = true;
+                    /*if(Childlst[i].reMaininQTY > Childlst[i].freezeQTY ){
+                        freezeError = true; 
+                    }*/
                 }
             }
-        }
-        for(var i=0;i<Childlst.length;i++)
-        {   
-            if(!Childlst[i].checkboxDisable){
-                Alldone = false; 
-                break;
+            for(var i=0;i<Childlst.length;i++)
+            {   
+                if(!Childlst[i].checkboxDisable){
+                    Alldone = false; 
+                    break;
+                }
+                else{
+                    Alldone = true;
+                } 
             }
-            else{
-                Alldone = true;
-            } 
-        }
-        
-        console.log(selected);
-        console.log(Alldone);
-        console.log(QuantyError);
-        
-        if(selected == true && Alldone == false){
-            if(!QuantyError){ 
-                helper.onSave(component, event, helper); 
-            } 
-            else{
+            
+            
+            if(selected == true && Alldone == false){
+                if(!QuantyError && !freezeError){ 
+                    helper.onSave(component, event, helper); 
+                    component.set("v.isSave",false);
+                } 
+                /*
+                else if(freezeError){
+                    var toastEvent = $A.get("e.force:showToast");
+                    toastEvent.setParams({
+                        title : 'Error',
+                        message:'Quantity Value can not be greater than Freeze Qty Value.',
+                        type: 'error',
+                    });
+                    toastEvent.fire();  
+                    component.set("v.isSave",false);
+                }
+                else if(QuantyError){
+                    var toastEvent = $A.get("e.force:showToast");
+                    toastEvent.setParams({
+                        title : 'Error',
+                        message:'Quantity Value can not be greater than SO Qty Value.',
+                        type: 'error',
+                    });
+                    toastEvent.fire();  
+                    component.set("v.isSave",false);
+                }*/
+            }
+            else if(selected == false && Alldone == false){
+                
                 var toastEvent = $A.get("e.force:showToast");
                 toastEvent.setParams({
                     title : 'Error',
-                    message:'Quantity Value can not be greater that SO Qty Value.',
+                    message:'Please select at least one part',
                     type: 'error',
                 });
-                toastEvent.fire();  
-                component.set("v.isSave",FALSE);
+                toastEvent.fire();
+                component.set("v.isSave",false);
             }
-        }
-        else if(selected == false && Alldone == false){
-            
-            var toastEvent = $A.get("e.force:showToast");
-            toastEvent.setParams({
-                title : 'Error',
-                message:'Please select atleast one part',
-                type: 'error',
-            });
-            toastEvent.fire();
-            component.set("v.isSave",FALSE);
-        }
-           } 
-
+        } 
+        
     },
     selectAll: function(component, event, helper) {
        var wrapper=component.get("v.wrapMains");
@@ -88,7 +101,6 @@
         
         var rowindex = event.getSource().get("v.name");
         var wrapperchild=component.get("v.wrapMains.wrapChildlst");
-        console.log(event.getSource().get("v.value"));
         if(event.getSource().get("v.value") != null && event.getSource().get("v.value") > 0){
             helper.onRemainQty(component, event, helper);
         }

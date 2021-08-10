@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SharingRules xmlns="http://soap.sforce.com/2006/04/metadata">
+    <sharingCriteriaRules>
+        <fullName>SOL_sharing_Haryana</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>SOL sharing Haryana</label>
+        <sharedTo>
+            <group>Haryana_Group</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>Branch_Office__c</field>
+            <operation>equals</operation>
+            <value>Gurugram</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>SOL_sharing_West_Bengal</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>SOL sharing West Bengal</label>
+        <sharedTo>
+            <group>West_Bengal_Group</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>Branch_Office__c</field>
+            <operation>equals</operation>
+            <value>Kolkata</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+</SharingRules>

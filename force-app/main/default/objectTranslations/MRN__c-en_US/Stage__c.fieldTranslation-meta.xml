@@ -10,4 +10,8 @@
         <masterLabel>Received</masterLabel>
         <translation></translation>
     </picklistValues>
+    <picklistValues>
+        <masterLabel>Reject</masterLabel>
+        <translation></translation>
+    </picklistValues>
 </CustomFieldTranslation>

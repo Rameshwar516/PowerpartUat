@@ -7,7 +7,9 @@ public class DeliveryNotePdf {
     public Pdf_Header__mdt pdfheader{get;set;}
     public Account objAcc {get;set;}
     public Contact objCon {get;set;}
-     public Decimal roundtotalamt{get; set;}
+    public Decimal roundtotalamt{get; set;}
+    
+ public string sign{get;set;}
     
     public Decimal GrossTotal{get; set;}
     public Decimal Charges{get; set;}
@@ -30,17 +32,14 @@ public class DeliveryNotePdf {
     public Decimal TotalGST{get;set;}
     public decimal amountTCS{get;set;}
     public decimal totalAmountWithTCS{get;set;}
-    
+     public string totalAmountWithTCSstring{get;set;}
     public Boolean igstbool{get; set;}
     public list<taxSummary> taxSummarylist {get;set;}
     
     
     public DeliveryNotePdf(ApexPages.StandardController controller){
         String strId = ApexPages.currentPage().getParameters().get('id');
-        pdfheader=new Pdf_Header__mdt();
-        List<String> pdfheaderField = UtilityClass.getAllFields('Pdf_Header__mdt');
-        String pdfHeaderQuery = 'Select ' +String.Join(pdfheaderField, ',')+ ' From Pdf_Header__mdt Order by Effected_Date__c ASC LIMIT 1';
-        pdfheader =  Database.query(pdfHeaderQuery);
+        
         lstCharges= new list<Charges__c>();
         
         GrossTotal = 0;
@@ -67,12 +66,47 @@ public class DeliveryNotePdf {
              igstbool=false;
         
         List<String> AllDeliverynotefield = UtilityClass.getAllFields('Sales_Order_Dispatch_Delivery_Note__c');
-        String DeliverynoteQuery = 'Select ' +String.Join(AllDeliverynotefield, ',')+' ,Shipping_Account__r.Name,Shipping_Account__r.Shipping_GSTIN_No__c,Shipping_Account__r.Shipping_State_Code__c,Customer_Party__r.TCS_Charges_Enable__c From Sales_Order_Dispatch_Delivery_Note__c where id =: strId';
+        String DeliverynoteQuery = 'Select ' +String.Join(AllDeliverynotefield, ',')+' ,Sales_Order_Return__r.MRN__r.Ware_House__r.branch__c,MRN__r.Ware_House__r.branch__c,Sales_Order__r.Ware_House__r.branch__c,Shipping_Account__r.Name,Shipping_Account__r.Shipping_GSTIN_No__c,Shipping_Account__r.Shipping_State_Code__c,Customer_Party__r.TCS_Charges_Enable__c From Sales_Order_Dispatch_Delivery_Note__c where id =: strId';
         list<Sales_Order_Dispatch_Delivery_Note__c> DeliveryNoteList =  Database.query(DeliverynoteQuery); 
         
         if(DeliveryNoteList.size()>0){
             objdlvrynot =DeliveryNoteList[0];
         }
+              ApexPages.currentPage().getHeaders().put('content-disposition', 'filename=' +' Delivery Note - '+objdlvrynot.Delivery_Note_Number__c+'.PDF');
+                system.debug('strfileName '+' Delivery Note - '+objdlvrynot.Delivery_Note_Number__c);       
+        
+        //Pdf header data
+        if(objdlvrynot.Sales_Order__c!=null){
+        string branch = objdlvrynot.Sales_Order__r.Ware_House__r.branch__c;
+        List<String> pdfheaderField = UtilityClass.getAllFields('Pdf_Header__mdt');
+        String pdfHeaderQuery = 'Select ' +String.Join(pdfheaderField, ',')+ ' From Pdf_Header__mdt WHERE Branch__c =:branch Order by Effected_Date__c ASC LIMIT 1';
+        pdfheader =  Database.query(pdfHeaderQuery);
+        }
+        else if(objdlvrynot.MRN__c!=null){
+        string branch = objdlvrynot.MRN__r.Ware_House__r.branch__c;
+        List<String> pdfheaderField = UtilityClass.getAllFields('Pdf_Header__mdt');
+        String pdfHeaderQuery = 'Select ' +String.Join(pdfheaderField, ',')+ ' From Pdf_Header__mdt WHERE Branch__c =:branch Order by Effected_Date__c ASC LIMIT 1';
+        pdfheader =  Database.query(pdfHeaderQuery);
+            
+        }
+         else if(objdlvrynot.Sales_Order_Return__c!=null){
+        string branch = objdlvrynot.Sales_Order_Return__r.MRN__r.Ware_House__r.branch__c;
+        List<String> pdfheaderField = UtilityClass.getAllFields('Pdf_Header__mdt');
+        String pdfHeaderQuery = 'Select ' +String.Join(pdfheaderField, ',')+ ' From Pdf_Header__mdt WHERE Branch__c =:branch Order by Effected_Date__c ASC LIMIT 1';
+        pdfheader =  Database.query(pdfHeaderQuery);
+            
+        }
+
+        
+         user ur =[SELECT Id,Branch__c,User_Signature__c from user where id =:objdlvrynot.OwnerId];
+        if(!String.isBlank(ur.User_Signature__c))
+        sign = ur.User_Signature__c;
+        
+        if(String.isBlank(ur.User_Signature__c))
+        sign =System.Label.Default_User_Sign;
+        
+        system.debug(sign);
+        
         if(objdlvrynot.Shipping_Account__c!=null){
             list<contact> conlist = [select id, name,salutation,mobilephone,email ,isPrimary__c from contact where isPrimary__c= true AND Accountid =:objdlvrynot.Shipping_Account__c limit 1];
             
@@ -230,9 +264,10 @@ public class DeliveryNotePdf {
         }
         
         totalAmountWithTCS =NetValue.round();
+        totalAmountWithTCSstring = totalAmountWithTCS+'.00';
+        TotalGST = TotalGST +TotalCGST + TotalIGST+ TotalSGST;
         
-        
-        totalAmountinWords = UtilityClass.NoToWord(NetValue.intValue());
+        totalAmountinWords = UtilityClass.NoToWord(totalAmountWithTCS.intValue());
         totalAmountinWords = 'Rupees '+totalAmountinWords+' only';
     }
     

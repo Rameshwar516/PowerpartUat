@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workflow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <alerts>
+        <fullName>Email_So_Owner_for_Unfreeze_Stock</fullName>
+        <description>Email So Owner for Unfreeze Stock</description>
+        <protected>false</protected>
+        <recipients>
+            <type>owner</type>
+        </recipients>
+        <senderType>CurrentUser</senderType>
+        <template>unfiled$public/Unfreeze_Stock_Email_to_SO_Owner</template>
+    </alerts>
+</Workflow>

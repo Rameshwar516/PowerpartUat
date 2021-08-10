@@ -9,8 +9,8 @@
         <style type="text/css">
             @page 
             {  
-            size:12.94in 13.90in; 
-            margin-top: 180px;
+            size:11.7in 14.5in; 
+            margin-top: 5.00cm;
             page-break-after:always;
             @top-center 
             {                   
@@ -71,41 +71,47 @@
     </head>
     <apex:form >
         <div class="header">
-            
             <table style="width:100%;border-collapse: collapse;">
                 <tr>
                     <td style="border:none;padding:0px;" width="20%" valign="top">
                         <left>
-                            <apex:image url="{!$Resource.PerformaLeftSidelogo}" width="210" height="60"/> 
+                            <apex:image url="{!$Resource.PowerpartsLogo}" width="210" height="60"/> 
                         </left>
                     </td>
                     <td style="border:none;padding:0px;" width="60%" valign="top">
                         <center>
-                            <b><apex:outputText value="POWERPARTS PRIVATE LIMITED" style="font-size:13px;font-family: Arial;" /></b><br/>
-                            <b><apex:outputText value="Registered Office : " style="font-size:11px;font-family: Arial;" /></b>
-                            <apex:outputText value="N-122, Panchsheel Park, New Delhi - 100 017" style="font-size:11px;font-family: Arial;" /><br/>
-                           
-                            <b style="font-size:13px;font-family: Arial;">{!pdfheader.Address_Header__c}</b><br/>
-                            <div style="font-size:11px;font-family: Arial;">{!pdfheader.Address_Line1__c}<br/>
-                            {!pdfheader.Address_Line_2__c}<br/>
-                            {!pdfheader.Gstin__c}<br/>
-                            {!pdfheader.Email__c}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{!pdfheader.Tel__c}<br/><br/> 
+                            <b><apex:outputText value="POWERPARTS PRIVATE LIMITED" style="font-size:14px;font-family: Arial;" /></b><br/>
+                            <!--<b><apex:outputText value="Registered Office : " style="font-size:12px;font-family: Arial;" /></b>-->
+                           <!-- <apex:outputText value="N-122, Panchsheel Park, New Delhi - 100 017" style="font-size:12px;font-family: Arial;" /><br/>-->
+                            <div><b style="font-size:14px;font-family: Arial;">{!pdfheader.Address_Header__c}</b></div>
                             
-                            {!pdfheader.IEC_No__c}&nbsp;&nbsp;&nbsp;{!pdfheader.PAN_No__c}<br/>
-                            {!pdfheader.BANK__c}<br/>
-                            {!pdfheader.Bank_A_C_No__c}&nbsp;&nbsp;&nbsp;{!pdfheader.IFC_RTGS_NEFT__c}<br/>
-                            </div>
+                            <div style="font-size:12px;font-family: Arial;">
+                                <div>{!pdfheader.Address_Line1__c} &nbsp;  {!pdfheader.Address_Line_2__c}</div>
+                               
+                                <div>{!pdfheader.Gstin__c}</div>
+                                
+                                <div>{!pdfheader.IEC_No__c}&nbsp;&nbsp;&nbsp;{!pdfheader.PAN_No__c}</div>
+                                <div>{!pdfheader.Email__c}</div>
+                                <div>
+                                    {!pdfheader.Tel__c}
+                                </div>
+                            
+                                
+                                </div>
                         </center>
                     </td>
                     <td style="border:none;padding:0px;" width="60%" valign="top">
                         <Right>
-                            <apex:image url="{!$Resource.PerformaRightSidelogo}" width="210" height="60"/> 
+                            <apex:image url="{!$Resource.PerkinsLogo}" width="210" height="160" style="margin-top: -40px;"/> 
                         </Right>
                     </td>
                 </tr>
             </table>
         </div>
-         <table style="width:100%;border:1px solid black; margin-top: 25px;">
+
+        <div class="content">
+            
+         <table style="width:100%;border:1px solid black; margin-top: 10px;">
              <tr >
                  <td>
              <center><b><apex:outputText value="DEBIT NOTE" style="font-size:20px;font-family: Arial;" /></b><br/></center>    
@@ -113,6 +119,10 @@
              </tr>
              
         </table>
+ 
+        </div>
+            <div class="content">
+            
         <body>
             <table style="width:100%;border:2px solid black;">
                 <tr>
@@ -458,7 +468,7 @@
                 
                 <apex:repeat value="{!lstCharges}" var="liCharge">
                     <tr>
-                        <td colspan="12"><apex:outputText value="{!liCharge.Charges__r.Name}" /></td>
+                        <td colspan="12"><center><apex:outputText value="{!liCharge.Charges__r.Name}" /></center></td>
                         <td style="text-align:right"><apex:outputText value="{!liCharge.Charge_Amount__c}" /></td>
                         <td style="text-align:right"><apex:outputText value="{!liCharge.CGST__c}" /></td>
                         <td style="text-align:right"><apex:outputText value="{!liCharge.CGST_Amount__c}" /></td>
@@ -527,6 +537,7 @@
                         
                     </td>
                     <td colspan="4" rowspan="5" valign="bottom">
+                        <center><apex:image url="{!stamp}" width="90" height="90" alt="User Signature"/></center><br/><br/>
                         <center><apex:outputText value="(Common Seal) "/></center>
                     </td> 
                    
@@ -535,13 +546,16 @@
                     <td style="border:1;" colspan="8" rowspan="1" >
                         <apex:outputText value="Certified That The Particulars Above Are True And Correct "/><br/><br/>&nbsp;&nbsp;&nbsp;&nbsp;
                         <apex:outputText value="For "/>
-                        <b><apex:outputText value="PowerPart Private Limited "/></b><br/><br/> <br/> <br/> <br/>&nbsp;&nbsp;&nbsp;&nbsp;
-                        <b><apex:outputText value="Authorized Signatory "/></b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <b><apex:outputText value="PowerPart Private Limited "/></b><br/><br/> <br/>
+                         &nbsp; &nbsp;<apex:image id="theImage" url="{!sign}" width="100" height="50" alt="User Siganture"/><br/>&nbsp;&nbsp;&nbsp;&nbsp;
+                        <b><apex:outputText value="Authorized Signatory "/></b><br/>
                         <b><apex:outputText value="[E&OE]" style="align:Bottom-right"/></b>
                     </td>
                 </tr>
             </table>
-             <center><b>This is a computer generated document signature is not required.</b></center>
+           
         </body>
+              
+        </div>
     </apex:form>
 </apex:page>

@@ -17,11 +17,6 @@
                 <label>Draft</label>
             </value>
             <value>
-                <fullName>Freeze</fullName>
-                <default>false</default>
-                <label>Freeze</label>
-            </value>
-            <value>
                 <fullName>Approved</fullName>
                 <default>false</default>
                 <label>Approved</label>
@@ -30,6 +25,12 @@
                 <fullName>Not Approved</fullName>
                 <default>false</default>
                 <label>Not Approved</label>
+            </value>
+            <value>
+                <fullName>Freeze</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Freeze</label>
             </value>
         </valueSetDefinition>
     </valueSet>

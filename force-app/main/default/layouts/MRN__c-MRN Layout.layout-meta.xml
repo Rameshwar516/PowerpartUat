@@ -442,24 +442,43 @@
     <relatedLists>
         <fields>NAME</fields>
         <fields>Part_Number__c</fields>
-        <fields>Amount__c</fields>
-        <fields>Unit__c</fields>
+        <fields>HSN_SAC__c</fields>
+        <fields>Part_Name__c</fields>
+        <fields>PO_QTY__c</fields>
+        <fields>Bill_QTY__c</fields>
+        <fields>Received_QTY__c</fields>
+        <fields>Item_Price_Unit__c</fields>
+        <fields>Quantity__c</fields>
+        <fields>Sales_Price__c</fields>
         <relatedList>MRN_Line_Item__c.MRN__c</relatedList>
     </relatedLists>
     <relatedLists>
         <fields>NAME</fields>
+        <fields>Charges__c</fields>
+        <fields>Charge_Percentage__c</fields>
+        <fields>Charge_Amount__c</fields>
+        <fields>MRN_Charge__c</fields>
+        <fields>Total_Amount__c</fields>
         <relatedList>Charges__c.MRN__c</relatedList>
     </relatedLists>
     <relatedLists>
         <fields>NAME</fields>
+        <fields>Amount__c</fields>
+        <fields>CREATED_DATE</fields>
+        <fields>Invoice__c</fields>
         <relatedList>DC_Note__c.MRN__c</relatedList>
     </relatedLists>
     <relatedLists>
         <fields>NAME</fields>
+        <fields>CREATED_DATE</fields>
+        <fields>CREATEDBY_USER</fields>
         <relatedList>Sales_Order_Return__c.MRN__c</relatedList>
     </relatedLists>
     <relatedLists>
         <fields>NAME</fields>
+        <fields>Contact_Person_Name__c</fields>
+        <fields>CREATEDBY_USER.ALIAS</fields>
+        <fields>CREATED_DATE</fields>
         <relatedList>Sales_Order_Dispatch_Delivery_Note__c.MRN__c</relatedList>
     </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>

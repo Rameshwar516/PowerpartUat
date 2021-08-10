@@ -316,6 +316,19 @@
                 <value>Pricing</value>
             </componentInstanceProperties>
             <componentName>flexipage:fieldSection</componentName>
+            <visibilityRule>
+                <booleanFilter>1 OR 2</booleanFilter>
+                <criteria>
+                    <leftValue>{!Record.MRN_Type__c}</leftValue>
+                    <operator>EQUAL</operator>
+                    <rightValue>Purchase Order</rightValue>
+                </criteria>
+                <criteria>
+                    <leftValue>{!Record.MRN_Type__c}</leftValue>
+                    <operator>EQUAL</operator>
+                    <rightValue>Direct</rightValue>
+                </criteria>
+            </visibilityRule>
         </componentInstances>
         <componentInstances>
             <componentInstanceProperties>

@@ -3,16 +3,20 @@
     <flexiPageRegions>
         <componentInstances>
             <componentInstanceProperties>
+                <name>actionNames</name>
+                <value>[&quot;Edit&quot;,&quot;Purchase_Order__c.Edit_Purchase_Order&quot;,&quot;CustomButton.Purchase_Order__c.Generate_Purchase_Order&quot;,&quot;FeedItem.TextPost&quot;,&quot;FeedItem.ContentPost&quot;,&quot;FeedItem.LinkPost&quot;,&quot;FeedItem.PollPost&quot;,&quot;Delete&quot;,&quot;Submit&quot;,&quot;Global.LogACall&quot;,&quot;Global.NewTask&quot;,&quot;Global.NewEvent&quot;]</value>
+            </componentInstanceProperties>
+            <componentInstanceProperties>
                 <name>collapsed</name>
                 <value>false</value>
             </componentInstanceProperties>
             <componentInstanceProperties>
                 <name>enableActionsConfiguration</name>
-                <value>false</value>
+                <value>true</value>
             </componentInstanceProperties>
             <componentInstanceProperties>
                 <name>enableActionsInNative</name>
-                <value>false</value>
+                <value>true</value>
             </componentInstanceProperties>
             <componentInstanceProperties>
                 <name>hideChatterActions</name>

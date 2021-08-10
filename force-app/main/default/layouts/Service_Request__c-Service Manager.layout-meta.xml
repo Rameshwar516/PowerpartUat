@@ -64,6 +64,10 @@
                 <behavior>Required</behavior>
                 <field>Complaint_Type__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Query_from_Customer__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>

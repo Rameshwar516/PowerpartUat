@@ -31,6 +31,10 @@
                 <behavior>Edit</behavior>
                 <field>Height_Inches_CMS__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Customer_Part_No__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
