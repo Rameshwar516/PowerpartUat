@@ -25,7 +25,7 @@ public class MRNLineItemHelper {
             system.debug('...mapProductWareHouseBaseStock..'+mapProductWareHouseBaseStock);
             
             list<Stock_Landed_Amount__c> lstOfSLA = new list<Stock_Landed_Amount__c>();
-            for(MRN_Line_Item__c objMRNLI : [Select id, Name, Ware_House_Formula__c, Part_Number__c, Part_Number__r.Name, Landed_Cost_Unit_Rate__c, MRN__c, MRN__r.Ware_House__c, MRN__r.MRN_Type__c,MRN__r.MRN_Delivery_Type__c from MRN_Line_Item__c where id IN: setOfMRNLineItemId and MRN__r.MRN_Type__c ='Purchase Order' and MRN__r.MRN_Delivery_Type__c='Import'])
+            for(MRN_Line_Item__c objMRNLI : [Select id, Name, Ware_House_Formula__c, Part_Number__c, Part_Number__r.Name, Landed_Cost_Unit_Rate__c, MRN__c, MRN__r.Ware_House__c, MRN__r.MRN_Type__c,MRN__r.MRN_Delivery_Type__c from MRN_Line_Item__c where id IN: setOfMRNLineItemId and (MRN__r.MRN_Type__c ='Purchase Order' OR MRN__r.MRN_Type__c ='Direct') ])
             {
             system.debug('...str..'+objMRNLI.Part_Number__c+'-'+objMRNLI.MRN__r.Ware_House__c);
                 if(mapProductWareHouseBaseStock.containskey(objMRNLI.Part_Number__c+'-'+objMRNLI.MRN__r.Ware_House__c) && mapProductWareHouseBaseStock.get(objMRNLI.Part_Number__c+'-'+objMRNLI.MRN__r.Ware_House__c) != null) 

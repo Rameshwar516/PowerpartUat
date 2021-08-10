@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>User_Validate</fullName>
+    <active>true</active>
+    <errorConditionFormula>Or(
+OR(
+Engineer1__c = Engineer2__c,
+Engineer1__c = Engineer3__c,
+Engineer1__c = Engineer4__c
+),
+if(NOT(ISBLANK(Engineer2__c)),
+OR(
+Engineer2__c = Engineer3__c,
+Engineer2__c = Engineer4__c
+),false
+),
+if(NOT(ISBLANK(Engineer3__c)),
+OR(
+Engineer3__c = Engineer4__c
+),false
+)
+)</errorConditionFormula>
+    <errorMessage>Multiple Same Team Member is not allowed.</errorMessage>
+</ValidationRule>

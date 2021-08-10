@@ -45,7 +45,7 @@
         class="slds-text-body--small slds-section-title--divider"
         style="text-transform: inherit;"
       >
-        Lead can be converted to accounts, contacts, opportunities, and followup
+        Lead can be converted to accounts, contacts, enquiry, and followup
         tasks.<br></br> You should only convert a Lead once you have identified
         it as qualified.<br></br> After this lead has been converted, it can no
         longer be viewed or edited as a lead, but can be viewed in lead reports.
@@ -264,7 +264,7 @@
             style="display:inline-block;"
           >
             <label class="slds-float_right" style="text-align:right;"
-              ><b>Do not create a new opportunity upon conversion.</b></label
+              ><b>Do not create a new Enquiry upon conversion.</b></label
             >
           </div>
           <div
@@ -397,7 +397,7 @@
         <span> Contact </span>
       </div>
       <div class="slds-col" style="font-size: 26px;text-align: center">
-        <span> Opportunity </span>
+        <span> Enquiry </span>
       </div>
     </div>
 

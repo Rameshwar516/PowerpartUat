@@ -6,6 +6,7 @@ public class InvoiceComponentController {
     public static string productOnLoad(string RecordId)
     {
         recordlist = new WrappMain();
+        boolean exportValue=false;
         string warehouse = '';
         string warehousename = '';
         Boolean booleantrue = true;
@@ -24,7 +25,7 @@ public class InvoiceComponentController {
         List<String> lstInvoiceItemField = UtilityClass.getAllFields('Invoice_Line_Item__c');
         List<String> lstChargesField = UtilityClass.getAllFields('Charges__c');
         List<String> lstTaxField = UtilityClass.getAllFields('tax__c');
-        String strInvoiceQuery = 'Select ' +String.Join(lstInvoiceField, ',')+' ,DC_No__r.Sales_Order__r.Opportunity__r.isService__c,  Place_of_Supply__r.State_Code__c, Customer_Name__r.Billing_State_Code__c  From Invoice__c where Id =: RecordId';
+        String strInvoiceQuery = 'Select ' +String.Join(lstInvoiceField, ',')+' ,DC_No__r.Sales_Order__r.Opportunity__r.isService__c,  Place_of_Supply__r.State_Code__c, Customer_Name__r.Billing_State_Code__c, Customer_Name__r.Is_Export__c  From Invoice__c where Id =: RecordId';
         String strInvoiceItemQuery = 'Select ' +String.Join(lstInvoiceItemField, ',')+ ' ,Part_Number__r.List_Price_Standard_price__c,Part_Number__r.name, Part_Number__r.Part_Name__c FROM Invoice_Line_Item__c where Invoice__c =: RecordId';
         String strChargesQuery = 'Select ' +String.Join(lstChargesField, ',')+ ' ,Charges__r.Name From Charges__c where Invoice__c =: RecordId';
         String strTaxQuery = 'Select ' +String.Join(lstTaxField, ',')+ ' From tax__c';
@@ -37,6 +38,8 @@ public class InvoiceComponentController {
         if(InvoiceRecord.Status__c=='Approved'){
                 recordlist.closed =booleantrue;
             } 
+        if(InvoiceRecord.Customer_Name__r.Is_Export__c)
+                exportValue = true;
         lineitemonrecord = Database.query(strInvoiceItemQuery);
         chargeslist =  Database.query(strChargesQuery);
         list<tax__c> taxlist = Database.query(strTaxQuery);
@@ -52,13 +55,14 @@ public class InvoiceComponentController {
                     objTD.strTaxId = ch.Charges__c;
                     objTD.strTaxName = ch.Charges__r.Name;
                     objTD.TaxPercentage = ch.Charge_Percentage__c.setscale(2);
+                    
                     objTD.CGST = ch.CGST__c ;
                     objTD.SGST = ch.SGST__c;
                     objTD.IGST = ch.IGST__c;
                     objTD.objcharge = ch;
-                    objTD.decTaxAmount =  ch.Total_Amount__c;
+                    objTD.decTaxAmount =  ch.Charge_Amount__c;
                     objTD.NetAmount =  ch.Net_Amount__c;
-                        objTD.ischargeItem = booleantrue;
+                    objTD.ischargeItem = booleantrue;
                     TaxDetailslist.add(objTD);
                 } 
             }
@@ -108,6 +112,7 @@ public class InvoiceComponentController {
                     objchild.Partnumber= objOppPro.Part_Number__r.name ;
                     objchild.isSelected = booleantrue;
                     objchild.isLineItem = booleantrue;
+                    objchild.Hsncode = objOppPro.HSN_Code__c;
                    // objchild.stockamount = stcountmap.get(objOppPro.Product_Part__c);
                     objchild.stockamount = stwraptmap.get(objOppPro.Part_Number__c).stockamount;
                     objchild.saleableamount = stwraptmap.get(objOppPro.Part_Number__c).saleableamount;
@@ -122,6 +127,7 @@ public class InvoiceComponentController {
             recordlist.Lineitemonrecord = lineitemlist; 
             recordlist.lstTaxDetailsAvailable = TaxDetailslist;
             recordlist.lstWrappTwo = lineitemlist;
+             recordlist.isExport=exportvalue;
             recordlist.lineitemid = new set<id>();
             recordlist.quoteId = new set<Id>();
             recordlist.isSelectedProduct = false;
@@ -180,7 +186,7 @@ public class InvoiceComponentController {
         }
         list<prodwrappChild> prodwrap = new list<prodwrappChild>();
         List<Sales_Order_Line_Item__c> prelineitemrecord = [SELECT Amount__c,CGST__c,CreatedById,CreatedDate,Description__c,
-                                                            Discount_Amount__c,Discount__c,Expected_Date__c,GST__c,HSN_Code__c,Id,IGST__c,Name,OwnerId,
+                                                            Discount_Amount__c,Discount__c,Expected_Date__c,GST__c,HSN_Code__c,Id,IGST__c,Name,
                                                             Product_Part__c,Quantity__c,Sales_Order__c,SGST__c,Taxable_Amount__c,Total_Amount__c,
                                                             Unit_Price__c,Product_Part__r.name,Unit__c FROM Sales_Order_Line_Item__c Where  Sales_Order__c = :recordId];
         
@@ -391,9 +397,16 @@ public class InvoiceComponentController {
             for(prodwrappChild obj : OppLineChild)
             {
                 Invoice_Line_Item__c objOppProduct = obj.objProdchild;
+                
+                
                 if(objOppProduct.Quantity__c > 0 && objOppProduct.Unit_Price__c >0)
                 {
                     objOppProduct.invoice__c = RecordId;
+                    objOppProduct.Unit_Price__c = (objOppProduct.Unit_Price__c).setscale(2);
+                    objOppProduct.Discount__c= (objOppProduct.Discount__c).setscale(2);
+                    objOppProduct.SGST__c= (objOppProduct.SGST__c).setscale(2);
+                    objOppProduct.IGST__c= (objOppProduct.IGST__c).setscale(2);
+                    objOppProduct.CGST__c= (objOppProduct.CGST__c).setscale(2);
                     insertOppProduct.add(objOppProduct);
                 }
             }
@@ -469,6 +482,7 @@ public class InvoiceComponentController {
         @AuraEnabled public boolean closed; 
         @AuraEnabled public string wrname;
         @AuraEnabled public boolean isService; 
+        @AuraEnabled public boolean isExport; 
     }
     
     public class prodwrapp
@@ -496,6 +510,7 @@ public class InvoiceComponentController {
         @AuraEnabled public decimal  saleableamount{get;set;}
         @AuraEnabled public decimal  stockamount{get;set;}
         @AuraEnabled public decimal  POamount{get;set;}
+        @AuraEnabled public String Hsncode {get; set;}
         
     }
     

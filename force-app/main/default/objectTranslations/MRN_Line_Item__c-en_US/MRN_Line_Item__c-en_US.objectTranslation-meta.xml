@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>MRN Line Item</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>MRN Line Items</value>
+    </caseValues>
+    <layouts>
+        <layout>MRN Line Item Layout</layout>
+        <sections>
+            <label></label>
+            <section>Additional Information</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Custom Duty</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Purchase Order/ Direct Pricing</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Remarks</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Sales Return Pricing</section>
+        </sections>
+    </layouts>
+    <startsWith>Consonant</startsWith>
+    <validationRules>
+        <errorMessage></errorMessage>
+        <name>Bill_quantity_validation</name>
+    </validationRules>
+</CustomObjectTranslation>

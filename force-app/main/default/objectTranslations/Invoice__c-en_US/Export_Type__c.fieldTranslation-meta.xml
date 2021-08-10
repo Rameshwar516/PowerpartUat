@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label></label>
+    <name>Export_Type__c</name>
+    <picklistValues>
+        <masterLabel>Supply meant for Export on payment of IGST</masterLabel>
+        <translation></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Supply meant for Export under Letter of Undertaking without payment of IGST</masterLabel>
+        <translation></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Supply meant for SEZ Unit/SEZ Developer with payment of Integrated Tax</masterLabel>
+        <translation></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Supply meant for SEZ/SEZ Developer under Bond without payment of Integrated Tax</masterLabel>
+        <translation></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Supply meant for SEZ/SEZ Developer under LUT without payment of Integrated Tax</masterLabel>
+        <translation></translation>
+    </picklistValues>
+</CustomFieldTranslation>

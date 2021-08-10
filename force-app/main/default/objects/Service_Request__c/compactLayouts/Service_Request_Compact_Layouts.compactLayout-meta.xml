@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Service_Request_Compact_Layouts</fullName>
+    <fields>Name</fields>
+    <fields>ESN__c</fields>
+    <fields>Engine_Model__c</fields>
+    <fields>Date_Time_Reported__c</fields>
+    <fields>On_Hold_Hours_Minutes__c</fields>
+    <fields>Status__c</fields>
+    <fields>Service_Visit_History__c</fields>
+    <label>Service Request Compact Layouts</label>
+</CompactLayout>

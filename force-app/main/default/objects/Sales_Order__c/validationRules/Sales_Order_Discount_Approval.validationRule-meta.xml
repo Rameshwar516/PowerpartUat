@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Sales_Order_Discount_Approval</fullName>
+    <active>false</active>
+    <errorConditionFormula>Line_Item_Discount__c  &gt;=  Max_Discount__c  &amp;&amp;  TEXT(Approval__c)  &lt;&gt; &quot;Approved&quot; &amp;&amp; TEXT(Status__c  )  = &quot;Approved&quot;</errorConditionFormula>
+    <errorMessage>We need an approval before sanction the discount.</errorMessage>
+</ValidationRule>

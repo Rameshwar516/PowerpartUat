@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Resolution_Time_Based_On_Check_Out_Formu__c</fullName>
+    <externalId>false</externalId>
+    <formula>TEXT(FLOOR( Resolution_Time_Based_OnCheck_Out__c / 60))
+&amp;&apos;hr&apos;&amp;
+TEXT(ROUND(MOD(Resolution_Time_Based_OnCheck_Out__c ,60), 0))
+&amp;&apos;min&apos;</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Resolution Time Based On Check Out</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

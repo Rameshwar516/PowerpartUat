@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Draft_Indents</fullName>
+    <columns>NAME</columns>
+    <columns>Indent_Date__c</columns>
+    <columns>Ware_House__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Status__c</field>
+        <operation>equals</operation>
+        <value>Draft</value>
+    </filters>
+    <label>Draft Indents</label>
+    <sharedTo>
+        <group>East_Parts_Team</group>
+        <group>North_Parts_Team</group>
+    </sharedTo>
+</ListView>

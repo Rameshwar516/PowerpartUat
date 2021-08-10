@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Closed_Status_not_to_update</fullName>
+    <active>true</active>
+    <errorConditionFormula>ISCHANGED(Status__c) &amp;&amp;  text(PRIORVALUE(Status__c))= &apos;Closed&apos; &amp;&amp; $Profile.Name != &apos;System Admin&apos;</errorConditionFormula>
+    <errorDisplayField>Status__c</errorDisplayField>
+    <errorMessage>Service Request has been closed. Please contact to System Administrator.</errorMessage>
+</ValidationRule>

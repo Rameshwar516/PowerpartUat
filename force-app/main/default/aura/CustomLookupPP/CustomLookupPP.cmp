@@ -27,8 +27,7 @@
         <div class="slds-form-element__control">
             
             <div class="slds-input-has-icon slds-input-has-icon--right">
-                <lightning:icon class="{! empty(v.selectedRecord.Id) ? 'slds-input__icon slds-show' : 'slds-hide' }" iconName="utility:search" size="x-small" alternativeText="search"/> 
-                <!-- This markup is for when an record is selected -->
+               <!-- This markup is for when an record is selected -->
                 <div aura:id="lookup-pill" class="{! empty(v.selectedRecord.Id) ? 'slds-pill-container slds-hide' : 'slds-pill-container slds-show'}">
 				<aura:if isTrue="{!v.objectAPIName == 'Sales_Order_Dispatch_Delivery_Note__c'}">
                     <lightning:pill aura:id="getlookval" title="{!v.selectedRecord.Delivery_Note_Number__c}" class="pillSize" label="{!v.selectedRecord.Delivery_Note_Number__c}" name="{!v.selectedRecord.Delivery_Note_Number__c}" onremove="{! c.clear }">

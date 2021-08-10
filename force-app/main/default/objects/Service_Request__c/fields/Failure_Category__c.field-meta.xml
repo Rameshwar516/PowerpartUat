@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Failure_Category__c</fullName>
+    <externalId>false</externalId>
+    <label>Failure Category</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>A-48</fullName>
+                <default>true</default>
+                <label>A-48</label>
+            </value>
+            <value>
+                <fullName>B-240</fullName>
+                <default>false</default>
+                <label>B-240</label>
+            </value>
+            <value>
+                <fullName>C-No Time Limit</fullName>
+                <default>false</default>
+                <label>C-No Time Limit</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

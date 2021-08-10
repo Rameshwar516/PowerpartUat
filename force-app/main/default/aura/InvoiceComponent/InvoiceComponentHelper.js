@@ -12,7 +12,7 @@
                     toastEvent.setParams({
                         "type":"error",
                         "title": "Error!",
-                        "message": "This Sales Order Already Approved."
+                        "message": "This Invoice Already Approved."
                     });
                     toastEvent.fire();
                     $A.get("e.force:closeQuickAction").fire();

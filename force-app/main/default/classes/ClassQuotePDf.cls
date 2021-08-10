@@ -11,7 +11,9 @@ public class ClassQuotePDf {
     public Account ShippAcc{get;set;}
     
      public Pdf_Header__mdt pdfheader{get;set;}
-    
+      public string TotalAmountWithChargesroundstring{get;set;}
+    public string sign{get;set;}
+    public decimal TotalAmountWithChargesround{get;set;} 
     public list<Line_item__c> Litem{get;set;}  
     public decimal totaltaxable{get;set;}
     public decimal totalCgst{get;set;}
@@ -62,19 +64,31 @@ public class ClassQuotePDf {
         opp=new opportunity__c();
         con=new list<contact>();
         Acc=new Account();
-        
+        TotalAmountWithChargesround =0;
          pdfheader=new Pdf_Header__mdt();
+        TotalAmountWithChargesroundstring ='';
         
         String strId = ApexPages.currentPage().getParameters().get('id');
         
         quotee = [select id,Billing_Address__c,Contact_Name__c,Customer_Party__c,Date__c,Email__c,Mobile__c,Opportunity__c,
-                  Name,Quote_Type__c,Quote_Validity__c,Shipping_Account__c,Opportunity__r.LC_Date__c,Opportunity__r.Transporter_Name__c,Opportunity__r.LC_Term__c,Delivery_Period__c,Shipping_Address__c ,Quote_Number__c,Customer_Party__r.ShippingState,
-                   Quote__c.Opportunity__r.Office__c , Quote__c.Opportunity__r.Ware_House__r.Name,Quote__c.Opportunity__r.Ware_House__r.Branch__c,Quote__c.Opportunity__r.Ware_House__r.City__c
+                  Name,Quote_Type__c,Quote_Validity__c,Remark__c,Shipping_Account__c,Opportunity__r.LC_Date__c,Opportunity__r.Transporter_Name__c,Opportunity__r.LC_Term__c,Delivery_Period__c,Shipping_Address__c ,Quote_Number__c,Customer_Party__r.ShippingState,
+                   Quote__c.Opportunity__r.Office__c , OwnerId,Quote__c.Opportunity__r.Ware_House__r.Name,Quote__c.Opportunity__r.Ware_House__r.Branch__c,Quote__c.Opportunity__r.Ware_House__r.City__c
                    from Quote__c where id=:strId limit 1];
         
         system.debug('Quote'+Quotee.id);
+        
+        
+        
+        user ur =[SELECT Id,Branch__c,User_Signature__c from user where id =:quotee.OwnerId];
+        if(!String.isBlank(ur.User_Signature__c))
+        sign = ur.User_Signature__c;
+        
+        if(String.isBlank(ur.User_Signature__c))
+        sign =System.Label.Default_User_Sign;
+        
+        system.debug(sign);
         if(quotee.Shipping_Account__c!=null){
-        ShippingCon = [select id,name, phone,MobilePhone, email,isPrimary__c from contact where isPrimary__c= true AND Accountid =:quotee.Shipping_Account__c limit 1];
+        ShippingCon = [select id,name, salutation,phone,MobilePhone, email,isPrimary__c from contact where isPrimary__c= true AND Accountid =:quotee.Shipping_Account__c limit 1];
         if(ShippingCon.size()>0){
                 ShippingContact = ShippingCon[0];
             }
@@ -85,16 +99,17 @@ public class ClassQuotePDf {
         pdfheader =  Database.query(pdfHeaderQuery);
         
          String myGeneratedFileName = quotee?.Quote_Number__c+'.pdf';
-        Apexpages.currentPage().getHeaders().put('content-disposition', 'inline; filename='+myGeneratedFilename);
+        //Apexpages.currentPage().getHeaders().put('content-disposition', 'inline; filename='+myGeneratedFilename);
+         ApexPages.currentPage().getHeaders().put('content-disposition', 'filename=' +' Sales Quote -'+myGeneratedFilename+'.PDF');
         if(quotee.Contact_Name__c!=null){
             
-        con = [select id,Name,Email,Fax,HomePhone,MobilePhone,Title,Accountid  from contact where id=:quotee.Contact_Name__c limit 1];
+        con = [select id,Name,salutation,Email,Fax,HomePhone,MobilePhone,Title,Accountid  from contact where isPrimary__c= true AND id=:quotee.Contact_Name__c limit 1];
         
             if(con.size()>0){
                 conBill = con[0];
             }
         }
-        Acc=[select id ,GSTIN_No__c,BillingCity,BillingCountry,BillingState,BillingStreet,BillingAddress,BillingPostalCode,ShippingCountry,
+        Acc=[select id ,Print_Name__c,GSTIN_No__c,BillingCity,BillingCountry,BillingState,BillingStreet,BillingAddress,BillingPostalCode,ShippingCountry,
              ShippingCity,ShippingPostalCode,ShippingStreet,ShippingState,ShippingAddress, name,Shipping_State_Code__c,Billing_State_Code__c from Account where id =:quotee.Customer_Party__c];
         system.debug('Account'+Acc.id);
         
@@ -178,9 +193,9 @@ public class ClassQuotePDf {
         
         Litem=[select Application__c,Amount_Formula__c,CGST__c,Delivery_Date__c,Description__c,
                Discount__c,Expected_date__c,HSN_Code__c,IGST__c,Name,List_Price__c,Opportunity__c,
-               Product_Part__c,Product_Part__r.uom__c,Product_Part__r.Old_Part__r.Part_Name__c,Product_Part__r.name,Product_Part__r.Part_Name__c,Part_Name__c,Unit__c,Discount_Amount__c  ,Quantity__c,Quote__c,Remark__c,
+               Product_Part__c,Product_Part__r.uom__c,Product_Part__r.Old_Part__r.Part_Name__c,Product_Part__r.name,Product_Part__r.Part_Name__c,Part_Name__c,Discount_Amount__c  ,Quantity__c,Quote__c,Remark__c,
                Saleable_Stock__c,Sales_Order__c,CGST_Amount_Formula__c,IGST_Amount_Formula__c,SGST_Amount_Formula__c,
-               Taxable_Amount_Formula__c,Sales_Price__c,Net_Amount__c,Total_Amount_Formula__c,SGST__c,Specification__c from Line_Item__c where Quote__c=:quotee.id];
+               Taxable_Amount_Formula__c,Sales_Price__c,Net_Amount__c,Total_Amount_Formula__c,SGST__c,Part_Serial_No__c from Line_Item__c where Quote__c=:quotee.id];
         
         if(Litem.size() > 0){
             totalGsttax=0;
@@ -194,28 +209,33 @@ public class ClassQuotePDf {
             
             for(Line_Item__c liobj : Litem){
                 if(liobj.Taxable_Amount_Formula__c!=null){
-                    totaltaxable=totaltaxable+liobj.Taxable_Amount_Formula__c;
+                    totaltaxable=(totaltaxable+liobj.Taxable_Amount_Formula__c);
                 }
                 if(liobj.CGST_Amount_Formula__c!=null){
-                    totalCgst=totalCgst+ liobj.CGST_Amount_Formula__c;
+                    totalCgst=(totalCgst+ liobj.CGST_Amount_Formula__c);
                 }
                 if(liobj.SGST_Amount_Formula__c!=null){
-                    totalSgst=totalSgst+ liobj.SGST_Amount_Formula__c;
+                    totalSgst=(totalSgst+ liobj.SGST_Amount_Formula__c);
                 }
                 if(liobj.IGST_Amount_Formula__c!=null){
-                    totalIgst=totalIgst+ liobj.IGST_Amount_Formula__c;
+                    totalIgst=(totalIgst+ liobj.IGST_Amount_Formula__c);
                 }
                 if(liobj.Net_Amount__c!=null){
-                    TotalAMount=TotalAMount+ liobj.Net_Amount__c;
+                    TotalAMount=(TotalAMount+ liobj.Net_Amount__c);
                 }
                 totalGsttax=totalCgst+totalSgst+totalIgst;
                 totalAmountaftertax=TotalAMount+totalGsttax;
-                totalAmountaftertax.round();
                 if(totalAmountaftertax > 0){
-                    totalAmountaftertax = totalAmountaftertax.round();
                     totalAmountaftertaxinWords = UtilityClass.NoToWord(totalAmountaftertax.intValue());
                 }
             }
+
+            totaltaxable=totaltaxable;
+            totalCgst=totalCgst;
+            totalSgst=totalSgst;
+            totalIgst=totalIgst;
+            TotalAMount=TotalAMount;
+            totalAmountaftertax = totalAmountaftertax.round();
             totalAmountNotIncludedTax = 0;
             totalTax = 0;
             totalTax= totalIgst+totalSgst+totalCgst;
@@ -249,23 +269,25 @@ public class ClassQuotePDf {
                     system.debug('....totalAmountIgst.....'+totalAmountIgst);
                 }
                 totalAmountCgst = totalAmountCgst+totalCgst;
-                totalAmountCgst=totalAmountCgst.round();
+                totalAmountCgst=totalAmountCgst;
                 totalAmountSgst = totalAmountSgst+totalSgst;
-                totalAmountSgst=totalAmountSgst.round();
+                totalAmountSgst=totalAmountSgst;
                 totalAmountIgst = totalAmountIgst+totalIgst;
-                totalAmountIgst=totalAmountIgst.round();
+                totalAmountIgst=totalAmountIgst;
                 totalTaxAmount = 0;
                 system.debug('....totalAmountIgstAfterLoop.....'+totalAmountIgst+',,,totalIgst,,'+totalIgst);
                 
                 totalTaxAmount = totalAmountCgst+ totalAmountSgst+ totalAmountIgst;
-                totalTaxAmount=totalTaxAmount.round();
-                totalAmount=totalAmount.round();
+                totalTaxAmount=totalTaxAmount;
+                totalAmount=totalAmount;
                 TotalAmountWithCharges = TotalAmountWithCharges+totalAmount;
-                totalAmountaftertaxinWords = UtilityClass.NoToWord(TotalAmountWithCharges.intValue());
-                totalAmountaftertaxinWords = totalAmountaftertaxinWords +' rupees only';
-                TotalAmountWithCharges=TotalAmountWithCharges.round();
+                
+                TotalAmountWithChargesround=TotalAmountWithChargesround + TotalAmountWithCharges.round();
+            TotalAmountWithChargesroundstring= TotalAmountWithChargesround+'.00';
+            totalAmountaftertaxinWords = UtilityClass.NoToWord(TotalAmountWithChargesround.intValue());
+                totalAmountaftertaxinWords = 'Rupees '+totalAmountaftertaxinWords +' only';
                 totalAmountSumNotIncludedTax = totalAmountSumNotIncludedTax+totalAmountNotIncludedTax+totaltaxable; 
-                totalAmountSumNotIncludedTax=totalAmountSumNotIncludedTax.round();
+                totalAmountSumNotIncludedTax=totalAmountSumNotIncludedTax;
                 
             //Condition Added for state Code
             string strStateCode = ''; 
@@ -286,6 +308,6 @@ public class ClassQuotePDf {
             TotalTaxableAmount=0;
         }
         
-    }	*/
+    }   */
     
 }

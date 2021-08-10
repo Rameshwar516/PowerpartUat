@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workflow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fieldUpdates>
+        <fullName>Update_Queue_Once_The_Warranty_Approved</fullName>
+        <field>OwnerId</field>
+        <lookupValue>Warranty_claim_Queue</lookupValue>
+        <lookupValueType>Queue</lookupValueType>
+        <name>Update Queue Once The Warranty Approved</name>
+        <notifyAssignee>true</notifyAssignee>
+        <operation>LookupValue</operation>
+        <protected>false</protected>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Update_Status</fullName>
+        <field>Claim_Status__c</field>
+        <literalValue>Approved</literalValue>
+        <name>Update Status</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+    </fieldUpdates>
+    <rules>
+        <fullName>Send Email To Queue When Warranty Claim is Approved</fullName>
+        <actions>
+            <name>Update_Queue_Once_The_Warranty_Approved</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>true</active>
+        <formula>text(Claim_Status__c) = &apos;Approved&apos; &amp;&amp;  ISCHANGED(Claim_Status__c)</formula>
+        <triggerType>onAllChanges</triggerType>
+    </rules>
+</Workflow>

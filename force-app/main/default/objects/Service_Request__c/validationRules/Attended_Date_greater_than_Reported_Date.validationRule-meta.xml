@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Attended_Date_greater_than_Reported_Date</fullName>
+    <active>true</active>
+    <description>Attended date should be greater then Reported date.</description>
+    <errorConditionFormula>Date_Time_Attended__c &lt; Date_Time_Reported__c</errorConditionFormula>
+    <errorDisplayField>Date_Time_Attended__c</errorDisplayField>
+    <errorMessage>Attended date should be greater then Reported date.</errorMessage>
+</ValidationRule>

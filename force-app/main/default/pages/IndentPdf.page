@@ -1,42 +1,45 @@
 <apex:page renderAs="pdf" applyHtmlTag="false" showHeader="false" standardController="Purchase_Indent__c" extensions="PurchaseIndentCtrl">
-  <head>
+    <head>
         <style type="text/css">
             @page 
-            {
-            size:12.94in 13.90in;
-            margin-top: 180px;
-            margin-bottom: 180px;
+            {  
+            size:11.7in 14.5in; 
+            margin-top: 5.00cm;
             page-break-after:always;
             @top-center 
             {                   
-            content: element(header);    
-            
+            content: element(header);               
             }
             @bottom-center
             {
             content: element(footer); 
             }
-            }
+            }  
             div.header 
             {                
             padding: 5px; 
-            padding-top:50px;
+            padding-top:10px;
             padding-bottom:5px;
             position: running(header); 
             content: "Page " counter(page) " of " counter(pages);
             } 
             div.footer 
-            {    
-                padding: 5px;               
-                position: running(footer);    
+            {                
+            //padding: 5px;               
+            position: running(footer);    
             }
             @page 
             {
-            <!--@bottom-center 
+            @bottom-center 
             {
-                padding: 10px;
-                content: "Page " counter(page) " of " counter(pages);
-            }-->
+            padding-top: 10px;
+            content: "Registered Office : N-122, Panchsheel Park, New Delhi - 100 017.";
+            }
+            @bottom-right 
+            {
+            padding-top: 10px;
+            content: "Page " counter(page) " of " counter(pages);
+            }
             }
             
             table 
@@ -44,17 +47,18 @@
             border-spacing: 0px;
             font-size:12px;
             font-family: Arial;
+            -fs-table-paginate: paginate; 	
             }
             
             td {
-            border-width: 1px;
+            border-width: 0px;
             padding: 4px;
             border-style: solid;
             border-color: #000000;
             }
             
             th { 
-            border-width: 1px ;
+            border-width: 0px ;
             padding: 4px ;
             border-style: solid ;
             border-color: #000000;
@@ -62,13 +66,8 @@
             ol.d{
             list-style-type: lower-alpha;
             }
-            <!--div.footer {
-                display: block;
-                padding: 10px;
-                position: running(footer);
-            }-->
             
-        </style> 
+        </style>  
     </head>
     <apex:form >
         <div class="header">
@@ -76,63 +75,227 @@
                 <tr>
                     <td style="border:none;padding:0px;" width="20%" valign="top">
                         <left>
-                            <apex:image url="{!$Resource.PerformaLeftSidelogo}" width="210" height="60"/> 
+                            <apex:image url="{!$Resource.PowerpartsLogo}" width="210" height="60"/> 
                         </left>
                     </td>
                     <td style="border:none;padding:0px;" width="60%" valign="top">
                         <center>
-                            <b><apex:outputText value="POWERPARTS PRIVATE LIMITED" style="font-size:13px;font-family: Arial;" /></b><br/>
-                            <b><apex:outputText value="Registered Office : " style="font-size:11px;font-family: Arial;" /></b>
-                            <apex:outputText value="N-122, Panchsheel Park, New Delhi - 100 017" style="font-size:11px;font-family: Arial;" /><br/>
-                           
-                            <b style="font-size:13px;font-family: Arial;">{!pdfheader.Address_Header__c}</b><br/>
-                            <div style="font-size:11px;font-family: Arial;">{!pdfheader.Address_Line1__c}<br/>
-                            {!pdfheader.Address_Line_2__c}<br/>
-                            {!pdfheader.Gstin__c}<br/><br/>
-                            {!pdfheader.IEC_No__c}&nbsp;&nbsp;&nbsp;{!pdfheader.PAN_No__c}<br/>
-                            {!pdfheader.BANK__c}<br/>
-                            {!pdfheader.Bank_A_C_No__c}&nbsp;&nbsp;&nbsp;{!pdfheader.IFC_RTGS_NEFT__c}<br/>
-                            {!pdfheader.Email__c}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{!pdfheader.Tel__c} 
+                            <b><apex:outputText value="POWERPARTS PRIVATE LIMITED" style="font-size:14px;font-family: Arial;" /></b><br/>
+                            <!-- <b><apex:outputText value="Registered Office : " style="font-size:11px;font-family: Arial;" /></b>
+<apex:outputText value="N-122, Panchsheel Park, New Delhi - 100 017" style="font-size:11px;font-family: Arial;" /><br/>-->
+                            
+                            <b style="font-size:14px;font-family: Arial;">{!pdfheader.Address_Header__c}</b><br/>
+                            <div style="font-size:12px;font-family: Arial;">{!pdfheader.Address_Line1__c}<br/>
+                                {!pdfheader.Address_Line_2__c}<br/>
+                                {!pdfheader.Gstin__c}<br/>
+                                {!pdfheader.Email__c}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{!pdfheader.Tel__c} 
+                                <br/> <br/>
+                                {!pdfheader.IEC_No__c}&nbsp;&nbsp;&nbsp;{!pdfheader.PAN_No__c}<br/>
+                                {!pdfheader.BANK__c}<br/>
+                                {!pdfheader.Bank_A_C_No__c}&nbsp;&nbsp;&nbsp;{!pdfheader.IFC_RTGS_NEFT__c}<br/>
                             </div>
                         </center>
                     </td>
                     <td style="border:none;padding:0px;" width="60%" valign="top">
                         <Right>
-                            <apex:image url="{!$Resource.PerformaRightSidelogo}" width="210" height="60"/> 
+                            <apex:image url="{!$Resource.PerkinsLogo}" width="210" height="160" style="margin-top: -40px;"/> 
                         </Right>
                     </td>
                 </tr>
             </table>
         </div>
         
-        <div class="footer" name="footer">
-            <table style="width:100%;border:none">
+        
+        <div class="content">
+            <table class="content" style="width:100%; border:none;">
                 <tr>
-                    <td style="border:none; width:35%; height:5%"  valign="top">
-                       For  <b>Powerparts Private Limited </b>
+                    <td style="width: 100%; text-align: center; font-size:14px; border:none;"><b>PURCHASE INDENT</b></td>
+                </tr>
+            </table>
+            
+            <table class="content" style="width:100%; border:none;">
+                
+                <tr>
+                    <td style="border:none; width:15%"  valign="top" >
+                        <b><apex:outputText value="Procurement" /></b>
+                    </td>
+                    <td style="border:none; width:5%"  valign="top" >
+                        <b><apex:outputText value=":" /></b>
+                    </td>
+                    <td style="border:none; width:30%"  valign="top" >
+                        <apex:outputText value="{!PurchaseInd.Procurement__c}" />
+                    </td>
+                    <td style="border:none; width:15%"  valign="top" >
+                        <b><apex:outputText value="Indent No" /></b>
+                    </td>
+                    <td style="border:none; width:5%"  valign="top" >
+                        <b><apex:outputText value=":" /></b>
+                    </td>
+                    <td style="border:none; width:30%"  valign="top" >
+                        <apex:outputText value="{!PurchaseInd.Purchase_Indent_Number__c}" />
+                    </td>
+                </tr> 
+                
+                <tr>
+                    <td style="border:none;"  valign="top" >
+                        <b><apex:outputText value="Department" /></b>
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                        <b><apex:outputText value=":" /></b>
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                        <apex:outputText value="{!PurchaseInd.Department__c}" />
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                        <b><apex:outputText value="Indent Date" /></b>
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                        <b><apex:outputText value=":" /></b>
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                        <apex:outputText value="{0,date,dd' 'MMM' 'yyyy}">
+                            <apex:param value="{!PurchaseInd.Indent_Date__c}" /> 
+                        </apex:outputText>
+                    </td>
+                </tr> 
+                
+                <tr>
+                    <td style="border:none;"  valign="top" >
+                        <b><apex:outputText value="Indent By" /></b>
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                        <b><apex:outputText value=":" /></b>
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                        <apex:outputText value="{!PurchaseInd.Indent_By__r.Name}" />
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                        <b><apex:outputText value="Reference No" /></b>
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                        <b><apex:outputText value=":" /></b>
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                        <apex:outputText value="{!PurchaseInd.Reference_No_text__c}" />
+                    </td>
+                </tr> 
+                
+                <tr>
+                    <td style="border:none;"  valign="top" >
+                        
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                        
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                        
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                        <b><apex:outputText value="Reference Date" /></b>
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                        <b><apex:outputText value=":" /></b>
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                        <apex:outputText value="{0,date,dd' 'MMM' 'yyyy}">
+                            <apex:param value="{!PurchaseInd.Reference_Date__c}" /> 
+                        </apex:outputText>
+                    </td>
+                </tr> 
+                
+            </table>
+            
+            <table class="content" style="width:100%; border:none; margin-top:40px;">
+                
+                <tr style="border-top:1px solid black; border-bottom: none;">
+                    <td style="border-bottom:1px solid black; border-left: none; border-right: none; text-align:center" valign="top" >
+                        <b>S.No</b>
+                    </td>
+                    <td style="border-bottom:1px solid black; border-left: none; border-right: none;" valign="top" >
+                        <b>Part No</b>
+                    </td>
+                    <td style="border-bottom:1px solid black; border-left: none; border-right: none;" valign="top" colspan="2">
+                        <b>Description</b>
+                    </td>
+                    <td style="border-bottom:1px solid black; border-left: none; border-right: none;" valign="top">
+                        <b>Qty</b>
+                    </td>
+                    <td style="border-bottom:1px solid black; border-left: none; border-right: none;" valign="top">
+                        <b>UOM</b>
+                    </td>
+                </tr> 
+                <apex:variable var="idx" value="{!0}"/>
+                <apex:repeat value="{!PILitem}" var="li">
+                    <tr style="border-top:1px solid black; border-bottom: none;">
+                        <td style="border-bottom: none; border-left: none; border-right: none; text-align:center; width:5%;" valign="top" >
+                            <apex:variable var="idx" value="{!idx + 1}" />  {!idx}
+                        </td>
+                        <td style="border-bottom: none; border-left: none; border-right: none; width:15%" valign="top" >
+                            {!li.Product_Part__r.Name}
+                        </td>
+                        <td style="border-bottom: none; border-left: none; border-right: none;   width:65%" valign="top" colspan="2">
+                            {!li.Part_Name__c}
+                        </td>
+                        <td style="border-bottom: none; border-left: none; border-right: none; width:7%" valign="top">
+                            {!li.QTY__c}
+                        </td>
+                        <td style="border-bottom: none; border-left: none; border-right: none; width:8%" valign="top">
+                            {!li.Product_Part__r.UOM__c}
+                        </td>
+                    </tr> 
+                </apex:repeat>
+                
+            </table>    
+            
+            
+            <table class="content" style="width:100%; border:none; margin-top:10%;">
+                
+                <tr>
+                    <td style="border:none;  width:45%;" valign="top">
+                        <hr style="border-top: dashed 1px;" />
+                    </td>
+                    <td style="border:none; width:10%;" valign="top" >
+                        <center><b>LAST ITEM</b></center>
+                    </td>
+                    <td style="border:none; width:45%;" valign="top">
+                        <hr style="border-top: dashed 1px;" />
+                    </td>
+                    
+                </tr>
+            </table>
+            <table class="content" style="width:100%; border:none; margin-top:5%;">
+                <tr>
+                    <td style="border:none;  width:42%;" valign="top">
+                        <hr style="border-top: dashed 1px;" />
+                    </td>
+                    <td style="border:none; width:16%;" valign="top" >
+                        <center><b>Terms And Conditions</b></center>
+                    </td>
+                    <td style="border:none; width:42%;" valign="top">
+                        <hr style="border-top: dashed 1px;" />
+                    </td>
+                </tr>
+                <tr>
+                    <td style="border:none;  " valign="top" colspan="12">
+                        <apex:outputField value="{!PurchaseInd.Terms_and_Conditions__c}"/>
+                        <!-- <apex:outputText value="{!HTMLENCODE(PurchaseInd.Terms_and_Conditions__c)}" style="white-space:pre;" escape="false"/> -->
+                    </td>
+                </tr>
+            </table>
+            <table style="width:100%;border:none; margin-top:5%;">
+                <tr>
+                    <td style="border:none; width:35%; height:2%"  valign="top">
+                        For  <b>Powerparts Private Limited </b>
                     </td>
                     <td style="border:none; width:30%; height:5%"  valign="top">
                         <b></b>
                     </td>
                     <td style="border:none; width:35%; height:5%"  valign="top">
-                        
                     </td>
-                </tr>
+                </tr><br/>
                 <tr>
                     <td style="border:none; width:35%; height:5%"  valign="top">
-                        &nbsp;
-                    </td>
-                    <td style="border:none; width:30%; height:5%"  valign="top">
-                        &nbsp;
-                    </td>
-                    <td style="border:none; width:35%; height:5%"  valign="top">
-                        &nbsp;
-                    </td>
-                </tr>
-                
-                <tr>
-                    <td style="border:none; width:35%; height:5%"  valign="top">
-                        &nbsp;
+                        <apex:image id="theImage" url="{!sign}" width="100" height="50" alt="User Siganture"/>
                     </td>
                     <td style="border:none; width:30%; height:5%"  valign="top">
                         &nbsp;
@@ -149,190 +312,9 @@
                         
                     </td>
                     <td style="border:none; width:35%; height:5%"  valign="top">
-                        
                     </td>
                 </tr>
             </table>
         </div>
-        <body>
-            <table style="width:100%; border:none;">
-                <tr>
-                    <td style="width: 100%; text-align: center; border:none;"><b>PURCHASE INDENT</b></td>
-                </tr>
-            </table>
-            
-            <table style="width:100%; border:none;">
-                
-                <tr>
-                    <td style="border:none;"  valign="top" >
-                        <b><apex:outputText value="Procurement" /></b>
-                    </td>
-                    <td style="border:none;"  valign="top" >
-                        <b><apex:outputText value=":" /></b>
-                    </td>
-                    <td style="border:none;"  valign="top" colspan="2">
-                        <apex:outputText value="{!PurchaseInd.Procurement__c}" />
-                    </td>
-                    <td style="border:none;"  valign="top" >
-                        <b><apex:outputText value="Indent No" /></b>
-                    </td>
-                    <td style="border:none;"  valign="top" >
-                        <b><apex:outputText value=":" /></b>
-                    </td>
-                    <td style="border:none;"  valign="top" colspan="2">
-                        <apex:outputText value="{!PurchaseInd.Purchase_Indent_Number__c}" />
-                    </td>
-                </tr> 
-
-                <tr>
-                    <td style="border:none;"  valign="top" >
-                        <b><apex:outputText value="Department" /></b>
-                    </td>
-                    <td style="border:none;"  valign="top" >
-                        <b><apex:outputText value=":" /></b>
-                    </td>
-                    <td style="border:none;"  valign="top" colspan="2">
-                        <apex:outputText value="{!PurchaseInd.Department__c}" />
-                    </td>
-                    <td style="border:none;"  valign="top" >
-                        <b><apex:outputText value="Indent Date" /></b>
-                    </td>
-                    <td style="border:none;"  valign="top" >
-                        <b><apex:outputText value=":" /></b>
-                    </td>
-                    <td style="border:none;"  valign="top" colspan="2">
-                        <apex:outputText value="{0,date,dd' 'MMM' 'yyyy}">
-                            <apex:param value="{!PurchaseInd.Indent_Date__c}" /> 
-                        </apex:outputText>
-                    </td>
-                </tr> 
-                
-                <tr>
-                    <td style="border:none;"  valign="top" >
-                        <b><apex:outputText value="Indent By" /></b>
-                    </td>
-                    <td style="border:none;"  valign="top" >
-                        <b><apex:outputText value=":" /></b>
-                    </td>
-                    <td style="border:none;"  valign="top" colspan="2">
-                        <apex:outputText value="{!PurchaseInd.Indent_By__r.Name}" />
-                    </td>
-                    <td style="border:none;"  valign="top" >
-                        <b><apex:outputText value="Reference No" /></b>
-                    </td>
-                    <td style="border:none;"  valign="top" >
-                        <b><apex:outputText value=":" /></b>
-                    </td>
-                    <td style="border:none;"  valign="top" colspan="2">
-                        <apex:outputText value="{!PurchaseInd.Reference_No__c}" />
-                    </td>
-                </tr> 
-                
-                <tr>
-                    <td style="border:none;"  valign="top" >
-                       
-                    </td>
-                    <td style="border:none;"  valign="top" >
-
-                    </td>
-                    <td style="border:none;"  valign="top" colspan="2">
-                        
-                    </td>
-                    <td style="border:none;"  valign="top" >
-                        <b><apex:outputText value="Reference Date" /></b>
-                    </td>
-                    <td style="border:none;"  valign="top" >
-                        <b><apex:outputText value=":" /></b>
-                    </td>
-                    <td style="border:none;"  valign="top" colspan="2">
-                        <apex:outputText value="{0,date,dd' 'MMM' 'yyyy}">
-                            <apex:param value="{!PurchaseInd.Reference_Date__c}" /> 
-                        </apex:outputText>
-                    </td>
-                </tr> 
-                
-            </table>
-            
-            <table style="width:100%; border:none; margin-top:40px;">
-                
-                <tr style="border-top:1px solid black; border-bottom: none;">
-                    <td style="border-bottom: none; border-left: none; border-right: none;" valign="top" >
-                        <b>S.No</b>
-                    </td>
-                    <td style="border-bottom: none; border-left: none; border-right: none;" valign="top" >
-                        <b>Part No</b>
-                    </td>
-                    <td style="border-bottom: none; border-left: none; border-right: none;" valign="top" colspan="2">
-                        <b>Description</b>
-                    </td>
-                    <td style="border-bottom: none; border-left: none; border-right: none;" valign="top">
-                        <b>Qty</b>
-                    </td>
-                    <td style="border-bottom: none; border-left: none; border-right: none;" valign="top">
-                        <b>UOM</b>
-                    </td>
-                </tr> 
-                <apex:variable var="idx" value="{!0}"/>
-                <apex:repeat value="{!PILitem}" var="li">
-                    <tr style="border-top:1px solid black; border-bottom: none;">
-                        <td style="border-bottom: none; border-left: none; border-right: none;" valign="top" >
-                            <apex:variable var="idx" value="{!idx + 1}" />  {!idx}
-                        </td>
-                        <td style="border-bottom: none; border-left: none; border-right: none;" valign="top" >
-                            {!li.Product_Part__r.Name}
-                        </td>
-                        <td style="border-bottom: none; border-left: none; border-right: none;" valign="top" colspan="2">
-                            {!li.Remark__c}
-                        </td>
-                        <td style="border-bottom: none; border-left: none; border-right: none;" valign="top">
-                            {!li.QTY__c}
-                        </td>
-                        <td style="border-bottom: none; border-left: none; border-right: none;" valign="top">
-                            {!li.Product_Part__r.UOM__c}
-                        </td>
-                    </tr> 
-                </apex:repeat>
-                
-            </table>    
-            
-            
-            <table style="width:100%; border:none; margin-top:10%;">
-                
-                <tr>
-                    <td style="border:none;  width:45%;" valign="top">
-                        <hr style="border-top: dashed 1px;" />
-                    </td>
-                    <td style="border:none; width:10%;" valign="top" >
-                        <center><b>LAST ITEM</b></center>
-                    </td>
-                    <td style="border:none; width:45%;" valign="top">
-                        <hr style="border-top: dashed 1px;" />
-                    </td>
-                    
-                </tr>
-            </table>
-            
-            
-            <table style="width:100%; border:none; margin-top:5%;">
-                
-                <tr>
-                    <td style="border:none;  width:42%;" valign="top">
-                        <hr style="border-top: dashed 1px;" />
-                    </td>
-                    <td style="border:none; width:16%;" valign="top" >
-                        <center><b>Terms And Conditions</b></center>
-                    </td>
-                    <td style="border:none; width:42%;" valign="top">
-                        <hr style="border-top: dashed 1px;" />
-                    </td>
-                    
-                </tr>
-            </table>
-            <div>
-                <apex:outputText value="{!HTMLENCODE(PurchaseInd.Terms_and_Conditions__c)}" style="white-space:pre;" escape="false"/>
-            </div>
-        </body>
-        <center><b>This is a computer generated document signature is not required.</b></center>
-        
     </apex:form>    
 </apex:page>

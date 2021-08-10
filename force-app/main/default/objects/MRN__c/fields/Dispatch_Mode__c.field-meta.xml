@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Dispatch_Mode__c</fullName>
+    <externalId>false</externalId>
+    <label>Dispatch Mode</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>None</fullName>
+                <default>false</default>
+                <label>None</label>
+            </value>
+            <value>
+                <fullName>By Hand</fullName>
+                <default>false</default>
+                <label>By Hand</label>
+            </value>
+            <value>
+                <fullName>By Air</fullName>
+                <default>false</default>
+                <label>By Air</label>
+            </value>
+            <value>
+                <fullName>By Road</fullName>
+                <default>false</default>
+                <label>By Road</label>
+            </value>
+            <value>
+                <fullName>By Ship</fullName>
+                <default>false</default>
+                <label>By Ship</label>
+            </value>
+            <value>
+                <fullName>By Train</fullName>
+                <default>false</default>
+                <label>By Train</label>
+            </value>
+            <value>
+                <fullName>Others</fullName>
+                <default>false</default>
+                <label>Others</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

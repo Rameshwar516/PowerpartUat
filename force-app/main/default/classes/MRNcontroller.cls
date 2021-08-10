@@ -170,7 +170,7 @@ public class MRNcontroller {
             Schema.sObjectType sObjType = globalDescription.get('MRN_Line_Item__c');
             Schema.DescribeSObjectResult describeResult = sObjType.getDescribe();
             List<string> leadfieldNames = new List<String>(describeResult.fields.getMap().keySet()); 
-            string soql = 'select ' + string.join(leadfieldNames, ',') +',Part_Number__r.name, Stock__r.Total_Unbooked_Quantity__c,Part_Number__r.Specification__c,Ware_House__r.City__c,Part_Number__r.UOI__c,Part_Number__r.UOM__c,Part_Number__r.Part_Name__c from MRN_Line_Item__c where MRN__c =: strRecordId' ; 
+            string soql = 'select ' + string.join(leadfieldNames, ',') +',Part_Number__r.name, Stock__r.Total_Unbooked_Quantity__c,Part_Number__r.Specification__c,Part_Number__r.UOI__c,Ware_House__r.City__c,Part_Number__r.UOM__c,Part_Number__r.Part_Name__c from MRN_Line_Item__c where MRN__c =: strRecordId' ; 
             System.debug('inSoql---- '+soql);
             List<MRN_Line_Item__c> lstMRNLI = Database.query(soql);
             for(MRN_Line_Item__c objMLI : lstMRNLI){
@@ -193,9 +193,9 @@ public class MRNcontroller {
                         System.debug('-----------label------ '+objWrap.lstGSTRate[i]);
                     }
                     
-					objSMW.strDocNo = objMLI.DOC_Number__c;
-					if(objMLI.POC_Date__c != null)
-						objSMW.docDate = objMLI.POC_Date__c;
+                    objSMW.strDocNo = objMLI.DOC_Number__c;
+                    if(objMLI.POC_Date__c != null)
+                        objSMW.docDate = objMLI.POC_Date__c;
                     
                     objSMW.IsEdit = false;
                     objSMW.IntBinQty = objSMW.objPart.BinNumber__c;
@@ -249,9 +249,13 @@ public class MRNcontroller {
                     if(objSMW.IntTaxableValue !=null && objSMW.IntGSTRate !=null)
                         objSMW.IntGSTAmount =objSMW.IntTaxableValue*objSMW.IntGSTRate/100;
                     
+                    if(objWrap.objMRN.Dispatch_Mode__c == 'Import'){
                     if(objSMW.IntTaxableValue !=null && objSMW.IntGSTAmount !=null)
                         objSMW.IntTotalInsuranceCost =objSMW.IntTaxableValue+objSMW.IntGSTAmount;
-                    
+                    }
+                    else{
+                        objSMW.IntTotalInsuranceCost =objMLI.Net_Amount_Formula__c;
+                    }
                     objSMW.IntLANDUnitRateINR = Integer.valueof(objMLI.Landed_Cost_Unit_Rate__c);
                     objSMW.IntCGSTRate =Integer.valueof(objMLI.CGST__c);
                     objSMW.IntCGSTAmount =Integer.valueof(objMLI.CGST_Amount_Formula__c);
@@ -302,6 +306,7 @@ public class MRNcontroller {
                     objSMW.ObjMRNLI = objMLI;
                     objWrap.lstDeliveryNoteLIWrap.add(objSMW);
                 }else{
+                    
                     DeliveryNoteLIWrapper objW = new DeliveryNoteLIWrapper();
                     objW.lstUnitType = new List<string>();
                     objW.ObjMRNLI = objMLI;
@@ -435,12 +440,14 @@ public class MRNcontroller {
                 objMRNLItems.Unit__c= integer.valueof(objMRNLI.IntUNIT);
                 if(objMRNLI.IntBillQty !=null && objMRNLI.IntPriceGBP !=null)
                     SubtotalItemAmount =SubtotalItemAmount+(objMRNLI.IntBillQty*objMRNLI.IntPriceGBP);
-                System.debug('subototalItem---- '+SubtotalItemAmount);
+                System.debug('subototalItem---- '+SubtotalItemAmount+'--- '+objMRNLI.IntAssessableValueINR+'----'+objMRNLI.IntCDutyAmountINR);
                 //objMRNLItems.Unit__c = objMRNLI.strUOI;
                 if(objmainWrap.objMRN.MRN_Delivery_Type__c=='Import'){
                     // objMRNLI.Taxable_Value__c = objDN.IntAssessableValueINR + (objDN.IntAssessableValueINR * objDN.IntDutyRate /100+(objDN.IntAssessableValueINR * objDN.IntDutyRate /100 * objDN.IntSurRate /100)); 
-                    objMRNLItems.Taxable_Value__c = objMRNLI.IntAssessableValueINR +  objMRNLI.IntCDutyAmountINR; 
-                    system.debug('Import-taxablevalue-- '+objMRNLItems.Taxable_Value__c);
+                    if(objMRNLI.IntAssessableValueINR != null && objMRNLI.IntCDutyAmountINR != null){
+                        objMRNLItems.Taxable_Value__c = objMRNLI.IntAssessableValueINR +  objMRNLI.IntCDutyAmountINR; 
+                        system.debug('Import-taxablevalue-- '+objMRNLItems.Taxable_Value__c);
+                    }
                 }
                 else{
                     objMRNLItems.Taxable_Value__c = objMRNLI.IntTaxableValue; 
@@ -463,7 +470,8 @@ public class MRNcontroller {
             }
         } 
         map<string, string> mapOfCharges = new map<string, string>();
-        for(Charges__c objChar :[Select Id,Name,Charges__c,MRN__c,MRN_Charge_Percent__c from Charges__c where MRN__c=: strRecordId]){
+        list<Charges__c> existcharges = [Select Id,Name,Charges__c,MRN__c,MRN_Charge_Percent__c from Charges__c where MRN__c=: strRecordId]; 
+        for(Charges__c objChar :existcharges){
             mapOfCharges.put(objChar.Charges__c,objChar.Id);
         }
         List<Charges__c> lstCharge = new List<Charges__c>();
@@ -485,11 +493,10 @@ public class MRNcontroller {
             objCharges.IGST__c = objWrap.IGST;
             objCharges.SGST__c = objWrap.SGST;
             objCharges.CGST__c = objWrap.CGST;
-
-            
             objCharges.Total_Amount__c = objWrap.decTaxAmount; //IntTotalAmount;
             totalcharges =totalcharges+(objCharges.Total_Amount__c/SubtotalItemAmount);
             lstCharge.add(objCharges);
+            System.debug('lstCharge--------- '+lstCharge.size());
             system.debug(objWrap.strTaxName+'...strTaxName....'+objWrap.TaxPercentage);
         }
         
@@ -523,7 +530,7 @@ public class MRNcontroller {
             delete [select Id from MRN_Line_Item__c where ID NOT IN: setOfCharges and MRN__c =: strRecordId];
         }
         
-        
+        System.debug('lstCharge---2------ '+lstCharge.size());
         if(lstCharge.size()>0){
             upsert lstCharge;
             set<string> setOfCharges = new set<string>();
@@ -531,7 +538,20 @@ public class MRNcontroller {
             {
                 setOfCharges.add(objCharge.id);
             }
-            delete [select Id from Charges__c where ID NOT IN: setOfCharges and MRN__c =: strRecordId];
+            try{
+                 delete [select Id from Charges__c where ID NOT IN: setOfCharges and MRN__c =: strRecordId];
+            }
+            catch(Exception ex){
+                System.debug('ex------ '+ex.getMessage());
+            }
+        }
+        else if(lstCharge.isempty() && !existcharges.isempty()){
+            try{
+                 delete [select Id from Charges__c where MRN__c =: strRecordId];
+            }
+            catch(Exception ex){
+                System.debug('ex------ '+ex.getMessage());
+            }
         }
         return strRecordId;
     }
@@ -547,6 +567,7 @@ public class MRNcontroller {
         Decimal SubtotaltotallineitemvalueinInr = 0;
         Decimal SubtotalAssesablevalue=0;
         Decimal SubtotalItemAmount = 0;
+        
         if(supplier!=null)
             con =[SELECT id from contact where accountid=:supplier.id and isPrimary__c =true limit 1];
         List<TaxDetails> lstTaxDetails = (List<TaxDetails>)Json.deserialize(lstCharges, List<TaxDetails>.Class);
@@ -571,11 +592,17 @@ public class MRNcontroller {
                     objmainWrap.objMRN.Supplier__c=supplier?.id;
                     if(!con.isempty())
                     objmainWrap.objMRN.Supplier_Contact_Name__c=con[0]?.id;
+                    
+                    objmainWrap.objMRN.Ware_House__c = lstDeliveryNoteLineItems[0].ObjDNLI.Sales_Order_Dispatch_Delivery_Note__r.Sales_Order__r.Ware_House__c;
+                    objmainWrap.objMRN.Delivery_Note__c = lstDeliveryNoteLineItems[0].ObjDNLI.Sales_Order_Dispatch_Delivery_Note__c;
+                    objmainWrap.objMRN.Contact_Name__c = lstDeliveryNoteLineItems[0].ObjDNLI.Sales_Order_Dispatch_Delivery_Note__r.Contact_Person_Name__c;
+                    objmainWrap.objMRN.OEM_Customer__c = lstDeliveryNoteLineItems[0].ObjDNLI.Sales_Order_Dispatch_Delivery_Note__r.Customer_Party__c;
+                    objmainWrap.objMRN.Shipping_Account__c = lstDeliveryNoteLineItems[0].ObjDNLI.Sales_Order_Dispatch_Delivery_Note__r.Shipping_Account__c;
                     //------Insert Mrn Record-----
                     insert objmainWrap.objMRN;
-                    
+                    system.debug('objmainWrap '+objmainWrap);
                     for(DeliveryNoteLIWrapper objDN : lstDeliveryNoteLineItems){
-						system.debug('...objDN.'+objDN);
+                        system.debug('...objDN.'+objDN);
                         MRN_Line_Item__c objMRNLI = new MRN_Line_Item__c();
                         objMRNLI.MRN__c = objmainWrap.objMRN.Id;
                         objMRNLI.Part_Number__c = objDN.ObjDNLI.Product_Part__c;
@@ -583,10 +610,11 @@ public class MRNcontroller {
                         objMRNLI.Sales_Price__c = objDN.ObjDNLI.Sales_Price__c;
                         objMRNLI.Total_Amount_Input__c = objMRNLI.Received_QTY__c*objMRNLI.Sales_Price__c;
                         objMRNLI.CGST__c = objDN.ObjDNLI.CGST__c;
-						
-						objMRNLI.DOC_Number__c = objDN.strDocNo;
-						if(objDN.docDate != null)
-							objMRNLI.POC_Date__c = objDN.docDate;
+                        system.debug('-------------------dnl----------- '+objDN.ObjDNLI.Sales_Order_Dispatch_Delivery_Note__c);
+                        system.debug('-------------------ware----------- '+objDN.ObjDNLI.Sales_Order_Dispatch_Delivery_Note__r.Sales_Order__r.Ware_House__c);
+                        objMRNLI.DOC_Number__c = objDN.strDocNo;
+                        if(objDN.docDate != null)
+                            objMRNLI.POC_Date__c = objDN.docDate;
                         
                         objMRNLI.SGST__c = objDN.ObjDNLI.SGST__c;
                         
@@ -628,18 +656,18 @@ public class MRNcontroller {
                         }/*else {
                            objMRNLI.Part_Number__c = objDN.objPOLI.Product_Part__c;
                         }*/
-						else
-						{
-							if(objDN.objPart != null)
-								objMRNLI.Part_Number__c = objDN.objPart.Id;
-							
-							objMRNLI.DOC_Number__c = objDN.strDocNo;
-							if(objDN.docDate != null)
-								objMRNLI.POC_Date__c = objDN.docDate;
-						}
+                        else
+                        {
+                            if(objDN.objPart != null)
+                                objMRNLI.Part_Number__c = objDN.objPart.Id;
+                            
+                            objMRNLI.DOC_Number__c = objDN.strDocNo;
+                            if(objDN.docDate != null)
+                                objMRNLI.POC_Date__c = objDN.docDate;
+                        }
                         if(strType == 'Purchase Order'){
-							if(objDN.objPOLI != null && objDN.objPOLI.Id != null)
-								objMRNLI.Purchase_Order_Line_Item__c = objDN.objPOLI.Id;
+                            if(objDN.objPOLI != null && objDN.objPOLI.Id != null)
+                                objMRNLI.Purchase_Order_Line_Item__c = objDN.objPOLI.Id;
                             objMRNLI.Stock__c =objDN.StockId;
                         }
                         
@@ -650,9 +678,7 @@ public class MRNcontroller {
                         objMRNLI.Remarks__c = objDN.objPOLI.Remark__c;
                         objMRNLI.HSN_SAC__c = objDN.strHSN;
                         objMRNLI.BIN_NO__c = objDN.IntBinQty;
-                        objMRNLI.Unit__c= integer.valueof(objDN.IntUNIT);
-                        
-                        
+                        objMRNLI.Unit__c= integer.valueof(objDN.IntUNIT);                 
                         objMRNLI.Bill_QTY__c = objDN.IntBillQty;
                         objMRNLI.Received_QTY__c =objDN.IntReceiptQty;
                         objMRNLI.PO_QTY__c = objDN.IntPOQty;
@@ -768,10 +794,10 @@ public class MRNcontroller {
                 WrapperResult objWrap = new WrapperResult();
                 system.debug(objPO.Id+'...objPO.Id......'+objPO.Purchase_Order_Number__c);
                 objWrap.RecordId = objPO.Id;
-				if(objPO.Ref_No__c != null)
-					objWrap.RecordName = objPO.Purchase_Order_Number__c+'('+objPO.Ref_No__c+')';
-				else
-					objWrap.RecordName = objPO.Purchase_Order_Number__c;
+                /*if(objPO.Ref_No__c != null)
+                    objWrap.RecordName = objPO.Purchase_Order_Number__c+'('+objPO.Ref_No__c+')';
+                else
+                    objWrap.RecordName = objPO.Purchase_Order_Number__c;*/
                 system.debug(objWrap.RecordId+'...objWrap.RecordId.....'+objWrap.RecordName);
                 objmainWrap.LstWrapperResult.add(objWrap);
             }   
@@ -806,7 +832,7 @@ public class MRNcontroller {
                 List<string> leadfieldNames = new List<String>(describeResult.fields.getMap().keySet()); 
                 
                 /* Adding the object and filter by name to the soql */
-                string soql = 'select ' + string.join(leadfieldNames, ',') +',Purchase_Order__r.Purchase_Order_Number__c,Purchase_Order__r.PO_Date__c,Product_Part__r.BinNumber__c,Purchase_Order__r.Name,Purchase_Order__r.CreatedDate,Ware_House__r.City__c,Ware_House__r.Name, Product_Part__r.Name,Product_Part__r.Part_Name__c,Product_Part__r.HSN_CODE__c,Product_Part__r.UOM__c,Product_Part__r.UOI__c from ' + objectName ; 
+                string soql = 'select ' + string.join(leadfieldNames, ',') +',Purchase_Order__r.Purchase_Order_Number__c,Product_Part__r.UOI__c,Purchase_Order__r.PO_Date__c,Product_Part__r.BinNumber__c,Purchase_Order__r.Name,Purchase_Order__r.CreatedDate,Ware_House__r.City__c,Ware_House__r.Name, Product_Part__r.Name,Product_Part__r.Part_Name__c,Product_Part__r.HSN_CODE__c,Product_Part__r.UOM__c from ' + objectName ; 
                 system.debug('......'+soql);     
                 soql += ' where Purchase_Order__c IN: SetOfId';
                 system.debug('====='+soql);
@@ -832,21 +858,20 @@ public class MRNcontroller {
                     objSMW.lstGSTRate = new List<string>();
                     objSMW.lstUOM = new List<string>();
                     objSMW.lstUOI = new List<string>();*/
-					
+                    
                     objSMW.strDocNo = objPOLI.Purchase_Order__r.Purchase_Order_Number__c;
-					if(objPOLI.Purchase_Order__r.PO_Date__c != null)
-						objSMW.docDate = objPOLI.Purchase_Order__r.PO_Date__c;
-					
-					 Part__c objPartID = new Part__c();
-					 if(objPOLI.Product_Part__c != null){
-						objPartID.Id = objPOLI.Product_Part__c;
-						objSMW.objPart = objPartID;
-					 }
-					
+                    if(objPOLI.Purchase_Order__r.PO_Date__c != null)
+                        objSMW.docDate = objPOLI.Purchase_Order__r.PO_Date__c;
+                    
+                     Part__c objPartID = new Part__c();
+                     if(objPOLI.Product_Part__c != null){
+                        objPartID.Id = objPOLI.Product_Part__c;
+                        objSMW.objPart = objPartID;
+                     }
+                    objSMW.objPOLI =objPOLI;
                     objSMW.strPartNumber = objPOLI.Product_Part__r.Name;
                     objSMW.strDescription = objPOLI.Product_Part__r.Part_Name__c;
-                    objSMW.strHSN = objPOLI.Product_Part__r.HSN_CODE__c;
-                    
+                    objSMW.strHSN = objPOLI.HSN_Code__c;   
                     objSMW.strWareHouse = objPOLI.Ware_House__r.Name;
                     objSMW.IsEdit = true;
                     objSMW.decGrossAmount = objPOLI.Total_Amount__c - objPOLI.Discount_Amount__c;
@@ -862,7 +887,6 @@ public class MRNcontroller {
                     objSMW.strUOI = objPOLI.Product_Part__r.UOI__c;
                     objSMW.IntPriceGBP = objPOLI.Sales_Price__c;
                     objSMW.IntTotalAmountGBP =integer.valueof(objPOLI.Quantity__c) *objPOLI.Sales_Price__c;
-                    
                     objSMW.IntDutyRate =10;
                     objSMW.IntSurRate =10;
                     objSMW.IntTotalLandedAmountINR =0;
@@ -883,13 +907,19 @@ public class MRNcontroller {
                         objSMW.IntGSTAmount =objSMW.IntTaxableValue*objSMW.IntGSTRate/100;
                         objSMW.IntTotalInsuranceCost =objSMW.IntTaxableValue+objSMW.IntGSTAmount;
                     }
+                    else{
+                        objSMW.IntCGSTRate =objPOLI.CGST__c;
+                        objSMW.IntCGSTAmount =objPOLI.CGST_Amount_Formula__c;
+                        objSMW.IntSGSTRate =objPOLI.SGST__c;
+                        objSMW.IntSGSTAmount =objPOLI.SGST_Amount_Formula__c;
+                        objSMW.IntIGSTRate =objPOLI.IGST__c;
+                        objSMW.IntIGSTAmount =objPOLI.IGST_Amount_Formula__c;
+                        objSMW.IntTaxableValue =  objPOLI.Taxable_Amount_Formula__c;
+                        objSMW.IntTotalInsuranceCost =objPOLI.Net_Amount_Formula__c;
+                        
+                    }
                     objSMW.IntLANDUnitRateINR = 0;
-                    objSMW.IntCGSTRate =0;
-                    objSMW.IntCGSTAmount =0;
-                    objSMW.IntSGSTRate =0;
-                    objSMW.IntSGSTAmount =0;
-                    objSMW.IntIGSTRate =0;
-                    objSMW.IntIGSTAmount =0;
+                    
                     objSMW.strRack ='';
                     
                     if(objPOLI.Product_Part__c !=null && strWareHouseId !=null && mapNoOfStock.containskey(objPOLI.Product_Part__c+'-'+strWareHouseId) && mapNoOfStock.get(objPOLI.Product_Part__c+'-'+strWareHouseId) != null){
@@ -1053,8 +1083,8 @@ public class MRNcontroller {
         //public List<string> lstUOI;
         //public decimal IntPendingMRNQty;
         public decimal IntUNIT;
-		public string strDocNo;
-		public date docDate;
+        public string strDocNo;
+        public date docDate;
         //public string cdrate;
     }
 }

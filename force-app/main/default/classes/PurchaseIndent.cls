@@ -7,6 +7,7 @@ public class PurchaseIndent {
         objMainWrap.procurementPickList = getPickVal(Purchase_Indent__c.Procurement__c.getDescribe());
         objMainWrap.applicationPickList = getPickVal(Opportunity__c.Application__c.getDescribe());
         objMainWrap.againstPickList = getPickVal(Purchase_Indent__c.Against__c.getDescribe());
+        objMainWrap.currencyPickList = getPickVal(Purchase_Indent__c.Currency__c.getDescribe());
         objMainWrap.departmentPickList = getPickVal(Purchase_Indent__c.Department__c.getDescribe());
         
         if(String.isBlank(strRecordId)){
@@ -102,9 +103,7 @@ public class PurchaseIndent {
                                                   where Sales_Order__c =: recordId
                                                   AND Product_Part__c != NULL];
             if(lst.size() > 0){
-                
                 String strWareHouseId = lst[0].Sales_Order__r.Opportunity__r.Ware_House__c;
-                
                 if(lstId.size() > 0){
                     for(Sales_Order_Line_Item__c obj : lst){
                         if(!lstId.contains(obj.Id))
@@ -121,7 +120,7 @@ public class PurchaseIndent {
                                          from Stock__c 
                                          where Product_Part__c =: setId
                                          And Ware_House__c =: strWareHouseId])
-                {                    
+                {  
                     mapIdvsStock.put(objStock.Product_Part__c, objStock);
                 }
                 
@@ -241,6 +240,7 @@ public class PurchaseIndent {
         public List<option> procurementPickList;
         public List<option> applicationPickList;
         public List<option> againstPickList;
+        public List<option> currencyPickList;
         public List<option> departmentPickList;
         public List<option> lstSalesOrder; //This list hold the the sales order for Edit mode
         
@@ -255,6 +255,7 @@ public class PurchaseIndent {
             procurementPickList = new List<option>();
             applicationPickList = new List<option>();
             againstPickList = new List<option>();
+            currencyPickList = new List<option>();
             departmentPickList = new List<option>();
             lstSalesOrder = new List<option>();
             objPurchaseIndent = new Purchase_Indent__c();

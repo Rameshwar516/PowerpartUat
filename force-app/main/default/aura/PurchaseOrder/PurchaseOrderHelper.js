@@ -125,12 +125,13 @@
             component.set("v.Error", false);
     },
     addRowHelper :function(component, event,POIWrapper){
+        
         //For same Delivery date 
         var strDeliveryDate = null;
         if(POIWrapper.length > 0 && component.get('v.isdeliverydate')){
            strDeliveryDate = POIWrapper[0].DeliveryDate; 
         }
-        
+        component.set("v.mainWrapper.lstOIW", POIWrapper);
         var tmpLineItemWrap = {
             "objPart" : {"attributes":{"type":"Part__c"}},
             "strId" : '',
@@ -156,7 +157,7 @@
             "IGSTRate" : 0,
             "IGSTAmount" : 0,
             "NetAmount" : 0,
-            "DeliveryDate" : strDeliveryDate,
+            "DeliveryDate" : '',
             "application" : '',
             "Remarks" : '',
             "isEdit" : true
@@ -164,11 +165,12 @@
     	POIWrapper.push(tmpLineItemWrap);
         component.set("v.OrderItemWapper", POIWrapper);
     },
-    AddPurchaseOrderItemsHelper : function(component, event, POItems, PIItems){        
+    AddPurchaseOrderItemsHelper : function(component, event, POItems, PIItems){
+       
         for(var i=0 ; i< PIItems.length; i++){
             if(PIItems[i].isSelected){
                 var tmpLineItemWrap = {
-                    "objPart" : {"attributes":{"type":"Part__c"},"Id":PIItems[i].objPILI.Product_Part__c,"Name":PIItems[i].objPILI.Product_Part__r.Name,"Part_Name__c":PIItems[i].objPILI.Product_Part__r.Part_Name__c,"Usage__c":PIItems[i].objPILI.Product_Part__r.Usage__c,"HSN_Code__c":PIItems[i].objPILI.Product_Part__r.HSN_Code__c,"UOM__c":PIItems[i].objPILI.Product_Part__r.UOM__c,"UOI__c":PIItems[i].objPILI.Product_Part__r.UOI__c},
+                    "objPart" : {"attributes":{"type":"Part__c"},"Id":PIItems[i].objPILI.Product_Part__c,"Name":PIItems[i].objPILI.Product_Part__r.Name,"Part_Name__c":PIItems[i].objPILI.Product_Part__r.Part_Name__c,"Usage__c":PIItems[i].objPILI.Product_Part__r.Usage__c,"HSN_CODE__c":PIItems[i].objPILI.Product_Part__r.HSN_CODE__c,"UOM__c":PIItems[i].objPILI.Product_Part__r.UOM__c,"UOI__c":PIItems[i].objPILI.Product_Part__r.UOI__c},
                     "strId" :'',
                     "DocNo" : PIItems[i].objPILI.Purchase_Indent__r.Purchase_Indent_Number__c,
                     "DocDate" : PIItems[i].objPILI.Purchase_Indent__r.CreatedDate,    
@@ -179,12 +181,13 @@
                     "IndentQty" : PIItems[i].objPILI.QTY__c,
                     "Quantity" : PIItems[i].objPILI.QTY__c,
                     "Unit" : '',
+                    "UOI" : PIItems[i].objPILI.UOI_Text__c,
                     "Rate" : 0,
                     "Amount" : 0,
                     "DiscRate" : 0,
                     "DiscAmount" : 0,
                     "GrossAmount" : 0,
-                    "HSNCode" : PIItems[i].objPILI.Product_Part__r.HSN_Code__c,
+                    "HSNCode" : PIItems[i].objPILI.Product_Part__r.HSN_CODE__c,
                     "CGSTRate" : 0,
                     "CGSTAmount" : 0,
                     "SGSTRate" : 0,
@@ -192,7 +195,7 @@
                     "IGSTRate" : 0,
                     "IGSTAmount" : 0,
                     "NetAmount" : 0,
-                    "DeliveryDate" : null,
+                    "DeliveryDate" : PIItems[i].objPILI.Expected_date__c,
                     "application" : PIItems[i].objPILI.Application__c,
                     "Remarks" : PIItems[i].objPILI.Remark__c,
                     "isEdit" : true

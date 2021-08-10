@@ -14,7 +14,7 @@ public class Stock_Quantity_Update_onMRN_Handler {
         
         if(!mrnIdSet.isempty()) 
         {
-            MrnLineItemList = [SELECT Id,MRN__c,MRN__r.MRN_Type__c,MRN__r.Ware_House__c,Part_Number__c,Stock__c,Condition__c,Received_QTY__c,Bill_QTY__c  FROM MRN_Line_Item__c where MRN__c IN: mrnIdSet];
+            MrnLineItemList = [SELECT Id,MRN__c,MRN__r.MRN_Type__c,MRN__r.Ware_House__c,Part_Number__c,Stock__c,Condition__c,Quantity__c,Received_QTY__c,Bill_QTY__c  FROM MRN_Line_Item__c where MRN__c IN: mrnIdSet];
             if(!MrnLineItemList.isempty()) 
             { 
                 System.debug('MrnLineItemList------ '+MrnLineItemList.size());
@@ -44,12 +44,12 @@ public class Stock_Quantity_Update_onMRN_Handler {
                             }
                             if(mli.MRN__r.MRN_Type__c=='Sales Return'){
                                 if(mli.Received_QTY__c!= null){
-                                    objStock.Product_IN__c = objStock.Product_IN__c+mli.Received_QTY__c;
+                                    objStock.Product_IN__c = objStock.Product_IN__c+mli.Quantity__c;
                                     mapIdRelatedStock.put(objStock.Id,objStock);}
                             }
                             else{
                                 if(mli.Bill_QTY__c!= null){
-                                    objStock.Product_IN__c = objStock.Product_IN__c+mli.Bill_QTY__c;
+                                    objStock.Product_IN__c = objStock.Product_IN__c+mli.Received_QTY__c;
                                     mapIdRelatedStock.put(objStock.Id,objStock);}
                             }
                         }

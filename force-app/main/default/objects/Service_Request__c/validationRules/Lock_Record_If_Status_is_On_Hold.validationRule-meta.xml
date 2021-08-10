@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Lock_Record_If_Status_is_On_Hold</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(NOT( ISCHANGED( Status__c ) ) ,  ISPICKVAL(Status__c , &apos;On Hold&apos;) )</errorConditionFormula>
+    <errorMessage>You Can&apos;t  update record.Status is On Hold.</errorMessage>
+</ValidationRule>

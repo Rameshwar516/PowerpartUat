@@ -1,0 +1,1226 @@
+<apex:page renderAs="pdf" standardController="MRN__c" extensions="MrnPurchanseOrderExt" applyHtmlTag="false" showHeader="false" >  
+   
+    <head>
+        <style type="text/css">
+            @page 
+            {
+            size:15.94in 19.90in; 
+            margin-top: 180px;
+            margin-bottom: 180px;
+            page-break-after:always;
+            @top-center 
+            {                   
+            content: element(header);    
+            
+            }
+            @bottom-center
+            {
+            content: element(footer); 
+            }
+            }
+            div.header 
+            {                
+            padding: 5px; 
+            padding-top:50px;
+            padding-bottom:5px;
+            position: running(header); 
+            content: "Page " counter(page) " of " counter(pages);
+            } 
+            div.footer 
+            {    
+            padding: 5px;               
+            position: running(footer);    
+            }
+            @page 
+            {
+            @bottom-center 
+            {
+            padding-top: 10px;
+            content: "Registered Office : N-122, Panchsheel Park, New Delhi - 100 017";
+            }
+            @bottom-right 
+            {
+            padding-top: 10px;
+            content: "Page " counter(page) " of " counter(pages);
+            }
+            }
+            
+            table 
+            {
+            border-spacing: 0px;
+            -fs-table-paginate: paginate;
+            font-size:12px;
+            font-family: Arial;
+            }
+            
+            td {
+            border-width: 1px;
+            padding: 4px;
+            border-style: solid;
+            border-color: #000000;
+            }
+            
+            th { 
+            border-width: 1px ;
+            padding: 4px ;
+            border-style: solid ;
+            border-color: #000000;
+            }
+            ol.d{
+            list-style-type: lower-alpha;
+            }
+            
+        </style>  
+    </head>
+    <apex:form >
+        <div class="header">
+             <table style="width:100%;border-collapse: collapse;">
+                <tr>
+                    <td style="border:none;padding:0px;" width="20%" valign="top">
+                        <left>
+                            <apex:image url="{!$Resource.PowerpartsLogo}" width="210" height="60"/> 
+                        </left>
+                    </td>
+                    <td style="border:none;padding:0px;" width="60%" valign="top">
+                        <center>
+                               <b><apex:outputText value="POWERPARTS PRIVATE LIMITED" style="font-size:14px;font-family: Arial;" /></b><br/>
+                            <!--<b><apex:outputText value="Registered Office : " style="font-size:11px;font-family: Arial;" /></b>
+                            <apex:outputText value="N-122, Panchsheel Park, New Delhi - 100 017" style="font-size:11px;font-family: Arial;" /><br/>-->
+                           
+                            <b style="font-size:14px;font-family: Arial;">{!pdfheader.Address_Header__c}</b><br/>
+                            <div style="font-size:12px;font-family: Arial;">{!pdfheader.Address_Line1__c}<br/>
+                                {!pdfheader.Address_Line_2__c}<br/>
+                                {!pdfheader.Gstin__c}<br/>
+                                {!pdfheader.Email__c}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{!pdfheader.Tel__c} <br/><br/>
+                            
+                            {!pdfheader.IEC_No__c}&nbsp;&nbsp;&nbsp;{!pdfheader.PAN_No__c}<br/>
+                            {!pdfheader.BANK__c}<br/>
+                            {!pdfheader.Bank_A_C_No__c}&nbsp;&nbsp;&nbsp;{!pdfheader.IFC_RTGS_NEFT__c}<br/>
+                            </div>
+                        </center>
+                    </td>
+                   <td style="border:none;padding:0px;" width="60%" valign="top">
+                        <Right>
+                            <apex:image url="{!$Resource.PerkinsLogo}" width="210" height="160" style="margin-top: -40px;"/> 
+                        </Right>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <body>
+            <table style="width:100%;border-collapse: collapse;">
+                <td> <center><b>MATERIAL RECEIPT NOTE</b></center></td>
+            </table>
+            <table style="width:100%;border:1px solid black;">
+                <tr>
+                    <!--td style="border:none;" width="15%" valign="top">
+                    <b><apex:outputText value="Order-to" /></b> 
+                    </td>
+                    <td style="border:none;" width="5%" valign="top">
+                    <center><apex:outputText value=":" /></center>
+                    </td>
+                    <td style="border:none;" width="18%" valign="top">
+                    <apex:outputText value="Test" /> 
+                    </td>
+                    <td style="border:none;" width="12%" valign="top">
+                    
+                    </td-->
+                    <td style="border:none;"  valign="top">
+                        <b><apex:outputText value="Supplier Name & Address" /></b> 
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        <center><apex:outputText value=":" /></center>
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        <b><apex:outputText value=""/></b>
+                        
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        
+                    </td>
+                    
+                    <td style="border:none;border-left: 1px solid black" width="15%" valign="top">
+                        <b><apex:outputText value="MRN No. & Date" /></b> 
+                    </td>
+                    <td style="border:none;" width="5%" valign="top">
+                        <center><apex:outputText value=":" /></center>
+                    </td>
+                    <td style="border:none;" width="20%" valign="top">
+                        <b><apex:outputText value="{!objMrn.MRN_Number__c}" />
+                            <apex:outputText value=" / " rendered="{!IF(objMrn.MRN_Date__c != null, true, false)}"/>
+                            <apex:outputText value="{0, date, dd - MMM - yyyy}">
+                                <apex:param value="{!objMrn.MRN_Date__c}" />
+                            </apex:outputText></b> 
+                    </td>
+                    <td style="border:none;" width="10%" valign="top">
+                        
+                    </td>
+                </tr>
+                <tr>
+                    <td style="border:none;"  valign="top">
+                        <b><apex:outputText value="Name" /></b> 
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        <center><apex:outputText value=":" /></center>
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        <b><apex:outputText value="{!MRN__c.Supplier__r.name}"/></b>
+                        
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        
+                    </td>
+                    
+                    <td style="border:none;border-left: 1px solid black"  valign="top">
+                        <b><apex:outputText value="PO No. & Date" /></b> 
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        <center><apex:outputText value=":" /></center>
+                    </td>
+                    <td style="border:none;"  valign="top" colspan="2">
+                        <b>
+                            <!--<apex:outputText value="{!objMrn.PO_No__c}" /> 
+                            <apex:outputText value=" Dated " rendered="{!IF(objMrn.PO_Date__c != null, true, false)}"/> 
+                            <apex:outputText value="{0, date, dd - MMM - yyyy}">
+                                <apex:param value="{!objMrn.PO_Date__c}" />
+                            </apex:outputText>-->
+                            {!strNumberAndDate}
+                        </b> 
+                    </td>
+                </tr>
+                <tr>
+                    <td style="border:none;"  valign="top">
+                        <b><apex:outputText value="Address" /></b> 
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        <center><apex:outputText value=":" /></center>
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        <apex:outputText value="{!MRN__c.Supplier__r.BillingStreet} {!MRN__c.Supplier__r.BillingCity}, {!MRN__c.Supplier__r.BillingCountry} - {!MRN__c.Supplier__r.BillingPostalCode}"/>
+                        
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        
+                    </td>
+                    
+                    <td style="border:none;border-left: 1px solid black"  valign="top">
+                        <b><apex:outputText value="Currency / Exchange Rate" /></b> 
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        <center><apex:outputText value=":" /></center>
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        <b><apex:outputText value="{!objMrn.Currency__c}    {!objMrn.Exchange_Rate__c}" /></b>
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        
+                    </td>
+                </tr>
+                <tr>
+                    <td style="border:none;"  valign="top" rowspan="3">
+                        <b><apex:outputText value="GSTIN" /></b> 
+                    </td>
+                    <td style="border:none;"  valign="top" rowspan="3">
+                        <center><apex:outputText value=":" /></center>
+                    </td>
+                    <td style="border:none;"  valign="top" rowspan="3">
+                        <b><apex:outputText value="{!MRN__c.Supplier__r.GSTIN_No__c}"/></b>
+                    </td>
+                    <td style="border:none;"  valign="top" rowspan="3">
+                        
+                    </td>
+                    <td style="border:none;border-left: 1px solid black"  valign="top">
+                        <b><apex:outputText value="Supplier Invoice No. &Date" /></b> 
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        <center><apex:outputText value=":" /></center>
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        <b><apex:outputText value="{!MRN__c.Supplier_Invoice_No__c}" /></b> 
+                     <b>  <apex:outputText value="{0, date, dd - MMM - yyyy}">
+                                <apex:param value="{!MRN__c.Supplier_Invoice_Date__c}" />
+                            </apex:outputText></b> 
+                         
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td style="border:none;border-left: 1px solid black"  valign="top">
+                        <b><apex:outputText value="Payment Term" /></b> 
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        <center><apex:outputText value=":" /></center>
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        <b><apex:outputText value="{!objMrn.Payment_Term__c}" /></b>
+                    </td>
+                    <td style="border:none;"  valign="top">
+                    </td>
+                </tr>
+                <tr>
+                    <td style="border:none;border-left: 1px solid black"  valign="top">
+                        <b><apex:outputText value="BOE No./ Date" /></b>  
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        <center><apex:outputText value=":" /></center>
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        <b>
+                            <apex:outputText value="{!objMrn.BOE_No__c}" />
+                            <apex:outputText value=" DT: " rendered="{!IF(objMrn.BOE_Date__c != null, true, false)}"/> 
+                            <apex:outputText value="{0, date, dd - MMM - yyyy}">
+                                <apex:param value="{!objMrn.BOE_Date__c}" />
+                            </apex:outputText>
+                        </b> 
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        
+                    </td> 
+                </tr>
+                
+                
+                
+                <tr>
+                    <td style="border:none;"  valign="top" colspan="2">
+                        <b><apex:outputText value="Contact Name" /></b>
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                        <b><apex:outputText value="Contact No" /></b>
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                        <b><apex:outputText value="E-Mail" /></b>
+                    </td>
+                    
+                    <td style="border:none;border-left: 1px solid black"  valign="top">
+                        <b><apex:outputText value="E-Way Bill No & Date" /></b> 
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        <center><apex:outputText value=":" /></center>
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        <b>
+                            <apex:outputText value="{!objMrn.E_Way_Bill_No__c}" />
+                            <apex:outputText value=" DT: " rendered="{!IF(objMrn.E_Way_Bill_Date__c != null, true, false)}"/> 
+                            <apex:outputText value="{0, date, dd - MMM - yyyy}">
+                                <apex:param value="{!objMrn.E_Way_Bill_Date__c}" />
+                            </apex:outputText>
+                        </b>
+                    </td>
+                    <td style="border:none;"  valign="top">
+                    </td>
+                </tr>
+                <tr>
+                    
+                    <td style="border:none;"  valign="top" colspan="2">
+                        <apex:outputText value="{!MRN__c.Supplier_Contact_Name__r.salutation}" /> &nbsp;
+                       <apex:outputText value="{!MRN__c.Supplier_Contact_Name__r.name}" />
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                        <apex:outputText value="{!MRN__c.Supplier_Contact_Name__r.MobilePhone}" />
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                        <a><apex:outputText value="{!MRN__c.Supplier_Contact_Name__r.email}" /></a>
+                    </td>
+                    
+                    <td style="border:none;border-left: 1px solid black"  valign="top">
+                        <b><apex:outputText value="Dispatch Mode" /></b> 
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        <center><apex:outputText value=":" /></center>
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        <b><apex:outputText value="{!objMrn.Dispatch_Mode__c}" /></b> 
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        
+                    </td>
+                </tr>
+                <tr>
+                    <td style="border:none;"  valign="top">
+                    </td>
+                    <td style="border:none;"  valign="top">
+                    </td>
+                    <td style="border:none;"  valign="top">
+                    </td>
+                    <td style="border:none;"  valign="top">
+                    </td>
+                    <td style="border:none;border-left: 1px solid black"  valign="top">
+                        <b><apex:outputText value="Transporter Name" /></b> 
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        <center><apex:outputText value=":" /></center>
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        <b><apex:outputText value="{!objMrn.Transporter_Name__c}" /></b> 
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        
+                    </td>
+                </tr>
+                <!--<tr>
+                <td style="border:none;"></td> <td style="border:none;"></td> <td style="border:none;"></td> <td style="border:none;"></td>
+                <td style="border:none;border-left: 2px solid black"  valign="top">
+                <b><apex:outputText value="Transporter Name" /></b> 
+                </td>
+                <td style="border:none;"  valign="top">
+                <center><apex:outputText value=":" /></center>
+                </td>
+                <td style="border:none;"  valign="top">
+                <apex:outputText value="gfd" /> 
+                </td>
+                <td style="border:none;"  valign="top">
+                </td>
+                </tr>-->
+                <!--=============Boxxxxxxxxxxxxxxxxxxxxxxxxx Start===================-->
+                
+                <tr>
+                    <apex:outputText rendered="{!(objMrn.MRN_Delivery_Type__c == 'Domestic' && objMrn.MRN_Delivery_Type__c != null)}">
+                        <td colspan="1" valign="top" style="border:none;">
+                        </td>
+                        <td colspan="3" valign="top" style="border:none;">
+                        </td>
+                    </apex:outputText>
+                    <apex:outputText rendered="{!(objMrn.MRN_Delivery_Type__c == 'Import' && objMrn.MRN_Delivery_Type__c != null)}">
+                        <td colspan="1" valign="top">
+                            <table style="width:100%;border-collapse: collapse;">
+                                <tr>
+                                    <td style="border:none;" width="50%"></td>
+                                    <td style="border:none;" width="50%">IN {!objMrn.Currency__c}</td>
+                                </tr>
+                                <tr>
+                                    <td style="border:none;" width="50%"><b>Ex Work Value</b></td>
+                                    <td style="border:none;" width="50%">{!objMrn.Ex_Work_Value__c} </td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="border:none;" width="50%"><b>Surcharge</b></td>
+                                    <td style="border:none;" width="50%">{!objMrn.Surcharge__c} </td>
+                                </tr>
+                                 <tr>
+                                    <td style="border:none;" width="50%"><b>Freight</b></td>
+                                    <td style="border:none;" width="50%">{!objMrn.Freight__c}</td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td colspan="3" valign="top">
+                            <table style="width:100%;border-collapse: collapse;">
+                                <tr>
+                                    <td style="border:none;" width="34%"></td> 
+                                    <td style="border:none;" width="33%">IN {!objMrn.Currency__c}</td> 
+                                    <td style="border:none;" width="33%">IN INR</td> 
+                                </tr>
+                                <tr>
+                                    <td style="border:none;" width="34%"><b>Total Inv Value</b></td> 
+                                    <td style="border:none;" width="33%">{!objIW.TotalInvValue}</td> 
+                                    <td style="border:none;" width="33%">{!objIW.TotalInvValueInINR}</td> 
+                                </tr>
+                                <tr>
+                                    <td style="border:none;" width="34%"><b>Inv Surcharge %</b></td> 
+                                    <td style="border:none;" width="33%">{!objIW.InvSurcharge}</td> 
+                                    <td style="border:none;" width="33%">{!objIW.InvSurchargeInINR}</td> 
+                                </tr>
+                                <tr>
+                                    <td style="border:none;" width="34%"><b>Insurance of BOE</b></td> 
+                                    <td style="border:none;" width="33%">{!objMrn.Insurance_of_BOE__c}</td> 
+                                    <td style="border:none;" width="33%">{!MRN__c.Insurance_of_BOE_Amount__c}</td> 
+                                </tr>
+                                <tr>
+                                    <td style="border:none;" width="34%"><b>Freight % of Invoice</b></td> 
+                                    <td style="border:none;" width="33%">{!MRN__c.Freight_of_Invoice__c}</td> 
+                                    <td style="border:none;" width="33%">{!objIW.FreightOfInvoiceInINR}</td> 
+                                </tr>
+                            </table>
+                        </td>
+                    </apex:outputText>
+                    <td style="border:none;border-left: 1px solid black"  valign="top">
+                        <b><apex:outputText value="HAWB No & Date" rendered="{!(objMrn.MRN_Delivery_Type__c == 'Import' && objMrn.MRN_Delivery_Type__c != null)}"/></b>
+                        <b><apex:outputText value="L.R. No. & Date" rendered="{!(objMrn.MRN_Delivery_Type__c == 'Domestic' && objMrn.MRN_Delivery_Type__c != null)}"/></b>
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        <center><apex:outputText value=":" /></center>
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        <b><apex:outputText value="{!objMrn.HAWB_No__c}" rendered="{!(objMrn.MRN_Delivery_Type__c == 'Import' && objMrn.MRN_Delivery_Type__c != null)}"/>
+                            <apex:outputText value=" DT: " rendered="{!(objMrn.MRN_Delivery_Type__c == 'Import' && objMrn.MRN_Delivery_Type__c != null && objMrn.HAWB_Date__c != null)}"/>
+                            <apex:outputText value="{0, date, dd - MMM - yyyy}" rendered="{!(objMrn.MRN_Delivery_Type__c == 'Import' && objMrn.MRN_Delivery_Type__c != null)}">
+                                <apex:param value="{!objMrn.HAWB_Date__c}" />
+                            </apex:outputText>
+                            <apex:outputText value="{!MRN__c.L_R_No__c}" rendered="{!(objMrn.MRN_Delivery_Type__c == 'Domestic' && objMrn.MRN_Delivery_Type__c != null)}"/>
+                            <apex:outputText value="{0, date, dd - MMM - yyyy}" rendered="{!(objMrn.MRN_Delivery_Type__c == 'Domestic' && objMrn.MRN_Delivery_Type__c != null)}">
+                                <apex:param value="{!MRN__c.L_R_Date__c}" />
+                            </apex:outputText>
+                        </b>
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        
+                    </td>
+                </tr>
+                <apex:outputText rendered="{!(objMrn.MRN_Delivery_Type__c == 'Domestic' && objMrn.MRN_Delivery_Type__c != null)}">
+                    <tr>
+                        <td style="border:none;"  valign="top">
+                        </td>
+                        <td style="border:none;"  valign="top">
+                        </td>
+                        <td style="border:none;"  valign="top">
+                        </td>
+                        <td style="border:none;"  valign="top">
+                        </td>
+                        <td style="border:none;border-left: 1px solid black"  valign="top">
+                            <b><apex:outputText value="Vehicle No." /></b> 
+                        </td>
+                        <td style="border:none;"  valign="top">
+                            <center><apex:outputText value=":" /></center>
+                        </td>
+                        <td style="border:none;"  valign="top">
+                            <b><apex:outputText value="{!MRN__c.Vehicle_No__c}" /> </b>
+                        </td>
+                        <td style="border:none;"  valign="top">
+                            
+                        </td>
+                    </tr>
+                </apex:outputText>
+                <tr>
+                    <td style="border:none;"  valign="top">
+                    </td>
+                    <td style="border:none;"  valign="top">
+                    </td>
+                    <td style="border:none;"  valign="top">
+                    </td>
+                    <td style="border:none;"  valign="top">
+                    </td>
+                    <td style="border:none;border-left: 1px solid black"  valign="top">
+                        <b><apex:outputText value="No. of Box & Dimension" /></b> 
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        <center><apex:outputText value=":" /></center>
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        <b><apex:outputText value="{!MRN__c.No_of_Box_Dimension__c}" /> </b>
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        
+                    </td>
+                </tr>
+                <tr>
+                    <td style="border:none;"  valign="top">
+                    </td>
+                    <td style="border:none;"  valign="top">
+                    </td>
+                    <td style="border:none;"  valign="top">
+                    </td>
+                    <td style="border:none;"  valign="top">
+                    </td>
+                    <td style="border:none;border-left: 1px solid black"  valign="top">
+                        <b><apex:outputText value="MAWB No." /></b> 
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        <center><apex:outputText value=":" /></center>
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        <b><apex:outputText value="{!objMrn.MAWB_No__c}" /> </b>
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td colspan="2.5" valign="top">
+                        <b><apex:outputText value="State/Country :" /></b>&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;
+                        <apex:outputText value="{!objMrn.State__c},  " />
+                        <apex:outputText value="{!objMrn.Country__c}" />
+                    </td>
+                    <td colspan="0.5" valign="top">
+                        <b><apex:outputText value="State Code :" /></b>
+                    </td>
+                    <td colspan="0.5" valign="top">
+                        <apex:outputText value="{!objMrn.State_Code__c}"/>
+                    </td>
+                    
+                    <td style="border:none;border-left: 1px solid black"  valign="top">
+                        <b><apex:outputText value="Weight of Shipment" /></b> 
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        <center><apex:outputText value=":" /></center>
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        <b><apex:outputText value="{!MRN__c.Weight_of_Shipment__c}" /></b> 
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        
+                    </td>
+                </tr> 
+                <tr>
+                    <td colspan="4" valign="top">
+                        <b><apex:outputText value="Details of Receiver / Billed To :" /></b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <!--<apex:outputText value="{!objMrn.OEM_Customer__r.Name}" />-->
+                    </td>
+                    
+                    
+                    <td colspan="4" valign="top">
+                        <b><apex:outputText value="Details of Consignee/Shipped To:"/></b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <!--<apex:outputText value="{!objMrn.OEM_Customer__r.Name}" />-->
+                    </td>
+                    
+                </tr>
+                <!--=============Boxxxxxxxxxxxxxxxxxxxxxxxxx End===================-->
+                
+                
+                
+                
+                
+                <!--=======================Second Column--------------------------------=======================-->
+                
+                <tr>
+                    <td style="border:none;"  valign="top">
+                        <b><apex:outputText value="Name" /></b> 
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        <center><apex:outputText value=":" /></center>
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        <b><apex:outputText value="{!objMrn.OEM_Customer__r.Name}"/></b>
+                        
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        
+                    </td>
+                    
+                    <td style="border:none;border-left: 1px solid black"  valign="top">
+                        <b><apex:outputText value="Name"></apex:outputText></b> 
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        <center><apex:outputText value=":" /></center>
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        <b><apex:outputText value="{!objMrn.OEM_Customer__r.Name}" /> </b>   
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        
+                    </td>
+                </tr>
+                <tr>
+                    <td style="border:none;"  valign="top">
+                        <b><apex:outputText value="Address" /></b> 
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        <center><apex:outputText value=":" /></center>
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        <apex:outputText value="{!objMrn.OEM_Customer__r.BillingStreet} {!objMrn.OEM_Customer__r.BillingCity}, {!objMrn.OEM_Customer__r.BillingCountry} - {!objMrn.OEM_Customer__r.BillingPostalCode}"/>
+                        
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        
+                    </td>
+                    
+                    <td style="border:none;border-left: 1px solid black"  valign="top">
+                        <b><apex:outputText value="Address"></apex:outputText></b> 
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        <center><apex:outputText value=":" /></center>
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        <apex:outputText value="{!objMrn.OEM_Customer__r.ShippingStreet} {!objMrn.OEM_Customer__r.ShippingCity}, {!objMrn.OEM_Customer__r.ShippingCountry} - {!objMrn.OEM_Customer__r.ShippingPostalCode}"/>
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        
+                    </td>
+                </tr>
+                <tr>
+                    <td style="border:none;"  valign="top" colspan="2">
+                        <b><apex:outputText value="Contact Name" /></b>
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                        <b><apex:outputText value="Contact No" /></b>
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                        <b><apex:outputText value="E-Mail" /></b>
+                    </td>
+                    
+                    <td style="border:none;border-left: 1px solid black" colspan="2" align="top">
+                        <b><apex:outputText value="Contact Name" /></b>
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                        <b><apex:outputText value="Contact No" /></b>
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                        <b><apex:outputText value="E-Mail" /></b>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="border:none;"  valign="top" colspan="2">
+                       <!-- <apex:outputText value="{!objMrn.Contact_Name__r.salutation}" />&nbsp;-->
+                        <apex:outputText value="{!objMrn.Contact_Person__c}" />
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                        <apex:outputText value="{!objMrn.Contact_No__c}" />
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                        <a><apex:outputText value="{!objMrn.Email_Id__c}" /></a>
+                    </td>
+                    
+                    <td style="border:none;border-left: 1px solid black" colspan="2" align="top">
+                        <!--<apex:outputText value="{!objMrn.Contact_Name__r.salutation}" />&nbsp;-->
+                        <apex:outputText value="{!objMrn.Contact_Person__c}" />
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                        <apex:outputText value="{!objMrn.Contact_No__c}" />
+                    </td>
+                    <td style="border:none;"  valign="top" >
+                        <a><apex:outputText value="{!objMrn.Email_Id__c}" /></a>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="border:none;"  valign="top">
+                        <b><apex:outputText value="GSTIN" /></b> 
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        <center><apex:outputText value=":" /></center>
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        <apex:outputText value="{!objMrn.GSTIN_No__c}"/>
+                        
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        
+                    </td>
+                    
+                    <td style="border:none;border-left: 1px solid black"  valign="top">
+                        <b><apex:outputText value="GSTIN"></apex:outputText></b> 
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        <center><apex:outputText value=":" /></center>
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        <apex:outputText value="{!objMrn.GSTIN_No__c}" />
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        
+                    </td>
+                </tr>
+                <tr>
+                    <td style="border:none;"  valign="top">
+                        <b><apex:outputText value="State" /></b> 
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        <center><apex:outputText value=":" /></center>
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        <apex:outputText value="{!objMrn.OEM_Customer__r.BillingState}"/>
+                        
+                    </td>
+                    <td valign="top">
+                        <b><apex:outputText value="State Code :"/></b>&nbsp;&nbsp;&nbsp;&nbsp;
+                        <span style="border:none;border-left: 1px solid black;padding: 5px;">{!objMrn.OEM_Customer__r.Billing_State_Code__c}</span> 
+                    </td>
+                    
+                    
+                    <td style="border:none;border-left: 1px solid black;padding: 5px;"  valign="top">
+                        <b><apex:outputText value="State"></apex:outputText></b> 
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        <center><apex:outputText value=":" /></center>
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        <apex:outputText value="{!objMrn.OEM_Customer__r.ShippingState}" />
+                    </td>
+                    <td valign="top">
+                        <b><apex:outputText value="Code :"/></b>&nbsp;&nbsp;&nbsp;&nbsp;
+                        <span style="border:none;border-left: 1px solid black;padding: 5px;">{!objMrn.OEM_Customer__r.Shipping_State_Code__c}</span>
+                    </td>
+                    
+                </tr>
+                <!--=======================Second Column--------------------------------=======================-->
+            </table>
+            <apex:outputText rendered="{!(objMrn.MRN_Delivery_Type__c == 'Import' && objMrn.MRN_Delivery_Type__c != null)}">
+                <table style="width:100%;border:0.5px solid black;border-collapse: collapse;">
+                    <tr>
+                        <th  width="1%" rowspan="2">
+                            <apex:outputText value="Sl. No." />
+                        </th>
+                        <th  width="2%" rowspan="2">
+                            <apex:outputText value="Part No." />
+                        </th>
+                        <th  width="5%" rowspan="2">
+                            <apex:outputText value="Des." />
+                        </th>
+                        <th  width="2%" rowspan="2">
+                            <apex:outputText value="HSN/ SAC" />
+                        </th>
+                        
+                        <th  width="2%" rowspan="2">
+                            <apex:outputText value="Bin No." />
+                        </th>
+                        <th  width="2%" rowspan="2">
+                            <apex:outputText value="PO Qty." />
+                        </th>
+                        <th  width="2%" rowspan="2">
+                            <apex:outputText value="Bill Qty." />
+                        </th>
+                        <th  width="2%" rowspan="2">
+                            <apex:outputText value="Recd. Qty." />
+                        </th>
+                        <th  width="2%" rowspan="2">
+                            <apex:outputText value="Short/ Excess Qty" />
+                        </th>
+                        <th  width="2%" rowspan="2">
+                            <apex:outputText value="UoM"/>
+                        </th>
+                        <th  width="2%" rowspan="2">
+                            <apex:outputText value="UOI" />
+                        </th>
+                        <th  width="4%" rowspan="2">
+                            <apex:outputText value="Item Price/ Unit ({!objMrn.Currency__c})"/>
+                        </th>
+                        <th  width="4%" rowspan="2">
+                            <apex:outputText value="Total Item Amount ({!objMrn.Currency__c} )"/>
+                        </th> 
+                        <th  width="4%" rowspan="2">
+                            <apex:outputText value="Item Value With Freight & Surcharge ({!objMrn.Currency__c})"/>
+                        </th> 
+                        <th  width="4%" rowspan="2">
+                            <apex:outputText value="Total Item Value In (INR)"/>
+                        </th> 
+                        <th  width="2%" rowspan="2">
+                            <apex:outputText value="Assessable Value (INR)"/>
+                        </th> 
+                        <th  width="2%" colspan="3">
+                            <apex:outputText value="Custom Duty"  />
+                        </th>
+                        <th  width="4%" rowspan="2">
+                            <apex:outputText value="Total Landed Amount (INR)" />
+                        </th>
+                        <th  width="4%" rowspan="2">
+                            <apex:outputText value="Landed Cost/ Unit (INR)" />
+                        </th>
+                        <th  width="2%" rowspan="2">
+                            <apex:outputText value="Taxable Value" />
+                        </th> 
+                        <th  width="2%" colspan="2">
+                            <apex:outputText value="GST" />
+                        </th>
+                        <th  width="4%" rowspan="2">
+                            <apex:outputText value="Total for Books" />
+                        </th>
+                    </tr>  
+                    <tr>
+                        <th  width="2%">
+                            <apex:outputText value="Duty Rate" />
+                        </th>
+                        <th  width="2%">
+                            <apex:outputText value="Sur. Rate" />
+                        </th>
+                        <th  width="2%">
+                            <apex:outputText value="Amount (INR)" />
+                        </th>
+                        <th  width="2%">
+                            <apex:outputText value="Rate" />
+                            
+                        </th>
+                        <th  width="2%">
+                            <apex:outputText value="Amount" />
+                            
+                        </th>
+                    </tr>
+                    <apex:variable var="count" value="{!0}" />
+                    <apex:repeat value="{!objMrnItemList}" var="objMrnItem" >
+                        <tr>
+                            <td><apex:variable var="count" value="{!count+1}" />{!count}</td>
+                            <td><apex:outputText value="{!objMrnItem.Part_Number__r.Name}" /></td>
+                            <td><apex:outputText value="{!objMrnItem.Part_Number__r.Part_Name__c}" /></td>
+                            <td><apex:outputText value="{!objMrnItem.HSN_SAC__c}" /></td>
+                 <td><apex:outputText value="{!objMrnItem.BIN_NO__c}" /></td>   
+                            <td><apex:outputText value="{!objMrnItem.PO_QTY__c}" /></td>
+                            <td><apex:outputText value="{!objMrnItem.Bill_QTY__c}" /></td>
+                            <td><apex:outputText value="{!objMrnItem.Received_QTY__c}" /></td>
+                            <td><apex:outputText value="{!objMrnItem.Short_QTY__c}" /></td>
+                            <td><apex:outputText value="{!objMrnItem.UOM__c}" /></td>
+                            <td><apex:outputText value="{!objMrnItem.UOI__c}" /></td>
+                            <td><apex:outputText value="{!objMrnItem.Item_Price_Unit__c}" /></td>
+                            <td><apex:outputText value="{!objMrnItem.Total_Amount_Input__c}" /></td>
+                            <td><apex:outputText value="{0, number, 00.00}"> <apex:param value="{!objMrnItem.Item_Value_With_Freight_Surcharge__c}" /></apex:outputText></td>
+                            <td><apex:outputText value="{0, number, 00.00}"> <apex:param value="{!objMrnItem.Total_Item_Value_In_INR_input__c}" /></apex:outputText></td>
+                            <td><apex:outputText value="{0, number, 00.00}"> <apex:param value="{!objMrnItem.Assessable_Value_INR__c}" /></apex:outputText></td>
+                            <td><apex:outputText value="{!objMrnItem.Duty_Rates__c}" /></td>
+                            <td><apex:outputText value="{!objMrnItem.Sur_Rate__c}" /></td>
+                            <td><apex:outputText value="{!objMrnItem.Custom_Duty_Amount__c}" /></td>
+                            <td><apex:outputText value="{!objMrnItem.Total_Landed_Amount__c}" /></td>
+                            <td><apex:outputText value="{!objMrnItem.Landed_Cost_Unit_Rate__c}" /></td>
+                            <td><apex:outputText value="{0, number, 00.00}"> <apex:param value="{!objMrnItem.PO_Taxable_Amount_input__c}" /></apex:outputText></td>
+                            <td><apex:outputText value="{!objMrnItem.GST__c}" /> <apex:outputText value="%" rendered="{!objMrnItem.GST__c != null}"/></td>
+                            <td><apex:outputText value="{!objMrnItem.GST_Amount__c}" /></td>
+                            <td><apex:outputText value="{!objMrnItem.Total_For_Book_formula__c}" /></td>                        
+                        </tr>
+                    </apex:repeat>
+                    
+                    <tr style="background-color:#d3d4d5;">
+                        <td></td>
+                       <!-- <td colspan="4"><center><apex:outputText value="Sub Total {!objMrn.Currency__c}" /></center></td>-->
+                        <td colspan="4"><center><apex:outputText value="Sub Total " /></center></td>
+                        <td><apex:outputText value="{!subPoQty}" /></td>
+                        <td><apex:outputText value="{!billQty}" /></td>
+                        <td><apex:outputText value="{!recQty}" /></td>
+                        <td><apex:outputText value="{!shortQty}"/></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td><apex:outputText value="{0, Number, 0.00}"> <apex:param value="{!subTotalItemAmount}" /></apex:outputText></td>
+                        <td><apex:outputText value="{0, number, 0.00}"> <apex:param value="{!subTotalWithFreightAndSurchargeAmount}" /></apex:outputText></td>
+                        <td><apex:outputText value="{0, number, 0.00}"> <apex:param value="{!subTotalItemValueInINR}" /></apex:outputText></td>
+                        <td><apex:outputText value="{0, number, 0.00}"> <apex:param value="{!subTotalAssessableValue}" /></apex:outputText></td>
+                        <td></td>
+                        <td></td>
+                        <td><apex:outputText value="{0, number, 0.00}"> <apex:param value="{!subTotalCustomDutyAmount}" /></apex:outputText></td>
+                        <td><apex:outputText value="{0, number, 0.00}"> <apex:param value="{!subTotalLandedAmountInInr}" /></apex:outputText></td>
+                        <td></td>
+                        <td><apex:outputText value="{0, number, 00.00}"> <apex:param value="{!subTotalTaxableValue}" /></apex:outputText></td>
+                        <td></td>
+                        <td><apex:outputText value="{0, number, 00.00}"> <apex:param value="{!subTotalGSTAmount}" /></apex:outputText></td>
+                        <td><apex:outputText value="{0, number, 00.00}"> <apex:param value="{!subTotalBookAmount}" /></apex:outputText></td>
+                    </tr>
+                    <apex:repeat value="{!objChargesList}" var="objCharges" >
+                        <tr>
+                            <td></td>
+                            <td colspan="11"><center><apex:outputText value="{!objCharges.Charges__r.Name}" /></center></td>
+                            <td><apex:outputText value="{!objCharges.MRN_Charge_Percent__c}" /></td>
+                            <td><apex:outputText value="{!objCharges.MRN_Charge__c}" /></td>
+                            <td><apex:outputText value="{!objCharges.Total_Amount__c}" /></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>-</td>
+                            <td></td>
+                            <td><apex:outputText value="{!objCharges.Total_Amount__c}" /></td>
+                            <td><apex:outputText value="{!objCharges.GST__c}" /></td>
+                            <td>
+                                <apex:outputText value="{0, number,###,###,##0.00}">
+                                    <apex:param value="{!((objCharges.Total_Amount__c * objCharges.GST__c)/100)}"/>
+                                </apex:outputText>
+                            </td>
+                            <td>
+                                <apex:outputText value="{0, number,###,###,##0.00}">
+                                    <apex:param value="{!(objCharges.Total_Amount__c+(objCharges.Total_Amount__c * objCharges.GST__c)/100)}"/>
+                                </apex:outputText>
+                            </td>
+                        </tr>
+                    </apex:repeat>
+                    <tr>
+                        <td></td>
+                        <td colspan="11"><center><apex:outputText value="Less (Insurance Charges Which is not our cost)" /></center></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td><apex:outputText value="{!MRN__c.Less_Insurance__c}" /></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td colspan="11"><center><apex:outputText value="Total Expenses Except Custom Duty" /></center></td>
+                        <td><apex:outputText value="{!totalamount_GBP_Percent}" /></td>
+                        <td><apex:outputText value="{!totalMRNExchangeCharge}" /></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    
+                    <tr style="background-color:#d3d4d5;">
+                        <td colspan="12"><center><apex:outputText value="Total Rs:" /></center></td>
+                        <td><apex:outputText value="{0, number, 00.00}"> <apex:param value="{!objMrn.Sum_Of_Charges__c}" /></apex:outputText></td>
+                        <td><apex:outputText value="{0, number, 00.00}"> <apex:param value="{!totalWithFreightAndSurchargeAmount}" /></apex:outputText></td>
+                        <td><apex:outputText value="{0, number, 00.00}"> <apex:param value="{!totalItemValueInINR}" /></apex:outputText></td>
+                        <td></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td><apex:outputText value="{0, number, 00.00}"> <apex:param value="{!subTotalCustomDutyAmount}" /></apex:outputText></td>
+                        <td><apex:outputText value="{0, number, 00.00}"> <apex:param value="{!subTotalLandedAmountInInr}" /></apex:outputText></td>
+                        <td>-</td>
+                        <td></td>
+                        <td><!--apex:outputText value="0" /--></td>
+                        <td><apex:outputText value="{0, number, 00.00}"> <apex:param value="{!totalGSTAmount}" /></apex:outputText></td>
+                        <td><apex:outputText value="{0, number, 00.00}"> <apex:param value="{!totalBookAmount}" /></apex:outputText></td>
+                        
+                    </tr>
+                    <tr>
+                        <td colspan="15" style="border:none;border-left: 1px solid;border-bottom: 1px solid;line-height: 5;">
+                            <b><apex:outputText value="Amount in Words : " /> 
+                         </b>
+                            <apex:outputText value=" {!strAmount} " /> 
+                        </td>
+                        <td style="border:none;border-bottom: 1px solid;">
+                            
+                        </td>
+                        <td style="border:none;border-bottom: 1px solid;"></td>
+                        <td style="border:none;border-bottom: 1px solid;"></td>
+                        <td style="border:none;border-bottom: 1px solid;"></td>
+                        <td style="border:none;border-bottom: 1px solid;">
+                           
+                            
+                        </td>
+                        <td style="border:none;border-bottom: 1px solid;"></td>
+                        <td style="border:none;border-bottom: 1px solid;"></td>
+                        <td style="border:none;border-bottom: 1px solid;"></td>
+                        <td style="border:none;border-bottom: 1px solid;"></td>
+                        <td style="border:none;border-bottom: 1px solid;border-right: 1px solid;"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="25" style="line-height: 5;">
+                            <b><apex:outputText value="Remarks :{!MRN__c.Remark__c}" /> </b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="25">
+                            <b><apex:outputText value="Prepared by : " /></b> &nbsp; {!MRN__c.Owner.Name}<br/><br/>
+                            <b><apex:outputText value="Approved by : " /></b> &nbsp; {!MRN__c.Owner.Name}
+                        </td>
+                    </tr>
+                    <!--<tr>
+                        <td colspan="25" style="border:none;">
+                         <!--   <center><apex:outputText value="This is a computer generated document, Signature not required."/></center>                                                                                                               
+                        </td>
+                    </tr>-->
+                </table>
+            </apex:outputText>
+            
+            
+            
+            <!--======================================================== Second Table for Domestic==========================================-->
+            <!--======================================================== Second Table for Domestic==========================================-->
+            <!--======================================================== Second Table for Domestic==========================================-->
+            <!--======================================================== Second Table for Domestic==========================================-->
+            
+            
+            
+            
+            <apex:outputText rendered="{!(objMrn.MRN_Delivery_Type__c == 'Domestic' && objMrn.MRN_Delivery_Type__c != null)}">
+                <table style="width:100%;border:1px solid black;border-collapse: collapse;">
+                    <tr>
+                        <th  width="5%" rowspan="2">
+                            <apex:outputText value="Sl. No." />
+                        </th>
+                        <th  width="5%" rowspan="2">
+                            <apex:outputText value="Part No." />
+                        </th>
+                        <th  width="5%" rowspan="2">
+                            <apex:outputText value="Des." />
+                        </th>
+                        <th  width="5%" rowspan="2">
+                            <apex:outputText value="HSN/ SAC" />
+                        </th>
+                        
+                        <th  width="5%" rowspan="2">
+                            <apex:outputText value="Rack" />
+                        </th>
+                        <th  width="5%" rowspan="2">
+                            <apex:outputText value="PO Qty." />
+                        </th>
+                        <th  width="5%" rowspan="2">
+                            <apex:outputText value="Bill Qty." />
+                        </th>
+                        <th  width="5%" rowspan="2">
+                            <apex:outputText value="Recd. Qty." />
+                        </th>
+                        <th  width="5%" rowspan="2">
+                            <apex:outputText value="Short/ Excess Qty" />
+                        </th>
+                        <th  width="5%" rowspan="2">
+                            <apex:outputText value="UOM"/>
+                        </th>
+                        <th  width="5%" rowspan="2">
+                            <apex:outputText value=" Item Price/Unit ({!objMrn.Currency__c})"/>
+                        </th> 
+                        <th  width="5%" rowspan="2">
+                            <apex:outputText value="Total Item Amount ({!objMrn.Currency__c})"/>
+                        </th> 
+                        <th  width="5%" rowspan="2">
+                            <apex:outputText value="Land./ Unit Rate (INR)"/>
+                        </th> 
+                        <th  width="5%" rowspan="2">
+                            <apex:outputText value="Total Landed Amount (INR)"/>
+                        </th> 
+                        <th  width="5%" rowspan="2">
+                            <center><apex:outputText value="Taxable Value"  /></center>
+                        </th>
+                        <th  width="5%" colspan="2">
+                            <apex:outputText value="CGST" />
+                        </th>
+                        <th  width="5%" colspan="2">
+                            <apex:outputText value="SGST" />
+                        </th>
+                        <th  width="5%" colspan="2">
+                            <apex:outputText value="IGST" />
+                        </th>
+                        <th  width="5%" rowspan="2">
+                            <apex:outputText value="Total" />
+                        </th>
+                    </tr>  
+                    <tr>
+                        <th  width="5%">
+                            <apex:outputText value="Rate" />
+                        </th>
+                        <th  width="5%">
+                            <apex:outputText value="Amount" />
+                        </th>
+                        <th  width="5%">
+                            <apex:outputText value="Rate" />
+                        </th>
+                        <th  width="5%">
+                            <apex:outputText value="Amount" />
+                        </th>
+                        <th  width="5%">
+                            <apex:outputText value="Rate" />
+                        </th>
+                        <th  width="5%">
+                            <apex:outputText value="Amount" />
+                        </th>
+                        
+                    </tr>
+                    <apex:variable var="count" value="{!0}" />
+                    <apex:repeat value="{!objMrnItemList}" var="objMrnItem" >
+                        <tr>
+                            <td><apex:variable var="count" value="{!count+1}" />{!count}</td>
+                            <td><apex:outputText value="{!objMrnItem.Part_Number__r.Name}" /></td>
+                            <td><apex:outputText value="{!objMrnItem.Part_Number__r.Part_Name__c}" /></td>
+                            <td><apex:outputText value="{!objMrnItem.HSN_SAC__c}" /></td>
+                            <td><apex:outputText value="{!objMrnItem.Rack__c}" /></td>
+                            <td><apex:outputText value="{!objMrnItem.PO_QTY__c}" /></td>
+                            <td><apex:outputText value="{!objMrnItem.Bill_QTY__c}" /></td>
+                            <td><apex:outputText value="{!objMrnItem.Received_QTY__c}" /></td>
+                            <td><apex:outputText value="{!objMrnItem.Short_QTY__c}" /></td>
+                            <td><apex:outputText value="{!objMrnItem.UOM__c}" /></td>
+                            <td><apex:outputText value="{!objMrnItem.Item_Price_Unit__c}" /></td>
+                            <td><apex:outputText value="{!objMrnItem.Total_Item_Value_In_INR_input__c}" /></td>
+                            <td><apex:outputText value="{!objMrnItem.Landed_Cost_Unit_Rate__c}" /></td>
+                            <td><apex:outputText value="{!objMrnItem.Total_Landed_Amount__c}" /></td>
+                            <td><apex:outputText value="{0, number, 00.00}"> <apex:param value="{!objMrnItem.PO_Taxable_Amount_input__c}" /></apex:outputText></td>
+                            <td><apex:outputText value="{!objMrnItem.PO_CGST__c}" /></td>
+                            <td><apex:outputText value="{!objMrnItem.PO_CGST_Amount__c}" /></td>
+                            <td><apex:outputText value="{!objMrnItem.PO_SGST__c}" /></td>
+                            <td><apex:outputText value="{!objMrnItem.PO_SGST_Amount__c}" /></td>
+                            <td><apex:outputText value="{!objMrnItem.PO_IGST__c}" /></td>
+                            <td><apex:outputText value="{!objMrnItem.PO_IGST_Amount__c}" /></td>
+                            <!--<td><apex:outputText value="{!objMrnItem.Total_for_Books__c}" /> </td>-->
+                            <td><apex:outputText value="{!objMrnItem.Total_For_Book_formula__c}" /> </td>
+                        </tr>
+                    </apex:repeat>
+                    
+                    <tr style="background-color:#d3d4d5;">
+                        <td></td>
+                        <td colspan="4"><center><apex:outputText value="Sub Total " /></center></td>
+                        <td><apex:outputText value="{!poQty}" /></td>
+                        <td><apex:outputText value="{!billQty}" /></td>
+                        <td><apex:outputText value="{!recQty}" /></td>
+                        <td><apex:outputText value="{!shortQty}"/></td>
+                        <td></td>
+                        <td></td>
+                        <td><apex:outputText value="{!subTotalItemAmount}"/></td>
+                        <td></td>
+                        <td><apex:outputText value="{!subTotalLandedAmountInInr}"/></td>
+                        <td><apex:outputText value="{!subTotalTaxableValue}"/></td>
+                        <td></td>
+                        <td><apex:outputText value="{!totalCgstAmount}"/></td>
+                        <td></td>
+                        <td><apex:outputText value="{!totalSgstAmount}"/></td>
+                        <td></td>
+                        <td><apex:outputText value="{!totalIgstAmount}"/></td>
+                        <td> <apex:outputText value="{!subTotalBookAmount}"/></td>
+                    </tr>
+                    <apex:repeat value="{!objChargesList}" var="objCharges" >
+                        <tr>
+                            <td></td>
+                            <td colspan="10"><center><apex:outputText value="{!objCharges.Charges__r.Name}" /></center></td>
+                            <td><apex:outputText value="{!objCharges.MRN_Charge_Percent__c}" /></td>
+                            <td><apex:outputText value="{!objCharges.Total_Amount__c}" /></td>
+                            <td></td>
+                            <td><apex:outputText value="{!objCharges.Total_Amount__c}" /></td>
+                            <td><apex:outputText value="{!objCharges.CGST__c}" /></td>
+                            <td><apex:outputText value="{!objCharges.CGST_Amount__c}" /></td>
+                            <td><apex:outputText value="{!objCharges.SGST__c}" /></td>
+                            <td><apex:outputText value="{!objCharges.SGST_Amount__c}" /></td>
+                            <td><apex:outputText value="{!objCharges.IGST__c}" /></td>
+                            <td><apex:outputText value="{!objCharges.IGST_Amount__c}" /></td>
+                            <td>
+                                <apex:outputText value="{0, number,###,###,##0.00}">
+                                    <apex:param value="{!(objCharges.Total_Amount__c+objCharges.CGST_Amount__c + objCharges.SGST_Amount__c + objCharges.IGST_Amount__c)}"/>
+                                </apex:outputText>
+                            </td>
+                        </tr>
+                    </apex:repeat>
+                   
+                    <tr style="background-color:#d3d4d5;">
+                        <td colspan="11"><center><apex:outputText value="Total  :" /></center></td>
+                        <td><apex:outputText value="{!objMrn.Sum_Of_Charges__c}" /></td>
+                        <td><apex:outputText value="{!totalChargeSUM}" /></td>
+                        <td><apex:outputText value="{!subTotalLandedAmountInInr}" /></td>
+                        <td><apex:outputText value="{!subTotalTaxableValue +totalChargeSUM }" /></td>
+                        <td></td>
+                        <td><apex:outputText value="{!totalCgstAmountwithCharge}" /></td>
+                        <td></td>
+                        <td><apex:outputText value="{!totalSgstAmountwithCharge}" /></td>
+                        <td></td>
+                        <td><apex:outputText value="{!totalIgstAmountwithCharge}" /></td>
+                        <td><apex:outputText value="{!totalBookAmount}.00" /></td>
+                        
+                    </tr>
+                    <tr>
+                        <td colspan="14" style="border:none;border-left: 1px solid;border-bottom: 1px solid;line-height: 5;">
+                            <b><apex:outputText value="Amount in Words : " /> 
+                               <!-- <apex:outputText value="{!objMrn.Currency__c}" />--></b>
+                            <apex:outputText value=" {!strAmount}" />
+                        </td>
+                        <td style="border:none;border-bottom: 1px solid;">
+                         
+                        </td>
+                        <td style="border:none;border-bottom: 1px solid;"></td>
+                        <td style="border:none;border-bottom: 1px solid;"></td>
+                        <td style="border:none;border-bottom: 1px solid;"></td>
+                        <td style="border:none;border-bottom:  1px solid;"></td>
+                        <td style="border:none;border-bottom:  1px solid;"></td>
+                        <td style="border:none;border-bottom:  1px solid;"></td>
+                       
+                        <td style="border:none;border-bottom:  1px solid;border-right:  1px solid;"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="22" style="line-height: 5;">
+                            <b><apex:outputText value="Remarks :{!MRN__c.Remark__c}" /> </b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="22">
+                           <b><apex:outputText value="Prepared by : " /></b> &nbsp; {!MRN__c.Owner.Name}<br/><br/>
+                            <b><apex:outputText value="Approved by : " /></b> &nbsp; {!MRN__c.Owner.Name}
+                        </td>
+                    </tr>
+                    <!--<tr>
+                        <td colspan="22" style="border:none;">
+                            <!--<center><apex:outputText value="This is a computer generated document, Signature not required."/></center>                                                                                                              
+                        </td>
+                    </tr>-->
+                </table>
+            </apex:outputText>
+        </body>
+    </apex:form>
+</apex:page>

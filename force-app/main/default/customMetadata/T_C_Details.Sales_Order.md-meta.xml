@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Sales Order</label>
+    <protected>false</protected>
+    <values>
+        <field>Effected_Date__c</field>
+        <value xsi:type="xsd:date">2021-02-03</value>
+    </values>
+    <values>
+        <field>Term_And_Condition__c</field>
+        <value xsi:type="xsd:string">TERMS &amp; CONDITIONS GOVERNING OUR OFFER FOR SALES OF SPARE PARTS
+1.	PRICES 
+Prices offered are in Indian Rupees and are on Ex-Warehouse, Gurgaon basis. 
+2. TAXES 
+Sales Tax/CGST/SGST/IGST as applicable at the time of supply will be charged extra. Any other taxes &amp; levies within your state is to be borne by the purchaser. 
+3. FREIGHT CHARGES AND ROAD PERMIT 
+Freight from our Gurgaon warehouse to the destination is to be arranged and borne by the purchaser or else shipments will be booked on freight TO-PAY / COLLECT basis. Necessary Road Permits to be provided by the purchaser along with Purchase Order. 
+4. PACKING 
+Extra @5% will be charged. 
+5. INSURANCE 
+Transit Insurance from our Gurgaon Warehouse to the destination is to be arranged and borne by purchaser. 
+6. PRICE VALIDITY 
+Price quoted is valid for 30 days from the date of the offer or as prescribed in the offer document, after that subject to confirmation in writing from us. 
+7. DELIVERY 
+Ex-Stock subject to prior sales. 
+8. PAYMENT 
+100% payment in Advance or by way of documents negotiated through Bank. Demand draft shall be drawn in favour of Powerparts Private Limited payable at Gurgaon. All bank charges will be to the purchaser’s account. 
+9. WARRANTY
+ The parts sold by us are covered by Manufacture’s standard warranty against design, material defect / faulty workmanship, for a period of 12 months from the date of invoice. This warranty does not apply if the defect or malfunction results from any of the following:
+ a. The part has been modified, tampered or installed by non-authorized third parties.
+ b. Non-compliance with Powerparts Pvt Ltd / Manufacturer’s Operating and Maintenance instructions or Fuels &amp; Lubricants specification. 
+c. Normal wear, accident, misuse, improper installation, misapplication, storage damage, negligence or modification. 
+d. Any discrepancy in supply not reported within 30 days from the date of invoice. 
+10. FORCE MAJEURE 
+This offer is subject to Force Majeure conditions i.e., as a result of outbreak of hostilities or fire, flood, acts of nature or any other contingency beyond our control and due to act of god. 
+11. PART NO SUPERSESSION 
+Powerparts Pvt Ltd. reserves the right to ship parts as per superseded or replaced part numbers applicable to your engines in place of parts ordered by you. Such replaced part numbers will be shown in the invoice along with part numbers ordered for ease of identification and scrutiny of items.
+ 12. CANCELLATION OF ORDER / RETURN OF PARTS
+ No order cancellation will be accepted.</value>
+    </values>
+</CustomMetadata>

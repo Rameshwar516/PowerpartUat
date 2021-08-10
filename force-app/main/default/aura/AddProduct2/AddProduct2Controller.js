@@ -25,12 +25,12 @@
                     }
                     else{
                         tmpWrapper[i].totalAmount = event.getSource().get("v.value") * child.Sales_Price__c;
-                        tmpWrapper[i].DiscountAmount =  (child.Discount__c * tmpWrapper[i].totalAmount)/100;
+                        tmpWrapper[i].DiscountAmount =  ((child.Discount__c * tmpWrapper[i].totalAmount)/100).toFixed();
                         tmpWrapper[i].TotalAfterDiscount = tmpWrapper[i].totalAmount - tmpWrapper[i].DiscountAmount;
-                        tmpWrapper[i].CGSTAmount= (child.CGST__c * tmpWrapper[i].TotalAfterDiscount)/100;
-                        tmpWrapper[i].SGSTAmount= (child.SGST__c * tmpWrapper[i].TotalAfterDiscount)/100;
-                        tmpWrapper[i].IGSTAmount= (child.IGST__c * tmpWrapper[i].TotalAfterDiscount)/100;
-                        tmpWrapper[i].NetTotalAmount = tmpWrapper[i].TotalAfterDiscount+tmpWrapper[i].CGSTAmount+tmpWrapper[i].SGSTAmount+tmpWrapper[i].IGSTAmount;
+                        tmpWrapper[i].CGSTAmount= ((child.CGST__c * tmpWrapper[i].TotalAfterDiscount)/100).toFixed();
+                        tmpWrapper[i].SGSTAmount= ((child.SGST__c * tmpWrapper[i].TotalAfterDiscount)/100).toFixed();
+                        tmpWrapper[i].IGSTAmount= ((child.IGST__c * tmpWrapper[i].TotalAfterDiscount)/100).toFixed();
+                        tmpWrapper[i].NetTotalAmount = parseInt(tmpWrapper[i].TotalAfterDiscount) + parseInt(tmpWrapper[i].CGSTAmount) + parseInt(tmpWrapper[i].SGSTAmount) + parseInt(tmpWrapper[i].IGSTAmount);
                         
                     }  
                 }
@@ -40,18 +40,18 @@
                         toastEvent.setParams({
                             "type":"error",
                             "title": "Error!",
-                            "message": "Value should not be less than 1."
+                            "message": "The value should not be less than 1."
                         });
                         toastEvent.fire();
                     }
                     else{
                         tmpWrapper[i].totalAmount = event.getSource().get("v.value") * child.Quantity__c;
-                        tmpWrapper[i].DiscountAmount =  (child.Discount__c * tmpWrapper[i].totalAmount)/100;
+                        tmpWrapper[i].DiscountAmount =  ((child.Discount__c * tmpWrapper[i].totalAmount)/100).toFixed();
                         tmpWrapper[i].TotalAfterDiscount = tmpWrapper[i].totalAmount - tmpWrapper[i].DiscountAmount;
-                        tmpWrapper[i].CGSTAmount= (child.CGST__c * tmpWrapper[i].TotalAfterDiscount)/100;
-                        tmpWrapper[i].SGSTAmount= (child.SGST__c * tmpWrapper[i].TotalAfterDiscount)/100;
-                        tmpWrapper[i].IGSTAmount= (child.IGST__c * tmpWrapper[i].TotalAfterDiscount)/100;
-                        tmpWrapper[i].NetTotalAmount = tmpWrapper[i].TotalAfterDiscount+tmpWrapper[i].CGSTAmount+tmpWrapper[i].SGSTAmount+tmpWrapper[i].IGSTAmount;       
+                        tmpWrapper[i].CGSTAmount= ((child.CGST__c * tmpWrapper[i].TotalAfterDiscount)/100).toFixed();
+                        tmpWrapper[i].SGSTAmount= ((child.SGST__c * tmpWrapper[i].TotalAfterDiscount)/100).toFixed();
+                        tmpWrapper[i].IGSTAmount= ((child.IGST__c * tmpWrapper[i].TotalAfterDiscount)/100).toFixed();
+                         tmpWrapper[i].NetTotalAmount = parseInt(tmpWrapper[i].TotalAfterDiscount) + parseInt(tmpWrapper[i].CGSTAmount) + parseInt(tmpWrapper[i].SGSTAmount) + parseInt(tmpWrapper[i].IGSTAmount);       
                         
                     }
                 }
@@ -81,18 +81,18 @@
                             toastEvent.setParams({
                                 "type":"error",
                                 "title": "Error!",
-                                "message": "Value should not be less than 1."
+                                "message": "The value should not be less than 1."
                             });
                             toastEvent.fire();
                         }
-                        else{
-                            tmpWrapper[i].DiscountAmount = (event.getSource().get("v.value") * tmpWrapper[i].totalAmount)/100;
-                            tmpWrapper[i].TotalAfterDiscount = tmpWrapper[i].totalAmount - tmpWrapper[i].DiscountAmount;
-                            tmpWrapper[i].CGSTAmount= (child.CGST__c * tmpWrapper[i].TotalAfterDiscount)/100;
-                            tmpWrapper[i].SGSTAmount= (child.SGST__c * tmpWrapper[i].TotalAfterDiscount)/100;
-                            tmpWrapper[i].IGSTAmount= (child.IGST__c * tmpWrapper[i].TotalAfterDiscount)/100;
-                            tmpWrapper[i].NetTotalAmount = tmpWrapper[i].TotalAfterDiscount+tmpWrapper[i].CGSTAmount+tmpWrapper[i].SGSTAmount+tmpWrapper[i].IGSTAmount;  
-                        }
+                            else{
+                                tmpWrapper[i].DiscountAmount = ((event.getSource().get("v.value") * tmpWrapper[i].totalAmount)/100).toFixed();
+                                tmpWrapper[i].TotalAfterDiscount = tmpWrapper[i].totalAmount - tmpWrapper[i].DiscountAmount;
+                                tmpWrapper[i].CGSTAmount= (child.CGST__c * tmpWrapper[i].TotalAfterDiscount)/100;
+                                tmpWrapper[i].SGSTAmount= (child.SGST__c * tmpWrapper[i].TotalAfterDiscount)/100;
+                                tmpWrapper[i].IGSTAmount= (child.IGST__c * tmpWrapper[i].TotalAfterDiscount)/100;
+                                tmpWrapper[i].NetTotalAmount = parseInt(tmpWrapper[i].TotalAfterDiscount) + parseInt(tmpWrapper[i].CGSTAmount) + parseInt(tmpWrapper[i].SGSTAmount) + parseInt(tmpWrapper[i].IGSTAmount);
+                            }
                     }
                     else{
                         if(event.getSource().get("v.value") < 0){
@@ -100,17 +100,20 @@
                             toastEvent.setParams({
                                 "type":"error",
                                 "title": "Error!",
-                                "message": "Value should not be less than 1."
+                                "message": "The value should not be less than 1."
                             });
                             toastEvent.fire();
                         }
+                        
                         else{
                             child.Discount__c = (event.getSource().get("v.value")*100 )/ tmpWrapper[i].totalAmount;
-                            tmpWrapper[i].TotalAfterDiscount = tmpWrapper[i].totalAmount - event.getSource().get("v.value");
-                            tmpWrapper[i].CGSTAmount= (child.CGST__c * tmpWrapper[i].TotalAfterDiscount)/100;
-                            tmpWrapper[i].SGSTAmount= (child.SGST__c * tmpWrapper[i].TotalAfterDiscount)/100;
-                            tmpWrapper[i].IGSTAmount= (child.IGST__c * tmpWrapper[i].TotalAfterDiscount)/100;
-                            tmpWrapper[i].NetTotalAmount = tmpWrapper[i].TotalAfterDiscount+tmpWrapper[i].CGSTAmount+tmpWrapper[i].SGSTAmount+tmpWrapper[i].IGSTAmount;  
+                                                        
+                                tmpWrapper[i].TotalAfterDiscount = tmpWrapper[i].totalAmount - event.getSource().get("v.value");
+                                tmpWrapper[i].CGSTAmount= (child.CGST__c * tmpWrapper[i].TotalAfterDiscount)/100;
+                                tmpWrapper[i].SGSTAmount= (child.SGST__c * tmpWrapper[i].TotalAfterDiscount)/100;
+                                tmpWrapper[i].IGSTAmount= (child.IGST__c * tmpWrapper[i].TotalAfterDiscount)/100;
+                                 tmpWrapper[i].NetTotalAmount = parseInt(tmpWrapper[i].TotalAfterDiscount) + parseInt(tmpWrapper[i].CGSTAmount) + parseInt(tmpWrapper[i].SGSTAmount) + parseInt(tmpWrapper[i].IGSTAmount); 
+                            
                             
                         }
                     }
@@ -135,7 +138,7 @@
                         toastEvent.setParams({
                             "type":"error",
                             "title": "Error!",
-                            "message": "Value should not be less than 1."
+                            "message": "The value should not be less than 1."
                         });
                         toastEvent.fire();
                     }
@@ -149,7 +152,7 @@
                         toastEvent.setParams({
                             "type":"error",
                             "title": "Error!",
-                            "message": "Value should not be less than 1."
+                            "message": "The value should not be less than 1."
                         });
                         toastEvent.fire();
                     }
@@ -163,7 +166,7 @@
                             toastEvent.setParams({
                                 "type":"error",
                                 "title": "Error!",
-                                "message": "Value should not be less than 1."
+                                "message": "The value should not be less than 1."
                             });
                             toastEvent.fire();
                         }
@@ -207,47 +210,59 @@
     },
     removeselectedpart :function(component, event, helper) {
         var index = event.getSource().get('v.value');
-        var tmpMainWrapper = component.get("v.wrapMain.lstWrapp");
-        var prodwrapper =  tmpMainWrapper[index];
+        var tmpMainWrapper = component.get("v.wrapMain.lstWrappTwo");
+        var prodwrapper = '';
+        for(var i=0;i<tmpMainWrapper.length;i++){
+            if(index == tmpMainWrapper[i].objProdchild.Product_Part__c){
+                prodwrapper =  tmpMainWrapper[i];
+            }
+        }
         var objWrap = component.get("v.wrapMain");
-        console.log('Check false '+tmpMainWrapper[index]);
+        console.log(index);
+        console.log(prodwrapper);
         helper.RemoveRecordOnCheck(component, event, objWrap ,prodwrapper); 
     },
     
     checkJs :function(component, event, helper) {
         var tmpWrapper = [];
         var index = event.getSource().get('v.name');
-        var tmpMainWrapper = component.get("v.wrapMain.lstWrapp");
+        var tmpMainWrapper = component.get("v.wrapMain.lstWrappTwo");
+        var tmpproductlst = component.get("v.wrapMain.lstWrapp");
         var Istrue = false; 
+        var prodwrapper = '';
+        var tmpproduct = '';
+        for(var i=0;i<tmpMainWrapper.length;i++){
+            if(index == tmpMainWrapper[i].objProdchild.Product_Part__c){
+                prodwrapper =  tmpMainWrapper[i];
+            }
+        }
         
-        if(tmpMainWrapper[index].isSelected){
+        for(var i=0;i<tmpproductlst.length;i++){
+            if(index == tmpproductlst[i].objProd.Id){
+                tmpproduct =  tmpproductlst[i];
+            }
+        }
+        
+        if(tmpproduct.isSelected){
             Istrue = true;
         }
-        console.log(tmpMainWrapper[index]);
         if(Istrue){
-            console.log('Check true '+tmpMainWrapper[index].isSelected);
             component.set('v.IsselectProduct',true);
             component.set("v.showSection",  false);
             var objWrap = component.get("v.wrapMain");
             helper.AddRecordOnCheck(component, event, objWrap);
         }
-        else if(!Istrue)
+        else if(!Istrue && prodwrapper!="")
         {
-            console.log('Check false '+tmpMainWrapper[index].isSelected);
-            var prodwrapper =  tmpMainWrapper[index];
             var objWrap = component.get("v.wrapMain");
-            console.log('Check false '+tmpMainWrapper[index]);
             helper.RemoveRecordOnCheck(component, event, objWrap ,prodwrapper);
         }
             else if(tmpMainWrapper.length = 0)
             {
-                console.log('Check tmpMainWrapper.length '+tmpMainWrapper[index].isSelected);
                 var msg = $A.get("$Label.c.Product_Selection");
                 component.set("v.wrapMain.strMessage", msg);
                 component.set("v.wrapMain.success", false);
-            }
-        
-        
+            }    
     },
     
     Productselect :function(component, event, helper) {
@@ -287,15 +302,27 @@
     
     SaveJS : function(component, event, helper)
     {
+        var saveval  = component.get("v.issave");
+        if(!saveval){
         var tmpWrapper = [];
         var wrapMain = component.get("v.wrapMain");
         var tmpMainWrapper = component.get("v.wrapMain.lstWrappTwo");
         var tmplstSelectedTax = component.get("v.lstSelectedTax");
         var Istrue = false; 
         var Ischarges = false;
+            
+            if(tmpMainWrapper.length == 0 ){
+                var toastEvent = $A.get("e.force:showToast");
+                     toastEvent.setParams({
+                         "type":"error",
+                         "title": "Error!",
+                         "message": "Please add minimum one part."
+                     });
+                     toastEvent.fire(); 
+            }
+            else{
         for(var i=0;i<tmpMainWrapper.length;i++)
         {
-            console.log('value '+tmpMainWrapper[i].objProdchild.Discount__c);
             if(tmpMainWrapper[i].objProdchild.Quantity__c ==null ||
                tmpMainWrapper[i].objProdchild.Quantity__c ==''||
                tmpMainWrapper[i].objProdchild.Quantity__c < 1 || 
@@ -304,68 +331,79 @@
                tmpMainWrapper[i].objProdchild.Sales_Price__c < 1|| 
                tmpMainWrapper[i].objProdchild.Discount__c ==null ||
                tmpMainWrapper[i].objProdchild.Discount__c < 0 || 
+               tmpMainWrapper[i].objProdchild.Discount__c > 100 || 
                tmpMainWrapper[i].DiscountAmount ==null ||
                tmpMainWrapper[i].DiscountAmount < 0 || 
                tmpMainWrapper[i].objProdchild.CGST__c ==null ||
                tmpMainWrapper[i].objProdchild.CGST__c < 0 ||
+               tmpMainWrapper[i].objProdchild.CGST__c > 100 ||
                tmpMainWrapper[i].objProdchild.SGST__c ==null ||
                tmpMainWrapper[i].objProdchild.SGST__c < 0||
+               tmpMainWrapper[i].objProdchild.SGST__c > 100||
                tmpMainWrapper[i].objProdchild.IGST__c ==null ||
-               tmpMainWrapper[i].objProdchild.IGST__c < 0
+               tmpMainWrapper[i].objProdchild.IGST__c < 0 ||
+               tmpMainWrapper[i].objProdchild.IGST__c > 100
               ){
-                
                 Istrue = true;
             }
         }
-        console.log('wrapMain.igstvalue-- '+wrapMain.igstvalue);
         if(wrapMain.igstvalue){
-            console.log(wrapMain.igstvalue);
             for(var i=0;i<tmplstSelectedTax.length;i++)
             {
-                console.log(tmplstSelectedTax[i].IGST);
                 if(
                     tmplstSelectedTax[i].IGST == null ||
-                    
-                    tmplstSelectedTax[i].IGST < 0
+                    tmplstSelectedTax[i].IGST < 0 ||
+                    tmplstSelectedTax[i].decTaxAmount == null ||
+                   tmplstSelectedTax[i].decTaxAmount ==0 ||
+                   tmplstSelectedTax[i].decTaxAmount < 0
                 ){
                     Ischarges = true;
-                }
-                
+                } 
             }
         }    
         else{
             for(var i=0;i<tmplstSelectedTax.length;i++)
             {
-                console.log(tmplstSelectedTax[i].CGST);
-                console.log(tmplstSelectedTax[i].SGST);
                 if(tmplstSelectedTax[i].CGST ==null ||
-                   
                    tmplstSelectedTax[i].CGST < 0 ||
                    tmplstSelectedTax[i].SGST ==null ||
-                   
-                   tmplstSelectedTax[i].SGST < 0 
+                   tmplstSelectedTax[i].SGST < 0 ||
+                   tmplstSelectedTax[i].decTaxAmount == null ||
+                   tmplstSelectedTax[i].decTaxAmount ==0 ||
+                   tmplstSelectedTax[i].decTaxAmount < 0
                   ){
                     Ischarges = true;
-                }
-                
+                } 
             }  
         }
-        
         if(!Istrue){
             if(!Ischarges){
-                
                 var id = component.get("v.recordId");
+               	component.set('v.issave', true);
                 helper.SaveHelper(component, event, id);
             }else{
-                component.set("v.wrapMain.strMessage", 'Please check all value in Charges section !!! Value less than 0 is not valid or Blank not valid.');
-                component.set("v.wrapMain.success", false);
+                var toastEvent = $A.get("e.force:showToast");
+                toastEvent.setParams({
+                    "type":"error",
+                    "title": "Error!",
+                    "message": "Error Charges section !!! Value less than 0  or Blank not valid."
+                });
+                toastEvent.fire(); 
+              // component.set("v.wrapMain.success", false);
             }
-            
-            
         }else{
-            component.set("v.wrapMain.strMessage", 'Please check all value in add parts section!!!  Value less than 0 is not valid or Blank not valid.');
-            component.set("v.wrapMain.success", false);
+             var toastEvent = $A.get("e.force:showToast");
+                toastEvent.setParams({
+                    "type":"error",
+                    "title": "Error!",
+                    "message": "Error Add Parts section !!! Value less than 0,percentage value more than 100 or Blank not valid."
+                });
+                toastEvent.fire(); 
+           //component.set("v.wrapMain.success", false);
         }
+            }
+        }
+            
     },
     onSelectChange : function(component, event, helper)
     {
@@ -472,20 +510,14 @@
     
     
     selectTaxType: function(component,event,helper){
-        
         var TotalAmount =0;
-        
         var lstSalesReturn = component.get('v.wrapMain.lstWrappTwo');
-        console.log(component.get('v.wrapMain.lstWrappTwo[0].TotalAfterDiscount'));
-        console.log(lstSalesReturn);
         for(var i = 0; i < lstSalesReturn.length; i++) {
             if(lstSalesReturn[i].TotalAfterDiscount !=null && lstSalesReturn[i].TotalAfterDiscount !='')
                 TotalAmount = TotalAmount+lstSalesReturn[i].TotalAfterDiscount;
-            
             component.set("v.decTotalAmount",TotalAmount);
         }
         var TotalAmount = component.get("v.decTotalAmount");
-        //alert('..TotalAmount...'+TotalAmount);
         var StrSelectedTax = component.get("v.strTaxType");
         var lstTaxDetails = component.get("v.wrapMain.lstTaxDetails");
         var lstSelectedTax = component.get("v.lstSelectedTax");
@@ -499,19 +531,20 @@
             }
         }
         var igstvalue = component.get('v.wrapMain.igstvalue');
+        var exportvalue = component.get('v.wrapMain.isExport');
         if(AlreadyAdded != 'true'){
             for(var i = 0; i < lstTaxDetails.length; i++) {
                 //alert(lstTaxDetails[i].objTax.id+'...'+StrSelectedTax+'....'+lstTaxDetails[i].NetAmount);
                 if(StrSelectedTax === lstTaxDetails[i].strTaxId){
                     var NetAmountval=0;
-                    if(igstvalue){
+                    if(!exportvalue){
+                    if(igstvalue  ){
                         NetAmountval =  (lstTaxDetails[i].IGST * ((TotalAmount*lstTaxDetails[i].TaxPercentage)/100))/100 +((TotalAmount*lstTaxDetails[i].TaxPercentage)/100);
                     }
                     else{
                         NetAmountval = ((lstTaxDetails[i].CGST + lstTaxDetails[i].SGST)*((TotalAmount*lstTaxDetails[i].TaxPercentage)/100))/100 +((TotalAmount*lstTaxDetails[i].TaxPercentage)/100);
                     }
-                    
-                    lstSelectedTax.push({
+                        lstSelectedTax.push({
                         strTaxId: lstTaxDetails[i].strTaxId,
                         strTaxName: lstTaxDetails[i].strTaxName,
                         TaxPercentage: lstTaxDetails[i].TaxPercentage,
@@ -522,6 +555,22 @@
                         NetAmount: NetAmountval.toFixed(2), 
                         ischargeItem :false,
                     });	 
+                }
+                else{
+                     NetAmountval =  ((TotalAmount*lstTaxDetails[i].TaxPercentage)/100);
+                    lstSelectedTax.push({
+                        strTaxId: lstTaxDetails[i].strTaxId,
+                        strTaxName: lstTaxDetails[i].strTaxName,
+                        TaxPercentage: lstTaxDetails[i].TaxPercentage,
+                        decTaxAmount: ((TotalAmount*lstTaxDetails[i].TaxPercentage)/100).toFixed(2),
+                        CGST: 0,
+                        SGST: 0,
+                        IGST: 0,
+                        NetAmount: NetAmountval.toFixed(2), 
+                        ischargeItem :false,
+                    });	 
+                }
+                    
                 }
             }
         }else{
@@ -537,8 +586,9 @@
             });
             toastEvent.fire();
         }			
-        component.set('v.lstSelectedTax', lstSelectedTax);
-        
+        component.set('v.lstSelectedTax', lstSelectedTax); 
+        helper.refreshCharge(component,event,helper);
+        helper.totalamount(component,event,helper);
         helper.TotalTaxAmount(component,event,helper);
     },
     
@@ -589,16 +639,23 @@
         console.log("Deletelineitem");
         var tmpMainWrapper =  component.get('v.wrapMain.lstWrappTwo');
         var RecordIndexStr = event.getSource().get("v.value");
-        var action = component.get('c.deleteRecord');
-        var lineitem = tmpMainWrapper[RecordIndexStr];
+        var action = component.get('c.deleteRecord'); 
+        var lineitem = '';
+        var index = 0;
+        for(var i=0;i<tmpMainWrapper.length;i++){
+            if(RecordIndexStr == tmpMainWrapper[i].objProdchild.Product_Part__c){
+                lineitem =  tmpMainWrapper[i];
+                index=i;
+            }
+        }
+        
         action.setParams({
             "strWrap" : JSON.stringify(lineitem)
         });
         
         action.setCallback(this, function(res){
             if(res.getState() === "SUCCESS"){
-                console.log(event.getSource().get("v.value"));
-                tmpMainWrapper.splice(RecordIndexStr,1);
+                tmpMainWrapper.splice(index,1);
                 component.set("v.wrapMain.lstWrappTwo",tmpMainWrapper);
                 helper.refreshCharge(component,event,helper);
                 helper.totalamount(component,event,helper);
@@ -619,24 +676,20 @@
     },
     
     CalculateCGST : function(component,event,helper){
-        var target = event.target;
-        var rowIndex = target.getAttribute("data-row-index");
+        var rowIndex = event.getSource().get("v.name");
         var tmpMainWrapper = component.get("v.lstSelectedTax");
-        //alert('.....tmpMainWrapper....'+tmpMainWrapper.length);
         for(var i=0;i<tmpMainWrapper.length;i++)
         {
             if(rowIndex == i){
                 if(tmpMainWrapper[i].CGST != null && tmpMainWrapper[i].CGST != null){
                     var NetAmounts = tmpMainWrapper[i].decTaxAmount;
-                    var IntDiscountRate = event.target.value;
+                    var IntDiscountRate = event.getSource().get("v.value");
                     tmpMainWrapper[i].CGST = IntDiscountRate;
-                    NetAmounts = parseInt(NetAmounts) + parseInt(NetAmounts * IntDiscountRate / 100);
+                    NetAmounts = parseFloat(NetAmounts) + parseFloat(NetAmounts * IntDiscountRate / 100);
                     if(tmpMainWrapper[i].SGST !=null && tmpMainWrapper[i].SGST !='')
-                        NetAmounts = NetAmounts+ tmpMainWrapper[i].decTaxAmount * tmpMainWrapper[i].SGST / 100;
-                    
+                        NetAmounts = NetAmounts+ tmpMainWrapper[i].decTaxAmount * tmpMainWrapper[i].SGST / 100;  
                     if(tmpMainWrapper[i].IGST !=null && tmpMainWrapper[i].IGST !='')
                         NetAmounts = NetAmounts+ tmpMainWrapper[i].decTaxAmount * tmpMainWrapper[i].IGST / 100;
-                    
                     tmpMainWrapper[i].NetAmount = NetAmounts;
                     component.set("v.lstSelectedTax",tmpMainWrapper);
                 } 
@@ -649,17 +702,17 @@
     },
     
     CalculateSGST : function(component,event,helper){
-        var target = event.target;
-        var rowIndex = target.getAttribute("data-row-index");
+       // var target = event.target;
+        var rowIndex = event.getSource().get("v.name");
         var tmpMainWrapper = component.get("v.lstSelectedTax");
         for(var i=0;i<tmpMainWrapper.length;i++)
         {
             if(rowIndex == i){
                 if(tmpMainWrapper[i].SGST != null && tmpMainWrapper[i].SGST != null){
                     var NetAmounts = tmpMainWrapper[i].decTaxAmount;
-                    var IntDiscountRate = event.target.value;
+                    var IntDiscountRate = event.getSource().get("v.value");
                     tmpMainWrapper[i].SGST = IntDiscountRate;
-                    NetAmounts = parseInt(NetAmounts) + parseInt(NetAmounts * IntDiscountRate / 100);
+                    NetAmounts = parseFloat(NetAmounts) + parseFloat(NetAmounts * IntDiscountRate / 100);
                     if(tmpMainWrapper[i].CGST !=null && tmpMainWrapper[i].CGST !='')
                         NetAmounts = NetAmounts+ tmpMainWrapper[i].decTaxAmount * tmpMainWrapper[i].CGST / 100;
                     
@@ -679,18 +732,18 @@
     
     
     CalculateIGST : function(component,event,helper){
-        var target = event.target;
-        var rowIndex = target.getAttribute("data-row-index");
+        //var target = event.target;
+        var rowIndex = event.getSource().get("v.name");
         var tmpMainWrapper = component.get("v.lstSelectedTax");
         for(var i=0;i<tmpMainWrapper.length;i++)
         {
             if(rowIndex == i){
                 if(tmpMainWrapper[i].IGST != null && tmpMainWrapper[i].IGST != null){
                     var NetAmounts = tmpMainWrapper[i].decTaxAmount;
-                    var IntDiscountRate = event.target.value;
+                    var IntDiscountRate = event.getSource().get("v.value");
                     tmpMainWrapper[i].IGST = IntDiscountRate;
-                    NetAmounts = parseInt(NetAmounts) + parseInt(NetAmounts * IntDiscountRate / 100);
-                    console.log(NetAmounts);
+                    NetAmounts = parseFloat(NetAmounts) + parseFloat(NetAmounts * IntDiscountRate / 100);
+                    
                     if(tmpMainWrapper[i].CGST !=null && tmpMainWrapper[i].CGST !='')
                         NetAmounts = NetAmounts+ tmpMainWrapper[i].decTaxAmount * tmpMainWrapper[i].CGST / 100;
                     
@@ -714,7 +767,7 @@
         if(isdeliverydate==true){
             if(tmpMainWrapper.length>=2){
                 console.log(tmpMainWrapper[0].objProdchild.Delivery_Date__c);
-                if(tmpMainWrapper[0].objProdchild.Delivery_Date__c != null && tmpMainWrapper[0].objProdchild.Delivery_Date__c != ' '){
+                if(tmpMainWrapper[0].objProdchild.Delivery_Date__c != null && tmpMainWrapper[0].objProdchild.Delivery_Date__c != ''){
                     for(var i=1;i<tmpMainWrapper.length;i++){
                         tmpMainWrapper[i].objProdchild.Delivery_Date__c = tmpMainWrapper[0].objProdchild.Delivery_Date__c;
                     } 
@@ -724,7 +777,7 @@
                     toastEvent.setParams({
                         "type":"error",
                         "title": "Error!",
-                        "message": "Delivery date at first part have to be filled."
+                        "message": "The delivery date at the first part has to be filled."
                     });
                     toastEvent.fire();
                 }
@@ -741,10 +794,11 @@
     discountactionCheckbox : function(component, event, helper) {
         var tmpMainWrapper =  component.get('v.wrapMain.lstWrappTwo');
         var isdiscount =  component.get('v.isdiscount');
+        
         if(isdiscount==true){
             if(tmpMainWrapper.length>=2){
                 console.log(tmpMainWrapper[0].objProdchild.Discount__c);
-                if(tmpMainWrapper[0].objProdchild.Discount__c != null && tmpMainWrapper[0].objProdchild.Discount__c != ' '){
+                if(tmpMainWrapper[0].objProdchild.Discount__c != null && tmpMainWrapper[0].objProdchild.Discount__c != ''){
                     for(var i=0;i<tmpMainWrapper.length;i++){
                         var child = tmpMainWrapper[i].objProdchild;
                         tmpMainWrapper[i].objProdchild.Discount__c = tmpMainWrapper[0].objProdchild.Discount__c;
@@ -761,7 +815,7 @@
                     toastEvent.setParams({
                         "type":"error",
                         "title": "Error!",
-                        "message": "Delivery date at first part have to be filled."
+                        "message": "Discount at first part has to be filled."
                     });
                     toastEvent.fire();
                 }
@@ -776,22 +830,28 @@
         var templstcharge = component.get('v.lstSelectedTax');
         var TotalAmount = component.get('v.decTotalAmount');
         var igstvalue = component.get('v.wrapMain.igstvalue');
-        var damo = (templstcharge[tmpIndex].TaxPercentage * TotalAmount)/100;
+        var damo = parseInt((templstcharge[tmpIndex].TaxPercentage * TotalAmount)/100);
         templstcharge[tmpIndex].decTaxAmount = damo.toFixed(2);
         var dectaxamount =(templstcharge[tmpIndex].TaxPercentage * TotalAmount)/100;
         var IGSTAmount = (templstcharge[tmpIndex].IGST * dectaxamount)/100;
         var SGSTAmount = ((templstcharge[tmpIndex].SGST)*dectaxamount)/100;
         var CGSTAmount = ((templstcharge[tmpIndex].CGST)*dectaxamount)/100;
         
-        
-        if(igstvalue){
-            templstcharge[tmpIndex].NetAmount =  parseInt(IGSTAmount) + parseInt(dectaxamount);
+        if(igstvalue == true){
+            templstcharge[tmpIndex].NetAmount =  parseFloat(IGSTAmount) + parseFloat(dectaxamount);
         }
         else{
-            templstcharge[tmpIndex].NetAmount = parseInt(SGSTAmount) + parseInt(CGSTAmount) + parseInt(dectaxamount);
+            templstcharge[tmpIndex].NetAmount = parseFloat(SGSTAmount) + parseFloat(CGSTAmount) + parseFloat(dectaxamount);
         }
         component.set("v.lstSelectedTax",templstcharge);
-        helper.TotalTaxAmount(component,event,helper);
+        var lstTotalSelectedTax = component.get("v.lstSelectedTax");
+        var TotalTaxAmount = 0;
+        //alert('...!@#..'+lstTotalSelectedTax.length);
+        for(var i = 0; i < lstTotalSelectedTax.length; i++) {
+            //alert('...'+lstTotalSelectedTax[i].decTaxAmount);
+            TotalTaxAmount =TotalTaxAmount+parseFloat(lstTotalSelectedTax[i].NetAmount);
+        }
+        component.set('v.TotalTax', TotalTaxAmount);
         
     },
     ChargesAmountOnOhange:function(component, event, helper) {
@@ -801,22 +861,24 @@
         var igstvalue = component.get('v.wrapMain.igstvalue');
         var tper = (templstcharge[tmpIndex].decTaxAmount * 100)/TotalAmount;
         templstcharge[tmpIndex].TaxPercentage =tper.toFixed(2);
-        var dectaxamount =(templstcharge[tmpIndex].TaxPercentage * TotalAmount)/100;
+        var dectaxamount =templstcharge[tmpIndex].decTaxAmount;
         var IGSTAmount = (templstcharge[tmpIndex].IGST * dectaxamount)/100;
         var SGSTAmount = ((templstcharge[tmpIndex].SGST)*dectaxamount)/100;
         var CGSTAmount = ((templstcharge[tmpIndex].CGST)*dectaxamount)/100;
-        
-        
-        if(igstvalue){
-            templstcharge[tmpIndex].NetAmount =  parseInt(IGSTAmount) + parseInt(dectaxamount);
+        if(igstvalue == true){
+            templstcharge[tmpIndex].NetAmount =  parseFloat(IGSTAmount) + parseFloat(dectaxamount);
         }
         else{
-            templstcharge[tmpIndex].NetAmount = parseInt(SGSTAmount) + parseInt(CGSTAmount) + parseInt(dectaxamount);
+            templstcharge[tmpIndex].NetAmount = parseFloat(SGSTAmount) + parseFloat(CGSTAmount) + parseFloat(dectaxamount);
         }
         component.set("v.lstSelectedTax",templstcharge);
-        helper.TotalTaxAmount(component,event,helper);
-
-         
-     }
-    
+        var lstTotalSelectedTax = component.get("v.lstSelectedTax");
+        var TotalTaxAmount = 0;
+        //alert('...!@#..'+lstTotalSelectedTax.length);
+        for(var i = 0; i < lstTotalSelectedTax.length; i++) {
+            //alert('...'+lstTotalSelectedTax[i].decTaxAmount);
+            TotalTaxAmount =TotalTaxAmount+parseFloat(lstTotalSelectedTax[i].NetAmount);
+        }
+        component.set('v.TotalTax', TotalTaxAmount);  
+     }   
 })

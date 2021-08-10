@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Primary_Engineer_will_not_be_changed</fullName>
+    <active>true</active>
+    <description>Primary Engineer will not be changed once it assigns.</description>
+    <errorConditionFormula>ISCHANGED( Engineer1__c )</errorConditionFormula>
+    <errorDisplayField>Engineer1__c</errorDisplayField>
+    <errorMessage>Primary Engineer will not be changed once it assigns</errorMessage>
+</ValidationRule>

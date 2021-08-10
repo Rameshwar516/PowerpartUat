@@ -3,13 +3,18 @@ public class SaleOrderAcknowledgement {
     public Sales_Order__c objSO {get;set;}
     public Account objAcc {get;set;}
     public Contact objCon {get;set;}
-    public Contact ShippingObjCon {get;set;}
+    public list<Contact> ShippingObjCon {get;set;}
+    
+    public string sign{get;set;}
+    
+    public contact ShippingContact{get;set;}
     
     public Account objShippingAcc {get;set;}
     public Contact objShippingCon {get;set;}
     
     public Pdf_Header__mdt pdfheader{get;set;}
-    
+    public decimal TotalAmountwithoutround{get; set;}
+    public string totalAmountWithTCSstring{get; set;}
     public List<wrapper> lstSOIW {get; set;}
     public decimal subTotalTaxableAmount{get;set;}
     public decimal subTotalAmount{get;set;}
@@ -72,6 +77,7 @@ public class SaleOrderAcknowledgement {
         TotalCGST = 0;
         TotalSGST = 0;
         TotalGST = 0;
+        TotalAmountwithoutround=0;
         objGSTCharge = new GSTCharges();
         
         if(String.isNotBlank(strId)){
@@ -80,7 +86,7 @@ public class SaleOrderAcknowledgement {
             List<String> lstSalesOrderItemField = UtilityClass.getAllFields('Sales_Order_Line_Item__c');
             
             
-            String strSalesOrderQuery = 'Select ' +String.Join(lstSalesOrderField, ',')+',Customer_Name__r.ShippingState,Shipping_Account__r.name,Shipping_Account__r.Shipping_State_Code__c,Shipping_Account__r.Shipping_GSTIN_No__c,Ware_House__r.Branch__c,Ware_House__r.city__c,ESN_No_lookup__r.Name,Opportunity__r.Office__c,Shipping_Account__r.ShippingState,Customer_Name__r.TCS_Charges_Enable__c'+ ' From Sales_Order__c where Id =: strId';
+            String strSalesOrderQuery = 'Select ' +String.Join(lstSalesOrderField, ',')+',Shipping_Account__r.Print_Name__c,Customer_Name__r.ShippingState,Shipping_Account__r.name,Shipping_Account__r.Shipping_State_Code__c,Shipping_Account__r.Shipping_GSTIN_No__c,Ware_House__r.Branch__c,Ware_House__r.city__c,ESN_No_lookup__r.Name,Opportunity__r.Office__c,Shipping_Account__r.ShippingState,Customer_Name__r.TCS_Charges_Enable__c'+ ' From Sales_Order__c where Id =: strId';
             String strSalesOrderItemQuery = 'Select ' +String.Join(lstSalesOrderItemField, ',')+ ',Product_Part__r.name,Product_Part__r.uom__c,Product_Part__r.Part_Name__c From Sales_Order_Line_Item__c where Sales_Order__c =: strId';
             
             
@@ -88,9 +94,24 @@ public class SaleOrderAcknowledgement {
             if(lstSaleOrder.size() > 0)
                 objSO = lstSaleOrder[0];
             
-            ShippingObjCon= [select id,name, mobilephone,email,isPrimary__c from contact where isPrimary__c=true AND Accountid =:objSO.Shipping_Account__c limit 1];
+                  ApexPages.currentPage().getHeaders().put('content-disposition', 'filename=' +' Sales Order - '+objSO.Sales_Order_Acknowledge_Number__c+'.PDF');
+                system.debug('strfileName '+' Sales Order-'+objSO.Sales_Order_Acknowledge_Number__c);       
             
+             user ur =[SELECT Id,Branch__c,User_Signature__c from user where id =:objSO.OwnerId];
+        if(!String.isBlank(ur.User_Signature__c))
+        sign = ur.User_Signature__c;
+        
+        if(String.isBlank(ur.User_Signature__c))
+        sign =System.Label.Default_User_Sign;
+        
+        system.debug(sign);
             
+            if(objSO.Shipping_Account__c!=null){
+        ShippingObjCon = [select id,name, salutation,phone,MobilePhone, email,isPrimary__c from contact where isPrimary__c= true AND Accountid =:objSO.Shipping_Account__c limit 1];
+        if(ShippingObjCon.size()>0){
+                ShippingContact = ShippingObjCon[0];
+            }
+        }
             string branch = objSO.Ware_House__r.Branch__c ;
             List<String> pdfheaderField = UtilityClass.getAllFields('Pdf_Header__mdt');
             String pdfHeaderQuery = 'Select ' +String.Join(pdfheaderField, ',')+ ' From Pdf_Header__mdt WHERE Branch__c =:branch Order by Effected_Date__c ASC LIMIT 1';
@@ -98,7 +119,7 @@ public class SaleOrderAcknowledgement {
             
             if(String.isNotEmpty(objSO.Customer_Name__c)){
                 String id = objSO.Customer_Name__c;
-                String strAccount = 'Select Id, Name,ShippingStreet,ShippingCity,ShippingState,ShippingPostalCode,ShippingCountry,BillingStreet,BillingCity,BillingState,BillingPostalCode,BillingCountry,GSTIN_No__c,Billing_State_Code__c,Shipping_State_Code__c,(Select Id, Name, Email, MobilePhone from contacts where isPrimary__c = true) from Account where Id = : id';
+                String strAccount = 'Select Id, Print_Name__c, Name,ShippingStreet,ShippingCity,ShippingState,ShippingPostalCode,ShippingCountry,BillingStreet,BillingCity,BillingState,BillingPostalCode,BillingCountry,GSTIN_No__c,Billing_State_Code__c,Shipping_State_Code__c,(Select Id, Name, Email,salutation, MobilePhone from contacts where isPrimary__c = true) from Account where Id = : id';
                 List<Account> lstAcc = Database.query(strAccount);
                 if(lstAcc.size() > 0){
                     objAcc = lstAcc[0];
@@ -136,7 +157,7 @@ Billing State And Billing Code, Shipping State and Shipping Code
             
             if(String.isNotEmpty(objSO.Shipping_Account__c)){
                 String id = objSO.Shipping_Account__c;
-                String strAccount = 'Select Id, Name,ShippingStreet,ShippingCity,ShippingState,ShippingPostalCode,ShippingCountry,BillingStreet,BillingCity,BillingState,BillingPostalCode,BillingCountry,GSTIN_No__c,Billing_State_Code__c,Shipping_State_Code__c,(Select Id, Name, Email, MobilePhone from contacts where isPrimary__c = true) from Account where Id = : id';
+                String strAccount = 'Select Id, Print_Name__c,Name,ShippingStreet,ShippingCity,ShippingState,ShippingPostalCode,ShippingCountry,BillingStreet,BillingCity,BillingState,BillingPostalCode,BillingCountry,GSTIN_No__c,Billing_State_Code__c,Shipping_State_Code__c,(Select Id, Name, Email, MobilePhone from contacts where isPrimary__c = true) from Account where Id = : id';
                 List<Account> lstAcc = Database.query(strAccount);
                 if(lstAcc.size() > 0){
                     objShippingAcc = lstAcc[0];
@@ -189,6 +210,20 @@ Billing State And Billing Code, Shipping State and Shipping Code
              igstbool=false;
             
             List<Sales_Order_Line_Item__c> lstSOI = Database.query(strSalesOrderItemQuery);
+            set<string> productIDSet = new set<string>();
+            if(lstSOI.size() > 0){
+                for(Sales_Order_Line_Item__c objSOLI : lstSOI)
+            		productIDSet.add(objSOLI.Product_Part__c);
+            } 
+            system.debug('-----AND Ware_House__c=:objSO.Ware_House__c-------------------'+objSO.Ware_House__c);
+            String warehouse = objSO.Ware_House__c; 
+                List<String> lststockField = UtilityClass.getAllFields('Stock__c');
+                String strStockQuery = 'Select ' +String.Join(lststockField, ',')+' From Stock__c where Product_Part__c IN:productIDSet AND Ware_House__c=: warehouse';
+                list<stock__c> stocklist = Database.query(strStockQuery);
+            Map<string,stock__c> stockmap = new Map<string,stock__c>(); 
+            if(!stocklist.isempty()) for(stock__c st:stocklist) stockmap.put(st.Product_Part__c, st);
+            
+            
             if(lstSOI.size() > 0){
                 for(Sales_Order_Line_Item__c objSOLI : lstSOI){
                     wrapper objWrap = new wrapper();
@@ -200,6 +235,10 @@ Billing State And Billing Code, Shipping State and Shipping Code
                     if(objSOLI.CGST__c > 0 && objSOLI.Taxable_Amount__c > 0)
                         objWrap.CGSTAmount = ((objSOLI.Taxable_Amount__c * objSOLI.CGST__c)/100).setScale(2);
                     
+                    if(stockmap.containskey(objSOLI.Product_Part__c) && objSOLI.Quantity__c <= stockmap.get(objSOLI.Product_Part__c).Total_Unbooked_Quantity__c){
+                        System.debug(objSOLI.Quantity__c+' ------ '+stockmap.get(objSOLI.Product_Part__c).Total_Unbooked_Quantity__c);
+                        objWrap.isAvailable =true;
+                    }
                     lstSOIW.add(objWrap);
                     
                     subTotalTaxableAmount = subTotalTaxableAmount+objSOLI.Taxable_Amount__c ;
@@ -232,25 +271,17 @@ Billing State And Billing Code, Shipping State and Shipping Code
                         taxsummaryMap.put(objSOLI.IGST__c,taxammount);
                         system.debug('IGST');
                     }
-                    else{
-                        
+                    else{  
                         if(objSOLI.SGST__c > 0 ){
                             decimal taxammount =  taxsummaryMap.get(objSOLI.SGST__c)+objSOLI.Taxable_Amount__c;
                             taxsummaryMap.put(objSOLI.SGST__c,taxammount);
                             
                         }
-                        
-                        system.debug(objSOLI.IGST__c );
-                        system.debug(taxsummaryMap.get(objSOLI.IGST__c));
                         if(objSOLI.IGST__c > 0 ){
                             decimal taxammount =  taxsummaryMap.get(objSOLI.IGST__c)+objSOLI.Taxable_Amount__c;
-                            taxsummaryMap.put(objSOLI.IGST__c,taxammount); 
-                            
-                        }
-                        
-                    } 
-                
-                    
+                            taxsummaryMap.put(objSOLI.IGST__c,taxammount);  
+                        } 
+                    }      
                 }
                 
                 
@@ -268,15 +299,7 @@ Billing State And Billing Code, Shipping State and Shipping Code
                     }
                 }
                 system.debug('list size '+taxSummarylist.size());
-                
-                
-                
-                
-                
-                
-                
-                
-                
+
                 
                 if(objSO.Packing_Charges__c > 0 && subTotalTaxableAmount > 0)
                     objGSTCharge.PackingCharges = ((subTotalTaxableAmount*objSO.Packing_Charges__c)/100).setScale(2);
@@ -302,10 +325,8 @@ Billing State And Billing Code, Shipping State and Shipping Code
                 
                 TotalTaxableAmount = subTotalTaxableAmount + objGSTCharge.PackingCharges + objGSTCharge.FreightCharges;
                 TotalAmount = subTotalAmount + objGSTCharge.PackingChargeTotal + objGSTCharge.FreightTotal;
-                if(TotalAmount > 0){
-                    TotalAmount = TotalAmount.round();
-                    TotalAmountInWords = UtilityClass.NoToWord(TotalAmount.intValue());
-                }
+                
+                
                 
                 
                 
@@ -324,7 +345,8 @@ TotalGST = TotalIGST+ TotalCGST+ TotalSGST;*/
             strWareHouseCode = '';
             strWareHouseCity = '';
             list<Ware_House__c> lseWH = new list<Ware_House__c>();
-            if(objSO.Ware_House__c != null){
+            if(objSO.Ware_House__c != null)
+            {
                 lseWH = [Select Id, Name, City__c, State_Code__c,State_Province__c from Ware_House__c where Id =: objSO.Ware_House__c];
                 if(lseWH.size()>0 && lseWH[0] != null){
                     strWareHouseState = lseWH[0]?.State_Province__c;
@@ -342,37 +364,47 @@ TotalGST = TotalIGST+ TotalCGST+ TotalSGST;*/
             for(Charges__c objCharg : lstCharges)
             {
                 TotalTaxableAmount = TotalTaxableAmount+objCharg.Charge_Amount__c;
-                totalAmountCgst = objCharg.CGST_Amount__c;
-                totalAmountSgst = objCharg.SGST_Amount__c;
-                totalAmountIgst = objCharg.IGST_Amount__c;
+                totalAmountCgst = totalAmountCgst+objCharg.CGST_Amount__c;
+                totalAmountSgst = totalAmountSgst+objCharg.SGST_Amount__c;
+                totalAmountIgst = totalAmountIgst+objCharg.IGST_Amount__c;
                 TotalAmountWithCharges = TotalAmountWithCharges+objCharg.Net_Amount__c;
-            }      
-            TotalIGST = SubTotalIGST+TotalIGST+ totalAmountIgst;
-            TotalCGST = (SubTotalCGST+totalAmountCgst+TotalCGST).setScale(2);
-            TotalSGST = (SubTotalSGST+totalAmountSgst+TotalSGST).setScale(2);
+            }  
+            system.debug('...'+totalAmountCgst+'..'+totalAmountSgst+'....'+totalAmountIgst);
+            TotalTaxableAmount = TotalTaxableAmount;
+            TotalIGST = (SubTotalIGST+TotalIGST+ totalAmountIgst);
+            TotalCGST = (SubTotalCGST+totalAmountCgst+TotalCGST);
+            TotalSGST = (SubTotalSGST+totalAmountSgst+TotalSGST);
             TotalGST = TotalIGST+ TotalCGST+ TotalSGST;
-            TotalAmount = subTotalAmount+TotalAmountWithCharges;
-            
+            TotalAmount = (subTotalAmount+TotalAmountWithCharges);
+            TotalAmountwithoutround= TotalAmountwithoutround + TotalAmount;
+            TotalAmount=TotalAmount.round();
             decimal amountTCSPer = 0;
             amountTCS = 0;
-            if(objSO.Customer_Name__r.TCS_Charges_Enable__c){
-            amountTCS = (TotalAmount * decimal.valueof(system.label.TCS_Percentage)/100);
-            amountTCS = amountTCS.setScale(2);
-            //amountTCS = (TotalAmount-amountTCSPer).setScale(2);
-            
-            system.debug(amountTCS+'.....'+amountTCSPer+'....'+TotalAmount);
-            totalAmountWithTCS = 0;
-            totalAmountWithTCS = TotalAmount +amountTCS;
-            totalAmountWithTCS = totalAmountWithTCS.round();
-            
-            //totalAmountaftertaxinWords = UtilityClass.NoToWord(totalAmountWithTCS.intValue());
-            //totalAmountaftertaxinWords = totalAmountaftertaxinWords+' rupees only';
-            
-            if(totalAmountWithTCS > 0){
-                totalAmountWithTCS = totalAmountWithTCS.round();
-                TotalAmountInWords = UtilityClass.NoToWord(totalAmountWithTCS.intValue())+' ruppes only';
+            if(TotalAmount > 0){
+                TotalAmount = TotalAmount;
+                TotalAmountInWords ='Rupees '+ UtilityClass.NoToWord(TotalAmount.intValue())+' only';
             }
+            if(objSO.Customer_Name__r.TCS_Charges_Enable__c)
+            {
+                amountTCS = (TotalAmount * decimal.valueof(system.label.TCS_Percentage)/100);
+                amountTCS = amountTCS.setScale(2);
+                //amountTCS = (TotalAmount-amountTCSPer).setScale(2);
+                
+                system.debug(amountTCS+'.....'+amountTCSPer+'....'+TotalAmount);
+                totalAmountWithTCS = 0;
+                totalAmountWithTCS = TotalAmount +amountTCS;
+                totalAmountWithTCS = totalAmountWithTCS.round();
+                
+                //totalAmountaftertaxinWords = UtilityClass.NoToWord(totalAmountWithTCS.intValue());
+                //totalAmountaftertaxinWords = totalAmountaftertaxinWords+' rupees only';
+                
+                if(totalAmountWithTCS > 0)
+                {
+                    totalAmountWithTCS = totalAmountWithTCS.round();
+                    totalAmountWithTCSstring =totalAmountWithTCS+'.00';
+                    TotalAmountInWords = 'Rupees '+UtilityClass.NoToWord(totalAmountWithTCS.intValue())+' only';
                 }
+            }
         }
     }
     
@@ -381,12 +413,14 @@ TotalGST = TotalIGST+ TotalCGST+ TotalSGST;*/
         public Decimal CGSTAmount{get; set;}
         public Decimal SGSTAmount{get; set;}
         public Decimal IGSTAmount{get; set;}
+        public Boolean isAvailable{get; set;}
         
         public wrapper(){
             objSOLI = new Sales_Order_Line_Item__c();
             CGSTAmount = 0;
             SGSTAmount = 0;
             IGSTAmount = 0;
+            isAvailable=false;
         }
         
     }
@@ -416,7 +450,7 @@ TotalGST = TotalIGST+ TotalCGST+ TotalSGST;*/
             FreightTotal = 0;
         }
     }
-      public class taxSummary{
+    public class taxSummary{
         public  Decimal percentage {get;set;}
         public  Decimal taxamount {get;set;}
         public  Decimal gstamount {get;set;}

@@ -1,16 +1,14 @@
-public class PurchaseOrderCMP {
+public without sharing class PurchaseOrderCMP {
     
     @AuraEnabled
-    public static string doInit(String strRecordID){
-       
-        
+    public static string doInit(String strRecordID){     
         mainWrapper objMainWrap = new mainWrapper();
         objMainWrap.againstPickList = getPickVal(Purchase_Order__c.Against__c.getDescribe());
         objMainWrap.applicationPickList = getPickVal(Opportunity__c.Application__c.getDescribe());
         objMainWrap.billToPickList = getPickVal(Purchase_Order__c.Bill_To__c.getDescribe());
         objMainWrap.shipToPickList = getPickVal(Purchase_Order__c.Ship_To__c.getDescribe());
         objMainWrap.currencyPickList = getPickVal(Purchase_Order__c.Currency__c.getDescribe());
-        objMainWrap.UOIPickList = getPickVal(Part__c.UOI__c.getDescribe());
+       objMainWrap.UOIPickList = getPickVal(Part__c.UOI__c.getDescribe());
         
         List<tax__c> taxlist =[SELECT Basic_Percentage__c,Id,Name,Tax_Percentage__c FROM Tax__c];
         for(Tax__c objTax : taxlist){
@@ -89,6 +87,11 @@ public class PurchaseOrderCMP {
                         objOIW.Quantity = objPOI.Quantity__c;
                         objOIW.Unit = '';
                         objOIW.Rate = objPOI.Sales_Price__c;
+						/*if(mapIdVsPart.containskey(objPOI.Product_Part__c) && mapIdVsPart.get(objPOI.Product_Part__c).UOI__c != null)
+							objOIW.UOI = mapIdVsPart.get(objPOI.Product_Part__c).UOI__c;*/
+						
+						objOIW.UOI = objPOI.UOI_Text__c;
+						
                         objOIW.Amount = objPOI.Total_Amount__c;
                         objOIW.DiscRate = objPOI.Discount__c;
                         objOIW.DiscAmount = objPOI.Discount_Amount__c;
@@ -117,7 +120,7 @@ public class PurchaseOrderCMP {
             }
             
             
-            List<Charges__c> chargeslist =[SELECT CGST__c,Charges__c,Charge_Percentage__c,Id,IGST__c,MRN__c,Name,Net_Amount__c,Purchase_Order__c,
+            List<Charges__c> chargeslist =[SELECT CGST__c,Charges__c,Charge_Amount__c,Charge_Percentage__c,Id,IGST__c,MRN__c,Name,Net_Amount__c,Purchase_Order__c,
                                            Quote__c,SGST__c,Total_Amount__c,Charges__r.name 
                                            FROM Charges__c 
                                            Where Purchase_Order__c =:strRecordID];
@@ -138,7 +141,7 @@ public class PurchaseOrderCMP {
                     objTD.SGST = ch.SGST__c;
                     objTD.IGST = ch.IGST__c;
                     objTD.objcharge = ch;
-                    objTD.decTaxAmount =  ch.Total_Amount__c;
+                    objTD.decTaxAmount =  ch.Charge_Amount__c;
                     objTD.NetAmount =  ch.Net_Amount__c;
                     objTD.ischargeItem = true;
                     objMainWrap.lstTaxDetails.add(objTD);
@@ -158,7 +161,7 @@ public class PurchaseOrderCMP {
             
             List<Purchase_Indent_Line_Item__c> lst = [Select Id, Name, QTY__c, Product_Part__c, Product_Part__r.Name, Product_Part__r.Part_Name__c,Product_Part__r.Usage__c, 
                                                       Product_Part__r.HSN_Code__c,Product_Part__r.UOM__c,Product_Part__r.UOI__c, Purchase_Indent__c, Purchase_Indent__r.Ware_House__c, 
-                                                      Purchase_Indent__r.Purchase_Indent_Number__c, Purchase_Indent__r.CreatedDate,Application__c, Remark__c
+                                                      Purchase_Indent__r.Purchase_Indent_Number__c,Expected_date__c, Purchase_Indent__r.CreatedDate,Application__c, Remark__c
                                                       From Purchase_Indent_Line_Item__c 
                                                       where Purchase_Indent__c =: recordId
                                                       AND Product_Part__c != null];
@@ -174,9 +177,19 @@ public class PurchaseOrderCMP {
                 else
                    lstFilterItem.addAll(lst);
                     
-                    	
+                        
                 for(Purchase_Indent_Line_Item__c obj : lstFilterItem)
                     setId.add(obj.Product_Part__c);
+				
+				map<Id, Part__c> mapIdVsPart = new map<Id, Part__c>();
+				
+				 if(setId.size() > 0){
+					for(Part__c objPart : [Select Id, Name,Part_Name__c,Usage__c,HSN_CODE__c,List_Price_Standard_price__c,UOI__c
+										   from Part__c where Id =:setId])
+					{
+						mapIdVsPart.put(objPart.Id, objPart);
+					}
+				}
                 
                 for(Stock__c objStock : [Select Id, Product_In__c, Product_Out__c, Product_Part__c, Total_Quantity__c,Ware_House__c
                                          from Stock__c 
@@ -188,6 +201,9 @@ public class PurchaseOrderCMP {
                 
                 for(Purchase_Indent_Line_Item__c obj : lstFilterItem){
                     IndentItemWrapper objwrap = new IndentItemWrapper();
+					
+					if(mapIdVsPart.containskey(obj.Product_Part__c) && mapIdVsPart.get(obj.Product_Part__c).UOI__c != null)
+						obj.UOI_Text__c = mapIdVsPart.get(obj.Product_Part__c).UOI__c;
                     objwrap.objPILI = obj;
                     if(mapIdvsStock.containsKey(obj.Product_Part__c))
                         objwrap.objStock = mapIdvsStock.get(obj.Product_Part__c);
@@ -210,14 +226,17 @@ public class PurchaseOrderCMP {
     @AuraEnabled
     public static string SavePurchaseOrder(string strMainWrapper){
         mainWrapper objMainWrap = new mainWrapper();
-        
+        Decimal taxable_amount=0;
         List<Purchase_Order_Line_Item__c> lstPOLI = new List<Purchase_Order_Line_Item__c>();
         try{
             system.debug('strMainWrapper--'+strMainWrapper);
             objMainWrap = (mainWrapper)Json.deserialize(strMainWrapper, mainWrapper.class);
+            User usr = [Select Branch__c from user where id =:UserInfo.getUserId()];
             objMainWrap.success = true;
             if(objMainWrap.objPurchaseOrder != null){
-                
+                objMainWrap.objPurchaseOrder.Shipping_Zip_Postal_Code__c=string.valueof(objMainWrap.objPurchaseOrder.Shipping_Zip_Postal_Code__c);
+                objMainWrap.objPurchaseOrder.Billing_Zip_Postal_Code__c=Integer.valueof(objMainWrap.objPurchaseOrder.Billing_Zip_Postal_Code__c);
+                objMainWrap.objPurchaseOrder.branch__c = usr.branch__c;
                 upsert objMainWrap.objPurchaseOrder;
                 
                 String strPurchaseOrderId =objMainWrap.objPurchaseOrder.Id;
@@ -225,23 +244,32 @@ public class PurchaseOrderCMP {
                 List<Purchase_Order_Line_Item__c> DeletePOLIList = new List<Purchase_Order_Line_Item__c>();
                 List<Purchase_Order_Line_Item__c> lstSavedPOLI =[Select Id, Name from Purchase_Order_Line_Item__c where Purchase_Order__c =: strPurchaseOrderId];
                 
+                    
                 for(OrderItemWapper objOIW : objMainWrap.lstOIW){
                     Purchase_Order_Line_Item__c obj = new Purchase_Order_Line_Item__c();
                     if(String.isNotBlank(objOIW.strId)){
                         obj.Id = objOIW.strId;
                         setIdPOLI.add(obj.Id);
                     }
+                    obj.branch__c = usr.branch__c;
                     obj.HSN_Code__c = objOIW.HSNCode;
                     obj.Purchase_Order__c = objMainWrap.objPurchaseOrder.Id;
                     obj.Product_Part__c = objOIW.objPart.Id;
                     obj.Name = objOIW.objPart.Part_Name__c;
-                    obj.UOI__c = objOIW.objPart.UOI__c;
+                    if(objMainWrap.objPurchaseOrder.Against__c == 'Direct')
+                    	obj.UOI_Text__c = objOIW.objPart.UOI__c;
+                    else
+                        obj.UOI_Text__c = objOIW.UOI;
                     obj.Doc_No__c = objOIW.DocNo;
                     if(objOIW.DocDate != null)
-                    	obj.Doc_Date__c = objOIW.DocDate.date();
+                        obj.Doc_Date__c = objOIW.DocDate.date();
                     obj.Quantity__c = objOIW.Quantity;
                     obj.Sales_Price__c = objOIW.Rate;
+                    decimal totalamount = obj.Quantity__c * obj.Sales_Price__c;
                     obj.Discount__c = objOIW.DiscRate;
+                    decimal DiscountAmount = (totalamount * obj.Discount__c)/100;
+                    decimal AfterDiscount  = totalamount - DiscountAmount;
+                    taxable_amount = taxable_amount + AfterDiscount;
                     obj.CGST__c = objOIW.CGSTRate;
                     obj.SGST__c = objOIW.SGSTRate;
                     obj.IGST__c = objOIW.IGSTRate;
@@ -249,9 +277,10 @@ public class PurchaseOrderCMP {
                     obj.Remark__c = objOIW.remarks;
                     obj.Specification__c = objOIW.specification;
                     if(String.isNotBlank(objOIW.strIndentItemId))
-                    	obj.Purchase_Indent_Line_Item__c = objOIW.strIndentItemId;
+                        obj.Purchase_Indent_Line_Item__c = objOIW.strIndentItemId;
                     obj.Application__c = objOIW.application;
                     obj.Stock_Actual__c = objOIW.stockActual;
+                    
                     lstPOLI.add(obj);
                 }
                 if(lstPOLI.size() > 0)
@@ -263,7 +292,7 @@ public class PurchaseOrderCMP {
                     if(setIdPOLI.size() > 0){
                         for(Purchase_Order_Line_Item__c obj : lstSavedPOLI)
                             if(!setIdPOLI.contains(obj.Id))
-                            	DeletePOLIList.add(obj);
+                                DeletePOLIList.add(obj);
                     }
                     else{
                         DeletePOLIList.addAll(lstSavedPOLI);
@@ -287,11 +316,12 @@ public class PurchaseOrderCMP {
                         } 
                         objCharges.Charges__c = td.strTaxId;
                         objCharges.Charge_Percentage__c = td.TaxPercentage;
-                        objCharges.Total_Amount__c = td.TotalAmountAfterDisc;
+                        objCharges.Total_Amount__c = taxable_amount;
                         objCharges.IGST__c =td.IGST ;
                         objCharges.SGST__c =td.SGST ;
                         objCharges.CGST__c =td.CGST ;
                         objCharges.Purchase_Order__c = objMainWrap.objPurchaseOrder.Id;
+                        objCharges.Branch_Office__c= usr.branch__c;
                         lstCharge.add(objCharges);  
                     }
                     upsert lstCharge;
@@ -302,7 +332,7 @@ public class PurchaseOrderCMP {
                     if(setIdCharges.size() > 0){
                         for(Charges__c obj : lstSavedCharges)
                             if(!setIdCharges.contains(obj.Id))
-                            	deleteLStCharges.add(obj);
+                                deleteLStCharges.add(obj);
                     }
                     else{
                         deleteLStCharges.addAll(lstSavedCharges);
@@ -357,6 +387,14 @@ public class PurchaseOrderCMP {
         return lstfieldNames;
     }
     
+    @AuraEnabled
+    public static String addOrderItemWapper(){
+        OrderItemWapper oiw = new OrderItemWapper();
+        oiw.isEdit=true;
+        return JSON.serialize(oiw);
+    }
+    
+    
     public class mainWrapper{
         public List<OrderItemWapper> lstOIW;
         public List<option> againstPickList;
@@ -396,10 +434,13 @@ public class PurchaseOrderCMP {
         }
     }
     
+    
+    
     public class OrderItemWapper{
         public Part__c objPart;
         public string strId;
         public string DocNo;
+        public string UOI;
         public Datetime DocDate;    
         public String specification;
         public String strIndentItemId;
@@ -460,7 +501,7 @@ public class PurchaseOrderCMP {
             DeliveryDate= null;
             application= '';
             Remarks= '';
-            isEdit = false;
+            isEdit = true;
             
             strPartErr ='';
             strDeliveryDateErr = '';

@@ -3,9 +3,9 @@
     <head>
         <style type="text/css">
             @page 
-            {
-            size:12.94in 13.90in;
-            margin-top: 180px;
+            {  
+            size:11.7in 14.5in; 
+            margin-top: 5.00cm;
             page-break-after:always;
             @top-center 
             {                   
@@ -19,21 +19,26 @@
             div.header 
             {                
             padding: 5px; 
-            padding-top:50px;
+            padding-top:10px;
             padding-bottom:5px;
             position: running(header); 
             content: "Page " counter(page) " of " counter(pages);
             } 
             div.footer 
             {                
-            padding: 5px;               
+            //padding: 5px;               
             position: running(footer);    
             }
             @page 
             {
             @bottom-center 
             {
-            padding: 10px;
+            padding-top: 10px;
+            content: "Registered Office : N-122, Panchsheel Park, New Delhi - 100 017";
+            }
+            @bottom-right 
+            {
+            padding-top: 10px;
             content: "Page " counter(page) " of " counter(pages);
             }
             }
@@ -43,6 +48,7 @@
             border-spacing: 0px;
             font-size:12px;
             font-family: Arial;
+            -fs-table-paginate: paginate; 	
             }
             
             td {
@@ -70,31 +76,37 @@
            
             <table style="width:100%;border-collapse: collapse;">
                 <tr>
-                    <td style="border:none;padding:0px;" width="20%" valign="top">
+                   <!-- <td style="border:none;padding:0px;" width="20%" valign="top">
                         <left>
                             <apex:image url="{!$Resource.PerformaLeftSidelogo}" width="210" height="60"/> 
+                        </left>
+                    </td>-->
+                    <td style="border:none;padding:0px;" width="20%" valign="top">
+                        <left>
+                            <apex:image url="{!$Resource.PowerpartsLogo}" width="210" height="60"/> 
                         </left>
                     </td>
                     <td style="border:none;padding:0px;" width="60%" valign="top" rendered="{!If(pagecount==1 ,true,false) }">
                         <apex:variable value="{!pagecount + 1}" var="pagecount" />
                         <center>
-                            <b><apex:outputText value="POWERPARTS PRIVATE LIMITED" style="font-size:13px;font-family: Arial;" /></b><br/>
-                            <b><apex:outputText value="Registered Office : " style="font-size:11px;font-family: Arial;" /></b>
-                            <apex:outputText value="N-122, Panchsheel Park, New Delhi - 100 017" style="font-size:11px;font-family: Arial;" /><br/>
-                            <b style="font-size:13px;font-family: Arial;">{!pdfheader.Address_Header__c}</b><br/>
-                            <div style="font-size:11px;font-family: Arial;">{!pdfheader.Address_Line1__c}<br/>
+                            <b><apex:outputText value="POWERPARTS PRIVATE LIMITED" style="font-size:14px;font-family: Arial;" /></b><br/>
+                           <!-- <b><apex:outputText value="Registered Office : " style="font-size:12px;font-family: Arial;" /></b>
+                            <apex:outputText value="N-122, Panchsheel Park, New Delhi - 100 017" style="font-size:12px;font-family: Arial;" /><br/>-->
+                            <b style="font-size:14px;font-family: Arial;">{!pdfheader.Address_Header__c}</b><br/>
+                            <div style="font-size:12px;font-family: Arial;">{!pdfheader.Address_Line1__c}<br/>
                                 {!pdfheader.Address_Line_2__c}<br/>
-                                {!pdfheader.Gstin__c}<br/><br/>
-                                {!pdfheader.IEC_No__c}&nbsp;&nbsp;&nbsp;{!pdfheader.PAN_No__c}<br/>
+                                {!pdfheader.Gstin__c}<br/>
+                                {!pdfheader.Email__c}&nbsp;&nbsp;<br/> 
+                                 {!pdfheader.Tel__c}
+                                <!--{!pdfheader.IEC_No__c}&nbsp;&nbsp;&nbsp;{!pdfheader.PAN_No__c}<br/>
                                 {!pdfheader.BANK__c}<br/>
-                                {!pdfheader.Bank_A_C_No__c}&nbsp;&nbsp;&nbsp;{!pdfheader.IFC_RTGS_NEFT__c}<br/>
-                                {!pdfheader.Email__c}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{!pdfheader.Tel__c} 
-                            </div>
+                                {!pdfheader.Bank_A_C_No__c}&nbsp;&nbsp;&nbsp;{!pdfheader.IFC_RTGS_NEFT__c}<br/>-->
+                                </div>
                         </center>
                     </td>
-                    <td style="border:none;padding:0px;" width="60%" valign="top">
+                       <td style="border:none;padding:0px;" width="60%" valign="top">
                         <Right>
-                            <apex:image url="{!$Resource.PerformaRightSidelogo}" width="210" height="60"/> 
+                            <apex:image url="{!$Resource.PerkinsLogo}" width="210" height="160" style="margin-top: -40px;"/> 
                         </Right>
                     </td>
                 </tr>
@@ -102,11 +114,13 @@
             
         </div>
         <body>
-            <div style="text-align:center;font-size:20px">
-            <b >SALE RETURN CUM CREDIT NOTE</b>
+            <div class="content" style="text-align:center;font-size:20px">
+            <b >SALE RETURN</b>
             </div>
+            <div class="content">
+                
             
-            <table width="100%" style="border:none">
+            <table  width="100%" style="border:none">
                 <tr>
                     <td style="width: 50%; border:none;text-align: left; "><b>Return-From</b>
                        
@@ -125,11 +139,14 @@
                 <tr>
                   
                     <td style="width: 50%; text-align: left;border:none">
-                        <apex:outputText value="{!Sales_Order_Return__c.Customer_Party__r.ShippingStreet }" />&nbsp;,&nbsp;
+                       <!-- <apex:outputText value="{!Sales_Order_Return__c.Customer_Party__r.ShippingStreet }" />&nbsp;,&nbsp;
                         <apex:outputText value="{!Sales_Order_Return__c.Customer_Party__r.ShippingCity }" />&nbsp;,&nbsp;
                         <apex:outputText value="{!Sales_Order_Return__c.Customer_Party__r.ShippingState }" />&nbsp;,&nbsp;
                         <apex:outputText value="{!Sales_Order_Return__c.Customer_Party__r.ShippingPostalCode }" />&nbsp;,&nbsp;
-                        <apex:outputText value="{!Sales_Order_Return__c.Customer_Party__r.ShippingCountry}" />
+                        <apex:outputText value="{!Sales_Order_Return__c.Customer_Party__r.ShippingCountry}" />-->
+                        <!--<apex:outputText value="{!Sales_Order_Return__c.Shipping_Address_Formula__c}" escape="false"/>-->
+                        <apex:outputText value="{!Sales_Order_Return__c.Bill_To_Customer_Name__r.name}" escape="false"/><br/>
+                        <apex:outputText value="{!Sales_Order_Return__c.Billing_Address__c}" escape="false"/>
                     </td>
                     <td style="width: 18%; text-align: left;border:none">
                         <b>Date</b>
@@ -138,7 +155,10 @@
                         <b>:</b>
                     </td>
                     <td style="width: 30%; text-align: left;border:none">
-                        <apex:outputText value="{!Sales_Order_Return__c.Voucher_Date__c}" />
+                         <apex:outputText value="{0, date, dd - MMM - yyyy}">
+                            <apex:param value="{!Sales_Order_Return__c.Voucher_Date__c}" />
+                        </apex:outputText> 
+                        
                     </td>
                 </tr> 
             </table>
@@ -149,7 +169,7 @@
                     </td>
                     <td style="width: 2%; text-align: left;border:none"><b>:</b>
                     </td>
-                    <td style="width: 30%; text-align: left;border:none"><apex:outputText value="Not Mapped" />
+                    <td style="width: 30%; text-align: left;border:none"><apex:outputText value="{!Sales_Order_Return__c.CST_No__c}" />
                     </td>
                 </tr>
                 <tr>
@@ -158,7 +178,7 @@
                     </td>
                     <td style="width: 2%; text-align: left;border:none"><b>:</b>
                     </td>
-                    <td style="width: 30%; text-align: left;border:none"><apex:outputText value="Not Mapped" />
+                    <td style="width: 30%; text-align: left;border:none"><apex:outputText value="{!Sales_Order_Return__c.VAT_TIN_No__c}" />
                     </td>
                 </tr>
                 
@@ -174,13 +194,36 @@
                     <td style="width: 50%; text-align: left;border:none"></td>
                 </tr>
                 <tr>              
-                    <td style="width: 20%; text-align: left;border:none" ><apex:outputText value="{!Sales_Order_Return__c.Bill_To_Customer_Name__r.name}" />
+                    <td style="width: 20%; text-align: left;border:none" ><apex:outputText value="{!con.salutation}" /> &nbsp; <apex:outputText value="{!con.name}" />
                     </td>
-                    <td style="width: 12%; text-align: Center;border:none"><apex:outputText value="{!Sales_Order_Return__c.Bill_To_Customer_Name__r.Mobilephone}" />
+                    <td style="width: 12%; text-align: Center;border:none"><apex:outputText value="{!con.Mobilephone}" />
                     </td>
-                    <td style="width: 18%; text-align: left;border:none"><apex:outputText value="{!Sales_Order_Return__c.Bill_To_Customer_Name__r.Email}" />
+                    <td style="width: 18%; text-align: left;border:none"><apex:outputText value="{!con.Email}" />
                     </td>
                     <td style="width: 50%; text-align: left;border:none"></td>
+                </tr>
+                 <tr>
+                    <td style="border:none;"  valign="top">
+                    </td>
+                    <td style="border:none;"  valign="top">
+                    </td>
+                    <td style="border:none;"  valign="top">
+                    </td>
+                    <td style="border:none;"  valign="top">
+                    </td>
+                    <td style="border:none;"  valign="top">
+                       
+                    </td>
+                    <td style="border:none;"  valign="top">
+                        
+                    </td>
+                    <td style="border:none;"  valign="top">
+                         
+                    </td>
+                    
+                    <td style="border:none;"  valign="top">
+                         
+                    </td>
                 </tr>
             </table>
             
@@ -191,7 +234,10 @@
                     </td>
                     <td style="width: 2%; text-align: left;border:none"><b>:</b>
                     </td>
-                    <td style="width: 30%; text-align: left;border:none"><apex:outputText value="Not Mapped" />
+                    <td style="width: 30%; text-align: left;border:none"><apex:outputText value="{!Sales_Order_Return__c.invoice__r.Invoice_Number__c}" />&nbsp; <b>Dated</b> &nbsp;
+                        <apex:outputText value="{0, date, dd - MMM - yyyy}">
+                            <apex:param value="{!Sales_Order_Return__c.invoice__r.Invoice_Date__c}" />
+                        </apex:outputText> 
                     </td>
                     
                     <td style="width: 18%; text-align: left;border:none"><b>Mode of Transport</b>
@@ -207,7 +253,11 @@
                     </td>
                     <td style="width: 2%; text-align: left;border:none"><b>:</b>
                     </td>
-                    <td style="width: 30%; text-align: left;border:none"><apex:outputText value="{!Sales_Order_Return__c.Reference_No__c}" />&nbsp; dated &nbsp;<apex:outputText value="{!Sales_Order_Return__c.Reference_Date__c}" />
+                    <td style="width: 30%; text-align: left;border:none"><apex:outputText value="{!Sales_Order_Return__c.Reference_No__c}" />&nbsp; <b>Dated</b> &nbsp;
+                        <apex:outputText value="{0, date, dd - MMM - yyyy}">
+                            <apex:param value="{!Sales_Order_Return__c.Reference_Date__c}" />
+                        </apex:outputText> 
+                        
                     </td>
                     
                     <td style="width: 18%; text-align: left;border:none"><b>Transporter Name</b>
@@ -268,7 +318,7 @@
                     </td>
                     <td style="width: 2%; text-align: left;border:none"><b>:</b>
                     </td>
-                    <td style="width: 30%; text-align: left;border:none"><apex:outputText value="Delivery_Term__c" />
+                    <td style="width: 30%; text-align: left;border:none"><apex:outputText value="{!Sales_Order_Return__c.Delivery_Term__c}" />
                     </td>
                 </tr>  
                  <tr>
@@ -283,7 +333,7 @@
                 </tr>  
             </table>
             <div style="text-align:Left;font-size:20px">
-            Return of Spares Parts...
+            Return of Spares Parts
             </div>
             <apex:variable value="{!1}" var="index" />
             <table width="100%">
@@ -301,25 +351,25 @@
                             <apex:outputText value="Qty" />
                         </th>
                         <th  width="6%"  style="text-align:center; border-left: none; border-right: none;">
-                            <apex:outputText value="Unit" />
+                            <apex:outputText value="UOM" />
                         </th>
                         <th  width="12.5%"  style="text-align:center; border-left: none; border-right: none;">
                             <apex:outputText value="Unit Rate (INR)" />
                         </th>
                         <th  width="12.5%"  style="text-align:center; border-left: none; border-right: none;">
-                            <apex:outputText value="Amount INR" />
+                            <apex:outputText value="Amount With GST(INR)" />
                         </th>
                     </tr>
                     <apex:repeat value="{!lstSORlineitem}" var="dli" rendered="{!If(lstSORlineitem !=null ,true,false) }">
                         <tr>
-                            <td style="border:none"><apex:outputText value="{!index}" />
+                            <td style="text-align:center;border:none"><apex:outputText value="{!index}" />
                             <apex:variable value="{!index + 1}" var="index" /></td>
-                            <td style="border:none"><apex:outputText value="{!dli.Part_Number__r.name}" /></td>
-                            <td style="border:none"><apex:outputText value="{!dli.Part_Number__r.Part_Name__c}" /></td>
-                            <td style="text-align:right;border:none"><apex:outputText value="{!dli.Quantity__c}" /></td>
-                            <td style="text-align:right;border:none"><apex:outputText value="{!dli.Unit__c}" /></td>
-                            <td style="text-align:right;border:none"><apex:outputText value="{!dli.Unit_Price__c}" /></td>
-                            <td style="text-align:right;border:none"><apex:outputText value="{!dli.Net_Amount__c}" /></td>
+                            <td style="text-align:center;border:none"><apex:outputText value="{!dli.Part_Number__r.name}" /></td>
+                            <td style="text-align:center;border:none"><apex:outputText value="{!dli.Part_Number__r.Part_Name__c}" /></td>
+                            <td style="text-align:center;border:none"><apex:outputText value="{!dli.Quantity__c}" /></td>
+                            <td style="text-align:center;border:none"><apex:outputText value="{!dli.Part_Number__r.UOM__c}" /></td>
+                            <td style="text-align:center;border:none"><apex:outputText value="{!dli.Unit_Price__c}" /></td>
+                            <td style="text-align:center;border:none"><apex:outputText value="{!dli.Net_Amount__c}" /></td>
                         </tr>
                     </apex:repeat> 
             </table>
@@ -335,20 +385,20 @@
                 </tr>
                 <tr>
                     <td style="text-align:left ;border-style: dashed;  width:50%;border-left: none; border-right: none;"><b>Total Tax</b></td>
-                    <td style="text-align:right ;border-style: dashed;  width:50%;border-left: none; border-right: none;"></td>
+                    <td style="text-align:right ;border-style: dashed;  width:50%;border-left: none; border-right: none;"><b>{!overallGst}</b></td>
                 </tr>
                 <tr>
                     <td style="text-align:left ; width:50%;border-left: none; border-right: none;"><b>Total Amount</b></td>
-                    <td style="text-align:right ; width:50%;border-left: none; border-right: none;"><b>{!GrossTotal}</b></td>
+                    <td style="text-align:right ; width:50%;border-left: none; border-right: none;"><b>{!NetValue}.00</b></td>
                 </tr>
                 <tr>
-                    <td colspan="2" style="text-align:left ; width:100%;border-left: none; border: none;"><b>Amounts in Words</b></td>
+                    <td colspan="2" style="text-align:left ; width:100%;border-left: none; border: none;"><b>Amount in Words</b></td>
                 </tr>
                 <tr>
                     <td colspan="2" style="text-align:left ; width:100%;border-left: none; border-right: none;border-top: none;"><apex:outputText value="{!totalAmountinWords}" /></td>
                 </tr>
             </table>
-            <table style="width:100%;border:none;border-collapse: collapse;page-break-before:always;">
+            <table style="margin-top: 5%; width:100%;border:none;border-collapse: collapse;">
                 <tr>
                     <td>
                         <center><b>TERMS &amp; CONDITIONS</b></center><br/>
@@ -357,7 +407,7 @@
                 </tr>
                 
             </table>
-            
+            </div>
         </body>
     </apex:form>
 </apex:page>

@@ -7,7 +7,7 @@
     <aura:handler event="aura:doneWaiting" action="{!c.hideSpinner}"/>
     -->
     <aura:handler name="init" value="{!this}" action="{!c.doinit}" />
-    
+    <aura:attribute name="issave" type="boolean" default="false"/>
     <aura:attribute name="wrapMain" type="object" />
     <aura:attribute name="isListOpen12" type="boolean" default = "false" />
     <aura:attribute name="MainProd" type="string" default = "" />
@@ -38,6 +38,9 @@
     
     <aura:attribute name="isdeliverydate" type="boolean" default="false" />
     <aura:attribute name="isdiscount" type="boolean" default="false" />
+    
+    <aura:attribute name="isdisable" type="boolean" default="false" />
+    <aura:attribute name="islineError" type="boolean" default="false" />
     
     
     
@@ -72,7 +75,7 @@
                             <div>
                                 
                                 <div class="slds-grid slds-gutters slds-m-top_medium" onclick="{!c.closeAll}">
-                                    <div class="slds-col slds-size_12-of-12">
+                                    <div class="slds-col slds-size_12-of-12" >
                                         <div class="slds-grid slds-gutters">
                                             <div class="slds-col slds-size_1-of-12">
                                             </div>
@@ -87,7 +90,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
                                 </div>
                                 
                                 <!--********************************** For Success/Error Message. Code starts********************************-->
@@ -128,53 +130,55 @@
                                 </div>         
                                 
                                 
-                                <div class="slds-table--header-fixed_container" style="height:250px;">
+                                <div class="slds-table--header-fixed_container" style="height:250px;margin-top:2%">
                                     <div class="slds-scrollable_y" style="height:100%;">
                                         <table class="slds-table slds-table--bordered slds-table_striped slds-table--cell-buffer slds-max-medium-table--stacked-horizontal slds-table--header-fixed" >
-                                            <thead>
-                                                <tr class="slds-line-height_reset">
-                                                    <th class="" scope="col" style="width: 1rem;" >
-                                                        <div class="slds-truncate slds-cell-fixed slds-cell-wrap" title="checkbox"></div>
-                                                    </th>
-                                                    <th class="" scope="col" style="width: 5rem;">
-                                                        <div class="slds-truncate slds-cell-fixed slds-cell-wrap" title="Product Name">Part Number</div>
-                                                    </th>
-                                                    <th class="" scope="col" style="width: 2.5rem;">
-                                                        <div class="slds-truncate slds-cell-fixed slds-cell-wrap" title="Product Name">Old Part Number</div>
-                                                    </th>
-                                                    <th class="" scope="col" style="width: 2rem;">
-                                                        <div class="slds-truncate slds-cell-fixed slds-cell-wrap" title="Product Code">Part Name</div>
-                                                    </th>
-                                                    <th class="" scope="col" style="width: 2rem;">
-                                                        <div class="slds-truncate slds-cell-fixed slds-cell-wrap" title="List Price">List Price</div>
-                                                    </th>
-                                                    <th class="" scope="col" style="width: 2rem;">
-                                                        <div class="slds-truncate slds-cell-fixed slds-cell-wrap" title="Product Code">Kolkata Warehouse</div>
-                                                    </th>
-                                                    <th class="" scope="col" style="width: 2rem;">
-                                                        <div class="slds-truncate slds-cell-fixed slds-cell-wrap" title="List Price">Gurugram Warehouse</div>
-                                                    </th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <aura:iteration items="{!v.wrapMain.lstWrapp}" var="cusProd" indexVar="index">
-                                                    <tr width="100%" id="{!index}"> 
-                                                        <td class="dataCell" style="width: 8rem;" ><lightning:input type="checkbox" value="{!cusProd.isSelected}" checked="{!cusProd.isSelected}" name="{!index}" onchange="{!c.checkJs}"/></td>
-                                                        <td class="dataCell" style="width: 8rem;"><a href="{! '/' + cusProd.objProd.Id}"> {!cusProd.objProd.Name}</a></td>
-                                                        <td class="dataCell" style="width: 9rem;">{!cusProd.oldPartName}</td>
-                                                        <td class="dataCell" style="width: 9rem;">{!cusProd.objProd.Part_Name__c}</td>
-                                                        <td class="dataCell" style="width: 7rem;">
-                                                            <aura:if isTrue="{!v.wrapMain.isService}">
-                                                                {!cusProd.objProd.Service_Price__c}
-                                                                <aura:set attribute="else">
-                                                                    {!cusProd.objProd.List_Price_Standard_price__c}
-                                                                </aura:set>
-                                                            </aura:if></td>
-                                                        <td class="dataCell" style="width: 9rem;">{!cusProd.Klwr}</td>
-                                                        <td class="dataCell" style="width: 7rem;">{!cusProd.GrWr}</td>
-                                                    </tr> 
-                                                </aura:iteration>
-                                            </tbody>
+                                            <thead >
+                                                    <tr class="slds-line-height_reset" >
+                                                        <th class="" scope="col" style="width: 1% " >
+                                                            <div class="slds-truncate slds-cell-fixed slds-cell-wrap" title="checkbox"></div>
+                                                        </th>
+                                                        <th class="" scope="col" style="width: 10%;">
+                                                            <div class="slds-truncate slds-cell-fixed slds-cell-wrap" title="Product Name">Part Number</div>
+                                                        </th>
+                                                         <th class="" scope="col" style="width: 25%;">
+                                                            <div class="slds-truncate slds-cell-fixed slds-cell-wrap" title="Product Name">Old Part Number</div>
+                                                        </th>
+                                                        <th class="" scope="col" style="width: 12%;">
+                                                            <div class="slds-truncate slds-cell-fixed slds-cell-wrap" title="Product Code">Part Name</div>
+                                                        </th>
+                                                        <th class="" scope="col" style="width: 7%;">
+                                                            <div class="slds-truncate slds-cell-fixed slds-cell-wrap" title="List Price">List Price</div>
+                                                        </th>
+                                                        <th class="" scope="col" style="width: 10%;">
+                                                            <div class="slds-truncate slds-cell-fixed slds-cell-wrap" title="Product Code">Kolkata Warehouse</div>
+                                                        </th>
+                                                        <th class="" scope="col" style="width: 10%;">
+                                                            <div class="slds-truncate slds-cell-fixed slds-cell-wrap" title="List Price">Gurugram Warehouse</div>
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <aura:iteration items="{!v.wrapMain.lstWrapp}" var="cusProd" indexVar="index">
+                                                        <tr width="100%" id="{!index}"> 
+                                                            <td class="dataCell" style="width: 1rem;" ><lightning:input type="checkbox" value="{!cusProd.isSelected}" checked="{!cusProd.isSelected}" name="{!cusProd.objProd.Id}" onchange="{!c.checkJs}" disabled="{!v.isdisable}"/></td>
+                                                            <td class="dataCell" style="width: 4rem;"><a href="{! '/' + cusProd.objProd.Id}"> {!cusProd.objProd.Name}</a></td>
+                                                              <td class="dataCell" style="width: 14rem;"><div  class="slds-cell-wrap">{!cusProd.oldPartName}</div></td>
+                                                            <td class="dataCell" style="width: 9rem;">{!cusProd.objProd.Part_Name__c}</td>
+                                                            <td class="dataCell" style="width: 7rem;">
+                                                                <aura:if isTrue="{!v.wrapMain.isService}">
+                                                                    {!cusProd.objProd.Service_Price__c}
+                                                                    <aura:set attribute="else">
+                                                                        {!cusProd.objProd.List_Price_Standard_price__c}
+                                                                    </aura:set>
+                                                                </aura:if>
+                                                            </td>
+                                                            <td class="dataCell" style="width: 9rem;">{!cusProd.Klwr}</td>
+                                                            <td class="dataCell" style="width: 7rem;">{!cusProd.GrWr}</td>
+                                                            
+                                                        </tr> 
+                                                    </aura:iteration>
+                                                </tbody>
                                         </table>
                                     </div>
                                 </div>
@@ -184,133 +188,162 @@
                         <aura:if isTrue="{!v.showSection}">
                             <div class=""> 
                                 <div class="slds-table--header-fixed_container " style="height:300px; overflow-x:auto">
-                                    <div class="slds-scrollable_y" style="height:100%; width:170%">
+                                    <div class="slds-scrollable_y" style="height:100%; width:220%">
                                         <table class="slds-table slds-table--header-fixed slds-table_bordered slds-table_fixed-layout slds-border_left slds-border_right textsize" style="table-layout:fixed">
                                             <thead>
                                                 <tr class="slds-line-height_reset">
-                                                    <th class=" slds-cell-shrink padding" scope="col"  >
-                                                        <div class="slds-truncate slds-cell-fixed slds-cell-wrap" title="Action" >Action</div>
+                                                    <aura:if isTrue="{!v.islineError}">
+                                                    <th class=" slds-cell-shrink padding textcenter" scope="col"  >
+                                                        <div class="slds-truncate slds-cell-fixed slds-cell-wrap headwidth" title="Error" >Message</div>
                                                     </th>
-                                                    <th class=" slds-cell-shrink padding" scope="col"  >
+                                                    </aura:if>
+                                                    <th class=" slds-cell-shrink padding textcenter" scope="col"  >
+                                                        <div class="slds-truncate slds-cell-fixed slds-cell-wrap headwidth" title="Action" >Action</div>
+                                                    </th>
+                                                    <th class=" slds-cell-shrink padding textcenter" scope="col"  >
+                                                        <div class="slds-truncate slds-cell-fixed slds-cell-wrap" title="Serial" >Serial</div>
+                                                    </th>
+                                                    <th class=" slds-cell-shrink padding textcenter" scope="col"  >
                                                         <div class="slds-truncate slds-cell-fixed slds-cell-wrap" title="Part Name" >Part Name</div>
                                                     </th>
-                                                    <th class=" slds-cell-shrink slds-text-align_center padding" scope="col"  >
+                                                    <th class=" slds-cell-shrink slds-text-align_center padding textcenter" scope="col"  >
                                                         <div class="slds-truncate slds-cell-fixed slds-cell-wrap" title="Part Number" >Part Number</div>
                                                     </th>
-                                                    <th class=" slds-cell-shrink slds-text-align_center padding" scope="col"  >
-                                                        <div class="slds-truncate slds-cell-fixed slds-cell-wrap" title="Part Serial #" >Part Serial #</div>
+                                                    <th class=" slds-cell-shrink slds-text-align_center padding textcenter" scope="col"  >
+                                                        <div class="slds-truncate slds-cell-fixed slds-cell-wrap" title="Part Number" >Part Serial</div>
                                                     </th>
-                                                    <th class=" slds-cell-shrink slds-text-align_center padding" scope="col"  >
-                                                        <div class="slds-truncate slds-cell-fixed slds-cell-wrap" title="Pending delivery qt" >Pending <br/>DSelivery Qty</div>
+                                                    <th class=" slds-cell-shrink slds-text-align_center padding textcenter" scope="col" >
+                                                        <div class="slds-truncate slds-cell-fixed slds-cell-wrap cellwidthQty" title="Pending delivery qt" >Pending <br/>Delivery Qty</div>
                                                     </th>
                                                     
-                                                    <th class=" slds-cell-shrink slds-text-align_center padding" scope="col"  >
-                                                        <div class="slds-truncate slds-cell-fixed slds-cell-wrap" title="Stock Actual" >Stock Actual</div>
+                                                    <th class=" slds-cell-shrink slds-text-align_center padding textcenter" scope="col"  >
+                                                        <div class="slds-truncate slds-cell-fixed slds-cell-wrap cellwidthQty" title="Stock Actual" >Stock<br/> Actual</div>
+                                                    </th>
+                                                    <th class=" slds-cell-shrink slds-text-align_center padding textcenter" scope="col"  >
+                                                        <div class="slds-truncate slds-cell-fixed slds-cell-wrap cellwidthQty" title="saleable Qty">Saleable<br/> Qty</div>
+                                                    </th>
+                                                    <th class=" slds-cell-shrink slds-text-align_center padding textcenter" scope="col"  >
+                                                        <div class="slds-truncate slds-cell-fixed slds-cell-wrap headwidth" title="List Price">List Price</div>
+                                                    </th>
+                                                    <th class=" slds-cell-shrink slds-text-align_center padding textcenter" scope="col"  >
+                                                        <div class="slds-truncate slds-cell-fixed slds-cell-wrap cellwidthQty" title="Freeze Quantity" >Freeze<br/> Quantity</div>
+                                                    </th>
+                                                    <th class=" slds-cell-shrink slds-text-align_center padding textcenter" scope="col" >
+                                                        <div class="slds-truncate slds-cell-fixed slds-cell-wrap cellwidthQty" title="Delivered Quantity" >Delivered<br/> Quantity</div>
+                                                    </th>
+                                                    <th class=" slds-cell-shrink slds-text-align_center padding textcenter" scope="col" >
+                                                        <div class="slds-truncate slds-cell-fixed slds-cell-wrap cellwidthQty" title="Quantity" ><span style = "color:red;">*</span>Quantity</div>
+                                                    </th>
+                                                    <th class=" slds-cell-shrink slds-text-align_center padding textcenter" scope="col"  >
+                                                        <div class="slds-truncate slds-cell-fixed slds-cell-wrap" title="Sales Price" style="padding-left:2%"><span style = "color:red;" >*</span>Sales Price</div>
+                                                    </th>
+                                                    <th class=" slds-cell-shrink slds-text-align_center padding textcenter" scope="col"  >
+                                                        <div class="slds-truncate slds-cell-fixed slds-cell-wrap" title="Total Price" style="padding-left:2%">Total Price</div>
+                                                    </th>
+                                                    <th class=" slds-cell-shrink slds-text-align_center padding headwidth" scope="col" >
+                                                        <div class="slds-truncate slds-cell-fixed slds-cell-wrap " title="Discount %" style="width:8%">Discount % <lightning:input type="checkbox" label="Same" name="input2" checked="{!v.isdiscount}" onchange="{!c.discountactionCheckbox}"/></div>
+                                                    </th>
+                                                    <th class=" slds-cell-shrink slds-text-align_center padding textcenter" scope="col"  >
+                                                        <div class="slds-truncate slds-cell-fixed slds-cell-wrap" title="Discount Amount" style="padding-left:2%">Discount Amount</div>
+                                                    </th>
+                                                    <th class="slds-cell-shrink slds-text-align_center padding textcenter" scope="col"  >
+                                                        <div class="slds-truncate slds-cell-fixed slds-cell-wrap textcenter" title="Total Amount" style="padding-left:2%">Total Amount</div>
                                                     </th>
                                                     <th class=" slds-cell-shrink slds-text-align_center padding" scope="col"  >
-                                                        <div class="slds-truncate slds-cell-fixed slds-cell-wrap" title="saleable Qty" >Saleable Qty</div>
+                                                        <div class="slds-truncate slds-cell-fixed slds-cell-wrap" title="HSN Code" style="padding-left:2%">HSN Code</div>
                                                     </th>
-                                                    <th class=" slds-cell-shrink slds-text-align_center padding" scope="col"  >
-                                                        <div class="slds-truncate slds-cell-fixed slds-cell-wrap" title="List Price">List Price</div>
-                                                    </th>
-                                                    <th class=" slds-cell-shrink slds-text-align_center padding" scope="col"  >
-                                                        <div class="slds-truncate slds-cell-fixed slds-cell-wrap" title="Quantity" ><span style = "color:red;">*</span>Quantity</div>
-                                                    </th>
-                                                    <th class=" slds-cell-shrink slds-text-align_center padding" scope="col"  >
-                                                        <div class="slds-truncate slds-cell-fixed slds-cell-wrap" title="Sales Price" ><span style = "color:red;" >*</span>Sales Price</div>
-                                                    </th>
-                                                    <th class=" slds-cell-shrink slds-text-align_center padding" scope="col"  >
-                                                        <div class="slds-truncate slds-cell-fixed slds-cell-wrap" title="Total Price" >Total Price</div>
-                                                    </th>
-                                                    <th class=" slds-cell-shrink slds-text-align_center padding" scope="col"  >
-                                                        <div class="slds-truncate slds-cell-fixed slds-cell-wrap" title="Discount %" >Discount % <lightning:input type="checkbox" label="Same" name="input2" checked="{!v.isdiscount}" onchange="{!c.discountactionCheckbox}"/></div>
-                                                    </th>
-                                                    <th class=" slds-cell-shrink slds-text-align_center padding" scope="col"  >
-                                                        <div class="slds-truncate slds-cell-fixed slds-cell-wrap" title="Discount Amount" >Discount Amount</div>
-                                                    </th>
-                                                    <th class="slds-cell-shrink slds-text-align_center padding" scope="col"  >
-                                                        <div class="slds-truncate slds-cell-fixed slds-cell-wrap" title="Total Amount" >Total Amount</div>
-                                                    </th>
-                                                    <th class=" slds-cell-shrink slds-text-align_center padding" scope="col"  >
-                                                        <div class="slds-truncate slds-cell-fixed slds-cell-wrap" title="HSN Code" >HSN Code</div>
-                                                    </th>
+                                                    <!-- Check Export  -->
+                                                            <aura:if isTrue="{!!v.wrapMain.isExport}">
                                                     <!-- Check CGST and SGST  -->
                                                     <aura:if isTrue="{!!v.wrapMain.igstvalue}">
-                                                        <th class=" slds-cell-shrink slds-text-align_center padding" scope="col"  >
-                                                            <div class="slds-truncate slds-cell-fixed slds-cell-wrap" title="CGST%" >CGST%</div>
+                                                        <th class=" slds-cell-shrink slds-text-align_center padding textcenter" scope="col"  >
+                                                            <div class="slds-truncate slds-cell-fixed slds-cell-wrap" title="CGST%" style="padding-left:2%">CGST%</div>
                                                         </th>
-                                                        <th class=" slds-cell-shrink slds-text-align_center padding" scope="col"  >
-                                                            <div class="slds-truncate slds-cell-fixed slds-cell-wrap" title="CGST Amount" >CGST Amount</div>
+                                                        <th class=" slds-cell-shrink slds-text-align_center padding textcenter" scope="col" >
+                                                            <div class="slds-truncate slds-cell-fixed slds-cell-wrap" title="CGST Amount" style="padding-left:2%">CGST Amount</div>
                                                         </th>
-                                                        <th class=" slds-cell-shrink slds-text-align_center padding" scope="col"  >
-                                                            <div class="slds-truncate slds-cell-fixed slds-cell-wrap" title="SGST%" >SGST%</div>
+                                                        <th class=" slds-cell-shrink slds-text-align_center padding textcenter" scope="col"  >
+                                                            <div class="slds-truncate slds-cell-fixed slds-cell-wrap" title="SGST%"  style="padding-left:2%">SGST%</div>
                                                         </th>
-                                                        <th class=" slds-cell-shrink slds-text-align_center padding" scope="col"  >
-                                                            <div class="slds-truncate slds-cell-fixed slds-cell-wrap" title="SGST Amount" >SGST Amount</div>
+                                                        <th class=" slds-cell-shrink slds-text-align_center padding textcenter" scope="col"  >
+                                                            <div class="slds-truncate slds-cell-fixed slds-cell-wrap" title="SGST Amount" style="padding-left:2%">SGST Amount</div>
                                                         </th>
                                                     </aura:if>
                                                     <!-- Check  IGST  -->
                                                     <aura:if isTrue="{!v.wrapMain.igstvalue}">
-                                                        <th class=" slds-cell-shrink slds-text-align_center " scope="col"  >
-                                                            <div class="slds-truncate slds-cell-fixed slds-cell-wrap" title="IGST%" >IGST%</div>
+                                                        <th class=" slds-cell-shrink slds-text-align_center textcenter" scope="col"  >
+                                                            <div class="slds-truncate slds-cell-fixed slds-cell-wrap" title="IGST%" style="padding-left:2%">IGST%</div>
                                                         </th>
-                                                        <th class="slds-cell-shrink slds-text-align_center " scope="col"  >
-                                                            <div class="slds-truncate slds-cell-fixed slds-cell-wrap" title="IGST Amount" >IGST Amount</div>
+                                                        <th class="slds-cell-shrink slds-text-align_center textcenter " scope="col"  >
+                                                            <div class="slds-truncate slds-cell-fixed slds-cell-wrap" title="IGST Amount" style="padding-left:2%">IGST Amount</div>
                                                         </th>
                                                     </aura:if>
-                                                    <th class=" slds-cell-shrink slds-text-align_center " scope="col"  >
-                                                        <div class="slds-truncate slds-cell-fixed slds-cell-wrap" title="Net Amount" >Net Amount</div>
+                                                                </aura:if>
+                                                    <th class=" slds-cell-shrink slds-text-align_center textcenter" scope="col"  >
+                                                        <div class="slds-truncate slds-cell-fixed slds-cell-wrap" title="Net Amount" style="padding-left:2%">Net Amount</div>
                                                     </th>
-                                                    <th class=" slds-cell-shrink slds-text-align_center " scope="col" style="width: 4rem;" >
-                                                        <div class="slds-truncate slds-cell-fixed" title="Delivery Date"  >Delivery Date<lightning:input type="checkbox" label="Same Date" name="input1" checked="{!v.isdeliverydate}" onchange="{!c.deliverydateactionCheckbox}"/></div>
+                                                    <th class=" slds-cell-shrink slds-text-align_center textcenter" scope="col" style="width: 4rem;" >
+                                                        <div class="slds-truncate slds-cell-fixed" title="Delivery Date"  style="padding-left:2%">Delivery Date<lightning:input type="checkbox" label="Same Date" name="input1" checked="{!v.isdeliverydate}" onchange="{!c.deliverydateactionCheckbox}"/></div>
                                                     </th>
-                                                    <th class=" slds-cell-shrink slds-text-align_center " scope="col" style="width: 7rem;" >
-                                                        <div class="slds-truncate slds-cell-fixed slds-cell-wrap" title="Remark" style="width: 7rem;">Remark</div>
+                                                    <th class=" slds-cell-shrink slds-text-align_center textcenter" scope="col" style="width: 7rem;" >
+                                                        <div class="slds-truncate slds-cell-fixed slds-cell-wrap" title="Remark" style="width: 7rem padding-left:2%">Remark</div>
                                                     </th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <aura:iteration items="{!v.wrapMain.lstWrappTwo}" var="cusProdTwo" indexVar="index">
                                                     <tr class="slds-line-height_reset slds-hint-parent" id="{!index}">
-                                                        <td class="" ><div class="slds-truncate" title="">
+                                                        <aura:if isTrue="{! and(cusProdTwo.lineError, not(cusProdTwo.lineDone))}">
+                                                            <td class=" slds-text-align_center"  ><div class="slds-truncate " title="" style="color: red;">Error</div></td>
+                                                        </aura:if>
+                                                         <aura:if isTrue="{!cusProdTwo.lineDone}">
+                                                            <td class=" slds-text-align_center"  ><div class="slds-truncate " title="" style="color: green;">Done</div></td>
+                                                        </aura:if>
+                                                        <td class="" ><center><div class="slds-truncate" title="">
                                                             <aura:if isTrue="{!cusProdTwo.isLineItem}">
-                                                                <lightning:buttonIcon value="{!index}" alternativeText="Delete" variant="border-filled"  iconName="utility:delete"  onclick="{!c.Deletelineitem}" />
+                                                                <lightning:buttonIcon value="{!cusProdTwo.objProdchild.Id}" alternativeText="Delete" variant="border-filled"  iconName="utility:delete"  onclick="{!c.Deletelineitem}" />
                                                                 <aura:set attribute="else">
-                                                                    <lightning:buttonIcon value="{!index}" alternativeText="Delete" variant="border-filled"  iconName="utility:delete"  onclick="{!c.removeselectedpart}" />                                                                  		
+                                                                    <lightning:buttonIcon value="{!cusProdTwo.objProdchild.Product_Part__c}" alternativeText="Delete" variant="border-filled"  iconName="utility:delete"  onclick="{!c.removeselectedpart}" />                                                                  		
                                                                 </aura:set>
                                                             </aura:if>
-                                                            </div></td>
+                                                            </div></center></td>
+                                                         <td class=" slds-text-align_left"  ><div class="slds-truncate " title="{!index+1}">{!index+1}</div></td>
                                                         <td class="slds-text-align_left"  ><div class="slds-truncate" ><a href="{! '/' + cusProdTwo.objProdchild.Product_Part__c}" > {!cusProdTwo.PartName}</a></div></td>
                                                         <td class=" slds-text-align_left"  ><div class="slds-truncate" ><a href="{! '/' + cusProdTwo.objProdchild.Product_Part__c}" > {!cusProdTwo.Partnumber}</a></div></td>
-                                                        <td class=" slds-text-align_left"  ><div class="slds-truncate" title="{!cusProdTwo.objProdchild.Part_Serial__c}"><lightning:input name="" type="Text" value="{!cusProdTwo.objProdchild.Part_Serial__c}"/></div></td>
-                                                        <td class=" slds-text-align_left"  ><div class="slds-truncate" title="{!cusProdTwo.POamount}"><lightning:input name="" type="number" value="{!cusProdTwo.POamount}" disabled="true"/></div></td>
-                                                         <td class=" slds-text-align_left"  ><div class="slds-truncate" title="{!cusProdTwo.stockamount}"><lightning:input name="" type="number" value="{!cusProdTwo.stockamount}" disabled="true"/></div></td>
-                                                         <td class=" slds-text-align_left"  ><div class="slds-truncate" title="{!cusProdTwo.saleableamount}"><lightning:input name="" type="number" value="{!cusProdTwo.saleableamount}" disabled="true"/></div></td>
-                                                        <td class=" slds-text-align_left"  ><div class="slds-truncate" title="{!cusProdTwo.objProdchild.List_Price__c}"><lightning:input id="price" step="0.01" name="{!index}" type="number" value="{!cusProdTwo.objProdchild.List_Price__c}" disabled="true"/></div></td>
-                                                        <td class=" slds-text-align_left"  ><div class="slds-truncate" title="{!cusProdTwo.objProdchild.Quantity__c}"><lightning:input id="quantity" name="{!index}"  type="number" value="{!cusProdTwo.objProdchild.Quantity__c}" onchange="{!c.QuantityPriceChange}"/></div></td>
-                                                        <td class=" slds-text-align_left " ><div class="slds-truncate" title="{!cusProdTwo.objProdchild.Unit_Price__c}"><lightning:input id="price" name="{!index}" step="0.01" type="number" value="{!cusProdTwo.objProdchild.Unit_Price__c}" onchange="{!c.QuantityPriceChange}"/></div></td>
-                                                        <td class=" slds-text-align_left" ><div class="slds-truncate" title="{!cusProdTwo.objProdchild.Total_Amount__c}"><lightning:input id="quantity" name="{!index}" step="0.01" type="number" value="{!cusProdTwo.totalAmount}" disabled="true" /></div></td>
+                                                         <td class=" slds-text-align_left"  ><div class="slds-truncate cellwidthQty" title="{!cusProdTwo.objProdchild.Part_Serial__c}"><lightning:input name="" type="text" value="{!cusProdTwo.objProdchild.Part_Serial__c}" /></div></td>
+                                                        <td class=" slds-text-align_left"  ><div class="slds-truncate cellwidthQty" title="{!cusProdTwo.POamount}"><lightning:input name="" type="number" value="{!cusProdTwo.POamount}" disabled="true"/></div></td>
+                                                        <td class=" slds-text-align_left"  ><div class="slds-truncate cellwidthQty" title="{!cusProdTwo.stockamount}"><lightning:input name="" type="number" value="{!cusProdTwo.stockamount}" disabled="true"/></div></td>
+                                                        <td class=" slds-text-align_left"  ><div class="slds-truncate cellwidthQty" title="{!cusProdTwo.saleableamount}"><lightning:input name="" type="number" value="{!cusProdTwo.saleableamount}" disabled="true"/></div></td>
+                                                        <td class=" slds-text-align_left"  ><div class="slds-truncate cellwidth" title="{!cusProdTwo.objProdchild.List_Price__c}"><lightning:input id="price" step="0.01" name="{!index}" type="number" value="{!cusProdTwo.objProdchild.List_Price__c}" disabled="true"/></div></td>
+                                                        <td class=" slds-text-align_left"  ><div class="slds-truncate cellwidthQty" title="{!cusProdTwo.objProdchild.Freeze_Qunatity__c}"><lightning:input id="Freezeqty" name="{!index}" default="0" type="number" value="{!cusProdTwo.objProdchild.Freeze_Qunatity__c}" onchange="{!c.freezechange}"/></div></td>
+                                                        <td class=" slds-text-align_left"  ><div class="slds-truncate cellwidthQty" title="{!cusProdTwo.objProdchild.Deliverd_Quantity__c}"><lightning:input id="Deliverd_Quantity" disabled="true" name="{!index}" default="0" type="number" value="{!cusProdTwo.objProdchild.Deliverd_Quantity__c}" onchange="{!c.freezechange}"/></div></td>
+                                                        <td class=" slds-text-align_left"  ><div class="slds-truncate cellwidthQty" title="{!cusProdTwo.objProdchild.Quantity__c}"><lightning:input id="quantity" name="{!index}"  type="number" value="{!cusProdTwo.objProdchild.Quantity__c}" onchange="{!c.QuantityPriceChange}"/></div></td>
+                                                        <td class=" slds-text-align_left " ><div class="slds-truncate cellwidth" title="{!cusProdTwo.objProdchild.Unit_Price__c}"><lightning:input id="price" name="{!index}" step="0.01" type="number" value="{!cusProdTwo.objProdchild.Unit_Price__c}" onchange="{!c.QuantityPriceChange}"/></div></td>
+                                                        <td class=" slds-text-align_left" ><div class="slds-truncate cellwidth" title="{!cusProdTwo.objProdchild.Total_Amount__c}"><lightning:input id="quantity" name="{!index}" step="0.01" type="number" value="{!cusProdTwo.totalAmount}" disabled="true" /></div></td>
                                                         <td class=" slds-text-align_left" ><div class="slds-truncate" title="{!cusProdTwo.objProdchild.Discount__c}"><lightning:input id="discountpercent" name="{!index}" min="0" max="100" step="0.01" type="number" formatter="percent-fixed" maxlength='5' value="{!cusProdTwo.objProdchild.Discount__c}" onchange="{!c.dischange}"/></div></td>
-                                                        <td class=" slds-text-align_left" ><div class="slds-truncate" title="{!cusProdTwo.objProdchild.DiscountN__c}"><lightning:input id="Discountamount" name="{!index}" step="0.01" type="number" value="{!cusProdTwo.DiscountAmount}" onchange="{!c.dischange}"/></div></td>
-                                                        <td class=" slds-text-align_left" ><div class="slds-truncate" title="{!cusProdTwo.objProdchild.After_Discount_Net_Amount__c}"><lightning:input id="quantity" step="0.01" name="{!index}" type="number" value="{!cusProdTwo.TotalAfterDiscount}" disabled="true"/></div></td>
+                                                        <td class=" slds-text-align_left" ><div class="slds-truncate cellwidth" title="{!cusProdTwo.objProdchild.DiscountN__c}"><lightning:input id="Discountamount" name="{!index}" step="0.01" type="number" value="{!cusProdTwo.DiscountAmount}" onchange="{!c.dischange}"/></div></td>
+                                                        <td class=" slds-text-align_left" ><div class="slds-truncate cellwidth" title="{!cusProdTwo.objProdchild.After_Discount_Net_Amount__c}"><lightning:input id="quantity" step="0.01" name="{!index}" type="number" value="{!cusProdTwo.TotalAfterDiscount}" disabled="true"/></div></td>
                                                         <td class=" slds-text-align_left" ><div class="slds-truncate" title="{!cusProdTwo.objProdchild.HSN_Code__c}"><lightning:input  type="Text" value="{!cusProdTwo.objProdchild.HSN_Code__c}" disabled="false"/></div></td>
-                                                        <!-- Check CGST and SGST  -->
+                                                        <!-- Check Export  -->
+                                                            <aura:if isTrue="{!!v.wrapMain.isExport}">
+                                                                <!-- Check CGST and SGST  -->
                                                         <aura:if isTrue="{!!v.wrapMain.igstvalue}">  
                                                             <td class=" slds-text-align_left" ><div class="slds-truncate" title="{!cusProdTwo.objProdchild.CGST__c}"><lightning:input id="CGSTPercentage" name="{!index}" step="0.01" type="number" formatter="percent-fixed" maxlength='5' value="{!cusProdTwo.objProdchild.CGST__c}" onchange="{!c.AllGSTChange}"/></div></td>
-                                                            <td class=" slds-text-align_left" ><div class="slds-truncate" title="{!cusProdTwo.CGSTAmount}"><lightning:input id="CGSTAmount" name="{!index}" type="number" value="{!cusProdTwo.CGSTAmount}" step="0.01" disabled="true"/></div></td>
+                                                            <td class=" slds-text-align_left" ><div class="slds-truncate cellwidth" title="{!cusProdTwo.CGSTAmount}"><lightning:input id="CGSTAmount" name="{!index}" type="number" value="{!cusProdTwo.CGSTAmount}" step="0.01" disabled="true"/></div></td>
                                                             <td class=" slds-text-align_left" ><div class="slds-truncate" title="{!cusProdTwo.objProdchild.SGST__c}"><lightning:input id="SGSTPercentage" name="{!index}" type="number" step="0.01" formatter="percent-fixed" maxlength='5' value="{!cusProdTwo.objProdchild.SGST__c}" onchange="{!c.AllGSTChange}"/></div></td>
-                                                            <td class=" slds-text-align_left" ><div class="slds-truncate" title="{!cusProdTwo.SGSTAmount}"><lightning:input id="SGSTAmount" name="{!index}" type="number" value="{!cusProdTwo.SGSTAmount}" step="0.01" disabled="true"/></div></td>
+                                                            <td class=" slds-text-align_left" ><div class="slds-truncate cellwidth" title="{!cusProdTwo.SGSTAmount}"><lightning:input id="SGSTAmount" name="{!index}" type="number" value="{!cusProdTwo.SGSTAmount}" step="0.01" disabled="true"/></div></td>
                                                         </aura:if>
                                                         <!-- Check IGST  -->
                                                         <aura:if isTrue="{!v.wrapMain.igstvalue}">
                                                             <td class=" slds-text-align_left" ><div class="slds-truncate" title="{!cusProdTwo.objProdchild.IGST__c}"><lightning:input id="IGSTPercentage" name="{!index}" type="number" step="0.01" formatter="percent-fixed" maxlength='5' value="{!cusProdTwo.objProdchild.IGST__c}" onchange="{!c.AllGSTChange}"/></div></td>
-                                                            <td class=" slds-text-align_left" ><div class="slds-truncate" title="{!cusProdTwo.IGSTAmount}"><lightning:input id="IGSTAmount" name="{!index}" type="number" value="{!cusProdTwo.IGSTAmount}" step="0.01" disabled="true"/></div></td>
+                                                            <td class=" slds-text-align_left" ><div class="slds-truncate cellwidth" title="{!cusProdTwo.IGSTAmount}"><lightning:input id="IGSTAmount" name="{!index}" type="number" value="{!cusProdTwo.IGSTAmount}" step="0.01" disabled="true"/></div></td>
                                                         </aura:if>
-                                                        <td class=" slds-text-align_left" ><div class="slds-truncate" title="{!cusProdTwo.objProdchild.Net_Amount__c}"><lightning:input id="NetTotal" name="{!index}" type="number" step="0.01" value="{!cusProdTwo.NetTotalAmount}" disabled="true"/></div></td>
+                                                                </aura:if>
+                                                        <td class=" slds-text-align_left" ><div class="slds-truncate cellwidth" title="{!cusProdTwo.objProdchild.Net_Amount__c}"><lightning:input id="NetTotal" name="{!index}" type="number" step="0.01" value="{!cusProdTwo.NetTotalAmount}" disabled="true"/></div></td>
                                                         <td class=" slds-text-align_left" >
                                                             <div class="slds-truncate" title="{!cusProdTwo.objProdchild.Expected_Date__c}">
-                                                                <!--<ui:inputDate data-id="{!index}" class="field label-hidden" value="{!cusProdTwo.objProdchild.Expected_Date__c}" displayDatePicker="true" change="{!c.deliverydateaction}" /> --> 
-                                                                <lightning:input  type="date" name="{!index}" value="{!cusProdTwo.objProdchild.Expected_Date__c}"  onchange="{!c.deliverydateaction}"/>
+                                                                <ui:inputDate aura:id="{!index}" class="field label-hidden" value="{!cusProdTwo.objProdchild.Expected_Date__c}" displayDatePicker="true" change="{!c.deliverydateaction}" /> 
+                                                              <!--  <lightning:input  type="date" name="{!index}" value="{!cusProdTwo.objProdchild.Expected_Date__c}"  onchange="{!c.deliverydateaction}"/>--> 
                                                             </div></td>
                                                         <td class=" slds-text-align_left" style="width: 7rem;"><div class="slds-truncate" title="{!cusProdTwo.objProdchild.Description__c}" style="width: 13rem;"><lightning:input  type="Text" value="{!cusProdTwo.objProdchild.Description__c}"/></div></td> 
                                                     </tr> 
@@ -437,73 +470,79 @@
                     </div>
                 </div>
                 <div class="slds-col slds-size_12-of-12 slds-p-top_medium slds-p-bottom_medium">
-                    <div class="slds-grid slds-gutters">
-                        <div class="slds-col slds-size_1-of-12">
-                            
-                        </div>
-                        <div class="slds-col slds-size_9-of-12">
-                            <div class="slds-table--header-fixed_container"  style="height:300px; overflow-x:auto">
-                                <div class="slds-scrollable_y" style="height:100%;">
-                                    <table class="slds-table slds-table--header-fixed slds-table_bordered slds-table_fixed-layout slds-border_left slds-border_right ">
-                                        <thead>
-                                            <tr class="slds-text-title_caps">
-                                                <th scope="col">
-                                                    <div class="slds-truncate slds-cell-fixed" title="Tax Name	">Name</div>
-                                                </th>
-                                                <th scope="col">
-                                                    <div class="slds-truncate slds-cell-fixed" title=""></div>
-                                                </th>
-                                                <th scope="col">
-                                                    <div class="slds-truncate slds-cell-fixed" title="Tax Amount">Amount</div>
-                                                </th>
-                                                <!-- Check CGST and SGST  -->
-                                                <aura:if isTrue="{!!v.wrapMain.igstvalue}">
+                        <div class="slds-grid slds-gutters">
+                            <div class="slds-col slds-size_1-of-12">    
+                            </div>
+                            <div class="slds-col slds-size_9-of-12">
+                                <div class="slds-table--header-fixed_container " style="height:300px; overflow-x:auto; overflow-y: overlay;">
+                                    <div class="slds-scrollable_x" style="width:100%;">
+                                        <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+                                            <thead>
+                                                <tr class="slds-text-title_caps">
                                                     <th scope="col">
-                                                        <div class="slds-truncate slds-cell-fixed" title="CGST%">CGST%</div>
+                                                        <div class="slds-truncate" title="Name	">Name</div>
                                                     </th>
                                                     <th scope="col">
-                                                        <div class="slds-truncate slds-cell-fixed" title="SGST%">SGST%</div>
+                                                        <div class="slds-truncate" title=""></div>
                                                     </th>
-                                                </aura:if>
-                                                <!-- Check IGST  -->
-                                                <aura:if isTrue="{!v.wrapMain.igstvalue}">
                                                     <th scope="col">
-                                                        <div class="slds-truncate slds-cell-fixed" title="IGST%">IGST%</div>
+                                                        <div class="slds-truncate" title="Amount">Amount</div>
                                                     </th>
-                                                </aura:if>
-                                                <th scope="col">
-                                                    <div class="slds-truncate slds-cell-fixed" title="Net Amount">Net Amount</div>
-                                                </th>
-                                                <th scope="col">
-                                                    <div class="slds-truncate slds-cell-fixed" title="Action">Action</div>
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
+                                                     <!-- Check Export  -->
+                                                            <aura:if isTrue="{!!v.wrapMain.isExport}">
+                                                    <!-- Check CGST and SGST  -->
+                                                    <aura:if isTrue="{!!v.wrapMain.igstvalue}">
+                                                        <th scope="col">
+                                                            <div class="slds-truncate" title="CGST%">CGST%</div>
+                                                        </th>
+                                                        <th scope="col">
+                                                            <div class="slds-truncate" title="SGST%">SGST%</div>
+                                                        </th>
+                                                    </aura:if>
+                                                    <!-- Check IGST  -->
+                                                    <aura:if isTrue="{!v.wrapMain.igstvalue}">
+                                                        <th scope="col">
+                                                            <div class="slds-truncate" title="IGST%">IGST%</div>
+                                                        </th>
+                                                    </aura:if>
+                                                                </aura:if>
+                                                    <th scope="col">
+                                                        <div class="slds-truncate" title="Net Amount">Net Amount</div>
+                                                    </th>
+                                                    <th scope="col">
+                                                        <div class="slds-truncate" title="Action">Action</div>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
                                             <aura:iteration items="{!v.lstSelectedTax}" var="obj" indexVar="index">
                                                 <tr>
                                                     <td class="slds-truncate">{!obj.strTaxName} </td>
                                                     <td class="slds-truncate"><lightning:input id="partId" name="{!index}" type="number" value="{!obj.TaxPercentage}" disabled="false" step="0.01" onchange="{!c.ChargesPercentageOnOhange}"/></td>
                                                     <td class="slds-truncate"> <lightning:input id="partId" name="{!index}" type="number" value="{!obj.decTaxAmount}" disabled="false" step="0.01" onchange="{!c.ChargesAmountOnOhange}"/></td>
+                                                    <!-- Check Export  -->
+                                                            <aura:if isTrue="{!!v.wrapMain.isExport}">
                                                     <!-- Check CGST and SGST  -->
                                                     <aura:if isTrue="{!!v.wrapMain.igstvalue}">
                                                         <td class="slds-truncate">
-                                                            <!--<lightning:input id="partId" type="number" value="{!obj.CGST}" step="0.01"/> -->
-                                                            <input data-row-index="{!index}" onchange="{!c.CalculateCGST}" type="number" step="0.01" formatter="percent-fixed" maxlength='5' value="{!obj.CGST}" class="slds-input" style="margin-top: 22%;"/>
+                                                            <lightning:input id="partId" name="{!index}" data-row-index="{!index}"  onchange="{!c.CalculateCGST}" type="number" value="{!obj.CGST}" step="0.01"/> 
+                                                            <!--<input data-row-index="{!index}" onchange="{!c.CalculateCGST}" type="number" step="0.01" formatter="percent-fixed" maxlength='5' value="{!obj.CGST}" class="slds-input" style="margin-top: 22%;"/>-->
                                                         </td>
                                                         <td class="slds-truncate"> 
-                                                            <!--<lightning:input id="partId" type="number" value="{!obj.SGST}" step="0.01"/>-->
-                                                            <input data-row-index="{!index}" onchange="{!c.CalculateSGST}" type="number" step="0.01" formatter="percent-fixed" maxlength='5' value="{!obj.SGST}" class="slds-input" style="margin-top: 22%;"/>
+                                                            <lightning:input id="partId" name="{!index}" onchange="{!c.CalculateSGST}" type="number" value="{!obj.SGST}" step="0.01"/>
+                                                            <!--<input data-row-index="{!index}" onchange="{!c.CalculateSGST}" type="number" step="0.01" formatter="percent-fixed" maxlength='5' value="{!obj.SGST}" class="slds-input" style="margin-top: 22%;"/>-->
                                                         </td>
                                                     </aura:if>
                                                     <!-- Check IGST  -->
                                                     <aura:if isTrue="{!v.wrapMain.igstvalue}">
-                                                        <td class="slds-truncate"><!-- <lightning:input id="partId" type="number" value="{!obj.IGST}" step="0.01"/>-->
-                                                            <input data-row-index="{!index}" onchange="{!c.CalculateIGST}" type="number" step="0.01" formatter="percent-fixed" maxlength='5' value="{!obj.IGST}" class="slds-input" style="margin-top: 22%;"/>
+                                                        <td class="slds-truncate">
+                                                            <lightning:input id="partId" name="{!index}" onchange="{!c.CalculateIGST}" type="number" value="{!obj.IGST}" step="0.01"/>
+                                                            <!-- <input data-row-index="{!index}" onchange="{!c.CalculateIGST}" type="number" step="0.01" formatter="percent-fixed" maxlength='5' value="{!obj.IGST}" class="slds-input" style="margin-top: 22%;"/>-->
                                                         </td>
                                                     </aura:if>
+                                                                </aura:if>
                                                     <td class="slds-truncate"><lightning:input id="partId" type="number" value="{!obj.NetAmount}" step="0.01" disabled="true"/> </td>
-                                                    <td class="slds-truncate"><lightning:buttonIcon value="{!index}" alternativeText="Delete" variant="border-filled" iconName="utility:delete" onclick="{!c.RemoveRow}" class="AlignCenter"/></td>
+                                                    <td class="slds-truncate" style="padding-top:2%"><lightning:buttonIcon value="{!index}" alternativeText="Delete" variant="border-filled" iconName="utility:delete" onclick="{!c.RemoveRow}" class="AlignCenter"/></td>
                                                 </tr>
                                             </aura:iteration>
                                             <tr>
@@ -522,16 +561,6 @@
                         </div>
                     </div>
                 </div>
-                <!--<lightning:layoutItem padding="around-small" size="12">
-                            <lightning:layout>
-                                <lightning:layoutItem padding="around-small" size="5"></lightning:layoutItem>
-                                    <lightning:layoutItem padding="around-small" size="2">
-                                        <lightning:button aura:id="Submit" class="button"  label="Save" onclick="{!c.SaveJS}"/>
-                                </lightning:layoutItem>
-                                <lightning:layoutItem padding="around-small" size="5"></lightning:layoutItem>
-                            </lightning:layout>
-                        </lightning:layoutItem>
-                    -->
             </lightning:tab>
         </lightning:tabset>
         

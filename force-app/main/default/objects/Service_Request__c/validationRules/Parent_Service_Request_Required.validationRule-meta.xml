@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Parent_Service_Request_Required</fullName>
+    <active>true</active>
+    <description>This will be useful when service request is re work and need to select  Parent Service Request</description>
+    <errorConditionFormula>AND( Is_Rework__c , ISBLANK( Parent_Service_Request__c ))</errorConditionFormula>
+    <errorDisplayField>Parent_Service_Request__c</errorDisplayField>
+    <errorMessage>Please Select the Parent Service Request</errorMessage>
+</ValidationRule>

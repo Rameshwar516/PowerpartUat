@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>FOC_Type_Delivery_Notes</fullName>
+    <columns>NAME</columns>
+    <columns>Delivery_Note_Number__c</columns>
+    <columns>Type__c</columns>
+    <columns>Sales_Order__c</columns>
+    <columns>Customer_Party__c</columns>
+    <columns>Invoice_Type__c</columns>
+    <columns>Remark__c</columns>
+    <columns>CREATED_DATE</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Type__c</field>
+        <operation>equals</operation>
+        <value>Warranty</value>
+    </filters>
+    <label>FOC Type Delivery Notes</label>
+    <sharedTo>
+        <group>East_Parts_Team</group>
+        <group>North_Parts_Team</group>
+    </sharedTo>
+</ListView>

@@ -113,21 +113,19 @@
     
     
     RemoveRecordOnCheck : function(component, event, objWrap, prodwrapper) {
+        console.log(component.get('v.isdisable'));
+        component.set("v.isdisable",true);
         var action = component.get('c.removeRecord');
-        
-        action.setParams({
-            
+        action.setParams({   
             "strWrap" : JSON.stringify(objWrap),
             "prodwrappstr" : JSON.stringify(prodwrapper)
         });
-        action.setCallback(this, function(res) {
-            
-            if(res.getState() === "SUCCESS" && JSON.parse(res.getReturnValue()).success ) {
-                
+        action.setCallback(this, function(res) { 
+            component.set("v.isdisable",false);
+            if(res.getState() === "SUCCESS" && JSON.parse(res.getReturnValue()).success ) {               
                 component.set('v.wrapMain', JSON.parse(res.getReturnValue()));
                 this.refreshCharge(component,event,helper);
-                component.set("v.IsselectProduct",true);
-                
+
             }else if(res.getState() === "ERROR") {
                 var errors = res.getError();
                 if (errors) {
@@ -141,37 +139,42 @@
                 component.set("v.wrapMain.strMessage",JSON.parse(res.getReturnValue()).errorMessage);
             }
         });
+        component.set("v.isdisable",false);
+        console.log(component.get('v.isdisable'));
         $A.enqueueAction(action);
     },
     
     SaveHelper: function(component, event, id) {
         var objWrap = component.get("v.wrapMain");
         var action = component.get("c.saveRecord");
-        console.log(component.get("v.lstSelectedTax"));
         action.setParams({
             "strWrap" : JSON.stringify(objWrap),
             "RecordId" : id,
             "lstCharges" : JSON.stringify(component.get("v.lstSelectedTax")),
             "decTotalAmount" : component.get("v.decTotalAmount"),
         });
-        
         action.setCallback(this, function(res){
             if(res.getState() === "SUCCESS" && JSON.parse(res.getReturnValue()).success){
                 component.set('v.wrapMain.success', true);
                 component.set('v.wrapMain.strMessage', JSON.parse(res.getReturnValue()).strMessage);
                 window.location.assign('/lightning/r/Quote__c/'+component.get("v.recordId")+'/view');
-            }else if(res.getState() === "ERROR") {
+            }
+            else if(res.getState() === "ERROR"){
+                component.set('v.issave', false);
                 var errors = res.getError();
-                if (errors) {
-                    if (errors[0] && errors[0].message) {
+                if(errors){
+                    if(errors[0] && errors[0].message){
                         component.set("v.wrapMain.strMessage",errors[0].message);
                     }
-                } else {
+                } 
+                else{
                     component.set("v.wrapMain.strMessage","Unknown error");
                 }
-            }else if (!JSON.parse(res.getReturnValue()).success) {
-                component.set("v.wrapMain.strMessage",JSON.parse(res.getReturnValue()).errorMessage);
             }
+                else if(!JSON.parse(res.getReturnValue()).success) {
+                    component.set('v.issave', false);
+                    component.set("v.wrapMain.strMessage",JSON.parse(res.getReturnValue()).errorMessage);
+                }
         });
         
         $A.enqueueAction(action);
@@ -217,7 +220,7 @@
         for(var i = 0; i < lstSalesReturn.length; i++) {
             if(lstSalesReturn[i].TotalAfterDiscount !=null && lstSalesReturn[i].TotalAfterDiscount !='')
                 TotalAmount = TotalAmount+lstSalesReturn[i].TotalAfterDiscount;
-            component.set("v.decTotalAmount",TotalAmount);
+            component.set("v.decTotalAmount",parseInt(TotalAmount));
         }
         
     },
@@ -232,7 +235,7 @@
             if(lstSalesReturn[i].TotalAfterDiscount !=null && lstSalesReturn[i].TotalAfterDiscount !='')
                 TotalAmount = TotalAmount+lstSalesReturn[i].TotalAfterDiscount;
             
-            component.set("v.decTotalAmount",TotalAmount);
+            component.set("v.decTotalAmount",parseInt(TotalAmount));
         }
         var TotalAmount = component.get("v.decTotalAmount");
         //alert('..TotalAmount...'+TotalAmount);
@@ -261,9 +264,7 @@
         component.set('v.lstSelectedTax', lstSelectedTaxRefresh);	
         var lstTotalSelectedTax = component.get("v.lstSelectedTax");
         var TotalTaxAmount = 0;
-        //alert('...!@#..'+lstTotalSelectedTax.length);
         for(var i = 0; i < lstTotalSelectedTax.length; i++) {
-            //alert('...'+lstTotalSelectedTax[i].decTaxAmount);
             TotalTaxAmount =TotalTaxAmount+lstTotalSelectedTax[i].NetAmount;
         }
         component.set('v.TotalTax', TotalTaxAmount);
@@ -287,7 +288,7 @@
                 toastEvent.setParams({
                     "type":"error",
                     "title": "Error!",
-                    "message": "Same date Selected!! Please change date from first row."
+                    "message": "The same date Selected!! Please change the date from the first row."
                 });
                 toastEvent.fire(); 
                 for(var i=1;i<tmpMainWrapper.length;i++){
@@ -387,7 +388,7 @@
                 toastEvent.setParams({
                     "type":"error",
                     "title": "Error!",
-                    "message": "Same Discount Selected!! Please change Discount from first row."
+                    "message": "The same Discount Selected!! Please change Discount from the first row."
                 });
                 toastEvent.fire(); 
                 for(var i=1;i<tmpMainWrapper.length;i++){
@@ -401,10 +402,8 @@
     TotalTaxAmount: function(component, event, helper){
     var lstTotalSelectedTax = component.get("v.lstSelectedTax");
     var TotalTaxAmount = 0;
-    //alert('...!@#..'+lstTotalSelectedTax.length);
     for(var i = 0; i < lstTotalSelectedTax.length; i++) {
-    //alert('...'+lstTotalSelectedTax[i].decTaxAmount);
-    TotalTaxAmount =TotalTaxAmount+lstTotalSelectedTax[i].NetAmount;
+    TotalTaxAmount =TotalTaxAmount+parseFloat(lstTotalSelectedTax[i].NetAmount);
 }
  component.set('v.TotalTax', TotalTaxAmount);
 },

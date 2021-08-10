@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>MRN</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>MRN</value>
+    </caseValues>
+    <layouts>
+        <layout>Dynamic Page layout</layout>
+        <sections>
+            <label></label>
+            <section>Account &amp; Contact Info</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Additional Information</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Detail of Receiver_Consignee</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>MRN Layout</layout>
+        <sections>
+            <label></label>
+            <section>Account &amp; Contact Info</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Additional Information</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Detail of Receiver_Consignee</section>
+        </sections>
+    </layouts>
+    <quickActions>
+        <label></label>
+        <name>Create_Debit_Note</name>
+    </quickActions>
+    <quickActions>
+        <label></label>
+        <name>Create_Delivery_Note</name>
+    </quickActions>
+    <quickActions>
+        <label></label>
+        <name>Create_Sales_Order_Return</name>
+    </quickActions>
+    <quickActions>
+        <label></label>
+        <name>Generate_MRN_popup</name>
+    </quickActions>
+    <quickActions>
+        <label></label>
+        <name>Update_MRN_Items</name>
+    </quickActions>
+    <startsWith>Consonant</startsWith>
+    <validationRules>
+        <errorMessage></errorMessage>
+        <name>MRN_status_Received</name>
+    </validationRules>
+    <webLinks>
+        <label></label>
+        <name>Generate_MRN</name>
+    </webLinks>
+</CustomObjectTranslation>

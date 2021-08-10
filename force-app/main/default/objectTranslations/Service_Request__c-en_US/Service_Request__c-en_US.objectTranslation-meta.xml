@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Service Request</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Service Requests</value>
+    </caseValues>
+    <layouts>
+        <layout>Service Engineer</layout>
+        <sections>
+            <label></label>
+            <section>Billing Detail</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Complain Description</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Contact Information</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Engine Detail</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Engine Parameters</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Issue Reported</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Observations</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Service Request</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>System information</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Service Manager</layout>
+        <sections>
+            <label></label>
+            <section>Billing Detail</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Complain Description</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Contact Information</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Engine Detail</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Engine Parameters</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Issue Reported</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Observations</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Service Request</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>System information</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Service Request Layout</layout>
+        <sections>
+            <label></label>
+            <section>Complaint</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Complaint Details</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Customer Information</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Engine Information</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Engine Parameters</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Issue Reported</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>New Section</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Observations</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Repair Detail</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Service Request Detail</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Service Request Page Layout</layout>
+        <sections>
+            <label></label>
+            <section>Billing Detail</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Complain Description</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Contact Information</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Engine Detail</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Engine Parameters</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Issue Reported</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Observations</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Service Request</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>System information</section>
+        </sections>
+    </layouts>
+    <quickActions>
+        <label></label>
+        <name>Check_In</name>
+    </quickActions>
+    <quickActions>
+        <label></label>
+        <name>Check_Out</name>
+    </quickActions>
+    <quickActions>
+        <label></label>
+        <name>Create_Safety_Rules</name>
+    </quickActions>
+    <quickActions>
+        <label></label>
+        <name>Generate_Service_Report</name>
+    </quickActions>
+    <quickActions>
+        <label></label>
+        <name>Generate_Warranty_Claim</name>
+    </quickActions>
+    <quickActions>
+        <label></label>
+        <name>Part_Request</name>
+    </quickActions>
+    <quickActions>
+        <label></label>
+        <name>Send_Email_to_Service_Manager</name>
+    </quickActions>
+    <quickActions>
+        <label></label>
+        <name>Send_Email_to_Store_Manager</name>
+    </quickActions>
+    <quickActions>
+        <label></label>
+        <name>Send_Feedback_Form</name>
+    </quickActions>
+    <quickActions>
+        <label></label>
+        <name>Service_Team</name>
+    </quickActions>
+    <quickActions>
+        <label></label>
+        <name>Upload_Files</name>
+    </quickActions>
+    <startsWith>Consonant</startsWith>
+    <validationRules>
+        <errorMessage></errorMessage>
+        <name>Attended_Date_greater_than_Reported_Date</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage></errorMessage>
+        <name>Closed_Date_greater_than_Repoted_Time</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage></errorMessage>
+        <name>Closed_Status_not_to_update</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage></errorMessage>
+        <name>Is_Known_Issue</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage></errorMessage>
+        <name>Is_Manager_Exist</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage></errorMessage>
+        <name>Lock_Record_If_Status_is_On_Hold</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage></errorMessage>
+        <name>Not_A_Know_Issue</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage></errorMessage>
+        <name>On_Hold_Status_Not_to_Closed</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage></errorMessage>
+        <name>Parent_Service_Request_Required</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage></errorMessage>
+        <name>Part_Request_should_be_greater</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage></errorMessage>
+        <name>Part_Request_should_be_greater_one</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage></errorMessage>
+        <name>Reason_For_Shifting</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage></errorMessage>
+        <name>Restrict_User_on_Closed_status</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage></errorMessage>
+        <name>Service_Request_Status_On_Create_New</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage></errorMessage>
+        <name>Service_Request_is_not_closed</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage></errorMessage>
+        <name>Status_is_Closed_You_can_not_Send_Email</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage></errorMessage>
+        <name>TransitionCategoryHappensOnlyOnce</name>
+    </validationRules>
+    <webLinks>
+        <label></label>
+        <name>Service_Visits</name>
+    </webLinks>
+</CustomObjectTranslation>

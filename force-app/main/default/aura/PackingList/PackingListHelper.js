@@ -8,6 +8,17 @@
 		action.setCallback(this, function(res){
             if(res.getState() === "SUCCESS"){
                 component.set('v.wrapMain', JSON.parse(res.getReturnValue()));
+                console.log(JSON.parse(res.getReturnValue()).AllDone);
+                 if(JSON.parse(res.getReturnValue()).AllDone){
+                    var toastEvent = $A.get("e.force:showToast");
+                    toastEvent.setParams({
+                        "type":"error",
+                        "title": "Error!",
+                        "message": "All part already send to packing."
+                    });
+                    toastEvent.fire();
+                    $A.get("e.force:closeQuickAction").fire();
+                }
                 if(JSON.parse(res.getReturnValue()).isSelectedProduct){
                     component.set('v.showPicklist',true);
                     

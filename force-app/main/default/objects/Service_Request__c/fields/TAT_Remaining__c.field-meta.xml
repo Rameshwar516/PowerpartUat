@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>TAT_Remaining__c</fullName>
+    <externalId>false</externalId>
+    <formula>VALUE( TAT_Hours__c )*60 - if(Text(Status__c) =&apos;Closed&apos;, (Closed_Date_Time__c -  Date_Time_Reported__c)*24*60 - On_Hold_Hours__c, (NOW()-  Date_Time_Reported__c)*24*60 - On_Hold_Hours__c - if(Text(Status__c) =&apos;On Hold&apos; , (NOW()-  DateTimeCalculation__c)*24*60 - On_Hold_Hours__c,0))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>TAT Remaining</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Invoice</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Invoices</value>
+    </caseValues>
+    <layouts>
+        <layout>Invoice Layout</layout>
+        <sections>
+            <label></label>
+            <section>Billing Information</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Shipping Information</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Service Invoice Layout</layout>
+        <sections>
+            <label></label>
+            <section>Account and Contact Information</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Additional Information</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Billing Information</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Shipping Information</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Terms and Conditions</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Tax Invoice Layout</layout>
+        <sections>
+            <label></label>
+            <section>Account and Contact Information</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Additional Information</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Billing Information</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Shipping Information</section>
+        </sections>
+        <sections>
+            <label></label>
+            <section>Terms and Conditions</section>
+        </sections>
+    </layouts>
+    <quickActions>
+        <label></label>
+        <name>Send_Invoice</name>
+    </quickActions>
+    <quickActions>
+        <label></label>
+        <name>Service_Invoice_popup</name>
+    </quickActions>
+    <quickActions>
+        <label></label>
+        <name>Tax_Invoice_popup</name>
+    </quickActions>
+    <quickActions>
+        <label></label>
+        <name>Update_Part</name>
+    </quickActions>
+    <recordTypes>
+        <label></label>
+        <name>Service_Invoice</name>
+    </recordTypes>
+    <recordTypes>
+        <label></label>
+        <name>Tax_Invoice</name>
+    </recordTypes>
+    <startsWith>Consonant</startsWith>
+    <webLinks>
+        <label></label>
+        <name>Service_Invoice</name>
+    </webLinks>
+    <webLinks>
+        <label></label>
+        <name>Tax_Invoice</name>
+    </webLinks>
+</CustomObjectTranslation>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Prevent_Negative_Value</fullName>
+    <active>true</active>
+    <errorConditionFormula>OR(
+				 Discount__c  &lt; 0, 
+				CGST__c &lt; 0,  
+				IGST__c &lt; 0,  
+				SGST__c  &lt; 0,
+				 Sales_Price__c &lt; 0,
+				 Quantity__c &lt; 0
+				)</errorConditionFormula>
+    <errorMessage>Values can not in negative.</errorMessage>
+</ValidationRule>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workflow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fieldUpdates>
+        <fullName>Update_Running_Hours_Captured_Date_field</fullName>
+        <field>Running_Hours_Captured_Date__c</field>
+        <formula>TODAY()</formula>
+        <name>Update Running Hours Captured Date field</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Formula</operation>
+        <protected>false</protected>
+    </fieldUpdates>
+    <rules>
+        <fullName>Update Running Hours Captured Date field</fullName>
+        <actions>
+            <name>Update_Running_Hours_Captured_Date_field</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>true</active>
+        <criteriaItems>
+            <field>Asset__c.Current_Running_Hours__c</field>
+            <operation>greaterThan</operation>
+            <value>0</value>
+        </criteriaItems>
+        <description>Update Running Hours Captured Date field when Current Running Hours is entered.</description>
+        <triggerType>onCreateOrTriggeringUpdate</triggerType>
+    </rules>
+</Workflow>

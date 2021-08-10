@@ -63,7 +63,8 @@ public class PurchaseOrder {
                     set<String> setCity = new set<String>();
                     setCity.add(objPO.Bill_To__c);
                     setCity.add(objPO.Ship_To__c);
-                    List<Ware_House__c> lstWareHouse = [Select Id, City__c, Contact_No__c,  Contact_Person__c,  Country__c, E_Mail__c,  GSTIN_No__c,State_Code__c,  State_Province__c,  Street__c,Name, Zip_Postal_Code__c  
+                    
+                    List<Ware_House__c> lstWareHouse = [Select Id, City__c, Contact_No__c,  Contact_Person__c,  Country__c, E_Mail__c,  GSTIN_No__c,State_Code__c,  State_Province__c,  Street__c,Name,Zip_Postal_Code__c  
                                                        From Ware_House__c 
                                                        where City__c =:setCity];
                     for(Ware_House__c objWH : lstWareHouse){

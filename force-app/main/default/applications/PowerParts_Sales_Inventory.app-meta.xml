@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomApplication xmlns="http://soap.sforce.com/2006/04/metadata">
+    <brand>
+        <headerColor>#0070D2</headerColor>
+        <shouldOverrideOrgTheme>false</shouldOverrideOrgTheme>
+    </brand>
+    <formFactors>Small</formFactors>
+    <formFactors>Large</formFactors>
+    <isNavAutoTempTabsDisabled>false</isNavAutoTempTabsDisabled>
+    <isNavPersonalizationDisabled>false</isNavPersonalizationDisabled>
+    <label>PowerParts Sales &amp; Inventory</label>
+    <navType>Standard</navType>
+    <tabs>standard-home</tabs>
+    <tabs>Lead__c</tabs>
+    <tabs>standard-Account</tabs>
+    <tabs>standard-Contact</tabs>
+    <tabs>Opportunity__c</tabs>
+    <tabs>Sales_Order_Dispatch_Delivery_Note__c</tabs>
+    <tabs>Invoice__c</tabs>
+    <tabs>MRN__c</tabs>
+    <tabs>Purchase_Order__c</tabs>
+    <tabs>Purchase_Indent__c</tabs>
+    <tabs>Ware_House__c</tabs>
+    <tabs>Part__c</tabs>
+    <tabs>Tax__c</tabs>
+    <tabs>Sales_Order__c</tabs>
+    <tabs>DC_Note__c</tabs>
+    <tabs>standard-report</tabs>
+    <tabs>Term_and_Condition__c</tabs>
+    <tabs>Sales_Order_Return__c</tabs>
+    <uiType>Lightning</uiType>
+    <utilityBar>PowerParts_Sales_Inventory_UtilityBar</utilityBar>
+</CustomApplication>

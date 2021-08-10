@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Term_and_Condition__c</fullName>
+    <defaultValue>&quot;1. Interest 24% per annum will be charged on accounts&quot;+
+&quot; unpaid against presentation. &quot;+br()+
+&quot;2. Our responsibility ceases on delivery of&quot;+
+&quot; materials to carriers. &quot;+br()+
+&quot;3. Goods supplied to order will not be &quot;+br()+
+&quot;taken back. &quot;+br()+
+&quot;4. Subject to Haryana Jurisdiction &quot;+br()+
+&quot;5. Insured against Policy No. Policy&quot;+
+&quot; No: 31190021200200000008, Period from &quot;+
+&quot;27/08/2020 to 26/08/2021 &quot;+br()+
+&quot;6. LUT ARN No. AD0605200021800 DATED 20.05.2020 &quot;+br()+
+&quot;7. E. &amp; O.E.&quot;+br()</defaultValue>
+    <externalId>false</externalId>
+    <label>Terms and Conditions</label>
+    <length>32768</length>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>LongTextArea</type>
+    <visibleLines>3</visibleLines>
+</CustomField>

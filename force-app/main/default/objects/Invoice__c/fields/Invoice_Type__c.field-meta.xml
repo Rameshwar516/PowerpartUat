@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Invoice_Type__c</fullName>
+    <externalId>false</externalId>
+    <label>Invoice Type</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Original for Recipient</fullName>
+                <default>false</default>
+                <label>Original for Recipient</label>
+            </value>
+            <value>
+                <fullName>Duplicate  for Supplier/Transporter</fullName>
+                <default>false</default>
+                <label>Duplicate  for Supplier/Transporter</label>
+            </value>
+            <value>
+                <fullName>Triplicate for Supplier</fullName>
+                <default>false</default>
+                <label>Triplicate for Supplier</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

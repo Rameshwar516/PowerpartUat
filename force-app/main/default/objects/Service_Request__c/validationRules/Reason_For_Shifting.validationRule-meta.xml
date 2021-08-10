@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Reason_For_Shifting</fullName>
+    <active>true</active>
+    <errorConditionFormula>ISCHANGED(Failure_Category__c) &amp;&amp;  (PRIORVALUE(Reasons_for_shifting_the_category__c) = Reasons_for_shifting_the_category__c || isblank(Reasons_for_shifting_the_category__c))</errorConditionFormula>
+    <errorMessage>Please fill the shifting reason.</errorMessage>
+</ValidationRule>

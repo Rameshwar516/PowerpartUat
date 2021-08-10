@@ -340,16 +340,24 @@ public with sharing class clsConvertLead
                 // Convert Process starts here
                 if(objName.equalsIgnoreCase('Account'))
                 {
-                    if(string.isNotEmpty(accName))
+                    if(string.isNotEmpty(accName)){
                         sObj.put('Name', accName); 
+						sObj.put('Print_Name__c', accName);
+					}
                     else
+					{
                         sObj.put('Name', objEnq.Company__c); 
+						sObj.put('Print_Name__c', objEnq.Company__c);
+					}
                     
                     if(string.isNotEmpty(idRecordTypeId))
                         sObj.put('RecordTypeId', idRecordTypeId); 
                     
                     sObj.put('GSTIN_No__c', objEnq.GSTIN_No__c);
+					if(String.isNotBlank(objEnq.GSTIN_No__c))
+                        sObj.put('Have_GST__c', 'Yes');
                     
+					sObj.put('Shipping_GSTIN_No__c', objEnq.GSTIN_No__c);  
                     sObj.put('Phone', objEnq.Phone__c);
                     sObj.put('Email__c', objEnq.Email__c);
                     sObj.put('Website', objEnq.Website__c);
@@ -362,7 +370,7 @@ public with sharing class clsConvertLead
                     sObj.put('BillingPostalCode', objEnq.Zip_Postal_Code__c);
                     sObj.put('BillingState', objEnq.State_Province__c);
                     sObj.put('BillingCountry', objEnq.Country__c); 
-                    
+                    sObj.put('Use_Billing_Address_as_Shipping_Address__c', true);
                     sObj.put('ShippingStreet', objEnq.Street__c);
                     sObj.put('ShippingCity', objEnq.City__c);
                     sObj.put('ShippingPostalCode', objEnq.Zip_Postal_Code__c);
@@ -372,7 +380,7 @@ public with sharing class clsConvertLead
                 
                 if(objName.equalsIgnoreCase('Contact'))
                 {
-                    
+                    sObj.put('Salutation', objEnq.Salutation__c);
                     sObj.put('FirstName', objEnq.First_Name__c);
                     sObj.put('LastName', objEnq.name);
                     sObj.put('Phone', objEnq.Phone__c);
@@ -391,19 +399,20 @@ public with sharing class clsConvertLead
                     system.debug('Opportunity Created----');
                     sObj.put('Stage__c', 'New');
                     sObj.put('Opportunity_Close_Date__c', system.Today()); 
-                    
                     if(string.isNotEmpty(objAccId))
                         sObj.put('OEM_Customer__c', objAccId);
-                    
                     sObj.put('Contact_Person__c', objcontactid);
-                    // system.debug('Opportunity Contact_Person---- '+ConName.Id); 
-
+                    if(objEnq.Lead_Type__c == 'Sales')
+                        sObj.put('Opportunity_Type__c', 'Sales');
+                    if(objEnq.Lead_Type__c == 'Service')
+                        sObj.put('Opportunity_Type__c', 'Service');
+                    
+                    sObj.put('Shipping_Account__c', objAccId);
                     sObj.put('Shipping_Street__c', objEnq.Street__c);
                     sObj.put('Shipping_City__c', objEnq.City__c);
                     sObj.put('Shipping_Zip_Postal_Code__c', objEnq.Zip_Postal_Code__c);
                     sObj.put('Shipping_State_Province__c', objEnq.State_Province__c);
-                    sObj.put('Shipping_Country__c', objEnq.Country__c); 
-                    
+                    sObj.put('Shipping_Country__c', objEnq.Country__c);  
                     sObj.put('Is_Converted__c', true); 
                 }
                 
@@ -441,23 +450,33 @@ public with sharing class clsConvertLead
             if(objName.equalsIgnoreCase('Account'))
             {  
                 sObj.put('GSTIN_No__c', objEnq.GSTIN_No__c);
-                sObj.put('Phone', objEnq.Phone__c);
-                sObj.put('Email__c', objEnq.Email__c);
-                sObj.put('Website', objEnq.Website__c);
-                sObj.put('Industry', objEnq.Industry__c);
-                sObj.put('Product_Interested_for__c', objEnq.Product_Interested_for__c); 
-                sObj.put('Lead_Source__c', objEnq.Lead_Source__c);
-                sObj.put('Lead_Type__c', objEnq.Lead_Type__c);
-                sObj.put('BillingStreet', objEnq.Street__c);
-                sObj.put('BillingCity', objEnq.City__c);
-                sObj.put('BillingPostalCode', objEnq.Zip_Postal_Code__c);
-                sObj.put('BillingState', objEnq.State_Province__c);
-                sObj.put('BillingCountry', objEnq.Country__c); 
+					if(String.isNotBlank(objEnq.GSTIN_No__c))
+                        sObj.put('Have_GST__c', 'Yes');
+                    
+					sObj.put('Shipping_GSTIN_No__c', objEnq.GSTIN_No__c);  
+                    sObj.put('Phone', objEnq.Phone__c);
+                    sObj.put('Email__c', objEnq.Email__c);
+                    sObj.put('Website', objEnq.Website__c);
+                    sObj.put('Industry', objEnq.Industry__c);
+                    sObj.put('Product_Interested_for__c', objEnq.Product_Interested_for__c); 
+                    sObj.put('Lead_Source__c', objEnq.Lead_Source__c);
+                    sObj.put('Lead_Type__c', objEnq.Lead_Type__c);
+                    sObj.put('BillingStreet', objEnq.Street__c);
+                    sObj.put('BillingCity', objEnq.City__c);
+                    sObj.put('BillingPostalCode', objEnq.Zip_Postal_Code__c);
+                    sObj.put('BillingState', objEnq.State_Province__c);
+                    sObj.put('BillingCountry', objEnq.Country__c); 
+                    sObj.put('Use_Billing_Address_as_Shipping_Address__c', true);
+                    sObj.put('ShippingStreet', objEnq.Street__c);
+                    sObj.put('ShippingCity', objEnq.City__c);
+                    sObj.put('ShippingPostalCode', objEnq.Zip_Postal_Code__c);
+                    sObj.put('ShippingState', objEnq.State_Province__c);
+                    sObj.put('ShippingCountry', objEnq.Country__c); 
             }
             
             if(objName.equalsIgnoreCase('Contact'))
             {
-                
+                sObj.put('Salutation', objEnq.Salutation__c);
                 sObj.put('FirstName', objEnq.First_Name__c);
                 sObj.put('LastName', objEnq.name);
                 sObj.put('Phone', objEnq.Phone__c);
@@ -473,17 +492,21 @@ public with sharing class clsConvertLead
             if(objName.equalsIgnoreCase('Opportunity__c'))
             {
                 sObj.put('Stage__c', 'New');
-                sObj.put('Opportunity_Close_Date__c', system.Today()); 
-                if(string.isNotEmpty(objAccId))
-                    sObj.put('OEM_Customer__c', objAccId);
-                
-                sObj.put('Shipping_Street__c', objEnq.Street__c);
-                sObj.put('Shipping_City__c', objEnq.City__c);
-                sObj.put('Shipping_Zip_Postal_Code__c', objEnq.Zip_Postal_Code__c);
-                sObj.put('Shipping_State_Province__c', objEnq.State_Province__c);
-                sObj.put('Shipping_Country__c', objEnq.Country__c); 
-                
-                sObj.put('Contact_Person__c', objcontactid);  
+                    sObj.put('Opportunity_Close_Date__c', system.Today()); 
+                    if(string.isNotEmpty(objAccId))
+                        sObj.put('OEM_Customer__c', objAccId);
+                    sObj.put('Contact_Person__c', objcontactid);
+                    if(objEnq.Lead_Type__c == 'Sales')
+                        sObj.put('Opportunity_Type__c', 'Sales');
+                    if(objEnq.Lead_Type__c == 'Service')
+                        sObj.put('Opportunity_Type__c', 'Service');
+                    sObj.put('Shipping_Account__c', objAccId);
+                    sObj.put('Shipping_Street__c', objEnq.Street__c);
+                    sObj.put('Shipping_City__c', objEnq.City__c);
+                    sObj.put('Shipping_Zip_Postal_Code__c', objEnq.Zip_Postal_Code__c);
+                    sObj.put('Shipping_State_Province__c', objEnq.State_Province__c);
+                    sObj.put('Shipping_Country__c', objEnq.Country__c);  
+                    sObj.put('Is_Converted__c', true);  
             }
             
             

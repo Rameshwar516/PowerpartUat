@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Local_MRN</fullName>
+    <columns>NAME</columns>
+    <columns>OEM_Customer__c</columns>
+    <columns>MRN_Type__c</columns>
+    <columns>MRN_Delivery_Type__c</columns>
+    <columns>Contact_No__c</columns>
+    <columns>Stage__c</columns>
+    <columns>CREATED_DATE</columns>
+    <columns>CREATEDBY_USER</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>MRN_Delivery_Type__c</field>
+        <operation>equals</operation>
+        <value>Domestic</value>
+    </filters>
+    <label>Local MRN</label>
+    <sharedTo>
+        <group>East_Parts_Team</group>
+        <group>North_Parts_Team</group>
+    </sharedTo>
+</ListView>

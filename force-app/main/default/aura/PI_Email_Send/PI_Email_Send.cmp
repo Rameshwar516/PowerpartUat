@@ -7,14 +7,14 @@
     
     <aura:attribute name="wrappr" type="Sobject"/>
     <div class="slds-text-heading--medium">
-        <center> <b>SEND PERFORMA INVOICE</b></center> 
+        <center> <b>SEND PROFORMA INVOICE</b></center> 
     </div>
     <div >
-        <lightning:input value="{!v.wrappr.objquote.Contact_Person__r.Email}" aura:id="EmailAddress" type="text" label="To Email Address:" />
-        <lightning:input aura:id="CC" type="text"  label="CC Email Address:" />
-        <lightning:input aura:id="Subject" required="true" type="text" label="Subject" />
+        <lightning:input fieldLevelHelp="To Add more than one email use comma(,) to separate them." value="{!v.wrappr.objquote.Contact_Person__r.Email}" aura:id="EmailAddress" type="text" label="To Email Address:" />
+        <lightning:input fieldLevelHelp="To Add more than one email use comma(,) to separate them." aura:id="CC" type="text"  label="CC Email Address:" />
+        <lightning:input aura:id="Subject" required="true" type="text" label="Subject" value="{!v.wrappr.subject}"/>
         <!-- <lightning:inputRichText  aura:id="bodyid"  label="Body" value="{!v.wrappr.emailbody}" placeholder="Type something interesting"/>
-      --> <lightning:textarea aura:id="bodyid"    label="Body" value="{!v.wrappr.emailbody}" />
+      --> <lightning:textarea class="tallTextArea" aura:id="bodyid"    label="Body" value="{!v.wrappr.emailbody}" />
         
         
     </div><br/>

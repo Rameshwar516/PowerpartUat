@@ -11,6 +11,47 @@
                 console.log(resp.getReturnValue());
                 var retrnval =JSON.parse(resp.getReturnValue());
                 component.set('v.wrapMains', retrnval);
+                
+                var Childlst = component.get('v.wrapMains.wrapChildlst');
+                var selected = false;
+                var QuantyError = false;
+                var Alldone = false;
+                for(var i=0;i<Childlst.length;i++)
+                {
+                    console.log(Childlst[i].isSelected);
+                    if(Childlst[i].isSelected == true ){
+                        selected = true;
+                        if(Childlst[i].reMaininQTY > Childlst[i].quantity ){
+                            QuantyError = true; 
+                        }
+                    }
+                }
+                for(var i=0;i<Childlst.length;i++)
+                {   
+                    if(!Childlst[i].checkboxDisable){
+                        Alldone = false; 
+                        break;
+                    }
+                    else{
+                        Alldone = true;
+                    } 
+                }
+                
+                if(Alldone){
+                    
+                    var toastEvent = $A.get("e.force:showToast");
+                    toastEvent.setParams({
+                        title : 'Success',
+                        message: 'All parts delivery note created.',
+                        duration:' 5000',
+                        key: 'info_alt',
+                        type: 'success',
+                        mode: 'pester'
+                    });
+                    toastEvent.fire();
+                     $A.get("e.force:closeQuickAction").fire();
+                }
+                
             }
         })
         $A.enqueueAction(getmethod);
@@ -18,23 +59,45 @@
     onSave: function(component, event, helper) {
         var action = component.get('c.createDeliveryNoteObjAndItems');
         var wrapper=component.get('v.wrapMains');
-        //alert(wrapper);
+        var wrapperchild=component.get("v.wrapMains.wrapChildlst");
+        
+        var error = false;
+        for(var i=0; i< wrapperchild.length;i++){
+            if(wrapperchild[i].reMaininQTY != null && wrapperchild[i].reMaininQTY > 0){
+                
+            }  
+            else{
+                error=true;
+                break;
+            }
+        }
+        
+        if(!error){
+        
         action.setParams({
             strMainWrapper:JSON.stringify(wrapper),
         });
         action.setCallback(this, function(res){
             var state=res.getState();
             if(state==="SUCCESS" && JSON.parse(res.getReturnValue()).success){
+                if(wrapper.isupdate){
+                    var SucessMessage = "Delivery Note updated successfully";
+                }
+                else{
+                    var SucessMessage = "Delivery Note created successfully";
+                }
+                
          var toastEvent = $A.get("e.force:showToast");
         toastEvent.setParams({
             title : 'Success',
-            message: 'Delivery Note created successfully',
+            message: SucessMessage,
             duration:' 5000',
             key: 'info_alt',
             type: 'success',
             mode: 'pester'
         });
         toastEvent.fire();
+                  
                $A.get("e.force:closeQuickAction").fire();
             }
             else{
@@ -48,8 +111,21 @@
             mode: 'pester'
         });
         toastEvent.fire();
+                  component.set("v.isSave",false);
             }
         });
+        }
+        else{
+             var toastEvent = $A.get("e.force:showToast");
+            toastEvent.setParams({
+                title : 'Error',
+                message:'Part Quantity can not be 0 or less than 0.Please Check before save.',
+                type: 'error',
+            });
+            toastEvent.fire();
+              component.set("v.isSave",false);
+        }
+        
         $A.enqueueAction(action);
     },
     onRemainQty: function(component, event, helper) {
@@ -58,7 +134,7 @@
         var slctCheck = event.getSource().get("v.value");
         var rowindex = event.getSource().get("v.name");
          console.log('rowindex '+rowindex);
-        wrapperchild[rowindex].reMaininQTY=slctCheck;
+        wrapperchild[rowindex].reMaininQTY=parseInt(slctCheck);
         wrapperchild[rowindex].totalprice = wrapperchild[rowindex].salesprice*wrapperchild[rowindex].reMaininQTY;
         wrapperchild[rowindex].discountamount = (wrapperchild[rowindex].totalprice*wrapperchild[rowindex].discount)/100;
         wrapperchild[rowindex].totalamount = wrapperchild[rowindex].totalprice - wrapperchild[rowindex].discountamount;

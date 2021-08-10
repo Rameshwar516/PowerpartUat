@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SharingRules xmlns="http://soap.sforce.com/2006/04/metadata">
+    <sharingOwnerRules>
+        <fullName>A_I_Team_Sharing_Rule</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>A&amp;I Team Sharing Rule</label>
+        <sharedTo>
+            <role>A_I_Manager</role>
+        </sharedTo>
+        <sharedFrom>
+            <role>A_I_Manager</role>
+        </sharedFrom>
+    </sharingOwnerRules>
+</SharingRules>

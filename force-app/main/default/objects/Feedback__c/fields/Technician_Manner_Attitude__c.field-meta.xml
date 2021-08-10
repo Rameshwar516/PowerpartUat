@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Technician_Manner_Attitude__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>Our technician communicated effectively and their attitude and manner was professional throughout the visit.</inlineHelpText>
+    <label>Technician Manner/Attitude</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

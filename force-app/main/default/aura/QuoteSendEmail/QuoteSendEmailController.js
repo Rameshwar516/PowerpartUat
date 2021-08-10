@@ -8,6 +8,7 @@
             
             if(component.find('Subject').get('v.value')!=''){
                 helper.sendmessage(component, event, helper);
+               // alert('success Js');
                 $A.get("e.force:closeQuickAction").fire();  
                 $A.get('e.force:refreshView').fire();
             }

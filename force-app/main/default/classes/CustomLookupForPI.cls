@@ -1,15 +1,43 @@
-public class CustomLookupForPI {
+public without sharing class  CustomLookupForPI {
     
     @AuraEnabled
-    public static List <sObject> searchLookupValue(string queryText, String objectName, string wareHouse) {
-        
+    public static List <sObject> searchLookupValue(string queryText, String objectName, string wareHouse, String strWrap,String eveobject) {
+        Set<string> existpartid = new set<string>();
+        if(string.isNotBlank(strWrap) && objectName == 'Part__c'){
+            if(eveobject == 'MRN'){
+                MRNcontroller.wrapper objmainWrap = (MRNcontroller.wrapper)Json.deserialize(strWrap, MRNcontroller.wrapper.class);
+                for(MRNcontroller.DeliveryNoteLIWrapper dnl : objmainWrap.lstDeliveryNoteLIWrap){
+                    existpartid.add(dnl.objPart.id);
+                    System.debug('---- '+dnl.objPart.id);
+                } 
+            }
+            if(eveobject == 'PO' && strWrap!='["null"]'){
+               system.debug('....strWrap..'+strWrap); 
+                PurchaseOrderCMP.mainWrapper objmainWrap = (PurchaseOrderCMP.mainWrapper)Json.deserialize(strWrap, PurchaseOrderCMP.mainWrapper.class);
+                for(PurchaseOrderCMP.OrderItemWapper oiw : objmainWrap.lstOIW){
+                    existpartid.add(oiw.objPart.id);
+                    System.debug('---- '+oiw.objPart);
+                } 
+            }
+            if(eveobject == 'PI' && strWrap!='["null"]'){
+               system.debug('....strWrap..'+strWrap); 
+                PurchaseIndent.mainWrapper objmainWrap = (PurchaseIndent.mainWrapper)Json.deserialize(strWrap, PurchaseIndent.mainWrapper.class);
+                for(PurchaseIndent.IndentItemWapper oiw : objmainWrap.lstIIW){
+                    existpartid.add(oiw.objPart.id);
+                    System.debug('---- '+oiw.objPart);
+                } 
+            }
+        }
+         
         system.debug('queryText --- ' + queryText +'Object Name --- '+objectName +'wareHouse ---'+wareHouse);        
         String searchKey = queryText + '%';
         String sQuery = '';
 		String strFields = '';
+        
         if(String.isNotBlank(objectName)){
             if(objectName == 'Part__c')
-                strFields = 'Id, Name,Part_Name__c,Usage__c,HSN_CODE__c,List_Price_Standard_price__c,UOM__c,UOI__c,(select id, Total_Quantity__c, Ware_House__c from Stocks__r where Ware_House__c =: wareHouse)';
+                strFields = 'Id, Name,Part_Name__c,Usage__c,HSN_CODE__c,List_Price_Standard_price__c,UOM__c,UOI__c';
+                //strFields = 'Id, Name,Part_Name__c,Usage__c,HSN_CODE__c,List_Price_Standard_price__c,UOM__c,UOI__c,(select id, Total_Quantity__c, Ware_House__c from Stocks__r where Ware_House__c =: wareHouse)';
             else if(objectName == 'User')
                 strFields = 'Id, Name';
             else if(objectName == 'Sales_Order__c')
@@ -26,6 +54,8 @@ public class CustomLookupForPI {
                 sQuery = 'select '+strFields+' from ' +objectName + ' where Ware_House__c =: wareHouse order by LastViewedDate DESC limit 5';
             else if(objectName == 'Account')
                 sQuery = 'select '+strFields+' ,RecordType.Name, Billing_State_Code__c, Shipping_State_Code__c from ' +objectName + ' where RecordType.Name = \'Supplier\' order by LastViewedDate DESC limit 5';
+            else  if(objectName == 'Part__c')  
+                sQuery = 'select '+strFields+' from ' +objectName + ' WHERE Id NOT IN : existpartid AND Active__c=True order by LastViewedDate DESC limit 5';
             else    
                 sQuery = 'select '+strFields+' from ' +objectName + ' order by LastViewedDate DESC limit 5';
         }
@@ -36,6 +66,8 @@ public class CustomLookupForPI {
                 sQuery = 'select '+strFields+' from ' +objectName + ' where Ware_House__c =: wareHouse AND Purchase_Indent_Number__c LIKE: searchKey order by LastViewedDate DESC limit 5';
             else if(objectName == 'Account')
                 sQuery = 'select '+strFields+' ,RecordType.Name, Billing_State_Code__c, Shipping_State_Code__c from ' +objectName + ' where RecordType.Name = \'Supplier\' AND Name LIKE: searchKey order by LastViewedDate DESC limit 5';
+            else  if(objectName == 'Part__c')  
+                sQuery = 'select '+strFields+' from ' +objectName + ' WHERE Id NOT IN : existpartid AND Name LIKE: searchKey AND Active__c=True order by LastViewedDate DESC limit 5';
             else   
                 sQuery = 'select '+strFields+' from ' +objectName + ' where Name LIKE: searchKey order by LastViewedDate DESC limit 5';
         }       

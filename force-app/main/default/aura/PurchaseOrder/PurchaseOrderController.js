@@ -3,6 +3,7 @@
         helper.initHelper(component, event, helper);
 	},
     onChangeSelect : function(component, event, helper) {
+        //alert('...debug test');
         var selectedValue = component.find("IdSelectPO").get("v.value");
         component.set("v.OrderItemWapper", []);
         component.set("v.SelectedPurchaseIndent", []);
@@ -142,6 +143,8 @@
                     }
                     items[i].objPart.Stocks__r = null;
                 }
+                if(! items[i].HSNCode)
+                    items[i].HSNCode = items[i].objPart.HSN_CODE__c;
             }
             mainWrap.lstOIW = items;
             mainWrap.lstTaxDetails = component.get('v.lstSelectedTax');

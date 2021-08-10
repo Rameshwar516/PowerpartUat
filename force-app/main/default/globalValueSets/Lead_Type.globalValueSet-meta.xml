@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>Sales</fullName>
+        <default>false</default>
+        <label>Sales</label>
+    </customValue>
+    <customValue>
+        <fullName>Service</fullName>
+        <default>false</default>
+        <label>Service</label>
+    </customValue>
+    <customValue>
+        <fullName>Parts</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>Parts</label>
+    </customValue>
+    <customValue>
+        <fullName>Engines</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>Engines</label>
+    </customValue>
+    <masterLabel>Lead Type</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

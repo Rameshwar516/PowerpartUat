@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>All_Open_Cases_in_North</fullName>
+    <columns>NAME</columns>
+    <columns>CREATEDBY_USER</columns>
+    <columns>Customer_Name__c</columns>
+    <columns>ESN__c</columns>
+    <columns>Engine_Model__c</columns>
+    <columns>Closed_Date_Time__c</columns>
+    <columns>Engine_Run_Hours__c</columns>
+    <columns>Status__c</columns>
+    <columns>Failure_Category__c</columns>
+    <columns>Date_Time_Reported__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>CREATEDBY_USER</field>
+        <operation>contains</operation>
+        <value>Bisht,Saini,Bashiruddin,Ajai</value>
+    </filters>
+    <filters>
+        <field>Status__c</field>
+        <operation>notEqual</operation>
+        <value>Closed</value>
+    </filters>
+    <label>All Open Cases in North</label>
+    <sharedTo>
+        <group>Management</group>
+        <group>North_Service_Team</group>
+    </sharedTo>
+</ListView>

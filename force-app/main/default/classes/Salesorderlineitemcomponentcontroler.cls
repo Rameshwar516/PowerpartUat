@@ -5,12 +5,18 @@ public class Salesorderlineitemcomponentcontroler {
     public static string productOnLoad(string RecordId)
     {
         recordlist = new WrappMain();
+        boolean exportValue=false;
         string warehouse = '';
         string warehousename = '';
+        string warehousecity = '';
         Boolean booleantrue = true;
         Boolean service=false;
         string objname =findObjectNameFromRecordIdPrefix(RecordId);
         Boolean IGST=false;
+        List<user> Userlist = [Select Id,isUnfreezeUser__c from user Where id =:UserInfo.getUserId()];
+        user Currentuser = new User();
+        if(!Userlist.isEmpty())
+            Currentuser = Userlist[0];
         list<charges__c> chargeslist = new list<charges__c>();
         list<Sales_Order_Line_Item__c> lineitemonrecord  = new  list<Sales_Order_Line_Item__c>();
         set<string> stateset = new set<string>();
@@ -19,25 +25,35 @@ public class Salesorderlineitemcomponentcontroler {
         list<TaxDetails> TaxDetailslist = new list<TaxDetails>();
         String state='';
         
-        Sales_Order__c so =[SELECT Id,Status__c,Ware_House__c,Ware_House__r.State_Code__c,Customer_Name__r.Billing_State_Code__c,Opportunity__r.Office__c,Opportunity__r.isService__c From Sales_Order__c WHERE id=:RecordId];
+        Sales_Order__c so =[SELECT Id,Status__c,Ware_House__c,Branch_Office_picklist__c,Ware_House__r.State_Code__c,Ware_House__r.city__c,Customer_Name__r.Discount__c,Customer_Name__r.Billing_State_Code__c,Customer_Name__r.Is_Export__c,Opportunity__r.Office__c,Opportunity__r.isService__c From Sales_Order__c WHERE id=:RecordId];
         state =so.Customer_Name__r.Billing_State_Code__c;
         warehouse =so.Ware_House__c;
         warehousename=so.Ware_House__r.State_Code__c;
-         service = so?.Opportunity__r.isService__c;
+        warehousecity=so.Ware_House__r.city__c;
+        if(so.Customer_Name__r.Discount__c != Null)
+            recordlist.OEM_Discount = so.Customer_Name__r.Discount__c;
+        else
+            recordlist.OEM_Discount = 0;
+        if(so.Customer_Name__r.Is_Export__c)
+                exportValue = true;
+        recordlist.SO_Branch = so.Branch_Office_Picklist__c;
+        
+        
+        service = so?.Opportunity__r.isService__c;
         if(so.Status__c=='Approved'){
-                recordlist.closed =booleantrue;
-            } 
-        lineitemonrecord= [SELECT Amount__c,Available_Quantity__c,CGST_Amount__c,CGST__c,CreatedById,CreatedDate,Description__c,
+            recordlist.closed =booleantrue;
+        } 
+        lineitemonrecord= [SELECT Amount__c,Freeze_Qunatity__c,Deliverd_Quantity__c,Part_Serial__c,Available_Quantity__c,CGST_Amount__c,CGST__c,CreatedById,CreatedDate,Description__c,
                            Discount_Amount__c,Discount__c,Expected_Date__c,GST__c,HSN_Code__c,Id,IGST_Amount__c,IGST__c,IsDeleted,
-                           LastActivityDate,LastModifiedById,LastModifiedDate,List_Price__c,Name,OwnerId,Part_Name_formula__c,
+                           List_Price__c,Name,Part_Name_formula__c,
                            Product_Part__c,Quantity__c,Sales_Order__c,SGST_Amount__c,SGST__c,SystemModstamp,Taxable_Amount__c,
                            Total_Amount__c,Unit_Price__c,Unit__c,Product_Part__r.Part_Name__c,Product_Part__r.name FROM Sales_Order_Line_Item__c WHERE Sales_Order__c=:RecordId];
         chargeslist =[SELECT CGST_Amount__c,CGST__c,Charges__c,Charge_Amount__c,Charge_Percentage__c,CreatedById,CreatedDate,Id,
-                      IGST_Amount__c,IGST__c,IsDeleted,LastModifiedById,LastModifiedDate,MRN__c,Name,Net_Amount__c,Opportunity__c,
-                      OwnerId,Quote__c,Sales_Order__c,SGST_Amount__c,SGST__c,SystemModstamp,Total_Amount__c,Charges__r.name FROM Charges__c WHERE
+                      IGST_Amount__c,IGST__c,IsDeleted,LastModifiedById,MRN__c,Name,Net_Amount__c,Opportunity__c,
+                      Quote__c,Sales_Order__c,SGST_Amount__c,SGST__c,SystemModstamp,Total_Amount__c,Charges__r.name FROM Charges__c WHERE
                       Sales_Order__c =:RecordId ];
         list<tax__c> taxlist =[SELECT Basic_Percentage__c,CreatedById,CreatedDate,Id,IsDeleted,LastActivityDate,LastModifiedById,LastModifiedDate,
-                               LastReferencedDate,LastViewedDate,Name,OwnerId,SystemModstamp,Tax_Percentage__c FROM Tax__c];
+                               LastReferencedDate,LastViewedDate,Name,SystemModstamp,Tax_Percentage__c FROM Tax__c];
         map<id,tax__c> taxmap = new map<id,tax__c>();
         if(!taxlist.isEmpty())taxmap.putall(taxlist);
         if(!String.isblank(state)){
@@ -53,9 +69,9 @@ public class Salesorderlineitemcomponentcontroler {
                     objTD.SGST = ch.SGST__c;
                     objTD.IGST = ch.IGST__c;
                     objTD.objcharge = ch;
-                    objTD.decTaxAmount =  ch.Total_Amount__c;
+                    objTD.decTaxAmount =  ch.Charge_Amount__c;
                     objTD.NetAmount =  ch.Net_Amount__c;
-                        objTD.ischargeItem = booleantrue;
+                    objTD.ischargeItem = booleantrue;
                     TaxDetailslist.add(objTD);
                 } 
             }
@@ -76,7 +92,7 @@ public class Salesorderlineitemcomponentcontroler {
                 stw.stockamount = st.Total_Quantity__c;
                 stw.saleableamount = st.Total_Unbooked_Quantity__c;
                 if(st.Freeze_Quantity__c!=null){
-                  stw.freezeamount = st.Freeze_Quantity__c;  
+                    stw.freezeamount = st.Freeze_Quantity__c;  
                 }
                 else{
                     stw.freezeamount = 0;
@@ -90,7 +106,7 @@ public class Salesorderlineitemcomponentcontroler {
             if(!lineitemonrecord.isempty()){
                 for(Sales_Order_Line_Item__c objOppPro:lineitemonrecord){
                     prodwrappChild objchild = new prodwrappChild();
-                    objchild.DiscountAmount=0; 
+                    objchild.DiscountAmount=objOppPro.Discount_Amount__c; 
                     objchild.totalAmount =objOppPro.Amount__c ;
                     objchild.TotalAfterDiscount =objOppPro.Taxable_Amount__c ;
                     objOppPro.SGST__c=objOppPro.SGST__c ;
@@ -99,23 +115,30 @@ public class Salesorderlineitemcomponentcontroler {
                     objchild.CGSTAmount=objOppPro.CGST_Amount__c ;
                     objchild.SGSTAmount=objOppPro.SGST_Amount__c ;
                     objchild.IGSTAmount=objOppPro.IGST_Amount__c ; 
+                    objOppPro.Freeze_Qunatity__c=objOppPro.Freeze_Qunatity__c;
                     objchild.NetTotalAmount = objOppPro.Total_Amount__c ;
                     objchild.objProdchild = objOppPro;
                     objchild.PartName = objOppPro.Product_Part__r.Part_Name__c ;
                     objchild.Partnumber= objOppPro.Product_Part__r.name ;
+                    //objOppPro.Part_Serial__c = objOppPro.Part_Serial__c;
                     objchild.isSelected = booleantrue;
                     objchild.isLineItem = booleantrue;
-                   // objchild.stockamount = stcountmap.get(objOppPro.Product_Part__c);
+                    objchild.Freezeqty =Integer.valueof(objOppPro.Freeze_Qunatity__c);
+                    
+                    // objchild.stockamount = stcountmap.get(objOppPro.Product_Part__c);
                     objchild.stockamount = stwraptmap.get(objOppPro.Product_Part__c).stockamount;
                     objchild.saleableamount = stwraptmap.get(objOppPro.Product_Part__c).saleableamount;
                     objchild.POamount = stwraptmap.get(objOppPro.Product_Part__c).freezeamount;
                     lineitemlist.add(objchild);
                 }
             }            
-            if(!stateset.contains(state)) IGST=true;
+            if(warehousename !=state) IGST=true;
             
             recordlist.lstWrapp = new list<prodwrapp>(); 
             List<prodwrappChild> lstWrappTwoNew = new List<prodwrappChild>();
+            recordlist.isUnfrezeUser=false;
+            if(currentuser.isUnfreezeUser__c ==true)
+                recordlist.isUnfrezeUser=true;
             recordlist.Lineitemonrecord = lineitemlist; 
             recordlist.lstTaxDetailsAvailable = TaxDetailslist;
             recordlist.lstWrappTwo = lineitemlist;
@@ -129,6 +152,8 @@ public class Salesorderlineitemcomponentcontroler {
             recordlist.lstTaxType = new list<TaxType>();
             recordlist.lstTaxDetails = new List<TaxDetails>();
             recordlist.lstCharges = new List<TaxDetails>();
+            recordlist.wrname=warehousecity;
+            recordlist.isExport=exportvalue;
             for(Tax__c objTax : [Select Id,Name,Tax_Percentage__c,Basic_Percentage__c,CGST__c,SGST__c,IGST__c from Tax__c]){
                 TaxType objTaxT = new TaxType();
                 objTaxT.value = objTax.Name;
@@ -177,7 +202,7 @@ public class Salesorderlineitemcomponentcontroler {
         }
         list<prodwrappChild> prodwrap = new list<prodwrappChild>();
         List<Sales_Order_Line_Item__c> prelineitemrecord = [SELECT Amount__c,CGST__c,CreatedById,CreatedDate,Description__c,
-                                                            Discount_Amount__c,Discount__c,Expected_Date__c,GST__c,HSN_Code__c,Id,IGST__c,Name,OwnerId,
+                                                            Discount_Amount__c,Discount__c,Expected_Date__c,GST__c,HSN_Code__c,Id,IGST__c,Name,
                                                             Product_Part__c,Quantity__c,Sales_Order__c,SGST__c,Taxable_Amount__c,Total_Amount__c,
                                                             Unit_Price__c,Product_Part__r.name,Unit__c FROM Sales_Order_Line_Item__c Where  Sales_Order__c = :recordId];
         
@@ -214,10 +239,10 @@ public class Salesorderlineitemcomponentcontroler {
             if(filter.trim() != ''){
                 
                 if(wrapproductId.size() > 0 ){
-                    soql += ' where id NOT IN : wrapproductId and ( name Like ' + filter + ' or Part_Name__c LIKE ' + filter + ')';
+                    soql += ' where id NOT IN : wrapproductId and ( name Like ' + filter + ' or Part_Name__c LIKE ' + filter + ') AND Stock_Available__c != 0 AND Active__c=True ';
                 }
                 else{
-                    soql += ' where ( name Like ' + filter + ' or Part_Name__c LIKE ' + filter + ')';
+                    soql += ' where ( name Like ' + filter + ' or Part_Name__c LIKE ' + filter + ') AND Stock_Available__c != 0 AND Active__c=True ';
                 }
             }   
             system.debug('====='+soql);
@@ -228,11 +253,13 @@ public class Salesorderlineitemcomponentcontroler {
                 if(!pr.stocks__r.isempty()){
                     for(Stock__c st:pr.stocks__r){
                         if(st.Ware_House__r.City__c == 'Gurugram'){
-                         prdwrap.Grwr = Integer.valueOf(st.Total_Unbooked_Quantity__c);   
+                            prdwrap.Grwr = Integer.valueOf(st.Total_Unbooked_Quantity__c); 
+                            prdwrap.GrWrAll=Integer.valueOf(st.Total_Quantity__c);
                         }
                         if(st.Ware_House__r.City__c == 'Kolkata'){
-                         prdwrap.Klwr = Integer.valueOf(st.Total_Unbooked_Quantity__c);   
-                        }
+                            prdwrap.Klwr = Integer.valueOf(st.Total_Unbooked_Quantity__c); 
+                            prdwrap.KlwrAll=Integer.valueOf(st.Total_Quantity__c);
+                        }   
                         
                     }
                 }
@@ -246,23 +273,24 @@ public class Salesorderlineitemcomponentcontroler {
             if(wrapproductId.size() > 0 ){
                 string soql2 = 'select ' + string.join(leadfieldNames, ',') +',(SELECT Id, Total_Quantity__c, Ware_House__r.City__c,Total_Unbooked_Quantity__c from Stocks__r)  from ' + objectName ; 
                 if(filter.trim() != ''){    
-                    soql2 += ' where id IN : wrapproductId and ( name Like ' + filter + ' or Part_Name__c LIKE ' + filter + ')';
+                    soql2 += ' where id IN : wrapproductId and ( name Like ' + filter + ' or Part_Name__c LIKE ' + filter + ') AND Stock_Available__c != 0 AND Active__c=True ';
                 } 
                 soql2 += 'order by Name limit 10';
                 for(Part__c pr :Database.query(soql2)){
                     prodwrapp prdwrap = new prodwrapp(); 
                     prdwrap.objProd = pr;
                     if(!pr.stocks__r.isempty()){
-                    for(Stock__c st:pr.stocks__r){
-                        if(st.Ware_House__r.City__c == 'Gurugram'){
-                         prdwrap.Grwr = Integer.valueOf(st.Total_Unbooked_Quantity__c);   
+                        for(Stock__c st:pr.stocks__r){
+                            if(st.Ware_House__r.City__c == 'Gurugram'){
+                                prdwrap.Grwr = Integer.valueOf(st.Total_Unbooked_Quantity__c); 
+                                prdwrap.GrWrAll=Integer.valueOf(st.Total_Quantity__c);
+                            }
+                            if(st.Ware_House__r.City__c == 'Kolkata'){
+                                prdwrap.Klwr = Integer.valueOf(st.Total_Unbooked_Quantity__c); 
+                                prdwrap.KlwrAll=Integer.valueOf(st.Total_Quantity__c);
+                            }   
                         }
-                        if(st.Ware_House__r.City__c == 'Kolkata'){
-                         prdwrap.Klwr = Integer.valueOf(st.Total_Unbooked_Quantity__c);   
-                        }
-                        
                     }
-                }
                     prdwrap.isSelected = true; 
                     listproduct.add(prdwrap);
                 }}
@@ -275,7 +303,7 @@ public class Salesorderlineitemcomponentcontroler {
                 partid.add(pd.objProd.id);
             }
             
-            list<Part__History> parthistory = [SELECT Field,NewValue,OldValue,ParentId FROM Part__History WHERE ParentId IN: partid];
+            list<Part__History> parthistory = [SELECT Field,NewValue,OldValue,ParentId FROM Part__History WHERE ParentId IN: partid Order by createddate ASC];
             
             map<string,string> partoldfieldvalue = new map<string,string>();
             if(!parthistory.isempty())
@@ -340,38 +368,41 @@ public class Salesorderlineitemcomponentcontroler {
     @AuraEnabled
     public static string removeRecord(string strWrap, string prodwrappstr)
     {
-        WrappMain objwrap = (WrappMain)Json.deserialize(strWrap, WrappMain.class);      
-        prodwrapp prodwrappobj = (prodwrapp)Json.deserialize(prodwrappstr, prodwrapp.class);
-        List<prodwrappChild> lstWrapplineItem = objwrap.lstWrappTwo;
-        List<prodwrapp> lstWrappProduct = objwrap.lstWrapp;
-        Set<id> lineitemids = objwrap.lineitemid;
-        integer i=0;
-        integer x=0;
-        for(prodwrappChild prodchild : lstWrapplineItem){
-            x++;
-            if(prodchild.objProdchild.Product_Part__c == prodwrappobj.objProd.id){
-                i=lstWrapplineItem.indexOf(prodchild);
-                System.debug('integer i '+i);
-            }           
+        System.debug('prodwrappstr--------'+prodwrappstr);
+        WrappMain objwrap = (WrappMain)Json.deserialize(strWrap, WrappMain.class);
+        if(prodwrappstr != null){      
+            prodwrappChild prodwrappobj = (prodwrappChild)Json.deserialize(prodwrappstr, prodwrappChild.class);
+            List<prodwrappChild> lstWrapplineItem = objwrap.lstWrappTwo;
+            List<prodwrapp> lstWrappProduct = objwrap.lstWrapp;
+            Set<id> lineitemids = objwrap.lineitemid;
+            integer i=0;
+            integer x=0;
+            for(prodwrappChild prodchild : lstWrapplineItem){
+                x++;
+                if(prodchild.objProdchild.Product_Part__c == prodwrappobj.objProdchild.Product_Part__c){
+                    i=lstWrapplineItem.indexOf(prodchild);
+                    System.debug('integer i '+i);
+                }           
+            }
+            for(id prodchild : lineitemids){
+                if(prodchild == prodwrappobj.objProdchild.Product_Part__c){
+                    lineitemids.remove(prodchild);
+                }           
+            }
+            for(prodwrapp prodchild : lstWrappProduct){
+                
+                if(prodchild.objProd.id == prodwrappobj.objProdchild.Product_Part__c){
+                    x=lstWrappProduct.indexOf(prodchild);
+                    prodchild.isSelected = false;
+                    System.debug('integer x '+x);
+                }           
+            }
+            System.debug('size '+lstWrapplineItem.size());
+            lstWrapplineItem.remove(i);
+            objwrap.lstWrapp = lstWrappProduct;
+            objwrap.lstWrappTwo =  lstWrapplineItem;  
         }
-        for(id prodchild : lineitemids){
-            if(prodchild == prodwrappobj.objProd.id){
-                lineitemids.remove(prodchild);
-            }           
-        }
-        for(prodwrapp prodchild : lstWrappProduct){
-            
-            if(prodchild.objProd.id == prodwrappobj.objProd.id){
-                x=lstWrappProduct.indexOf(prodchild);
-                prodchild.isSelected = false;
-                System.debug('integer x '+x);
-            }           
-        }
-        System.debug('size '+lstWrapplineItem.size());
-        lstWrapplineItem.remove(i);
-        objwrap.lstWrapp = lstWrappProduct;
-        objwrap.lstWrappTwo =  lstWrapplineItem;
-        return json.serialize(objwrap);
+        return json.serialize(objwrap); 
     }
     
     @AuraEnabled
@@ -390,11 +421,13 @@ public class Salesorderlineitemcomponentcontroler {
                     prodwrappChild objchild = new prodwrappChild();
                     objchild.isSelected = true;
                     Sales_Order_Line_Item__c objOppPro = new Sales_Order_Line_Item__c();
-                    
-					system.debug('isService '+objwrap.isService);
                     if(objwrap.isService){
                         objOppPro.List_Price__c = lstWrappNew[i].objProd.Service_Price__c;
                         objOppPro.Unit_Price__c = lstWrappNew[i].objProd.Service_Price__c;
+                    }
+                    else if(objwrap.OEM_Discount != 0){
+                       objOppPro.List_Price__c = lstWrappNew[i].objProd.List_Price_Standard_price__c; 
+                        objOppPro.Unit_Price__c =lstWrappNew[i].objProd.List_Price_Standard_price__c - (lstWrappNew[i].objProd.List_Price_Standard_price__c * objwrap.OEM_Discount)/100; 
                     }
                     else{
                         objOppPro.List_Price__c = lstWrappNew[i].objProd.List_Price_Standard_price__c;
@@ -407,8 +440,22 @@ public class Salesorderlineitemcomponentcontroler {
                     objchild.DiscountAmount=0;
                     objchild.totalAmount = Integer.valueOf(objOppPro.Quantity__c*objOppPro.Unit_Price__c);
                     objchild.TotalAfterDiscount = Integer.valueOf(objOppPro.Quantity__c*objOppPro.Unit_Price__c);
-
-                     if(objwrap.igstvalue){
+                   
+                    if(objwrap.wrname =='Gurugram'){
+                        objchild.saleableamount=lstWrappNew[i].GrWr;
+                        objchild.stockamount=lstWrappNew[i].GrWrAll;
+                    }
+                    if(objwrap.wrname =='Kolkata'){
+                        objchild.saleableamount=lstWrappNew[i].KlWr;
+                        objchild.stockamount=lstWrappNew[i].KlWrAll;
+                    }
+                    objOppPro.Freeze_Qunatity__c=0;
+                    objOppPro.Deliverd_Quantity__c=0;
+                    
+                    objchild.POamount=0;
+                    objchild.Freezeqty=0;
+                    objchild.FreezeqtyOld=0;
+                    if(objwrap.igstvalue){
                         objOppPro.SGST__c=0;
                         objOppPro.CGST__c=0;
                         if(lstWrappNew[i].objProd.GST__c != null) objOppPro.IGST__c= lstWrappNew[i].objProd.GST__c;
@@ -417,7 +464,7 @@ public class Salesorderlineitemcomponentcontroler {
                     else{
                         if(lstWrappNew[i].objProd.GST__c != null)  objOppPro.SGST__c=(lstWrappNew[i].objProd.GST__c)/2;
                         if(lstWrappNew[i].objProd.GST__c != null)  objOppPro.CGST__c=(lstWrappNew[i].objProd.GST__c)/2;
-                         if(lstWrappNew[i].objProd.GST__c == null)  objOppPro.SGST__c=0;
+                        if(lstWrappNew[i].objProd.GST__c == null)  objOppPro.SGST__c=0;
                         if(lstWrappNew[i].objProd.GST__c == null)  objOppPro.CGST__c=0;
                         objOppPro.IGST__c=0;
                     }
@@ -425,7 +472,7 @@ public class Salesorderlineitemcomponentcontroler {
                     objchild.SGSTAmount=(Integer.valueOf(objOppPro.Quantity__c*objOppPro.Unit_Price__c)*objOppPro.SGST__c)/100;
                     objchild.IGSTAmount=(Integer.valueOf(objOppPro.Quantity__c*objOppPro.Unit_Price__c)*objOppPro.IGST__c)/100; 
                     objchild.NetTotalAmount = Integer.valueOf(objOppPro.Quantity__c*objOppPro.Unit_Price__c)+objchild.CGSTAmount+objchild.SGSTAmount+objchild.IGSTAmount;
-                     objchild.PartName = lstWrappNew[i].objProd.Part_Name__c;
+                    objchild.PartName = lstWrappNew[i].objProd.Part_Name__c;
                     objchild.Partnumber= lstWrappNew[i].objProd.name;
                     
                     objchild.objProdchild = objOppPro;
@@ -437,16 +484,13 @@ public class Salesorderlineitemcomponentcontroler {
                     }
                     else
                     {
-                        System.debug('else ProductId---- '+objOppPro.Product_Part__c);
                         if(objwrap.lineitemid.contains(objOppPro.Product_Part__c) == False)
                         {
                             lstWrappTwoNew.add(objchild); 
                             lineitemids.add(objOppPro.Product_Part__c);  
                             objwrap.lineitemid.addall(lineitemids);
-                            System.debug('contain2 list---- '+objwrap.lineitemid);
                         }                   
-                    }
-                    System.debug('After---- '+lstWrappTwoNew);   
+                    }  
                 }
             }
             objwrap.success = true;
@@ -475,6 +519,7 @@ public class Salesorderlineitemcomponentcontroler {
     @AuraEnabled
     public static string saveRecord(string strWrap, string RecordId,string lstCharges, Decimal decTotalAmount)
     {
+        System.debug('decTotalAmount--'+decTotalAmount);
         system.debug('Save method called'+'quoteId----- '+RecordId);
         string objname =findObjectNameFromRecordIdPrefix(RecordId);
         WrappMain objwrap = (WrappMain)Json.deserialize(strWrap, WrappMain.class);
@@ -488,6 +533,12 @@ public class Salesorderlineitemcomponentcontroler {
                 Sales_Order_Line_Item__c objOppProduct = obj.objProdchild;
                 if(objOppProduct.Quantity__c > 0 && objOppProduct.Unit_Price__c >0)
                 {
+                    objOppProduct.Unit_Price__c = (objOppProduct.Unit_Price__c).setscale(2);
+                    objOppProduct.Discount__c= (objOppProduct.Discount__c).setscale(2);
+                    objOppProduct.SGST__c= (objOppProduct.SGST__c).setscale(2);
+                    objOppProduct.IGST__c= (objOppProduct.IGST__c).setscale(2);
+                    objOppProduct.CGST__c= (objOppProduct.CGST__c).setscale(2);
+                    objOppProduct.Branch_Office__c = objwrap.SO_Branch;
                     objOppProduct.Sales_Order__c = RecordId;
                     insertOppProduct.add(objOppProduct);
                 }
@@ -513,6 +564,7 @@ public class Salesorderlineitemcomponentcontroler {
                     objCharges.IGST__c =td.IGST ;
                     objCharges.SGST__c =td.SGST ;
                     objCharges.CGST__c =td.CGST ;
+                    objCharges.Branch_Office__c = objwrap.SO_Branch;
                     objCharges.Sales_Order__c=RecordId;
                     lstCharge.add(objCharges);                   
                     system.debug(td.strTaxName+'...strTaxName....'+td.TaxPercentage);
@@ -530,28 +582,30 @@ public class Salesorderlineitemcomponentcontroler {
     }  
     
     @AuraEnabled
-    public static string deleteRecord(string strWrap)
+    public static string deleteRecord(String SOlineID)
     {      
-        prodwrappChild objwrap = (prodwrappChild)Json.deserialize(strWrap, prodwrappChild.class);
+        System.debug('----------- '+SOlineID);
+        // prodwrappChild objwrap = (prodwrappChild)Json.deserialize(strWrap, prodwrappChild.class);
+        //System.debug('----------- '+objwrap);
         try{
-           Delete objwrap.objProdchild;
+            Delete [SELECT id from Sales_Order_Line_Item__c where id =:SOlineID];
         }
-         catch(exception ex){
-                
-            }
+        catch(exception ex){
+            System.debug('error----'+ex.getMessage() );   
+        }
         return null;
     }
     
-     @AuraEnabled
+    @AuraEnabled
     public static string deltecharges(string strWrap)
     {      
         TaxDetails objwrap = (TaxDetails)Json.deserialize(strWrap, TaxDetails.class);
         try{
-           Delete objwrap.objcharge;
+            Delete objwrap.objcharge;
         }
-         catch(exception ex){
-                
-            }
+        catch(exception ex){
+            
+        }
         return null;
     }
     
@@ -609,6 +663,10 @@ public class Salesorderlineitemcomponentcontroler {
         @AuraEnabled public boolean closed; 
         @AuraEnabled public string wrname;
         @AuraEnabled public boolean isService; 
+        @AuraEnabled public boolean isUnfrezeUser;
+        @AuraEnabled public boolean isExport;
+         @AuraEnabled public decimal  OEM_Discount{get;set;}
+         @AuraEnabled public string SO_Branch {get;set;}
     }
     
     public class prodwrapp
@@ -617,6 +675,8 @@ public class Salesorderlineitemcomponentcontroler {
         @AuraEnabled public Boolean isSelected {get; set;}
         @AuraEnabled public Integer Klwr {get;set;}
         @AuraEnabled public Integer GrWr {get;set;}
+        @AuraEnabled public Integer KlwrAll {get;set;}
+        @AuraEnabled public Integer GrWrAll {get;set;}
         @AuraEnabled public string oldPartName {get; set;}
     }
     public class prodwrappChild
@@ -630,19 +690,23 @@ public class Salesorderlineitemcomponentcontroler {
         @AuraEnabled public decimal  IGSTAmount{get;set;}
         @AuraEnabled public decimal  NetTotalAmount{get;set;}
         @AuraEnabled public Boolean isSelected {get; set;}
-         @AuraEnabled public String Partnumber {get; set;}
+        @AuraEnabled public String Partnumber {get; set;}
         @AuraEnabled public String PartName {get; set;}
-         @AuraEnabled public Boolean isLineItem {get; set;}
+        @AuraEnabled public Boolean isLineItem {get; set;}
         @AuraEnabled public decimal  saleableamount{get;set;}
         @AuraEnabled public decimal  stockamount{get;set;}
         @AuraEnabled public decimal  POamount{get;set;}
+        @AuraEnabled public integer  Freezeqty{get;set;}
+        @AuraEnabled public integer  Freezeqtyold{get;set;}
+        @AuraEnabled public Boolean lineError {get; set;}
+        @AuraEnabled public Boolean lineDone {get; set;}
         
     }
     
-     public class stockwrap{
+    public class stockwrap{
         @AuraEnabled public decimal stockamount;
         @AuraEnabled public decimal saleableamount;
-         @AuraEnabled public decimal freezeamount;
+        @AuraEnabled public decimal freezeamount;
     }
     public class TaxType{
         @AuraEnabled public string id;

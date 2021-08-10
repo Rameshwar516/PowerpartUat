@@ -56,7 +56,7 @@ public with sharing class customLookUpController
             string filter = '';
             if(strDeliveryNoteId != null && strDeliveryNoteId !=''){
                 map<string,Stock__c> mapNoOfStock = new map<string,Stock__c>();
-                for(Stock__c objStock : [Select Id,Name,Ware_House__c,Ware_House__r.City__c,Product_Part__c,Quantity__c,Total_Quantity__c from Stock__c]){
+                for(Stock__c objStock : [Select Id,Name,Ware_House__c,Ware_House__r.City__c,Product_Part__c,Quantity__c,Total_Quantity__c,(SELECT CreatedDate,Landed_Price__c FROM Stock_Landed_Amount__r Where Landed_Price__c > 0  ORDER BY CreatedDate DESC ) from Stock__c]){
                     mapNoOfStock.put(objStock.Product_Part__c+'-'+objStock.Ware_House__c,objStock);
                 }
                 map<String , Schema.SObjectType> globalDescription = Schema.getGlobalDescribe();
@@ -65,7 +65,7 @@ public with sharing class customLookUpController
                 List<string> leadfieldNames = new List<String>(describeResult.fields.getMap().keySet()); 
                 
                 /* Adding the object and filter by name to the soql */
-                string soql = 'select ' + string.join(leadfieldNames, ',') +',Sales_Order_Dispatch_Delivery_Note__r.Name,Sales_Order_Dispatch_Delivery_Note__r.Date__c,Ware_House__r.Name,Ware_House__r.City__c,Product_Part__r.Name,Product_Part__r.CreatedDate,Product_Part__r.Part_Name__c from ' + objectName ; 
+                string soql = 'select ' + string.join(leadfieldNames, ',') +',Sales_Order_Dispatch_Delivery_Note__r.Shipping_Account__c,Sales_Order_Dispatch_Delivery_Note__r.Contact_Person_Name__c, Sales_Order_Dispatch_Delivery_Note__r.Customer_Party__c,Sales_Order_Dispatch_Delivery_Note__r.Sales_Order__r.Contact_Person__c,Sales_Order_Dispatch_Delivery_Note__r.Sales_Order__r.Ware_House__c,Sales_Order_Dispatch_Delivery_Note__r.Name,Sales_Order_Dispatch_Delivery_Note__r.Date__c,Ware_House__r.Name,Ware_House__r.City__c,Product_Part__r.Name,Product_Part__r.CreatedDate,Product_Part__r.Part_Name__c from ' + objectName ; 
                 system.debug('......'+soql);
                 if(strDeliveryNoteId != '')     
                     soql += ' where Sales_Order_Dispatch_Delivery_Note__c =: strDeliveryNoteId';
@@ -79,17 +79,40 @@ public with sharing class customLookUpController
                     SubMainWraip objSMW = new SubMainWraip();
                     objSMW.objDNLI = objSODN;
                     objSMW.IsEdit = false;
+                   
                     Integer IntQty =0;
-                    if(objSODN.Product_Part__c !=null && objSODN.Ware_House__c !=null){
-                        IntQty = Integer.ValueOf(mapNoOfStock.get(objSODN.Product_Part__c+'-'+objSODN.Ware_House__c).Total_Quantity__c);
-                        objSMW.StockId =mapNoOfStock.get(objSODN.Product_Part__c+'-'+objSODN.Ware_House__c).Id; 
-                    }
+                    Decimal unitprice = 0;
                     
-                    system.debug('..IntQty..'+IntQty);
+                    if(objSODN.Product_Part__c !=null && objSODN.Sales_Order_Dispatch_Delivery_Note__r.Sales_Order__r.Ware_House__c !=null){
+                        stock__c stk = mapNoOfStock.get(objSODN.Product_Part__c+'-'+objSODN.Sales_Order_Dispatch_Delivery_Note__r.Sales_Order__r.Ware_House__c);
+                        IntQty = Integer.ValueOf(stk.Total_Quantity__c);
+                        System.debug(stk.Name);
+                        objSMW.StockId =stk.Id; 
+                        if(!stk.Stock_Landed_Amount__r.isEmpty())
+                            unitprice=stk.Stock_Landed_Amount__r[0].Landed_Price__c;
+                    }
                     if(IntQty !=null)
                         objSMW.StockTotalProduct =IntQty;
                     else
                         objSMW.StockTotalProduct =0;
+                    
+                   
+                    objSMW.DnUnitQty = objSODN.Quantity__c  ;
+                    objSMW.DnUnitPrice = unitprice ;
+                    objSMW.DnAmount =   objSODN.Quantity__c * objSMW.DnUnitPrice;
+                    objSMW.DnDiscountPer = objSODN.Discount__c ;
+                    objSMW.DnDiscountAmount = objSMW.DnAmount * (objSODN.Discount__c/100) ;
+                    objSMW.DnTaxableAmount = objSMW.DnAmount - objSMW.DnDiscountAmount   ;
+                    //objSMW.DnCGSTRate = objSODN.CGST__c  ;
+                    objSMW.DnCGSTRate = 0 ;
+                    objSMW.DnCGSTAmount = (objSMW.DnTaxableAmount/100) * objSMW.DnCGSTRate ;
+                    //objSMW.DnSGSTRate = objSODN.SGST__c  ;
+                    objSMW.DnSGSTRate = 0  ;
+                    objSMW.DnSGSTAmount = (objSMW.DnTaxableAmount/100) * objSMW.DnSGSTRate ;
+                    //objSMW.DnIGSTRate = objSODN.IGST__c  ;
+                    objSMW.DnIGSTRate = 0  ;
+                    objSMW.DnIGSTAmount = (objSMW.DnTaxableAmount/100) * objSMW.DnIGSTRate ;
+                    objSMW.DnNetAmount =  objSMW.DnTaxableAmount + objSMW.DnCGSTAmount + objSMW.DnSGSTAmount + objSMW.DnIGSTAmount;
                     
                     objmainWrap.lstSubMain.add(objSMW);
                 }
@@ -103,47 +126,6 @@ public with sharing class customLookUpController
         }
         return JSON.serialize(objmainWrap);
     }
-    
-    /*@AuraEnabled
-    public static string SearchPurchaseOrderLI(string strPurchaseOrderId, string objectName)
-    {
-        mainWrapper objmainWrap = new mainWrapper();
-        objmainWrap.lstSubMain = new List<SubMainWraip>();
-        objmainWrap.listPurchaseOrderLI = new List<SubMainWraip>();
-        try
-        {
-            string filter = '';
-            if(strPurchaseOrderId != null && strPurchaseOrderId !=''){
-                map<String , Schema.SObjectType> globalDescription = Schema.getGlobalDescribe();
-                Schema.sObjectType sObjType = globalDescription.get(objectName);
-                Schema.DescribeSObjectResult describeResult = sObjType.getDescribe();
-                List<string> leadfieldNames = new List<String>(describeResult.fields.getMap().keySet()); 
-                
-                string soql = 'select ' + string.join(leadfieldNames, ',') +',Purchase_Order__r.Name,Purchase_Order__r.PO_Date__c from ' + objectName ; 
-                system.debug('......'+soql);
-                if(strPurchaseOrderId != '')     
-                    soql += ' where Purchase_Order__c =: strPurchaseOrderId';
-                system.debug('====='+soql);
-                
-                
-                //soql += 'order by Name limit 10';
-                List<Purchase_Order_Line_Item__c> lstPOLI = Database.query(soql);
-                for(Purchase_Order_Line_Item__c objPOLI : lstPOLI){
-                    SubMainWraip objSMW = new SubMainWraip();
-                    objSMW.objPOLI = objPOLI;
-                    objSMW.IsEdit = false;
-                    objSMW.StockTotalProduct =5;
-                    objmainWrap.listPurchaseOrderLI.add(objSMW);
-                }
-            }
-        }catch(Exception e)
-        {
-            objMainWrap.isSuccess= false;
-            objMainWrap.strMessage = ExceptionMessage.getExceptionMsg(e);
-        }
-        return JSON.serialize(objmainWrap);
-    }
-    */
     
     public Class mainWrapper
     {
@@ -159,5 +141,19 @@ public with sharing class customLookUpController
         public boolean IsEdit;
         public Integer StockTotalProduct;
         public string StockId;
+         public decimal DnUnitQty;
+        public decimal DnUnitPrice;
+        public decimal DnAmount;
+        public decimal DnDiscountPer;
+        public decimal DnDiscountAmount;
+        public decimal DnTaxableAmount;
+        public decimal DnCGSTRate;
+        public decimal DnCGSTAmount;
+        public decimal DnSGSTRate;
+        public decimal DnSGSTAmount;
+        public decimal DnIGSTRate;
+        public decimal DnIGSTAmount;
+        public decimal DnNetAmount;
+        
     }
 }

@@ -4,6 +4,9 @@ public class AddproductController {
     @AuraEnabled 
     public static string productOnLoad(string RecordId)
     {
+        boolean isServiceQt=true;
+        boolean exportValue=false;
+        
         string warehouse = '';
         string warehousename = '';
         recordlist = new WrappMain();
@@ -23,20 +26,31 @@ public class AddproductController {
         //Getting line item from current record
         //Getting State from account  to know IGST will apply or not
         if(objname  =='Quote__c'){
-            Quoteobj=[SELECT Id,Opportunity__r.stage__c,Customer_Party__r.Billing_State_Code__c,Opportunity__r.Ware_House__r.State_Code__c,Opportunity__r.Office__c,Opportunity__r.Ware_House__c,Opportunity__r.isService__c From Quote__c WHERE id=:RecordId];
+            Quoteobj=[SELECT Id,Quote_Type__c,RecordType_Picklist__c,Opportunity__r.stage__c,Opportunity__r.Enquiry_Type_Contain_Service__c,Customer_Party__r.Discount__c,Customer_Party__r.Is_Export__c,Customer_Party__r.Billing_State_Code__c,Opportunity__r.Ware_House__r.State_Code__c,Opportunity__r.Office__c,Opportunity__r.Ware_House__c,Opportunity__r.isService__c From Quote__c WHERE id=:RecordId];
             state=Quoteobj.Customer_Party__r.Billing_State_Code__c;
+            system.debug('state-- '+state);
+            
             warehouse =Quoteobj.Opportunity__r.Ware_House__c;
+            system.debug('warehouse-- '+warehouse);
             warehousename=Quoteobj.Opportunity__r.Ware_House__r.State_Code__c;
+            if(Quoteobj.Customer_Party__r.Discount__c != Null && !Quoteobj.Opportunity__r.Enquiry_Type_Contain_Service__c)
+                recordlist.OEM_Discount = Quoteobj.Customer_Party__r.Discount__c;
+            else
+                recordlist.OEM_Discount = 0;
+            if(Quoteobj.Customer_Party__r.Is_Export__c)
+                exportValue = true;
             if(Quoteobj.Opportunity__r.stage__c == 'Closed Won'||Quoteobj.Opportunity__r.stage__c == 'Closed Lost'){
                 recordlist.closed =booleantrue;
             } 
+            if(Quoteobj.RecordType_Picklist__c=='Service' || Quoteobj.RecordType_Picklist__c=='AMC')
+            isServiceQt = false;
             service = Quoteobj?.Opportunity__r.isService__c; 
             lineitemonrecord = [SELECT Amount_Formula__c,Application__c,CGST_Amount_Formula__c,CGST__c,CreatedById,
                                 CreatedDate,Delivery_Date__c,Description__c,DiscountN__c,Discount_Amount__c,Discount__c,
                                 Expected_date__c,HSN_Code__c,Id,IGST_Amount_Formula__c,IGST__c,IsDeleted,LastActivityDate,
                                 LastModifiedById,LastModifiedDate,List_Price__c,Name,Net_Amount__c,Opportunity__c,OwnerId,
                                 Part_Name__c,ProductName__c,Product_Part__c,Quantity__c,Quote__c,Remark__c,Saleable_Stock__c,
-                                Sales_Order__c,Sales_Price__c,SGST_Amount_Formula__c,SGST__c,Specification__c,SystemModstamp,
+                                Sales_Order__c,Sales_Price__c,SGST_Amount_Formula__c,SGST__c,Part_Serial_No__c,SystemModstamp,
                                 Taxable_Amount_Formula__c,Total_Amount_Formula__c,Unit_Price__c,Unit__c, Product_Part__r.Part_Name__c,
                                 Product_Part__r.name FROM Line_Item__c where Quote__c =:RecordId];
             chargeslist =[SELECT CGST__c,Charges__c,Charge_Percentage__c,Charge_Amount__c,CreatedById,CreatedDate,Id,IGST__c,IsDeleted,LastModifiedById,
@@ -44,12 +58,20 @@ public class AddproductController {
                           Charges__r.name FROM Charges__c Where Quote__c =:RecordId ];
         }
         if(objname  =='Opportunity__c'){
-            oppobj=[SELECT Id,OEM_Customer__r.Billing_State_Code__c,Ware_House__c,stage__c, Ware_House__r.State_Code__c, Office__c,isService__c From Opportunity__c WHERE id=:RecordId];
+            oppobj=[SELECT Id,Enquiry_Type_Contain_Service__c,OEM_Customer__r.Discount__c,OEM_Customer__r.Is_Export__c,OEM_Customer__r.Billing_State_Code__c,Ware_House__c,stage__c, Ware_House__r.State_Code__c, Office__c,isService__c From Opportunity__c WHERE id=:RecordId];
             state=oppobj.OEM_Customer__r.Billing_State_Code__c;
-            System.debug('BillingStateCodeOnOpportunity----- '+state);
+            if(oppobj.OEM_Customer__r.Is_Export__c)
+                exportValue = true;
             warehouse =oppobj.Ware_House__c;
+            if( oppobj.OEM_Customer__r.Discount__c != NUll && !oppobj.Enquiry_Type_Contain_Service__c )
+                recordlist.OEM_Discount = oppobj.OEM_Customer__r.Discount__c;
+            else
+                recordlist.OEM_Discount = 0;
+                
             service = oppobj?.isService__c; 
             System.debug('warehouse----- '+warehouse);
+            if(oppobj.Enquiry_Type_Contain_Service__c==true)
+            isServiceQt = false;
             warehousename=oppobj.Ware_House__r.State_Code__c;
             if(oppobj.stage__c == 'Closed Won'||oppobj.stage__c == 'Closed Lost'){
                 recordlist.closed =booleantrue;
@@ -59,7 +81,7 @@ public class AddproductController {
                                 Expected_date__c,HSN_Code__c,Id,IGST_Amount_Formula__c,IGST__c,IsDeleted,LastActivityDate,
                                 LastModifiedById,LastModifiedDate,List_Price__c,Name,Net_Amount__c,Opportunity__c,OwnerId,
                                 Part_Name__c,ProductName__c,Product_Part__c,Quantity__c,Quote__c,Remark__c,Saleable_Stock__c,
-                                Sales_Order__c,Sales_Price__c,SGST_Amount_Formula__c,SGST__c,Specification__c,SystemModstamp,
+                                Sales_Order__c,Sales_Price__c,SGST_Amount_Formula__c,SGST__c,Part_Serial_No__c,SystemModstamp,
                                 Taxable_Amount_Formula__c,Total_Amount_Formula__c,Unit__c,Product_Part__r.Part_Name__c,
                                 Product_Part__r.name FROM Line_Item__c where Opportunity__c =:RecordId];
             chargeslist =[SELECT CGST__c,Charges__c,Charge_Percentage__c,Charge_Amount__c,CreatedById,CreatedDate,Id,IGST__c,IsDeleted,LastModifiedById,
@@ -141,18 +163,20 @@ public class AddproductController {
             }
            
             
-            if(!stateset.contains(state)) IGST=true;
+            if(warehousename !=state) IGST=true;
             
             recordlist.lstWrapp = new list<prodwrapp>(); 
             List<prodwrappChild> lstWrappTwoNew = new List<prodwrappChild>();
             recordlist.Lineitemonrecord = lineitemlist; 
             recordlist.lstTaxDetailsAvailable = TaxDetailslist;
             recordlist.lstWrappTwo = lineitemlist;
+            recordlist.isExport=exportvalue;
             recordlist.lineitemid = new set<id>();
             recordlist.quoteId = new set<Id>();
             recordlist.isSelectedProduct = false;
             recordlist.quoteId.add(RecordId);
             recordlist.igstvalue=IGST;
+            recordlist.isServiceQuote = isServiceQt;
             recordlist.success = true;
             recordlist.lstTaxType = new list<TaxType>();
             recordlist.lstTaxDetails = new List<TaxDetails>();
@@ -196,7 +220,7 @@ public class AddproductController {
     public static String getSearchProduct(string objectName, string queryText,String objwrap,String recordId)
     {
         Set<id> wrapproductId = New Set<Id>();
-        
+        boolean active = true;
         System.debug('recordId');
         WrappMain oldwrap = new WrappMain();
         
@@ -219,9 +243,9 @@ public class AddproductController {
         lineitemquery = lineitemquery + 'IGST_Amount_Formula__c,IGST__c,List_Price__c,Name,Net_Amount__c,';
         lineitemquery = lineitemquery + ' Opportunity__c,Product_Part__c,Quantity__c,Quote__c,';
         lineitemquery = lineitemquery + 'Remark__c,Saleable_Stock__c,Sales_Price__c,SGST_Amount_Formula__c,';
-        lineitemquery = lineitemquery + 'SGST__c,Specification__c,Taxable_Amount_Formula__c,Total_Amount_Formula__c,';
+        lineitemquery = lineitemquery + 'SGST__c,Part_Serial_No__c,Taxable_Amount_Formula__c,Total_Amount_Formula__c,';
         if(objname == 'Quote__c'){
-            lineitemquery = lineitemquery + 'Unit__c FROM Line_Item__c Where  Quote__c =:  recordId';
+            lineitemquery = lineitemquery + 'Unit__c FROM Line_Item__c Where  Quote__c =:  recordId ';
             
         }
         else if(objname == 'Opportunity__c'){
@@ -267,10 +291,10 @@ public class AddproductController {
             if(filter.trim() != ''){
                 
                 if(wrapproductId.size() > 0 ){
-                    soql += ' where id NOT IN : wrapproductId and ( name Like ' + filter + ' or Part_Name__c LIKE ' + filter + ')';
+                    soql += ' where id NOT IN : wrapproductId and ( name Like ' + filter + ' or Part_Name__c LIKE ' + filter + ') AND Stock_Available__c != 0 AND active__c = True ';
                 }
                 else{
-                    soql += ' where ( name Like ' + filter + ' or Part_Name__c LIKE ' + filter + ')';
+                    soql += ' where ( name Like ' + filter + ' or Part_Name__c LIKE ' + filter + ') AND Stock_Available__c != 0 AND active__c = True ';
                 }
             }   
             system.debug('====='+soql);
@@ -300,7 +324,7 @@ public class AddproductController {
             if(wrapproductId.size() > 0 ){
                 string soql2 = 'select ' + string.join(leadfieldNames, ',') +',(SELECT Id,Product_Part__c, Total_Quantity__c, Ware_House__r.City__c,Total_Unbooked_Quantity__c from Stocks__r) from ' + objectName ; 
                 if(filter.trim() != ''){    
-                    soql2 += ' where id IN : wrapproductId and ( name Like ' + filter + ' or Part_Name__c LIKE ' + filter + ')';
+                    soql2 += ' where id IN : wrapproductId and ( name Like ' + filter + ' or Part_Name__c LIKE ' + filter + ') AND Stock_Available__c != 0 AND active__c = True ';
                 } 
                 soql2 += 'order by Name limit 10';
                 for(Part__c pr :Database.query(soql2)){
@@ -325,7 +349,7 @@ public class AddproductController {
                 partid.add(pd.objProd.id);
             }
             
-            list<Part__History> parthistory = [SELECT Field,NewValue,OldValue,ParentId FROM Part__History WHERE ParentId IN: partid];
+            list<Part__History> parthistory = [SELECT Field,NewValue,OldValue,ParentId FROM Part__History WHERE ParentId IN: partid Order by createddate ASC];
             
             map<string,string> partoldfieldvalue = new map<string,string>();
             if(!parthistory.isempty())
@@ -390,36 +414,40 @@ public class AddproductController {
     @AuraEnabled
     public static string removeRecord(string strWrap, string prodwrappstr)
     {
-        WrappMain objwrap = (WrappMain)Json.deserialize(strWrap, WrappMain.class);      
-        prodwrapp prodwrappobj = (prodwrapp)Json.deserialize(prodwrappstr, prodwrapp.class);
-        List<prodwrappChild> lstWrapplineItem = objwrap.lstWrappTwo;
-        List<prodwrapp> lstWrappProduct = objwrap.lstWrapp;
-        Set<id> lineitemids = objwrap.lineitemid;
-        integer i=0;
-        integer x=0;
-        for(prodwrappChild prodchild : lstWrapplineItem){
-            if(prodchild.objProdchild.Product_Part__c == prodwrappobj.objProd.id){
-                i=lstWrapplineItem.indexOf(prodchild);
-                System.debug('integer i '+i);
-            }           
+        WrappMain objwrap = (WrappMain)Json.deserialize(strWrap, WrappMain.class); 
+        if(prodwrappstr != null && prodwrappstr != ''){
+			prodwrappChild prodwrappobj = (prodwrappChild)Json.deserialize(prodwrappstr, prodwrappChild.class);
+			List<prodwrappChild> lstWrapplineItem = objwrap.lstWrappTwo;
+			List<prodwrapp> lstWrappProduct = objwrap.lstWrapp;
+			List<prodwrapp> updatedlstWrappProduct = new List<prodwrapp>();
+			Set<id> lineitemids = objwrap.lineitemid;
+			integer i=0;
+			integer x=0;
+			for(prodwrappChild prodchild : lstWrapplineItem){
+				if(prodchild.objProdchild.Product_Part__c == prodwrappobj.objProdchild.Product_Part__c){
+					i=lstWrapplineItem.indexOf(prodchild);
+					System.debug('integer i '+i);
+				}           
+			}
+			for(id prodchild : lineitemids){
+				if(prodchild == prodwrappobj.objProdchild.Product_Part__c){
+					lineitemids.remove(prodchild);
+				}           
+			}
+			for(prodwrapp prodchild : lstWrappProduct){
+				
+				if(prodchild.objProd.id == prodwrappobj.objProdchild.Product_Part__c){
+					x=lstWrappProduct.indexOf(prodchild);
+					prodchild.isSelected = false;
+					System.debug('integer x '+x);
+				}   
+				updatedlstWrappProduct.add(prodchild);
+			}
+			System.debug('size '+lstWrapplineItem.size());
+			lstWrapplineItem.remove(i);
+			objwrap.lstWrapp = updatedlstWrappProduct;
+			objwrap.lstWrappTwo =  lstWrapplineItem;	
         }
-        for(id prodchild : lineitemids){
-            if(prodchild == prodwrappobj.objProd.id){
-                lineitemids.remove(prodchild);
-            }           
-        }
-        for(prodwrapp prodchild : lstWrappProduct){
-            
-            if(prodchild.objProd.id == prodwrappobj.objProd.id){
-                x=lstWrappProduct.indexOf(prodchild);
-                prodchild.isSelected = false;
-                System.debug('integer x '+x);
-            }           
-        }
-        System.debug('size '+lstWrapplineItem.size());
-        lstWrapplineItem.remove(i);
-        objwrap.lstWrapp = lstWrappProduct;
-        objwrap.lstWrappTwo =  lstWrapplineItem;
         return json.serialize(objwrap);
     }
     
@@ -445,9 +473,13 @@ public class AddproductController {
                         objOppPro.List_Price__c = lstWrappNew[i].objProd.Service_Price__c;
                     objOppPro.Sales_Price__c = lstWrappNew[i].objProd.Service_Price__c;
                     }
+                    else if(objwrap.OEM_Discount != 0){
+                       objOppPro.List_Price__c = lstWrappNew[i].objProd.List_Price_Standard_price__c; 
+                        objOppPro.Sales_Price__c =lstWrappNew[i].objProd.List_Price_Standard_price__c - (lstWrappNew[i].objProd.List_Price_Standard_price__c * objwrap.OEM_Discount)/100; 
+                    }
                     else{
-                      objOppPro.List_Price__c = lstWrappNew[i].objProd.List_Price_Standard_price__c;
-                    objOppPro.Sales_Price__c = lstWrappNew[i].objProd.List_Price_Standard_price__c;  
+                        objOppPro.List_Price__c = lstWrappNew[i].objProd.List_Price_Standard_price__c;
+                        objOppPro.Sales_Price__c = lstWrappNew[i].objProd.List_Price_Standard_price__c;  
                     }
                     
                     objOppPro.Quantity__c = 1;
@@ -459,7 +491,7 @@ public class AddproductController {
                     System.debug('totalAmount----- '+objchild.totalAmount);
                     objchild.TotalAfterDiscount = Integer.valueOf(objOppPro.Quantity__c*objOppPro.Sales_Price__c);
                     System.debug('TotalAfterDiscount----- '+objchild.TotalAfterDiscount);
-                    
+                    if(!objwrap.isExport){
                     if(objwrap.igstvalue){
                         objOppPro.SGST__c=0;
                         objOppPro.CGST__c=0;
@@ -472,6 +504,12 @@ public class AddproductController {
                         if(lstWrappNew[i].objProd.GST__c == null)  objOppPro.SGST__c=0;
                         if(lstWrappNew[i].objProd.GST__c == null)  objOppPro.CGST__c=0;
                         objOppPro.IGST__c=0;
+                    }
+                        }
+                    else{
+                        objOppPro.IGST__c=0;
+                        objOppPro.SGST__c=0;
+                        objOppPro.CGST__c=0;
                     }
                     objchild.CGSTAmount=(Integer.valueOf(objOppPro.Quantity__c*objOppPro.Sales_Price__c)*objOppPro.CGST__c)/100;
                     objchild.SGSTAmount=(Integer.valueOf(objOppPro.Quantity__c*objOppPro.Sales_Price__c)*objOppPro.SGST__c)/100;
@@ -550,6 +588,11 @@ public class AddproductController {
                 Line_Item__c objOppProduct = obj.objProdchild;
                 if(objOppProduct.Quantity__c > 0 && objOppProduct.Sales_Price__c >0)
                 {
+                    objOppProduct.Sales_Price__c = (objOppProduct.Sales_Price__c).setscale(2);
+                    objOppProduct.Discount__c= (objOppProduct.Discount__c).setscale(2);
+                    objOppProduct.SGST__c= (objOppProduct.SGST__c).setscale(2);
+                    objOppProduct.IGST__c= (objOppProduct.IGST__c).setscale(2);
+                    objOppProduct.CGST__c= (objOppProduct.CGST__c).setscale(2);
                     if(objname  =='Quote__c')
                         objOppProduct.Quote__c = RecordId;
                     if(objname  =='Opportunity__c')
@@ -666,7 +709,12 @@ public class AddproductController {
         @AuraEnabled public list<TaxDetails> lstCharges;
         @AuraEnabled public boolean closed; 
         @AuraEnabled public string wrname;
-        @AuraEnabled public boolean isService; 
+        @AuraEnabled public boolean isService;
+        @AuraEnabled public boolean isServiceQuote;
+        @AuraEnabled public boolean isExport;
+        @AuraEnabled public decimal  OEM_Discount{get;set;}
+        
+        
     }
     
     public class prodwrapp

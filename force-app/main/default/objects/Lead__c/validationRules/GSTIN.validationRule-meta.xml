@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>GSTIN</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(NOT( ISBLANK(GSTIN_No__c)) ,LEN(GSTIN_No__c)&lt;&gt;15)</errorConditionFormula>
+    <errorDisplayField>GSTIN_No__c</errorDisplayField>
+    <errorMessage>Only allowed 15 digit in GST</errorMessage>
+</ValidationRule>

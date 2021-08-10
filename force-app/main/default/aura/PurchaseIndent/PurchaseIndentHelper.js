@@ -128,6 +128,7 @@
         if(PIIWrapper.length > 0 && component.get('v.isExpectedDate')){
             strExpectedDate = PIIWrapper[0].expectedDate; 
         }
+        component.set("v.mainWrapper.lstIIW", PIIWrapper);
         var tmpLineItemWrap ={
             "stockActual":0,
             "specification":"",

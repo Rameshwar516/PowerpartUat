@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Cooling_System__c</fullName>
+    <externalId>false</externalId>
+    <label>Cooling System</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Radiator</fullName>
+                <default>false</default>
+                <label>Radiator</label>
+            </value>
+            <value>
+                <fullName>Heat Exchanger</fullName>
+                <default>false</default>
+                <label>Heat Exchanger</label>
+            </value>
+            <value>
+                <fullName>Coil Cooler</fullName>
+                <default>false</default>
+                <label>Coil Cooler</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

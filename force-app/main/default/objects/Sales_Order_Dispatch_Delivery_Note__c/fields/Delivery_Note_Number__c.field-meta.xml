@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Delivery_Note_Number__c</fullName>
+    <externalId>false</externalId>
+    <formula>if( if(Not(isBlank(Sales_Order__c)),text( Sales_Order__r.Ware_House__r.City__c), if(Not(isBlank( MRN__c )),text(  MRN__r.Ware_House__r.City__c ), Text(Sales_Order_Return__r.MRN__r.Ware_House__r.City__c ) )) == &apos;Kolkata&apos;, 
+&apos;PPLCU&apos;+RIGHT(text(YEAR( DATEVALUE(CreatedDate))), LEN(text(YEAR( DATEVALUE(CreatedDate)))) - 2)+&apos;GDNT&apos;+RIGHT( Name , LEN(Name) - 4),
+if( if(Not(isBlank(Sales_Order__c)),text( Sales_Order__r.Ware_House__r.City__c), if(Not(isBlank( MRN__c )),text(  MRN__r.Ware_House__r.City__c ), Text(Sales_Order_Return__r.MRN__r.Ware_House__r.City__c ) ))== &apos;Gurugram&apos;,
+ &apos;PPLHO&apos;+RIGHT(text(YEAR( DATEVALUE(CreatedDate))), LEN(text(YEAR( DATEVALUE(CreatedDate)))) - 2)+&apos;GDNT&apos;+RIGHT( Name , LEN(Name) - 4),
+ &apos;Please select Place on supply from related object SO/MRN/SOR.&apos;))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Delivery Note Number</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

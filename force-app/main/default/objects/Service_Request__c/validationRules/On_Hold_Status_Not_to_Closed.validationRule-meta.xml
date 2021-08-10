@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>On_Hold_Status_Not_to_Closed</fullName>
+    <active>true</active>
+    <errorConditionFormula>ISCHANGED(Status__c) &amp;&amp; text(Status__c) = &apos;Closed&apos; &amp;&amp;  Text(PRIORVALUE(Status__c))  =&apos;On Hold&apos;</errorConditionFormula>
+    <errorDisplayField>Status__c</errorDisplayField>
+    <errorMessage>Please change your status to other value.</errorMessage>
+</ValidationRule>

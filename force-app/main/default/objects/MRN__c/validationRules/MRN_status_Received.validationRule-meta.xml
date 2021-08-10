@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MRN_status_Received</fullName>
+    <active>false</active>
+    <errorConditionFormula>Text(PRIORVALUE( Stage__c )) == &apos;Received&apos;  &amp;&amp;  text(Stage__c)!= &apos;Received&apos;</errorConditionFormula>
+    <errorDisplayField>Stage__c</errorDisplayField>
+    <errorMessage>The stage cannot update to draft after recevied.</errorMessage>
+</ValidationRule>

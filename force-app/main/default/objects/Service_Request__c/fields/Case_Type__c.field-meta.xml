@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Case_Type__c</fullName>
+    <externalId>false</externalId>
+    <label>Service Request Type</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>AMC</fullName>
+                <default>false</default>
+                <label>AMC</label>
+            </value>
+            <value>
+                <fullName>Application SignOff</fullName>
+                <default>false</default>
+                <label>Application SignOff</label>
+            </value>
+            <value>
+                <fullName>Campaign/PIP</fullName>
+                <default>false</default>
+                <label>Campaign/PIP</label>
+            </value>
+            <value>
+                <fullName>FOC</fullName>
+                <default>false</default>
+                <label>FOC</label>
+            </value>
+            <value>
+                <fullName>PAID</fullName>
+                <default>false</default>
+                <label>PAID</label>
+            </value>
+            <value>
+                <fullName>WAR</fullName>
+                <default>false</default>
+                <label>WAR</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

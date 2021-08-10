@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Export_Type__c</fullName>
+    <externalId>false</externalId>
+    <label>Export Type</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>Type__c</controllingField>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Supply meant for SEZ/SEZ Developer under LUT without payment of Integrated Tax</fullName>
+                <default>false</default>
+                <label>Supply meant for SEZ/SEZ Developer under LUT without payment of Integrated Tax</label>
+            </value>
+            <value>
+                <fullName>Supply meant for SEZ Unit/SEZ Developer with payment of Integrated Tax</fullName>
+                <default>false</default>
+                <label>Supply meant for SEZ Unit/SEZ Developer with payment of Integrated Tax</label>
+            </value>
+            <value>
+                <fullName>Supply meant for SEZ/SEZ Developer under Bond without payment of Integrated Tax</fullName>
+                <default>false</default>
+                <label>Supply meant for SEZ/SEZ Developer under Bond without payment of Integrated Tax</label>
+            </value>
+            <value>
+                <fullName>Supply meant for Export on payment of IGST</fullName>
+                <default>false</default>
+                <label>Supply meant for Export on payment of IGST</label>
+            </value>
+            <value>
+                <fullName>Supply meant for Export under Letter of Undertaking without payment of IGST</fullName>
+                <default>false</default>
+                <label>Supply meant for Export under Letter of Undertaking without payment of IGST</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Export</controllingFieldValue>
+            <valueName>Supply meant for SEZ/SEZ Developer under LUT without payment of Integrated Tax</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Export</controllingFieldValue>
+            <valueName>Supply meant for SEZ Unit/SEZ Developer with payment of Integrated Tax</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Export</controllingFieldValue>
+            <valueName>Supply meant for SEZ/SEZ Developer under Bond without payment of Integrated Tax</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Export</controllingFieldValue>
+            <valueName>Supply meant for Export on payment of IGST</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Export</controllingFieldValue>
+            <valueName>Supply meant for Export under Letter of Undertaking without payment of IGST</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

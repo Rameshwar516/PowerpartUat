@@ -5,6 +5,7 @@
     <aura:attribute name="SalesOrder" type="object" />
     <aura:attribute name="IndentBy" type="object" />
     <aura:attribute name="Against" type="String" default="Direct"/>
+    <aura:attribute name="currency" type="String" default="INR"/>
     <aura:attribute name="wareHouse" type="object" />
     <aura:attribute name="isDirect" type="boolean" default="true"/>
     <aura:attribute name="mainWrapper" type="object" />
@@ -15,6 +16,7 @@
     <aura:attribute name="showTAndC" type="boolean" default="false"/>
     <aura:attribute name="Error" type="boolean" default="false"/>
     <aura:attribute name="isExpectedDate" type="boolean" default="false" />
+    <aura:attribute name="currentObject" type="String" default="PI"/>
     <aura:handler name="init" value="{!this}" action="{!c.initJS}" />
     <aura:handler name="change" value="{!v.SalesOrder}" action="{!c.onChangeSalesOrder}" />
     
@@ -22,8 +24,7 @@
         
         <div class="slds-grid slds-wrap">
             <div class="slds-col slds-size_3-of-12 slds-p-around_small">
-               
-                <div class="slds-box">
+                 <div class="slds-box">
                     <div class="slds-col slds-size_1-of-1 slds-p-around_xx-small">
                         <b>Warehouse : </b>
                         <aura:if isTrue="{!v.wareHouse != null}">
@@ -34,14 +35,14 @@
                         </aura:if>
                     </div>
                 </div>
-                 <br/>
+                <br/>
                 <div class="slds-box">
                     <h3 class="slds-section slds-section__title" style="background-color:#486232;color:white;">
                         <span class="slds-truncate" title="Section Title" style="margin-left:10px;font-size:14px;">Against</span>
                     </h3>
                     <div class="slds-grid slds-wrap">
                         <div class="slds-col slds-size_1-of-1 slds-p-around_xx-small ">
-                            <lightning:select  aura:id="IdSelect" label="" value="{!v.Against}" onchange="{!c.onChangeSelect}" disabled="{!v.wareHouse == null}">
+                            <lightning:select  aura:id="IdSelect" label="" value="{!v.Against}" onchange="{!c.onChangeSelect}" disabled="{!v.wareHouse == null || v.recordId !=null}">
                                 <aura:iteration items="{!v.mainWrapper.againstPickList}" var="item">
                                     <option text="{!item.label}" value="{!item.value}" selected="{!item.value == v.Against? true: false}"/>
                                 </aura:iteration>
@@ -58,6 +59,7 @@
                     </div>
                 </div>
                 
+               
             </div>
             <div class="slds-col slds-size_9-of-12 slds-p-around_small">
                 <div class="slds-box">
@@ -70,7 +72,7 @@
                             <b>Customer Reference Number :</b>
                         </div>
                         <div class="slds-col slds-size_3-of-12 slds-p-around_xx-small slds-text-align_right">
-                            <lightning:input type="text" value="{!v.mainWrapper.objPurchaseIndent.Reference_No__c}" varient="label-hidden" />
+                            <lightning:input type="text" value="{!v.mainWrapper.objPurchaseIndent.Reference_No_text__c}" varient="label-hidden" />
                         </div>
                         <div class="slds-col slds-size_3-of-12 slds-p-around_xx-small slds-text-align_right">
                             <b>Customer Reference Date :</b>
@@ -82,7 +84,7 @@
                         <div class="slds-col slds-size_3-of-12 slds-p-around_xx-small slds-text-align_right">
                             <b>Sales Officer :</b>
                         </div>
-                        <div class="slds-col slds-size_3-of-12 slds-p-around_xx-small">
+                        <div class="slds-col slds-size_3-of-12 slds-p-around_xx-small" >
                             <c:CustomLookUpForPI  selectedRecord="{!v.SalesOfficer}" objectAPIName="User" IconName="standard:user" />                 
                         </div>
                         <div class="slds-col slds-size_3-of-12 slds-p-around_xx-small slds-text-align_right">
@@ -116,6 +118,21 @@
                             <c:CustomLookUpForPI  selectedRecord="{!v.IndentBy}" objectAPIName="User" IconName="standard:user" />                 
                         </div>
                         
+                        <div class="slds-col slds-size_3-of-12 slds-p-around_xx-small slds-text-align_right">
+                            <b>Currency Type :</b>
+                        </div>
+                        <div class="slds-col slds-size_3-of-12 slds-p-around_xx-small slds-text-align_right">
+                            <lightning:select  aura:id="IdSelectCurrency" label="" value="{!v.currency}"  disabled="{!v.wareHouse == null || v.recordId != null}" onchange="{!c.onChangeCurency}">
+                                <aura:iteration items="{!v.mainWrapper.currencyPickList}" var="item">
+                                    <option text="{!item.label}" value="{!item.value}" selected="{!item.value == v.currency? true: false}"/>
+                                </aura:iteration>
+                            </lightning:select>
+                        </div>
+                        <div class="slds-col slds-size_3-of-12 slds-p-around_xx-small slds-text-align_right">
+                        </div>
+                        <div class="slds-col slds-size_3-of-12 slds-p-around_xx-small">
+                        </div>
+                        
                     </div>
                 </div>
             </div>
@@ -128,45 +145,47 @@
                         <table class="slds-table slds-table_bordered slds-table--header-fixed" >
                             <thead>
                                 <tr class="slds-text-title_caps" >
-                                    <th scope="col" width="3%">
+                                    <th scope="col" width="3%" >
                                         <div class="slds-truncate slds-cell-fixed" title="Sr.N." >Sr.N.&nbsp;&nbsp;&nbsp;</div>
                                     </th>
                                      <th scope="col" width="5%">
                                         <div class="slds-truncate slds-cell-fixed" title="Add Del">Action</div>
                                     </th>
-                                    <th scope="col"  width="10%">
+                                    <th scope="col"  width="10%" style="padding-left: 3.5%;">
                                         <div class="slds-truncate slds-cell-fixed" title="Part No.">Part No.</div>
                                     </th>
-                                    <th scope="col" width="10%">
+                                    <th scope="col" width="10%" style="padding-left: 3.5%;">
                                         <div class="slds-truncate slds-cell-fixed" title="Part Name">Part Name</div>
                                     </th>
-                                    <th scope="col" width="10%" >
-                                        <div class="slds-truncate slds-cell-fixed" title="Part Serial">Part <br/>Serial #</div>
+                                    <th scope="col" width="10%" style="padding-left: 2.5%;">
+                                        <div class="slds-truncate slds-cell-fixed" title="Part Serial">Part Serial #</div>
                                     </th>
-                                    <th scope="col" width="7%">
+                                    <th scope="col" width="7%" style="padding-left: 2.5%;">
                                         <div class="slds-truncate slds-cell-fixed" title="Pending PO Qty">Pending <br/>PO Qty</div>
                                     </th>
-                                    <th scope="col" width="7%">
-                                        <div class="slds-truncate slds-cell-fixed" title="Stock Actual">Stock <br/>Actual</div>
-                                    </th>
-                                    <th scope="col" width="7%">
+                                    <aura:if isTrue="{! !v.isDirect}">
+                                        <th scope="col" width="7%" style="padding-left: 2%;">
+                                            <div class="slds-truncate slds-cell-fixed" title="Stock Actual">Stock <br/>Actual</div>
+                                        </th>
+                                    </aura:if>
+                                    <th scope="col" width="5%" style="padding-left: 1%;">
                                         <div class="slds-truncate slds-cell-fixed" title="Quantity">Quantity</div>
                                     </th>
-                                    <th scope="col" width="7%">
+                                    <th scope="col" width="7%" style="padding-left: 2.5%;">
                                         <div class="slds-truncate slds-cell-fixed" title="UOM">UOM</div>
                                     </th>
-                                    <th scope="col" width="10%">
+                                    <th scope="col" width="7%" style="padding-left: 1%;">
                                         <div class="slds-truncate slds-cell-fixed" title="Expected Date">Expected Date
                                             <lightning:input type="checkbox" label="Same Date" name="input1" checked="{!v.isExpectedDate}" onchange="{!c.onChangeExpectedDateJS}"/>
                                         </div>
                                     </th>
-                                    <th scope="col" width="7%">
+                                    <th scope="col" width="7%" style="padding-left: 1%;">
                                         <div class="slds-truncate slds-cell-fixed" title="Application">Application</div>
                                     </th>
-                                    <th scope="col" width="7%">
+                                    <th scope="col" width="7%" style="padding-left: 2.5%;">
                                         <div class="slds-truncate slds-cell-fixed" title="Usage">Usage</div>
                                     </th>
-                                    <th scope="col" width="10%">
+                                    <th scope="col" width="25%" style="padding-left: 2.5%;">
                                         <div class="slds-truncate slds-cell-fixed" title="Remarks">Remarks</div>
                                     </th>
                                 </tr>
@@ -208,9 +227,9 @@
                                             </div>
                                         </td>
                                         <td scope="row" data-label="Part No." >
-                                            <div  title="Part No.">
+                                            <div  title="Part No." style="text-align:center;">
                                                 <aura:if isTrue="{!item.isEdit &amp;&amp; v.isDirect}">
-                                                    <c:CustomLookUpForPI  selectedRecord="{!item.objPart}" objectAPIName="Part__c" IconName="standard:all" wareHouse="{!v.wareHouse.Id}" /> 
+                                                    <c:CustomLookUpForPI  selectedRecord="{!item.objPart}" objectAPIName="Part__c" IconName="standard:all" wareHouse="{!v.wareHouse.Id}" eventObject="{!v.currentObject}" mainwrap="{!v.mainWrapper}" /> 
                                                     <aura:set attribute="else">
                                                         {!item.objPart.Name}
                                                     </aura:set>
@@ -218,7 +237,7 @@
                                             </div>
                                         </td>
                                         <td scope="row" data-label="Part Name" >
-                                            <div class="slds-truncate" title="Part Name">
+                                            <div class="slds-truncate" title="Part Name" style="text-align:center;">
                                                 <aura:if isTrue="{!item.isEdit &amp;&amp; v.isDirect}">
                                                     <lightning:input name="input4" label=""  value="{!item.objPart.Part_Name__c}" disabled="true"/>                                     
                                                     <aura:set attribute="else">
@@ -228,7 +247,7 @@
                                             </div>
                                         </td>
                                         <td scope="row" data-label="Part Serial" >
-                                            <div class="slds-truncate" title="Part Serial">
+                                            <div class="slds-truncate" title="Part Serial" style="text-align:center;">
                                                 <aura:if isTrue="{!item.isEdit}">
                                                     <lightning:input type="text" value="{!item.specification}" />
                                                     <aura:set attribute="else">
@@ -238,31 +257,19 @@
                                             </div>
                                         </td>
                                         <td scope="row" data-label="Pending PO Qty" >
-                                            <div class="slds-truncate" title="Pending PO Qty">
-                                                <aura:if isTrue="{!item.isEdit}">
-                                                    <lightning:input type="Number" value="{!item.pendingPOQty}" />
-                                                    <aura:set attribute="else">
-                                                        {!item.pendingPOQty}
-                                                    </aura:set>
-                                                </aura:if>
-                                            </div>
+                                            <div class="slds-truncate" title="Pending PO Qty" style="text-align:center;">
+                                                {!item.pendingPOQty}
+                                              </div>
                                         </td>
-                                        <td scope="row" data-label="Stock Actual" >
-                                            <div class="slds-truncate" title="Stock Actual">
-                                                <aura:if isTrue="{!v.isDirect}">
-                                                   	<aura:iteration items="{!item.objPart.Stocks__r}" var="item" >
-                                                        <aura:if isTrue ="{!item.Ware_House__c == v.wareHouse.Id}">
-                                                            <lightning:formattedNumber value="{!item.Total_Quantity__c}" minimumFractionDigits="0" maximumFractionDigits="0"/>
-                                                        </aura:if>
-                                                    </aura:iteration>
-                                                    <aura:set attribute="else">
-                                                        <lightning:formattedNumber value="{!item.stockActual}" minimumFractionDigits="0" maximumFractionDigits="0"/>
-                                                    </aura:set>
-                                                </aura:if>
-                                            </div>
-                                        </td>
+                                        <aura:if isTrue="{! !v.isDirect}">
+                                            <td scope="row" data-label="Stock Actual" >
+                                                <div class="slds-truncate" title="Stock Actual" style="text-align:center;">
+                                                    <lightning:formattedNumber value="{!item.stockActual}" minimumFractionDigits="0" maximumFractionDigits="0"/>
+                                                </div>
+                                            </td>
+                                        </aura:if>
                                         <td scope="row" data-label="Quantity" >
-                                            <div class="slds-truncate" title="Quantity">
+                                            <div class="slds-truncate" title="Quantity" style="text-align:center;">
                                                  <aura:if isTrue="{!item.isEdit}">
                                                    <lightning:input type="Number" value="{!item.quantity}" />
                                                     <aura:set attribute="else">
@@ -272,22 +279,22 @@
                                             </div>
                                         </td>
                                         <td scope="row" data-label="UOM" >
-                                            <div class="slds-truncate" title="UOM">
+                                            <div class="slds-truncate" title="UOM" style="text-align:center;">
                                                 {!item.objPart.UOM__c}
                                             </div>
                                         </td>
                                         <td scope="row" data-label="Expected Date">
-                                            <div class="slds-truncate" title="Expected Date">
+                                            <div class="slds-truncate" title="Expected Date" style="text-align:center;">
                                                 <aura:if isTrue="{!item.isEdit}">
                                                    <lightning:input type="Date" value="{!item.expectedDate}" onchange="{!c.onChangeExpectedDateJS}"/>
                                                     <aura:set attribute="else">
-                                                        {!item.expectedDate}
+                                                        <lightning:input type="Date" value="{!item.expectedDate}" onchange="{!c.onChangeExpectedDateJS}" disabled="true"/>
                                                     </aura:set>
                                                 </aura:if>
                                             </div>
                                         </td>
                                         <td scope="row" data-label="Application">
-                                            <div class="slds-truncate" title="Application">
+                                            <div class="slds-truncate" title="Application" style="text-align:center;">
                                                 <aura:if isTrue="{!item.isEdit &amp;&amp; v.isDirect}">
                                                     <lightning:select name="Application" label="" value="{!item.application}" >
                                                         <option value="">-- None --</option>
@@ -302,22 +309,16 @@
                                             </div>
                                         </td>
                                         <td scope="row" data-label="Usage">
-                                            <div class="slds-truncate" title="Usage">
-                                                <aura:if isTrue="{!item.isEdit &amp;&amp; v.isDirect}">
-                                                    <lightning:input type="text" value="{!item.objPart.Usage__c}" onchange="{!c.onChangeExpectedDateJS}"/>
-                                                    <aura:set attribute="else">
-                                                        {!item.objPart.Usage__c}
-                                                    </aura:set>
-                                                </aura:if>
-                                               
+                                            <div class="slds-truncate" title="Usage" style="text-align:center;">
+                                                {!item.objPart.Usage__c}
                                             </div>
                                         </td>
                                         <td scope="row" data-label="Remarks">
-                                            <div class="slds-truncate" title="Remarks">
+                                            <div class="slds-truncate" title="Remarks" style="text-align:center;">
                                                 <aura:if isTrue="{!item.isEdit}">
                                                    <lightning:textarea value="{!item.remarks}" />
                                                     <aura:set attribute="else">
-                                                        {!item.remarks}
+                                                      <lightning:textarea value="{!item.remarks}" disabled="true"/>
                                                     </aura:set>
                                                 </aura:if>
                                             </div>
@@ -334,7 +335,7 @@
                                             <td></td>
                                             <td></td>
                                             <td></td>
-                                            <td></td>
+                                            
                                             <td>
                                                 <div class="slds-form-element__help" id="error-message-unique-id" style="color:#c23934">{!item.strQuantityErr}</div>
                                             </td>
@@ -379,8 +380,8 @@
         <br/><br/>
         <div class="slds-grid slds-wrap" style="background-color:#FFF;">
             <div class="slds-col slds-size_1-of-3 slds-p-around_small slds-text-align_left">
-                <lightning:button label="Add Term &amp; Condition" onclick="{!c.AddTandCJS}" class="slds-button slds-button_success"/>
-            </div>
+               <!-- <lightning:button label="Add Terms &amp; Conditions" onclick="{!c.AddTandCJS}" class="slds-button slds-button_success"/>
+            --></div> 
             <div class="slds-col slds-size_1-of-3 slds-p-around_small slds-text-align_center">
                 <lightning:button label="Save" onclick="{!c.submitJS}" class="slds-button slds-button_brand"/>
                 <lightning:button label="Cancel" onclick="{!c.cancelJS}" class="slds-button"/>

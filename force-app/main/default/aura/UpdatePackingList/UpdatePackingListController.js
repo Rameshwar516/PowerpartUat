@@ -3,6 +3,25 @@
         var id = component.get("v.recordId");
         helper.pageLoadClassMethod(component, event, id);
     },
+    checkall :function(component, event, helper) {
+        var tmpWrapper = [];
+        var allselected = component.get("v.isSelectAll");
+        var tmpMainWrapper = component.get("v.wrapMain.inrWrap");
+        var Istrue = false; 
+        if(allselected){
+            for(var i=0;i<tmpMainWrapper.length;i++)
+            {
+                tmpMainWrapper[i].isSelected =true;   
+            }
+        }
+        else{
+            for(var i=0;i<tmpMainWrapper.length;i++)
+            {
+                tmpMainWrapper[i].isSelected =false;   
+            }
+        }
+            component.set("v.wrapMain.inrWrap", tmpMainWrapper);       
+    },
     checkJs :function(component, event, helper) {
         var tmpWrapper = [];
         var tmpMainWrapper = component.get("v.wrapMain.inrWrap");

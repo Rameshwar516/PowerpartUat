@@ -6,3 +6,15 @@
     width:100%;
     min-height:30px;
 }
+.THIS.slds-form-element__label 
+{
+    display: none !important;
+}
+.THIS .slds-input__icon 
+{
+    margin-top:1px !important;
+}
+.THIS .slds-pill-container 
+{
+    margin-top:17px !important;
+}

@@ -22,6 +22,7 @@ public class PerformanceInvoice
     public decimal totalAmountNotIncludedTax{get;set;} 
     public string totalAmountaftertaxinWords{get;set;}
     public string sign{get;set;}
+    public string stamp{get;set;}
     
     public list<Line_item__c> Litem{get;set;}
     
@@ -39,6 +40,7 @@ public class PerformanceInvoice
     
     public list<Charges__c> lstCharges{get;set;}
     public decimal TotalAmountWithCharges{get;set;}
+    public decimal TotalAmountWithChargeswithoutround{get;set;}
     public decimal TotalGSTCharges{get;set;}
     
     public decimal totalAmountCgst{get;set;}
@@ -69,17 +71,11 @@ public class PerformanceInvoice
              Date_of_Supply__c,Place_of_Supply__c,Shipping_Account__c,Shipping_City__c,Shipping_Country__c,Shipping_Zip_Postal_Code__c,Shipping_State_Province__c,Shipping_Street__c,Ware_House__c,Payment_Terms__c,Contact_Person__c,OEM_Customer__c,Office__c,Proforma_Invoice__c
              ,Ware_House__r.city__c,Ware_House__r.branch__c,LC_Date__c,LC_Term__c,Term_and_Condition__c,OEM_Customer__r.ShippingState,OwnerId  from Opportunity__c where id =:queryString limit 1];  
         if(opp.Shipping_Account__c!=null){
-        ShippingCon = [select id,name, phone,MobilePhone, email,isPrimary__c from contact where isPrimary__c= true AND Accountid =:opp.Shipping_Account__c limit 1];
+        ShippingCon = [select id,name,Salutation, phone,MobilePhone, email,isPrimary__c from contact where isPrimary__c= true AND Accountid =:opp.Shipping_Account__c limit 1];
         if(ShippingCon.size()>0){
                 ShippingContact = ShippingCon[0];
             }
         }
-        system.debug('opp'+opp.id);
-        system.debug('opp.ShippingStreet'+ opp.Shipping_Street__c);
-        system.debug('opp.Shipping_Zip_Postal_Code__c'+ opp.Shipping_Zip_Postal_Code__c);
-        system.debug('opp.Shipping_State_Province__c'+ opp.Shipping_State_Province__c);
-        system.debug('opp.Shipping_City__c'+ opp.Shipping_City__c);
-        system.debug('opp.Shipping_Country__c'+ opp.Shipping_Country__c);
         
         if(opp.LC_Date__c !=null){
            lcDate= opp.LC_Date__c;
@@ -89,10 +85,20 @@ public class PerformanceInvoice
         }
         
         user ur =[SELECT Id,Branch__c,User_Signature__c from user where id =:opp.OwnerId];
-        if(ur.User_Signature__c!=null)
+        if(!String.isBlank(ur.User_Signature__c))
         sign = ur.User_Signature__c;
+        
+        if(String.isBlank(ur.User_Signature__c))
+        sign =System.Label.Default_User_Sign;
+        
         system.debug(sign);
         System.debug('----'+ur.Branch__c);
+        if(ur.Branch__c == 'Kolkata')
+            stamp= System.Label.Kolkata_Stamp_Link;
+         if(ur.Branch__c == 'Gurugram')
+            stamp= System.Label.Gurugram_Stamp_Link;
+        
+        
         
         //Pdf header data
         string branch = opp.Ware_House__r.branch__c;
@@ -100,11 +106,13 @@ public class PerformanceInvoice
         String pdfHeaderQuery = 'Select ' +String.Join(pdfheaderField, ',')+ ' From Pdf_Header__mdt WHERE Branch__c =:branch Order by Effected_Date__c ASC LIMIT 1';
         pdfheader =  Database.query(pdfHeaderQuery);
         
-        
-        con = [select id,Name,Email,MobilePhone,Accountid from contact where id=:opp.Contact_Person__c limit 1];
+        if(opp.Contact_Person__c!=null){
+            
+        con = [select id,Name,Salutation,Email,MobilePhone,isPrimary__c,Accountid from contact where isPrimary__c= true AND  id=:opp.Contact_Person__c   limit 1];
         system.debug('contact'+con.id);
-        
-        Acc=[select id ,TCS_Charges_Enable__c,GSTIN_No__c,BillingCity,BillingCountry,BillingState,BillingStreet,BillingAddress,BillingPostalCode,ShippingCountry,
+            
+        }
+        Acc=[select id ,Print_Name__c,TCS_Charges_Enable__c,GSTIN_No__c,BillingCity,BillingCountry,BillingState,BillingStreet,BillingAddress,BillingPostalCode,ShippingCountry,
              ShippingCity,ShippingPostalCode,ShippingStreet,ShippingState,ShippingAddress, name,Billing_State_Code__c,Shipping_State_Code__c from Account where id =:opp.OEM_Customer__c];
         system.debug('Account'+Acc.id);
         
@@ -178,9 +186,9 @@ public class PerformanceInvoice
         
         Litem=[select Application__c,Amount_Formula__c,CGST__c,Delivery_Date__c,Description__c,
                Discount__c,DiscountN__c,Expected_date__c,HSN_Code__c,IGST__c,Name,List_Price__c,Opportunity__c,
-               Product_Part__c,Product_Part__r.uom__c,Product_Part__r.HSN_Code__c,Part_Name__c,Unit__c,Quantity__c,Quote__c,Remark__c,
+               Product_Part__c,Product_Part__r.uom__c,Product_Part__r.HSN_Code__c,Part_Name__c,Quantity__c,Quote__c,Remark__c,
                Saleable_Stock__c,Sales_Order__c,CGST_Amount_Formula__c,IGST_Amount_Formula__c,SGST_Amount_Formula__c,
-               Taxable_Amount_Formula__c,Sales_Price__c,Total_Amount_Formula__c,SGST__c,Specification__c,Discount_Amount__c, Product_Part__r.Name,Product_Part__r.Part_Name__c,Net_Amount__c from Line_Item__c where Opportunity__c=:opp.id];
+               Taxable_Amount_Formula__c,Sales_Price__c,Total_Amount_Formula__c,SGST__c,Part_Serial_No__c,Discount_Amount__c, Product_Part__r.Name,Product_Part__r.Part_Name__c,Net_Amount__c from Line_Item__c where Opportunity__c=:opp.id];
         
          totalCgst=0;
          totalSgst=0;
@@ -211,14 +219,14 @@ public class PerformanceInvoice
              system.debug('totalIgst'+totalIgst);
         }
         
-        totalCgst.round();
-        totalSgst.round();
-        totalIgst.round();
-        totalAmount.round();
-        totalAmountNotIncludedTax.round();
+        //totalCgst=totalCgst.round();
+        //totalSgst=totalSgst.round();
+      //totalIgst=totalIgst.round();             
+      //  totalAmount=totalAmount.round();
+       //totalAmountNotIncludedTax=totalAmountNotIncludedTax.round();
         
        totalTax= totalIgst+totalSgst+totalCgst;
-       totalTax.round();
+       //totalTax=totalTax.round();
        
         /*if(totalAmount> 0){
             totalAmount= totalAmount.round();
@@ -236,7 +244,7 @@ public class PerformanceInvoice
                 strWareHouseCity = lseWH[0]?.City__c;
             }
         }
-         
+         TotalAmountWithChargeswithoutround=0;
         TotalAmountWithCharges = 0;
         TotalGSTCharges = 0;
         totalAmountCgst =0;
@@ -255,22 +263,23 @@ public class PerformanceInvoice
             totalAmountSumNotIncludedTax = totalAmountSumNotIncludedTax+objCharg?.Charge_Amount__c;
         }
         totalAmountCgst = totalAmountCgst+totalCgst;
-        totalAmountCgst.round();
+        //totalAmountCgst=totalAmountCgst.round();
         totalAmountSgst = totalAmountSgst+totalSgst;
-        totalAmountSgst.round();
+        //totalAmountSgst=totalAmountSgst.round();
         totalAmountIgst = totalAmountIgst+totalIgst;
-        totalAmountIgst.round();
+        //totalAmountIgst=totalAmountIgst.round();
         TotalGSTCharges = totalAmountCgst+totalAmountSgst+totalAmountIgst;
-        TotalGSTCharges.round();
+        //TotalGSTCharges=TotalGSTCharges.round();
         
-        totalAmountSumNotIncludedTax.round();
+        //totalAmountSumNotIncludedTax=totalAmountSumNotIncludedTax.round();
         
-        TotalAmountWithCharges = TotalAmountWithCharges+totalAmount;
+        TotalAmountWithChargeswithoutround =TotalAmountWithChargeswithoutround+ TotalAmountWithCharges+totalAmount;
+        TotalAmountWithCharges = TotalAmountWithChargeswithoutround.round();
         totalAmountaftertaxinWords = UtilityClass.NoToWord(TotalAmountWithCharges.intValue());
-        totalAmountaftertaxinWords = totalAmountaftertaxinWords+' rupees only';
-        TotalAmountWithCharges=TotalAmountWithCharges.round();
+        totalAmountaftertaxinWords = 'Rupees '+totalAmountaftertaxinWords+' only';
+        //TotalAmountWithCharges=TotalAmountWithCharges.round();
         totalAmountSumNotIncludedTax = totalAmountSumNotIncludedTax+totalAmountNotIncludedTax;
-        totalAmountSumNotIncludedTax.round();
+        //totalAmountSumNotIncludedTax=totalAmountSumNotIncludedTax.round();
         
         decimal amountTCSPer = 0;
         amountTCS = 0;
@@ -286,10 +295,11 @@ public class PerformanceInvoice
         totalAmountWithTCS = totalAmountWithTCS.round();
         
         totalAmountaftertaxinWords = UtilityClass.NoToWord(totalAmountWithTCS.intValue());
-        totalAmountaftertaxinWords = totalAmountaftertaxinWords+' rupees only';
+        totalAmountaftertaxinWords = 'Rupees '+totalAmountaftertaxinWords+' only';
         }
         String myGeneratedFileName = opp.Proforma_Invoice__c+'.pdf';
-        Apexpages.currentPage().getHeaders().put('content-disposition', 'inline; filename='+myGeneratedFilename);
+        //Apexpages.currentPage().getHeaders().put('content-disposition', 'inline; filename='+myGeneratedFilename);
+          ApexPages.currentPage().getHeaders().put('content-disposition', 'filename=' +' Proforma Invoice - '+myGeneratedFilename+'.PDF');
     }  
     
     public void updatePIDate()
