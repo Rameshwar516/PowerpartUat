@@ -18,7 +18,7 @@
     </preferences>
     <preferences>
         <settingName>ChatterEnabled</settingName>
-        <settingValue>true</settingValue>
+        <settingValue>false</settingValue>
     </preferences>
     <preferences>
         <settingName>CompileOnDeploy</settingName>
@@ -58,7 +58,7 @@
     </preferences>
     <preferences>
         <settingName>NotesReservedPref01</settingName>
-        <settingValue>true</settingValue>
+        <settingValue>false</settingValue>
     </preferences>
     <preferences>
         <settingName>OfflineDraftsEnabled</settingName>
@@ -94,7 +94,7 @@
     </preferences>
     <preferences>
         <settingName>S1EncryptedStoragePref2</settingName>
-        <settingValue>false</settingValue>
+        <settingValue>true</settingValue>
     </preferences>
     <preferences>
         <settingName>S1OfflinePref</settingName>
@@ -110,7 +110,7 @@
     </preferences>
     <preferences>
         <settingName>SocialProfilesEnable</settingName>
-        <settingValue>true</settingValue>
+        <settingValue>false</settingValue>
     </preferences>
     <preferences>
         <settingName>Translation</settingName>

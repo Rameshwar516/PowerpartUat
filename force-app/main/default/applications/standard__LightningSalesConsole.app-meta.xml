@@ -14,23 +14,12 @@
     <tabs>standard-Campaign</tabs>
     <tabs>standard-Task</tabs>
     <tabs>standard-Event</tabs>
-    <tabs>standard-ContentNote</tabs>
     <tabs>standard-report</tabs>
     <tabs>standard-Dashboard</tabs>
-    <tabs>standard-Feed</tabs>
-    <tabs>standard-CollaborationGroup</tabs>
     <tabs>standard-File</tabs>
-    <tabs>Sales_Order__c</tabs>
-    <tabs>Term_and_Condition__c</tabs>
     <uiType>Lightning</uiType>
     <utilityBar>LightningSalesConsole_UtilityBar</utilityBar>
     <workspaceConfig>
-        <mappings>
-            <tab>Sales_Order__c</tab>
-        </mappings>
-        <mappings>
-            <tab>Term_and_Condition__c</tab>
-        </mappings>
         <mappings>
             <tab>standard-Account</tab>
         </mappings>
@@ -38,22 +27,13 @@
             <tab>standard-Campaign</tab>
         </mappings>
         <mappings>
-            <tab>standard-CollaborationGroup</tab>
-        </mappings>
-        <mappings>
             <tab>standard-Contact</tab>
-        </mappings>
-        <mappings>
-            <tab>standard-ContentNote</tab>
         </mappings>
         <mappings>
             <tab>standard-Dashboard</tab>
         </mappings>
         <mappings>
             <tab>standard-Event</tab>
-        </mappings>
-        <mappings>
-            <tab>standard-Feed</tab>
         </mappings>
         <mappings>
             <tab>standard-File</tab>

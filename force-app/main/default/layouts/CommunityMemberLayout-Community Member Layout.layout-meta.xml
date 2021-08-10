@@ -22,10 +22,6 @@
                 <behavior>Required</behavior>
                 <field>ProfileId</field>
             </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>User_Signature__c</field>
-            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>

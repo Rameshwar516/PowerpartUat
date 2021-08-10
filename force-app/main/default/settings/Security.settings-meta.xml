@@ -2,44 +2,7 @@
 <SecuritySettings xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <isTLSv12Required xsi:nil="true"/>
     <isTLSv12RequiredCommunities xsi:nil="true"/>
-    <networkAccess>
-        <ipRanges>
-            <end>203.122.40.78</end>
-            <start>203.122.40.78</start>
-        </ipRanges>
-        <ipRanges>
-            <end>180.151.13.191</end>
-            <start>180.151.13.191</start>
-        </ipRanges>
-        <ipRanges>
-            <end>106.201.19.174</end>
-            <start>106.201.19.174</start>
-        </ipRanges>
-        <ipRanges>
-            <end>103.219.228.51</end>
-            <start>103.219.228.51</start>
-        </ipRanges>
-        <ipRanges>
-            <end>103.99.38.33</end>
-            <start>103.99.38.33</start>
-        </ipRanges>
-        <ipRanges>
-            <end>49.36.142.74</end>
-            <start>49.36.142.74</start>
-        </ipRanges>
-        <ipRanges>
-            <end>49.36.136.140</end>
-            <start>49.36.136.140</start>
-        </ipRanges>
-        <ipRanges>
-            <end>47.8.99.31</end>
-            <start>47.8.99.31</start>
-        </ipRanges>
-        <ipRanges>
-            <end>14.102.21.10</end>
-            <start>14.102.21.10</start>
-        </ipRanges>
-    </networkAccess>
+    <networkAccess/>
     <passwordPolicies>
         <complexity>AlphaNumeric</complexity>
         <expiration>NinetyDays</expiration>
